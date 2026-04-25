@@ -1100,11 +1100,68 @@ var PP = (function() {
 
   function exportData() {
     if (!state.rows || !state.rows.length) { alert('Data not loaded yet — please wait and try again.'); return; }
+    var TIER_LABELS = { 0: 'HOLD', 1: 'TARGET', 2: 'OPPORTUNITY', 3: 'TURNOUT' };
+    var result = buildPacks();
+    var headers = [
+      'CD', 'CD Region', 'Pack (SD Anchor)', 'Pack Counties', 'Pack Tier',
+      'Role in Pack', 'House Race Role',
+      'District', 'First Name', 'Last Name', 'Home City', 'Role',
+      'IN-Index', '2020 Pres', '2022', '2024 Pres',
+      'Seat Holder', 'Seat Party', 'Website', 'Facebook', 'Instagram'
+    ];
+    var aoa = [headers];
+
+    function makeRow(entry, cdNum, pack, roleInPack, houseRole) {
+      var r = entry.row, lean = entry.lean;
+      var prefix = { house: 'HD', senate: 'SD', congressional: 'CD' }[entry.dtype] || '';
+      var dist = (entry.dtype && entry.dnum) ? prefix + '-' + entry.dnum : '';
+      return [
+        'CD-' + cdNum,
+        PACK_CD_NAMES[cdNum] || '',
+        pack ? 'SD-' + pack.sdNum : '',
+        pack ? (pack.counties || []).join(', ') : '',
+        pack ? (TIER_LABELS[pack.tier] || '') : '',
+        roleInPack,
+        houseRole || '',
+        dist,
+        clean(r, 'First Name'),
+        clean(r, 'Last Name'),
+        clean(r, 'Home City'),
+        clean(r, 'Role'),
+        lean ? (lean.in_index_label || '') : '',
+        lean ? (lean.label_2020 || '') : '',
+        lean ? (lean.label_2022 || '') : '',
+        lean ? (lean.label_2024 || '') : '',
+        lean ? (lean.representative || '') : '',
+        lean ? (lean.party || '') : '',
+        clean(r, 'Website'),
+        clean(r, 'Facebook'),
+        clean(r, 'Instagram')
+      ];
+    }
+
+    PACK_CDS.forEach(function(cdNum) {
+      (result.cdSections[cdNum] || []).forEach(function(pack) {
+        pack.senateCandidates.forEach(function(e) {
+          aoa.push(makeRow(e, cdNum, pack, 'Senate Anchor', ''));
+        });
+        pack.houseMembers.forEach(function(e) {
+          var m = e.lean ? e.lean.in_index : 0.5;
+          var hr = m <= 0.08 ? 'Competitive' : m <= 0.25 ? 'Challenge' : 'Turnout';
+          aoa.push(makeRow(e, cdNum, pack, 'House Member', hr));
+        });
+      });
+    });
+    result.congressional.forEach(function(e) {
+      aoa.push(makeRow(e, e.dnum, null, 'Congressional Candidate', ''));
+    });
+    result.unassigned.forEach(function(e) {
+      aoa.push(makeRow(e, '', null, 'Unassigned', ''));
+    });
+
     var wb = XLSX.utils.book_new();
-    var headers = Object.keys(state.rows[0]);
-    var aoa = [headers].concat(state.rows.map(function(r) { return headers.map(function(h) { return r[h] || ''; }); }));
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), 'Candidates');
-    XLSX.writeFile(wb, 'Indiana_Power_Packs_Candidates.xlsx');
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), 'Power Packs');
+    XLSX.writeFile(wb, 'Indiana_Power_Packs.xlsx');
   }
 
   return { init: init, render: render, reset: reset, setMode: setMode, export: exportData, _reload: function(){state.loaded=false;init();} };
