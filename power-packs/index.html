@@ -217,6 +217,7 @@ footer {
   display: inline-block; font-size: 0.66rem; font-weight: 800;
   padding: 2px 7px; border-radius: 4px; color: white; letter-spacing: 0.5px; white-space: nowrap;
 }
+.pp-tier-0 { background: #0891b2; }
 .pp-tier-1 { background: #dc2626; }
 .pp-tier-2 { background: #7c3aed; }
 .pp-tier-3 { background: #16a34a; }
@@ -237,6 +238,7 @@ footer {
 .pp-role-competitive { background: #059669; }
 .pp-role-challenge   { background: #d97706; }
 .pp-role-turnout     { background: #94a3b8; }
+.pp-role-caucus      { background: #0f172a; }
 .pp-primary-badge { display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 900; width: 18px; height: 18px; border-radius: 4px; background: #7c3aed; color: white; flex-shrink: 0; letter-spacing: 0; }
 .pp-senate-row { background: #faf5ff !important; }
 .pp-senate-row:hover { background: #f3e8ff !important; }
@@ -283,7 +285,7 @@ footer {
 <div class="container">
   <header>
     <h1>Power Packs</h1>
-    <p>Collaborative candidate groups across Indiana legislative districts</p>
+    <p>Senate-anchored candidate blocks modeled on the Virginia Grassroots Coalition — target races surrounded by competitive and long-shot House races, moving together as a wave</p>
     <nav class="site-nav">
       <a href="../directory/">Indiana Rural Summit Directory</a>
       <a class="active" href="./">Power Packs</a>
@@ -450,13 +452,16 @@ var PP = (function() {
   };
   var SD_PACK_EXCLUSIONS = { 6: [46] }; // [cdNum]: [sdNums to skip]
 
-  // Tier = how much volunteer energy the Senate race itself warrants
-  // 1 TARGET:      in_index ≤ +0.15  (D can win or is competitive)
+  // Tier = Virginia model role for the Senate race in this pack
+  // 0 HOLD:        Safe D-held seat (D+15%+) — incumbent organizes, drives House turnout wave
+  // 1 TARGET:      in_index ≤ +0.15  (D can flip R-held seat, or competitive D defense)
   // 2 OPPORTUNITY: +0.15 < in_index ≤ +0.30  (R+15–30%, contest hard)
-  // 3 TURNOUT:     in_index > +0.30  (long-shot Senate; House turnout is the prize)
+  // 3 TURNOUT:     in_index > +0.30  (long-shot Senate; House races are the prize)
   function sdTier(sdNum) {
     var lean = (state.leanLookup.senate || {})[Number(sdNum)];
     var m = (lean && lean.in_index !== null && lean.in_index !== undefined) ? lean.in_index : 0.5;
+    // Safe D-held seats: HOLD — D incumbent drives turnout wave for surrounding House races
+    if (lean && lean.party === 'Democratic' && m < -0.15) return 0;
     if (m <= 0.15) return 1;
     if (m <= 0.30) return 2;
     return 3;
@@ -519,9 +524,14 @@ var PP = (function() {
 
       overlappingSDs.sort(function(a, b) {
         var la = (ll.senate || {})[a], lb = (ll.senate || {})[b];
+        // Virginia model: prefer R-held seats (the flip targets) over D-held safe seats
+        var aIsR = !la || la.party === 'Republican';
+        var bIsR = !lb || lb.party === 'Republican';
+        if (aIsR !== bIsR) return aIsR ? -1 : 1;
+        // Within same party type, prefer most competitive (closest to 0)
         var ma = (la && la.in_index !== null) ? Math.abs(la.in_index) : 1;
         var mb = (lb && lb.in_index !== null) ? Math.abs(lb.in_index) : 1;
-        return ma - mb; // most competitive (closest to 0) first
+        return ma - mb;
       });
       houseByHD[hdNum].forEach(function(e) { packBySD[overlappingSDs[0]].houseMembers.push(e); });
     });
@@ -535,9 +545,13 @@ var PP = (function() {
       });
     });
 
-    // Collect, sort: tier ASC, then |in_index| ASC within tier (tossup first)
+    // Collect, sort: TARGET → OPPORTUNITY → TURNOUT → HOLD (Tier 1→2→3→0)
+    // HOLD packs (safe D incumbents) sort last — they don't need heavy volunteer focus
+    var FOCUS_TIER_ORDER = { 1: 1, 2: 2, 3: 3, 0: 4 };
     var packs = Object.values(packBySD).sort(function(a, b) {
-      if (a.tier !== b.tier) return a.tier - b.tier;
+      var oa = FOCUS_TIER_ORDER[a.tier] !== undefined ? FOCUS_TIER_ORDER[a.tier] : 99;
+      var ob = FOCUS_TIER_ORDER[b.tier] !== undefined ? FOCUS_TIER_ORDER[b.tier] : 99;
+      if (oa !== ob) return oa - ob;
       var ma = (a.sdLean && a.sdLean.in_index !== null) ? Math.abs(a.sdLean.in_index) : 1;
       var mb = (b.sdLean && b.sdLean.in_index !== null) ? Math.abs(b.sdLean.in_index) : 1;
       return ma - mb;
@@ -634,9 +648,12 @@ var PP = (function() {
         });
       });
 
-      // Within each CD: tier ASC, then in_index ASC (most D-favorable first)
+      // Within each CD: TARGET → OPPORTUNITY → TURNOUT → HOLD; then by in_index (most D-favorable first)
+      var CD_TIER_SORT = { 1: 1, 2: 2, 3: 3, 0: 4 };
       packs.sort(function(a, b) {
-        if (a.tier !== b.tier) return a.tier - b.tier;
+        var ta = CD_TIER_SORT[a.tier] !== undefined ? CD_TIER_SORT[a.tier] : 99;
+        var tb = CD_TIER_SORT[b.tier] !== undefined ? CD_TIER_SORT[b.tier] : 99;
+        if (ta !== tb) return ta - tb;
         var ma = (a.sdLean && a.sdLean.in_index !== null) ? a.sdLean.in_index : 0.5;
         var mb = (b.sdLean && b.sdLean.in_index !== null) ? b.sdLean.in_index : 0.5;
         return ma - mb;
@@ -656,6 +673,14 @@ var PP = (function() {
   var PP_IG = '<svg width="17" height="17" viewBox="0 0 24 24" fill="#E4405F"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>';
   var PP_TW = '<svg width="17" height="17" viewBox="0 0 24 24" fill="#1DA1F2"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>';
   var PP_BSK = '<svg width="17" height="17" viewBox="0 0 568 501" fill="#0085FF"><path d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.21C491.866-1.611 568-28.906 568 57.947c0 17.346-9.945 145.713-15.778 166.555-20.275 72.453-94.155 90.933-159.875 79.748C507.222 323.8 536.444 388.56 473.333 453.32c-119.86 122.992-172.272-30.859-185.702-70.281-2.462-7.227-3.614-10.608-3.631-7.733-.017-2.875-1.169.506-3.631 7.733-13.43 39.422-65.842 193.273-185.702 70.281-63.111-64.76-33.89-129.52 30.986-149.071C60.005 315.434-13.876 296.954-34.151 224.502-39.984 203.66-49.929 75.293-49.929 57.947c0-86.853 76.134-59.558 123.121-24.283z"/></svg>';
+
+  // Check if a candidate is designated as a House Caucus priority race
+  function isHouseCaucus(row) {
+    var v = clean(row, 'House Caucus') || clean(row, 'Caucus') || clean(row, 'Priority');
+    if (!v) return false;
+    var lv = v.toLowerCase();
+    return lv === 'yes' || lv === 'y' || lv === 'x' || lv === 'caucus' || lv.includes('caucus');
+  }
 
   // opts: { isSenate, noOverlaps, roleLabel, roleCls }
   function renderEntry(entry, opts) {
@@ -683,6 +708,9 @@ var PP = (function() {
     var roleHtml = opts.roleLabel
       ? '<div class="pp-role-tag pp-role-'+esc(opts.roleCls||'turnout')+'">'+esc(opts.roleLabel)+'</div>'
       : '';
+    if (dtype === 'house' && isHouseCaucus(row)) {
+      roleHtml = '<div class="pp-role-tag pp-role-caucus">🏛 House Caucus</div>' + roleHtml;
+    }
 
     var first = clean(row, 'First Name'), last = clean(row, 'Last Name');
     var name = (first + ' ' + last).trim() || '—';
@@ -746,6 +774,7 @@ var PP = (function() {
   // packNum is optional — shown in focus mode to give a priority ranking
   function renderPackCard(pack, packNum) {
     var tc = {
+      0: { border:'#0891b2', bg:'#f0f9ff', badgeClass:'pp-tier-0', label:'🏠 HOLD' },
       1: { border:'#dc2626', bg:'#fff5f5', badgeClass:'pp-tier-1', label:'🎯 TARGET' },
       2: { border:'#7c3aed', bg:'#faf5ff', badgeClass:'pp-tier-2', label:'📈 OPPORTUNITY' },
       3: { border:'#16a34a', bg:'#f0fdf4', badgeClass:'pp-tier-3', label:'🌱 TURNOUT' }
@@ -795,7 +824,7 @@ var PP = (function() {
       });
       parts.push('</tbody></table></div>');
     } else {
-      parts.push('<div class="pp-no-senate">⚠ Recruiting a 2028 Senate candidate for SD-'+pack.sdNum
+      parts.push('<div class="pp-no-senate">⚠ Recruiting a Senate candidate for SD-'+pack.sdNum
         +' — <em>contact Indiana Rural Summit to get involved</em></div>');
     }
 
@@ -839,15 +868,17 @@ var PP = (function() {
 
     // Legend
     parts.push('<div class="pp-legend">');
-    parts.push('<strong>⚡ Power Packs</strong> — modeled on the Virginia Grassroots Coalition. '
-      + 'Packs are organized by Congressional District (the volunteer network unit), each anchored by a State Senate race '
-      + 'with surrounding House districts that ride the shared turnout wave. '
-      + 'An SD spanning two CDs appears in both — all its House races show in each. '
+    parts.push('<strong>⚡ Power Packs</strong> — Virginia Grassroots Coalition model: every Senate race contested as an organizing anchor, '
+      + 'with at least one competitive House race and several long-shot races moving together as a wave. '
+      + 'Packs are organized by Congressional District (volunteer network unit). '
+      + 'An SD spanning two CDs appears in both. '
       + 'Hover a row to highlight the district on the map. Click to lock.<br>');
     parts.push('<span style="font-size:0.77rem;line-height:2.2">');
-    parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> D can win the Senate seat &nbsp;');
-    parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest it &nbsp;');
-    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Long-shot Senate; House is the prize &nbsp;&nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> Competitive flip or critical D defense &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Long-shot Senate; House races are the prize &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat; incumbent drives House turnout wave &nbsp;&nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span>');
@@ -930,28 +961,31 @@ var PP = (function() {
     // Focus-mode legend
     parts.push('<div class="pp-legend" style="background:#f0fdf4;border-color:#bbf7d0;color:#14532d">');
     parts.push('<strong>⚡ Focus Packs</strong> — each candidate appears exactly once, assigned to their single most '
-      + 'competitive Senate pack. Packs without a filed Senate candidate are hidden. '
-      + 'Within each tier, the tightest tossup races appear first. '
-      + 'Hover a row to highlight the district on the map. Click to lock.<br>');
+      + 'competitive Senate pack (R-held races preferred per Virginia model). '
+      + 'Packs without a filed Senate candidate are hidden. '
+      + 'TARGET → OPPORTUNITY → TURNOUT → HOLD; tightest tossups appear first within each tier.<br>');
     parts.push('<span style="font-size:0.77rem;line-height:2.2">');
-    parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> D can win the Senate seat &nbsp;');
-    parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest it &nbsp;');
-    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Long-shot Senate; House is the prize &nbsp;&nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> Competitive flip or critical D defense &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Long-shot Senate; House races are the prize &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat; incumbent drives House turnout wave &nbsp;&nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span>');
     parts.push('</span></div>');
 
     var tierInfo = {
-      1: { label: '🎯 TARGET PACKS', desc: 'Senate seats Democrats can win (≤ R+15%) — maximum volunteer energy' },
-      2: { label: '📈 OPPORTUNITY PACKS', desc: 'R-leaning Senate (R+15–30%) — contest it, raise turnout across the pack' },
-      3: { label: '🌱 TURNOUT PACKS', desc: 'Long-shot Senate (R+30%+) — build the wave; House races are the prize' }
+      1: { label: '🎯 TARGET PACKS', desc: 'Competitive flips or critical D defenses (≤ R+15%) — maximum volunteer energy' },
+      2: { label: '📈 OPPORTUNITY PACKS', desc: 'R-leaning Senate (R+15–30%) — contest hard, raise turnout across the pack' },
+      3: { label: '🌱 TURNOUT PACKS', desc: 'Long-shot Senate (R+30%+) — contest for presence; House races are the prize' },
+      0: { label: '🏠 HOLD PACKS', desc: 'Safe Democratic seats — incumbent organizes and drives wave turnout for surrounding House races' }
     };
 
-    var packNum = 0, currentTier = 0;
+    var packNum = 0, currentTier = -1;
     packs.forEach(function(pack) {
       if (pack.tier !== currentTier) {
-        if (currentTier !== 0) parts.push('</div>');
+        if (currentTier !== -1) parts.push('</div>');
         currentTier = pack.tier;
         var ti = tierInfo[currentTier] || { label: 'PACKS', desc: '' };
         var tierPacks = packs.filter(function(p) { return p.tier === currentTier; });
@@ -967,7 +1001,7 @@ var PP = (function() {
       // Render pack card with pack number injected into the header
       parts.push(renderPackCard(pack, packNum));
     });
-    if (currentTier !== 0) parts.push('</div>');
+    if (currentTier !== -1) parts.push('</div>');
 
     if (unassigned.length) {
       parts.push('<div class="pp-pack-card-standalone" style="border-left:4px solid #94a3b8;margin-top:8px">');
