@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indiana District Lookup Tool</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .district-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .district-inputs {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .result-section {
+            margin-bottom: 20px;
+        }
+
+        .result-title {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .district-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .district-badge {
+            background: white;
+            border: 2px solid #667eea;
+            color: #667eea;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .district-badge.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .county-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .county-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            font-size: 0.95em;
+            color: #555;
+        }
+
+        .error-message {
+            background: #fee;
+            border-left: 4px solid #f44;
+            color: #c33;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .help-text {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        datalist {
+            max-height: 200px;
+        }
+
+        /* Navigation */
+        .site-nav {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .site-nav a {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            background: rgba(255,255,255,0.18);
+            color: white;
+            border: 1.5px solid rgba(255,255,255,0.5);
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .site-nav a:hover { background: rgba(255,255,255,0.3); border-color: white; }
+        .site-nav a.active { background: white; color: #667eea; border-color: white; }
+
+        /* Layer toggle */
+        .layer-toggle-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .layer-btn {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: auto;
+        }
+        .layer-btn:hover { background: #e0e7ff; color: #667eea; border-color: #667eea; transform: none; box-shadow: none; }
+        .layer-btn.ml-active { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-color: transparent; }
+
+        /* Map container */
+        #district-map {
+            height: 420px;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+        }
+        .map-status {
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            color: #666;
+            font-size: 0.9em;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        .map-loading {
+            display: none;
+            text-align: center;
+            padding: 10px;
+            color: #667eea;
+            font-size: 0.9em;
+        }
+
+        /* Candidate select */
+        #candidate-select { background: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav class="site-nav">
+                <a href="../">Power Packs</a>
+                <a href="../directory/">Indiana Rural Summit Directory</a>
+                <a class="active" href="./">District Match Tool</a>
+            </nav>
+            <h1>🏛️ Indiana District Lookup</h1>
+            <p class="subtitle">Find legislative districts by county, or counties by district</p>
+            
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-counties">92</div>
+                    <div class="stat-label">Counties</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="house-districts">100</div>
+                    <div class="stat-label">House Districts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="senate-districts">50</div>
+                    <div class="stat-label">Senate Districts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="congressional-districts">9</div>
+                    <div class="stat-label">Congressional</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Map Lookup -->
+        <div class="card">
+            <h2><span>🗺️</span> Look Up on Map</h2>
+            <p style="color:#666; margin-bottom:15px;">
+                Click any district on the map to look it up automatically.
+                Use the layer buttons to switch between district types.
+            </p>
+            <div class="layer-toggle-row">
+                <button class="layer-btn ml-active" id="mlbtn-house" onclick="switchMapLayer('house')">House Districts (HD)</button>
+                <button class="layer-btn" id="mlbtn-senate" onclick="switchMapLayer('senate')">Senate Districts (SD)</button>
+                <button class="layer-btn" id="mlbtn-congressional" onclick="switchMapLayer('congressional')">Congressional (CD)</button>
+            </div>
+            <div id="district-map"></div>
+            <div class="map-loading" id="map-loading">Loading district boundaries…</div>
+            <div class="map-status" id="map-status">Click a district on the map to look it up</div>
+        </div>
+
+        <!-- Candidate Lookup -->
+        <div class="card">
+            <h2><span>👤</span> Look Up by Candidate</h2>
+            <p style="color:#666; margin-bottom:15px;">
+                Select a candidate or contact from the Grassroots Directory to automatically
+                look up their districts.
+            </p>
+            <div class="input-group">
+                <label for="candidate-select">Candidate / Contact:</label>
+                <select id="candidate-select" onchange="onCandidateChange()">
+                    <option value="">Loading directory…</option>
+                </select>
+                <div class="help-text">Loaded from the Indiana Rural Summit Directory (Google Sheets)</div>
+            </div>
+        </div>
+
+        <!-- Lookup by County -->
+        <div class="card">
+            <h2><span>📍</span> Lookup by County</h2>
+            <div class="input-group">
+                <label for="county-input">County Name:</label>
+                <input 
+                    type="text" 
+                    id="county-input" 
+                    list="counties-list"
+                    placeholder="Type a county name (e.g., Marion, Lake, Allen)"
+                    autocomplete="off"
+                >
+                <datalist id="counties-list"></datalist>
+                <div class="help-text">Find all House, Senate, and Congressional districts for a county</div>
+            </div>
+            <button onclick="lookupByCounty()">Find Districts</button>
+
+            <div class="results" id="county-results"></div>
+        </div>
+
+        <!-- Lookup by Districts -->
+        <div class="card" id="district-lookup-card">
+            <h2><span>🔢</span> Lookup by District(s)</h2>
+            <p style="color: #666; margin-bottom: 20px;">
+                Enter one or more districts to see what counties they cover and find related districts
+            </p>
+            
+            <div class="district-inputs">
+                <div class="input-group">
+                    <label for="hd-input">House District:</label>
+                    <input 
+                        type="number" 
+                        id="hd-input" 
+                        placeholder="e.g., 53"
+                        min="1"
+                        max="100"
+                    >
+                </div>
+                <div class="input-group">
+                    <label for="sd-input">Senate District:</label>
+                    <input 
+                        type="number" 
+                        id="sd-input" 
+                        placeholder="e.g., 15"
+                        min="1"
+                        max="50"
+                    >
+                </div>
+                <div class="input-group">
+                    <label for="cd-input">Congressional:</label>
+                    <input 
+                        type="number" 
+                        id="cd-input" 
+                        placeholder="e.g., 7"
+                        min="1"
+                        max="9"
+                    >
+                </div>
+            </div>
+            <div class="help-text" style="margin-bottom: 20px;">
+                Tip: Enter 2 or more districts to find where they overlap
+            </div>
+            <button onclick="lookupByDistricts()">Find Counties & Related Districts</button>
+
+            <div class="results" id="district-results"></div>
+        </div>
+    </div>
+
+    <script>
+        // District data inlined for single-file hosting (no separate JSON fetch needed)
+        let districtData = {"hd_to_counties":{"1":["Lake"],"2":["Lake"],"3":["Lake"],"4":["Porter"],"5":["St. Joseph"],"6":["St. Joseph"],"7":["LaPorte","Marshall","St. Joseph"],"8":["St. Joseph"],"9":["LaPorte","Porter"],"10":["Porter"],"11":["Jasper","Lake","Newton","Porter"],"12":["Lake"],"13":["Benton","Fountain","Jasper","Montgomery","Newton","Tippecanoe","Warren","White"],"14":["Lake"],"15":["Lake"],"16":["Jasper","Pulaski","Starke","White"],"17":["Fulton","Marshall","Pulaski"],"18":["Elkhart","Kosciusko","Noble","Whitley"],"19":["Lake","Porter"],"20":["LaPorte","Starke"],"21":["Elkhart","St. Joseph"],"22":["Kosciusko","Wabash"],"23":["Cass","Miami"],"24":["Boone","Hamilton"],"25":["Boone","Hendricks"],"26":["Tippecanoe"],"27":["Tippecanoe"],"28":["Boone","Hendricks","Montgomery"],"29":["Hamilton"],"30":["Grant","Howard"],"31":["Grant","Madison"],"32":["Hamilton","Marion"],"33":["Blackford","Delaware","Henry","Jay","Randolph"],"34":["Delaware"],"35":["Delaware","Madison"],"36":["Madison"],"37":["Hamilton"],"38":["Carroll","Cass","Clinton","Howard","Tippecanoe","Tipton"],"39":["Hamilton"],"40":["Hendricks"],"41":["Boone","Clinton","Montgomery","Tippecanoe"],"42":["Clay","Fountain","Parke","Vermillion","Vigo"],"43":["Vigo"],"44":["Montgomery","Putnam"],"45":["Daviess","Greene","Knox","Sullivan","Vigo"],"46":["Clay","Monroe","Owen","Vigo"],"47":["Johnson","Shelby"],"48":["Elkhart"],"49":["Elkhart"],"50":["Huntington","Miami","Wabash","Wells"],"51":["LaGrange","Steuben"],"52":["DeKalb","Noble","Steuben"],"53":["Hancock","Madison"],"54":["Hancock","Henry","Rush","Shelby"],"55":["Decatur","Fayette","Franklin","Ripley","Rush","Union"],"56":["Henry","Wayne"],"57":["Hendricks","Johnson","Morgan"],"58":["Johnson"],"59":["Bartholomew"],"60":["Johnson","Monroe","Morgan"],"61":["Monroe"],"62":["Brown","Jackson","Monroe"],"63":["Daviess","Dubois","Martin","Pike"],"64":["Gibson","Knox","Vanderburgh"],"65":["Jackson","Lawrence","Orange","Washington"],"66":["Clark","Jefferson","Scott"],"67":["Decatur","Jefferson","Jennings","Ripley"],"68":["Dearborn","Jefferson","Ohio","Switzerland"],"69":["Bartholomew","Jackson","Scott","Washington"],"70":["Clark","Floyd","Harrison","Washington"],"71":["Clark","Floyd"],"72":["Floyd"],"73":["Bartholomew","Decatur","Jennings","Shelby"],"74":["Crawford","Dubois","Orange","Perry","Spencer"],"75":["Gibson","Pike","Warrick"],"76":["Posey","Vanderburgh"],"77":["Vanderburgh"],"78":["Vanderburgh","Warrick"],"79":["Adams","Jay","Wells"],"80":["Allen"],"81":["Allen"],"82":["Allen"],"83":["Allen","Whitley"],"84":["Allen"],"85":["Allen"],"86":["Marion"],"87":["Marion"],"88":["Hamilton","Hancock","Madison","Marion"],"89":["Marion"],"90":["Marion"],"91":["Marion"],"92":["Marion"],"93":["Marion"],"94":["Marion"],"95":["Marion"],"96":["Marion"],"97":["Marion"],"98":["Marion"],"99":["Marion"],"100":["Marion"]},"sd_to_counties":{"1":["Lake"],"2":["Lake"],"3":["Lake"],"4":["LaPorte","Porter"],"5":["Jasper","Porter","Pulaski","White"],"6":["Benton","Jasper","Lake","Newton"],"7":["Boone","Clinton","Hendricks","Montgomery"],"8":["LaPorte","Marshall","St. Joseph","Starke"],"9":["Elkhart","Kosciusko","Marshall","St. Joseph"],"10":["St. Joseph"],"11":["Elkhart","St. Joseph"],"12":["Elkhart"],"13":["DeKalb","LaGrange","Noble","Steuben"],"14":["Allen","DeKalb"],"15":["Allen"],"16":["Allen","Whitley"],"17":["Grant","Huntington","Wabash"],"18":["Cass","Fulton","Howard","Kosciusko","Miami"],"19":["Adams","Allen","Blackford","Jay","Wells"],"20":["Hamilton"],"21":["Hamilton","Howard","Tipton"],"22":["Carroll","Tippecanoe"],"23":["Fountain","Montgomery","Parke","Tippecanoe","Vermillion","Warren"],"24":["Hendricks","Putnam"],"25":["Hamilton","Madison"],"26":["Delaware","Randolph"],"27":["Franklin","Henry","Union","Wayne"],"28":["Hancock","Marion","Shelby"],"29":["Boone","Hamilton","Marion"],"30":["Marion"],"31":["Hamilton","Marion"],"32":["Johnson","Marion"],"33":["Marion"],"34":["Marion"],"35":["Hendricks","Marion"],"36":["Johnson","Marion"],"37":["Johnson","Morgan","Owen","Putnam"],"38":["Clay","Sullivan","Vigo"],"39":["Daviess","Greene","Knox","Martin","Owen","Sullivan"],"40":["Monroe"],"41":["Bartholomew","Johnson"],"42":["Decatur","Fayette","Franklin","Jennings","Ripley","Rush","Shelby"],"43":["Dearborn","Jefferson","Jennings","Ohio","Scott","Switzerland"],"44":["Brown","Jackson","Lawrence","Monroe","Orange"],"45":["Clark","Floyd"],"46":["Marion"],"47":["Floyd","Harrison","Washington"],"48":["Crawford","Dubois","Gibson","Perry","Pike","Spencer"],"49":["Posey","Vanderburgh"],"50":["Vanderburgh","Warrick"]},"cd_to_counties":{"1":["LaPorte","Lake","Porter"],"2":["Cass","Elkhart","Fulton","Kosciusko","LaPorte","Marshall","Miami","Pulaski","St. Joseph","Starke","Wabash"],"3":["Adams","Allen","Blackford","DeKalb","Huntington","Jay","Kosciusko","LaGrange","Noble","Randolph","Steuben","Wells","Whitley"],"4":["Benton","Boone","Carroll","Cass","Clinton","Fountain","Hendricks","Howard","Jasper","Montgomery","Morgan","Newton","Putnam","Tippecanoe","Warren","White"],"5":["Delaware","Grant","Hamilton","Howard","Madison","Tipton"],"6":["Bartholomew","Fayette","Hancock","Henry","Johnson","Marion","Randolph","Rush","Shelby","Union","Wayne"],"7":["Marion"],"8":["Clay","Crawford","Daviess","Dubois","Fountain","Gibson","Greene","Knox","Martin","Orange","Owen","Parke","Perry","Pike","Posey","Spencer","Sullivan","Vanderburgh","Vermillion","Vigo","Warrick"],"9":["Bartholomew","Brown","Clark","Dearborn","Decatur","Floyd","Franklin","Harrison","Jackson","Jefferson","Jennings","Lawrence","Monroe","Ohio","Ripley","Scott","Switzerland","Washington"]},"county_to_hds":{"Adams":[79],"Allen":[80,81,82,83,84,85],"Bartholomew":[59,69,73],"Benton":[13],"Blackford":[33],"Boone":[24,25,28,41],"Brown":[62],"Carroll":[38],"Cass":[23,38],"Clark":[66,70,71],"Clay":[42,46],"Clinton":[38,41],"Crawford":[74],"Daviess":[45,63],"DeKalb":[52],"Dearborn":[68],"Decatur":[55,67,73],"Delaware":[33,34,35],"Dubois":[63,74],"Elkhart":[18,21,48,49],"Fayette":[55],"Floyd":[70,71,72],"Fountain":[13,42],"Franklin":[55],"Fulton":[17],"Gibson":[64,75],"Grant":[30,31],"Greene":[45],"Hamilton":[24,29,32,37,39,88],"Hancock":[53,54,88],"Harrison":[70],"Hendricks":[25,28,40,57],"Henry":[33,54,56],"Howard":[30,38],"Huntington":[50],"Jackson":[62,65,69],"Jasper":[11,13,16],"Jay":[33,79],"Jefferson":[66,67,68],"Jennings":[67,73],"Johnson":[47,57,58,60],"Knox":[45,64],"Kosciusko":[18,22],"LaGrange":[51],"LaPorte":[7,9,20],"Lake":[1,2,3,11,12,14,15,19],"Lawrence":[65],"Madison":[31,35,36,53,88],"Marion":[32,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100],"Marshall":[7,17],"Martin":[63],"Miami":[23,50],"Monroe":[46,60,61,62],"Montgomery":[13,28,41,44],"Morgan":[57,60],"Newton":[11,13],"Noble":[18,52],"Ohio":[68],"Orange":[65,74],"Owen":[46],"Parke":[42],"Perry":[74],"Pike":[63,75],"Porter":[4,9,10,11,19],"Posey":[76],"Pulaski":[16,17],"Putnam":[44],"Randolph":[33],"Ripley":[55,67],"Rush":[54,55],"Scott":[66,69],"Shelby":[47,54,73],"Spencer":[74],"St. Joseph":[5,6,7,8,21],"Starke":[16,20],"Steuben":[51,52],"Sullivan":[45],"Switzerland":[68],"Tippecanoe":[13,26,27,38,41],"Tipton":[38],"Union":[55],"Vanderburgh":[64,76,77,78],"Vermillion":[42],"Vigo":[42,43,45,46],"Wabash":[22,50],"Warren":[13],"Warrick":[75,78],"Washington":[65,69,70],"Wayne":[56],"Wells":[50,79],"White":[13,16],"Whitley":[18,83]},"county_to_sds":{"Adams":[19],"Allen":[14,15,16,19],"Bartholomew":[41],"Benton":[6],"Blackford":[19],"Boone":[7,29],"Brown":[44],"Carroll":[22],"Cass":[18],"Clark":[45],"Clay":[38],"Clinton":[7],"Crawford":[48],"Daviess":[39],"DeKalb":[13,14],"Dearborn":[43],"Decatur":[42],"Delaware":[26],"Dubois":[48],"Elkhart":[9,11,12],"Fayette":[42],"Floyd":[45,47],"Fountain":[23],"Franklin":[27,42],"Fulton":[18],"Gibson":[48],"Grant":[17],"Greene":[39],"Hamilton":[20,21,25,29,31],"Hancock":[28],"Harrison":[47],"Hendricks":[7,24,35],"Henry":[27],"Howard":[18,21],"Huntington":[17],"Jackson":[44],"Jasper":[5,6],"Jay":[19],"Jefferson":[43],"Jennings":[42,43],"Johnson":[32,36,37,41],"Knox":[39],"Kosciusko":[9,18],"LaGrange":[13],"LaPorte":[4,8],"Lake":[1,2,3,6],"Lawrence":[44],"Madison":[25],"Marion":[28,29,30,31,32,33,34,35,36,46],"Marshall":[8,9],"Martin":[39],"Miami":[18],"Monroe":[40,44],"Montgomery":[7,23],"Morgan":[37],"Newton":[6],"Noble":[13],"Ohio":[43],"Orange":[44],"Owen":[37,39],"Parke":[23],"Perry":[48],"Pike":[48],"Porter":[4,5],"Posey":[49],"Pulaski":[5],"Putnam":[24,37],"Randolph":[26],"Ripley":[42],"Rush":[42],"Scott":[43],"Shelby":[28,42],"Spencer":[48],"St. Joseph":[8,9,10,11],"Starke":[8],"Steuben":[13],"Sullivan":[38,39],"Switzerland":[43],"Tippecanoe":[22,23],"Tipton":[21],"Union":[27],"Vanderburgh":[49,50],"Vermillion":[23],"Vigo":[38],"Wabash":[17],"Warren":[23],"Warrick":[50],"Washington":[47],"Wayne":[27],"Wells":[19],"White":[5],"Whitley":[16]},"county_to_cds":{"Adams":[3],"Allen":[3],"Bartholomew":[6,9],"Benton":[4],"Blackford":[3],"Boone":[4],"Brown":[9],"Carroll":[4],"Cass":[2,4],"Clark":[9],"Clay":[8],"Clinton":[4],"Crawford":[8],"Daviess":[8],"DeKalb":[3],"Dearborn":[9],"Decatur":[9],"Delaware":[5],"Dubois":[8],"Elkhart":[2],"Fayette":[6],"Floyd":[9],"Fountain":[4,8],"Franklin":[9],"Fulton":[2],"Gibson":[8],"Grant":[5],"Greene":[8],"Hamilton":[5],"Hancock":[6],"Harrison":[9],"Hendricks":[4],"Henry":[6],"Howard":[4,5],"Huntington":[3],"Jackson":[9],"Jasper":[4],"Jay":[3],"Jefferson":[9],"Jennings":[9],"Johnson":[6],"Knox":[8],"Kosciusko":[2,3],"LaGrange":[3],"LaPorte":[1,2],"Lake":[1],"Lawrence":[9],"Madison":[5],"Marion":[6,7],"Marshall":[2],"Martin":[8],"Miami":[2],"Monroe":[9],"Montgomery":[4],"Morgan":[4],"Newton":[4],"Noble":[3],"Ohio":[9],"Orange":[8],"Owen":[8],"Parke":[8],"Perry":[8],"Pike":[8],"Porter":[1],"Posey":[8],"Pulaski":[2],"Putnam":[4],"Randolph":[3,6],"Ripley":[9],"Rush":[6],"Scott":[9],"Shelby":[6],"Spencer":[8],"St. Joseph":[2],"Starke":[2],"Steuben":[3],"Sullivan":[8],"Switzerland":[9],"Tippecanoe":[4],"Tipton":[5],"Union":[6],"Vanderburgh":[8],"Vermillion":[8],"Vigo":[8],"Wabash":[2],"Warren":[4],"Warrick":[8],"Washington":[9],"Wayne":[6],"Wells":[3],"White":[4],"Whitley":[3]},"all_counties":["Adams","Allen","Bartholomew","Benton","Blackford","Boone","Brown","Carroll","Cass","Clark","Clay","Clinton","Crawford","Daviess","DeKalb","Dearborn","Decatur","Delaware","Dubois","Elkhart","Fayette","Floyd","Fountain","Franklin","Fulton","Gibson","Grant","Greene","Hamilton","Hancock","Harrison","Hendricks","Henry","Howard","Huntington","Jackson","Jasper","Jay","Jefferson","Jennings","Johnson","Knox","Kosciusko","LaGrange","LaPorte","Lake","Lawrence","Madison","Marion","Marshall","Martin","Miami","Monroe","Montgomery","Morgan","Newton","Noble","Ohio","Orange","Owen","Parke","Perry","Pike","Porter","Posey","Pulaski","Putnam","Randolph","Ripley","Rush","Scott","Shelby","Spencer","St. Joseph","Starke","Steuben","Sullivan","Switzerland","Tippecanoe","Tipton","Union","Vanderburgh","Vermillion","Vigo","Wabash","Warren","Warrick","Washington","Wayne","Wells","White","Whitley"],"cd_to_hds":{"1":[1,2,3,4,9,10,11,12,14,15,19,20],"2":[5,6,7,8,9,16,17,18,20,21,22,23,38,48,49,50],"3":[18,22,33,50,51,52,79,80,81,82,83,84,85],"4":[11,13,16,23,24,25,26,27,28,38,40,41,44,57,60],"5":[24,29,30,31,32,33,34,35,36,37,38,39,53,88],"6":[33,47,53,54,55,56,57,58,59,60,73,88,89,90,91,93,97],"7":[32,86,87,88,89,91,92,94,95,96,97,98,99,100],"8":[13,42,43,45,46,63,64,65,74,75,76,77,78],"9":[46,55,59,60,61,62,65,66,67,68,69,70,71,72,73]},"cd_to_sds":{"1":[1,2,3,4,5,6,8],"2":[5,8,9,10,11,12,17,18],"3":[9,13,14,15,16,17,18,19,26],"4":[5,6,7,18,21,22,23,24,29,35,37],"5":[17,18,20,21,25,26,29,31],"6":[26,27,28,32,35,36,37,41,42,46],"7":[28,29,30,31,32,33,34,35,46],"8":[23,37,38,39,44,48,49,50],"9":[27,40,41,42,43,44,45,47]},"hd_to_cd":{"79":3,"50":3,"75":8,"78":8,"73":6,"47":6,"54":6,"69":9,"66":9,"18":3,"52":3,"30":5,"38":4,"63":8,"45":8,"11":4,"13":4,"16":4,"17":2,"20":2,"23":2,"24":5,"25":4,"28":4,"31":5,"33":3,"41":4,"42":8,"43":8,"44":4,"46":8,"51":3,"53":6,"55":9,"56":6,"62":9,"65":9,"67":9,"68":9,"70":9,"71":9,"72":9,"74":8,"76":8,"88":5,"59":6,"34":5,"35":5,"58":6,"57":6,"60":6,"7":2,"61":9,"4":1,"9":1,"10":1,"19":1,"22":2,"99":7,"96":7,"98":7,"97":7,"100":7,"89":7,"91":6,"93":6,"90":6,"87":7,"95":7,"86":7,"94":7,"92":7,"32":5,"40":4,"64":8,"77":8,"48":2,"21":2,"49":2,"36":5,"82":3,"84":3,"85":3,"81":3,"83":3,"80":3,"39":5,"37":5,"29":5,"14":1,"15":1,"2":1,"1":1,"3":1,"12":1,"8":2,"5":2,"6":2,"27":4,"26":4},"sd_to_cd":{"19":3,"50":8,"28":6,"42":9,"43":9,"13":3,"17":5,"21":5,"18":2,"39":8,"5":4,"6":4,"8":2,"7":4,"29":7,"27":6,"22":4,"23":4,"38":8,"24":4,"37":4,"44":9,"48":8,"47":9,"45":9,"49":8,"41":6,"26":5,"32":6,"36":6,"9":2,"40":9,"4":1,"33":7,"34":7,"46":7,"35":7,"30":7,"31":5,"12":2,"11":2,"25":5,"15":3,"14":3,"16":3,"20":5,"1":1,"2":1,"3":1,"10":2},"sd_to_hds":{"1":[12,14,15,19],"2":[1,2,12],"3":[2,3,14,19],"4":[9,10,20],"5":[4,11,13,16,17,19],"6":[11,13,14,15,16,19],"7":[24,25,28,38,41,44],"8":[7,9,16,17,20],"9":[5,6,7,17,18,21,22],"10":[6,7,8],"11":[5,8,48,49],"12":[18,21,48,49],"13":[18,51,52],"14":[52,80,82,85],"15":[81,82,84,85],"16":[18,81,82,83],"17":[22,30,31,50],"18":[17,22,23,30,38,50],"19":[33,50,79,80,82,85],"20":[29,32,37,39],"21":[24,29,30,38,39],"22":[13,26,27,38,41],"23":[13,26,42,44],"24":[25,28,40,44],"25":[31,35,36,37,53,88],"26":[33,34,35],"27":[33,54,55,56],"28":[47,53,54,73,88,89,98,100],"29":[24,25,32,39,86,92,94,99],"30":[32,86,87,94,96],"31":[29,32,37,39,87,88,95],"32":[58,89,90,93],"33":[86,87,92,94,96,99],"34":[87,95,96,98],"35":[28,40,57,91,92,97,99],"36":[57,58,89,90,91,93,97],"37":[44,46,47,57,60],"38":[42,43,45,46],"39":[45,46,63,64],"40":[46,60,61,62],"41":[47,58,59,69,73],"42":[47,54,55,67,73],"43":[66,67,68,69],"44":[62,65,69,74],"45":[66,70,71,72],"46":[89,96,97,98,100],"47":[65,69,70,71,72],"48":[63,64,74,75],"49":[64,76,77,78],"50":[75,77,78]},"hd_to_sds":{"1":[2],"2":[2,3],"3":[3],"4":[5],"5":[9,11],"6":[9,10],"7":[8,9,10],"8":[10,11],"9":[4,8],"10":[4],"11":[5,6],"12":[1,2],"13":[5,6,22,23],"14":[1,3,6],"15":[1,6],"16":[5,6,8],"17":[5,8,9,18],"18":[9,12,13,16],"19":[1,3,5,6],"20":[4,8],"21":[9,12],"22":[9,17,18],"23":[18],"24":[7,21,29],"25":[7,24,29],"26":[22,23],"27":[22],"28":[7,24,35],"29":[20,21,31],"30":[17,18,21],"31":[17,25],"32":[20,29,30,31],"33":[19,26,27],"34":[26],"35":[25,26],"36":[25],"37":[20,25,31],"38":[7,18,21,22],"39":[20,21,29,31],"40":[24,35],"41":[7,22],"42":[23,38],"43":[38],"44":[7,23,24,37],"45":[38,39],"46":[37,38,39,40],"47":[28,37,41,42],"48":[11,12],"49":[11,12],"50":[17,18,19],"51":[13],"52":[13,14],"53":[25,28],"54":[27,28,42],"55":[27,42],"56":[27],"57":[35,36,37],"58":[32,36,41],"59":[41],"60":[37,40],"61":[40],"62":[40,44],"63":[39,48],"64":[39,48,49],"65":[44,47],"66":[43,45],"67":[42,43],"68":[43],"69":[41,43,44,47],"70":[45,47],"71":[45,47],"72":[45,47],"73":[28,41,42],"74":[44,48],"75":[48,50],"76":[49],"77":[49,50],"78":[49,50],"79":[19],"80":[14,19],"81":[15,16],"82":[14,15,16,19],"83":[16],"84":[15],"85":[14,15,19],"86":[29,30,33],"87":[30,31,33,34],"88":[25,28,31],"89":[28,32,36,46],"90":[32,36],"91":[35,36],"92":[29,33,35],"93":[32,36],"94":[29,30,33],"95":[31,34],"96":[30,33,34,46],"97":[35,36,46],"98":[28,34,46],"99":[29,33,35],"100":[28,46]}};
+
+        // Initialize the UI from inlined data
+        function loadData() {
+            // Populate county autocomplete
+            const datalist = document.getElementById('counties-list');
+            datalist.innerHTML = districtData.all_counties
+                .map(c => `<option value="${c}">`)
+                .join('');
+
+            // Update stats
+            document.getElementById('total-counties').textContent = districtData.all_counties.length;
+            document.getElementById('house-districts').textContent = Object.keys(districtData.hd_to_counties).length;
+            document.getElementById('senate-districts').textContent = Object.keys(districtData.sd_to_counties).length;
+            document.getElementById('congressional-districts').textContent = Object.keys(districtData.cd_to_counties).length;
+        }
+
+        // Lookup by county
+        function lookupByCounty() {
+            const county = document.getElementById('county-input').value.trim();
+            const resultsDiv = document.getElementById('county-results');
+
+            if (!county) {
+                resultsDiv.innerHTML = '<div class="error-message">Please enter a county name</div>';
+                resultsDiv.classList.add('show');
+                return;
+            }
+
+            // Find matching county (case-insensitive)
+            let matchedCounty = null;
+            const countyLower = county.toLowerCase();
+            
+            for (const c of districtData.all_counties) {
+                if (c.toLowerCase() === countyLower) {
+                    matchedCounty = c;
+                    break;
+                }
+            }
+
+            if (!matchedCounty) {
+                // Try partial match
+                for (const c of districtData.all_counties) {
+                    if (c.toLowerCase().includes(countyLower)) {
+                        matchedCounty = c;
+                        break;
+                    }
+                }
+            }
+
+            if (!matchedCounty) {
+                resultsDiv.innerHTML = `<div class="error-message">County "${county}" not found</div>`;
+                resultsDiv.classList.add('show');
+                return;
+            }
+
+            const hds = districtData.county_to_hds[matchedCounty] || [];
+            const sds = districtData.county_to_sds[matchedCounty] || [];
+            const cds = districtData.county_to_cds[matchedCounty] || [];
+
+            let html = `<div class="result-section"><div class="result-title">📍 ${matchedCounty} County</div>`;
+
+            if (hds.length > 0) {
+                html += `
+                    <div style="margin-top: 15px;">
+                        <strong>House Districts:</strong>
+                        <div class="district-grid">
+                            ${hds.sort((a,b) => a-b).map(d => `<div class="district-badge">HD ${d}</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (sds.length > 0) {
+                html += `
+                    <div style="margin-top: 15px;">
+                        <strong>Senate Districts:</strong>
+                        <div class="district-grid">
+                            ${sds.sort((a,b) => a-b).map(d => `<div class="district-badge">SD ${d}</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (cds.length > 0) {
+                html += `
+                    <div style="margin-top: 15px;">
+                        <strong>Congressional Districts:</strong>
+                        <div class="district-grid">
+                            ${cds.sort((a,b) => a-b).map(d => `<div class="district-badge">CD ${d}</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.add('show');
+        }
+
+        // Lookup by districts
+        function lookupByDistricts() {
+            const hd = document.getElementById('hd-input').value.trim();
+            const sd = document.getElementById('sd-input').value.trim();
+            const cd = document.getElementById('cd-input').value.trim();
+            const resultsDiv = document.getElementById('district-results');
+
+            if (!hd && !sd && !cd) {
+                resultsDiv.innerHTML = '<div class="error-message">Please enter at least one district number</div>';
+                resultsDiv.classList.add('show');
+                return;
+            }
+
+            // Get counties for each district
+            let knownCounties = new Set();
+            
+            if (hd) {
+                const hdCounties = districtData.hd_to_counties[hd] || [];
+                if (hdCounties.length === 0) {
+                    resultsDiv.innerHTML = `<div class="error-message">House District ${hd} not found</div>`;
+                    resultsDiv.classList.add('show');
+                    return;
+                }
+                hdCounties.forEach(c => knownCounties.add(c));
+            }
+
+            if (sd) {
+                const sdCounties = districtData.sd_to_counties[sd] || [];
+                if (sdCounties.length === 0) {
+                    resultsDiv.innerHTML = `<div class="error-message">Senate District ${sd} not found</div>`;
+                    resultsDiv.classList.add('show');
+                    return;
+                }
+                if (knownCounties.size > 0) {
+                    // Find intersection
+                    knownCounties = new Set([...knownCounties].filter(c => sdCounties.includes(c)));
+                    if (knownCounties.size === 0) {
+                        // No overlap, use all counties
+                        sdCounties.forEach(c => knownCounties.add(c));
+                    }
+                } else {
+                    sdCounties.forEach(c => knownCounties.add(c));
+                }
+            }
+
+            if (cd) {
+                const cdCounties = districtData.cd_to_counties[cd] || [];
+                if (cdCounties.length === 0) {
+                    resultsDiv.innerHTML = `<div class="error-message">Congressional District ${cd} not found</div>`;
+                    resultsDiv.classList.add('show');
+                    return;
+                }
+                if (knownCounties.size > 0) {
+                    knownCounties = new Set([...knownCounties].filter(c => cdCounties.includes(c)));
+                    if (knownCounties.size === 0) {
+                        cdCounties.forEach(c => knownCounties.add(c));
+                    }
+                } else {
+                    cdCounties.forEach(c => knownCounties.add(c));
+                }
+            }
+
+            // Find all possible districts
+            let possibleHds = new Set();
+            let possibleSds = new Set();
+            let possibleCds = new Set();
+
+            for (const county of knownCounties) {
+                (districtData.county_to_hds[county] || []).forEach(d => possibleHds.add(d));
+                (districtData.county_to_sds[county] || []).forEach(d => possibleSds.add(d));
+                (districtData.county_to_cds[county] || []).forEach(d => possibleCds.add(d));
+            }
+
+            // Refine HD list using direct SD→HD precinct mapping (avoids
+            // county-bridge over-inclusion in split counties like Lake Co.)
+            if (sd && districtData.sd_to_hds && districtData.sd_to_hds[sd]) {
+                const directHds = new Set(districtData.sd_to_hds[sd]);
+                const filtered = new Set([...possibleHds].filter(h => directHds.has(h)));
+                possibleHds = filtered.size > 0 ? filtered : directHds;
+            }
+
+            // Refine SD list using direct HD→SD precinct mapping
+            if (hd && districtData.hd_to_sds && districtData.hd_to_sds[hd]) {
+                const directSds = new Set(districtData.hd_to_sds[hd]);
+                const filtered = new Set([...possibleSds].filter(s => directSds.has(s)));
+                possibleSds = filtered.size > 0 ? filtered : directSds;
+            }
+
+            // Build HTML
+            let html = '<div class="result-section">';
+            
+            html += '<div class="result-title">🔢 Input Districts</div>';
+            html += '<div class="district-grid">';
+            if (hd) html += `<div class="district-badge active">HD ${hd}</div>`;
+            if (sd) html += `<div class="district-badge active">SD ${sd}</div>`;
+            if (cd) html += `<div class="district-badge active">CD ${cd}</div>`;
+            html += '</div></div>';
+
+            if (knownCounties.size > 0) {
+                html += `
+                    <div class="result-section">
+                        <div class="result-title">📍 Counties Covered</div>
+                        <div class="county-list">
+                            ${[...knownCounties].sort().map(c => `<div class="county-item">${c}</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += '<div class="result-section">';
+            html += '<div class="result-title">🔗 All Overlapping Districts</div>';
+            
+            if (possibleHds.size > 0) {
+                html += `
+                    <div style="margin-bottom: 15px;">
+                        <strong>House Districts (${possibleHds.size}):</strong>
+                        <div class="district-grid">
+                            ${[...possibleHds].sort((a,b) => a-b).map(d => 
+                                `<div class="district-badge ${d == hd ? 'active' : ''}">HD ${d}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (possibleSds.size > 0) {
+                html += `
+                    <div style="margin-bottom: 15px;">
+                        <strong>Senate Districts (${possibleSds.size}):</strong>
+                        <div class="district-grid">
+                            ${[...possibleSds].sort((a,b) => a-b).map(d => 
+                                `<div class="district-badge ${d == sd ? 'active' : ''}">SD ${d}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (possibleCds.size > 0) {
+                html += `
+                    <div style="margin-bottom: 15px;">
+                        <strong>Congressional Districts (${possibleCds.size}):</strong>
+                        <div class="district-grid">
+                            ${[...possibleCds].sort((a,b) => a-b).map(d => 
+                                `<div class="district-badge ${d == cd ? 'active' : ''}">CD ${d}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+
+            resultsDiv.innerHTML = html;
+            resultsDiv.classList.add('show');
+        }
+
+        // Allow Enter key
+        document.getElementById('county-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') lookupByCounty();
+        });
+
+        ['hd-input', 'sd-input', 'cd-input'].forEach(id => {
+            document.getElementById(id).addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') lookupByDistricts();
+            });
+        });
+
+        // Load data on page load
+        loadData();
+        loadCandidates();
+        // Use window.onload so Leaflet is fully ready before map init
+        window.addEventListener('load', function() { initMap(); });
+
+        // ─── INTERACTIVE MAP ──────────────────────────────────────────────
+        var dmMap = null;
+        var dmLayers = {};
+        var dmActiveType = 'house';
+
+        function initMap() {
+            dmMap = L.map('district-map', {
+                zoomControl: true,
+                attributionControl: false,
+                scrollWheelZoom: false
+            });
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png', {
+                subdomains: 'abcd', maxZoom: 19
+            }).addTo(dmMap);
+
+            var defaultStyle = { color: '#667eea', weight: 0.8, fillColor: '#e0e7ff', fillOpacity: 0.35 };
+            var hoverStyle   = { color: '#764ba2', weight: 2.5, fillColor: '#a78bfa', fillOpacity: 0.65 };
+
+            var loadEl = document.getElementById('map-loading');
+            loadEl.style.display = 'block';
+
+            // Path works both locally (districtmatchtool-main/) and on GitHub Pages (_site/district-match/)
+            fetch('../districts_simplified.json')
+                .then(function(r) { return r.json(); })
+                .then(function(GEOJSON) {
+                    loadEl.style.display = 'none';
+                    ['congressional', 'senate', 'house'].forEach(function(dtype) {
+                        var data = GEOJSON[dtype];
+                        if (!data) return;
+
+                        var features = Object.keys(data).map(function(dnum) {
+                            var feat = data[dnum];
+                            // Attach metadata without mutating shared object
+                            var f = { type: feat.type, geometry: feat.geometry, properties: feat.properties || {}, _dtype: dtype, _dnum: parseInt(dnum, 10) };
+                            return f;
+                        });
+
+                        var lyr = L.geoJSON({ type: 'FeatureCollection', features: features }, {
+                            style: defaultStyle,
+                            onEachFeature: function(feat, layer) {
+                                var prefix = feat._dtype === 'congressional' ? 'CD' : feat._dtype === 'senate' ? 'SD' : 'HD';
+                                var label = prefix + '-' + feat._dnum;
+                                layer.bindTooltip(label, { sticky: true, opacity: 0.9 });
+                                layer.on('mouseover', function() { layer.setStyle(hoverStyle); layer.bringToFront(); });
+                                layer.on('mouseout',  function() { layer.setStyle(defaultStyle); });
+                                layer.on('click',     function() { onMapDistrictClick(feat._dtype, feat._dnum); });
+                            }
+                        });
+                        dmLayers[dtype] = lyr;
+                    });
+
+                    dmLayers.house.addTo(dmMap);
+                    dmMap.fitBounds(dmLayers.house.getBounds(), { padding: [10, 10] });
+                })
+                .catch(function() {
+                    loadEl.style.display = 'none';
+                    document.getElementById('map-status').textContent = 'Map unavailable — district boundary file could not be loaded.';
+                });
+        }
+
+        function switchMapLayer(type) {
+            dmActiveType = type;
+            ['house', 'senate', 'congressional'].forEach(function(t) {
+                if (!dmLayers[t]) return;
+                if (t === type) dmLayers[t].addTo(dmMap);
+                else dmMap.removeLayer(dmLayers[t]);
+                document.getElementById('mlbtn-' + t).classList.toggle('ml-active', t === type);
+            });
+            if (dmLayers[type]) dmMap.fitBounds(dmLayers[type].getBounds(), { padding: [10, 10] });
+        }
+
+        function onMapDistrictClick(dtype, dnum) {
+            // Populate the matching input, clear others
+            document.getElementById('hd-input').value = dtype === 'house'         ? dnum : '';
+            document.getElementById('sd-input').value = dtype === 'senate'        ? dnum : '';
+            document.getElementById('cd-input').value = dtype === 'congressional' ? dnum : '';
+
+            var prefix = dtype === 'congressional' ? 'CD' : dtype === 'senate' ? 'SD' : 'HD';
+            document.getElementById('map-status').textContent = 'Selected ' + prefix + '-' + dnum + ' — results shown below';
+
+            var card = document.getElementById('district-lookup-card');
+            if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setTimeout(lookupByDistricts, 150);
+        }
+
+        // ─── CANDIDATE LOOKUP ─────────────────────────────────────────────
+        var candidateRows = [];
+
+        function loadCandidates() {
+            var CSV_URL = 'https://docs.google.com/spreadsheets/d/1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw/export?format=csv&gid=918237840';
+            var sel = document.getElementById('candidate-select');
+
+            fetch(CSV_URL)
+                .then(function(r) { return r.text(); })
+                .then(function(csv) {
+                    candidateRows = parseCandidateCSV(csv);
+                    sel.innerHTML = '<option value="">-- Select a candidate or contact --</option>';
+                    candidateRows.forEach(function(r, i) {
+                        var name = ((r['First Name'] || '') + ' ' + (r['Last Name'] || '')).trim();
+                        if (!name) return;
+                        var role = r['Role'] ? ' — ' + r['Role'] : '';
+                        var opt = document.createElement('option');
+                        opt.value = i;
+                        opt.textContent = name + role;
+                        sel.appendChild(opt);
+                    });
+                })
+                .catch(function() {
+                    sel.innerHTML = '<option value="">Unable to load — check connection</option>';
+                });
+        }
+
+        function parseCandidateCSV(csv) {
+            var lines = [];
+            var cur = '';
+            var inQ = false;
+            for (var i = 0; i < csv.length; i++) {
+                var ch = csv[i];
+                if (inQ) {
+                    if (ch === '"' && csv[i+1] === '"') { cur += '"'; i++; }
+                    else if (ch === '"') { inQ = false; }
+                    else { cur += ch; }
+                } else if (ch === '"') {
+                    inQ = true;
+                } else if (ch === '\n') {
+                    lines.push(cur); cur = '';
+                } else if (ch !== '\r') {
+                    cur += ch;
+                }
+            }
+            if (cur) lines.push(cur);
+
+            if (!lines.length) return [];
+            var headers = lines[0].split(',').map(function(h) { return h.trim(); });
+            var records = [];
+            for (var j = 1; j < lines.length; j++) {
+                if (!lines[j].trim()) continue;
+                var vals = lines[j].split(',');
+                var obj = {};
+                headers.forEach(function(h, idx) { obj[h] = (vals[idx] || '').trim(); });
+                records.push(obj);
+            }
+            return records;
+        }
+
+        function extractDistrictNum(val) {
+            if (!val) return '';
+            var m = String(val).match(/\d+/);
+            return m ? m[0] : '';
+        }
+
+        function onCandidateChange() {
+            var idx = document.getElementById('candidate-select').value;
+            if (idx === '') return;
+            var r = candidateRows[parseInt(idx, 10)];
+            if (!r) return;
+
+            var hd = extractDistrictNum(r['House District'] || (r['Title'] && r['Title'].toLowerCase().includes('house') ? r['District'] : ''));
+            var sd = extractDistrictNum(r['Senate District'] || (r['Title'] && r['Title'].toLowerCase().includes('senate') ? r['District'] : ''));
+            var cd = extractDistrictNum(r['Congressional District'] || (r['Title'] && r['Title'].toLowerCase().includes('congress') ? r['District'] : ''));
+
+            // Fall back to generic District field when chamber is unclear
+            if (!hd && !sd && !cd) {
+                var generic = extractDistrictNum(r['District'] || '');
+                hd = generic;
+            }
+
+            document.getElementById('hd-input').value = hd;
+            document.getElementById('sd-input').value = sd;
+            document.getElementById('cd-input').value = cd;
+
+            if (hd || sd || cd) {
+                var card = document.getElementById('district-lookup-card');
+                if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                setTimeout(lookupByDistricts, 150);
+            } else {
+                // Try county lookup as fallback
+                var county = (r['Home County'] || r['Counties'] || '').split(',')[0].trim();
+                if (county) {
+                    document.getElementById('county-input').value = county;
+                    lookupByCounty();
+                }
+            }
+        }
+    </script>
+</body>
+</html>

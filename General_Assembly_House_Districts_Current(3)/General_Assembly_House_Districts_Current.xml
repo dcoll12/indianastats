@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+    <idinfo>
+        <citation>
+            <citeinfo>
+                <title>House Districts of Indiana Current</title>
+                <geoform>vector digital data</geoform>
+            </citeinfo>
+        </citation>
+        <descript>
+            <abstract>House boundaries for the state of Indiana, passed in October of 2021.</abstract>
+            <purpose>This dataset contains polygon features representing the boundaries of the current 123rd Indiana General Assembly House districts. These districts were redrawn after the 2020 decennial census redistricting process and were adopted by the Indiana General Assembly in October of 2021. This data was obtained from the State of Indiana's Legislative Services Agency in August 2022 and IGIO staff added attributes for each representative's name, party affiliation, and website on 10/17/2023.</purpose>
+        </descript>
+        <spdom>
+            <bounding>
+                <westbc>-88.0978975354115</westbc>
+                <eastbc>-84.784539648382</eastbc>
+                <northbc>41.7613758615202</northbc>
+                <southbc>37.7716790948149</southbc>
+            </bounding>
+        </spdom>
+        <keywords>
+            <theme>
+                <themekt>None</themekt>
+                <themekey>General Assembly</themekey>
+                <themekey>State of Indiana</themekey>
+                <themekey>Legislature</themekey>
+                <themekey>House</themekey>
+                <themekey>House Districts</themekey>
+                <themekey>Elections</themekey>
+            </theme>
+        </keywords>
+        <accconst>None</accconst>
+        <useconst>LIMITATION OF WARRANTIES AND LIABILITY - This product is provided &amp;quot;AS IS&amp;quot;, without any other warranties or conditions, expressed or implied, including, but not limited to, warranties for product quality, or suitability to a particular purpose or use. The risk or liability resulting from the use of this product is assumed by the user. The Indiana Geographic Information Office shares no liability with product users indirect, incidental, special, or consequential damages whatsoever, including, but not limited to, loss of revenue or profit, lost or damaged data or other commercial or economic loss. The Indiana Geographic Information Office is not responsible for claims by a third party. </useconst>
+        <datacred>Indiana Elections Division (IED), Indiana Legislative Services Agency (LSA)</datacred>
+        <native>Esri ArcGIS 12.9.4.32739</native>
+    </idinfo>
+    <spdoinfo>
+        <direct>Vector</direct>
+        <ptvctinf>
+            <sdtsterm>
+                <sdtstype>GT-polygon composed of chains</sdtstype>
+                <ptvctcnt>0</ptvctcnt>
+            </sdtsterm>
+        </ptvctinf>
+    </spdoinfo>
+    <eainfo>
+        <detailed>
+            <enttyp>
+                <enttypl>IN_GA_House_Current</enttypl>
+            </enttyp>
+            <attr>
+                <attrlabl>OBJECTID_1</attrlabl>
+                <attrdef>Internal feature number.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Sequential unique whole numbers that are automatically generated.</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Shape</attrlabl>
+                <attrdef>Feature geometry.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Coordinates defining the features.</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>district</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>id39_counties</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>housedistrictid</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>featureid</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>Join_Count</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>TARGET_FID</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>ID_2021</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>DISTRICT_2021</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>DISTRICTN_2021</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>OBJECTID</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>STATEFP20</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>SLDLST20</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>geoid</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>namelsad</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>LSAD20</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>LSY20</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>MTFCC20</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>FUNCSTAT20</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>ALAND20</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>AWATER20</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>ORIG_FID</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>Representative</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>Shape_Length</attrlabl>
+                <attrdef>Length of feature in internal units.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Positive real numbers that are automatically generated.</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Shape_Area</attrlabl>
+                <attrdef>Area of feature in internal units squared.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Positive real numbers that are automatically generated.</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+        </detailed>
+    </eainfo>
+    <metainfo>
+        <metd>20230922</metd>
+        <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+        <metstdv>FGDC-STD-001-1998</metstdv>
+        <mettc>local time</mettc>
+    </metainfo>
+</metadata>

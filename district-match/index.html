@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>District Match — Indiana</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #f1f5f9;
+  color: #1e293b;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
+  color: white;
+  padding: 30px 20px;
+  text-align: center;
+  margin-bottom: 24px;
+  border-radius: 12px;
+}
+
+header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+header p {
+  font-size: 14px;
+  opacity: 0.85;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.site-nav {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.site-nav a {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.18);
+  color: white;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.site-nav a:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: white;
+}
+
+.site-nav a.active {
+  background: white;
+  color: #1e3a5f;
+  border-color: white;
+}
+
+/* ── District Match Tool ──────────────────────────────────────────── */
+.dmt-layout { display: flex; min-height: 580px; background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; }
+.dmt-controls {
+  width: 310px; flex-shrink: 0; padding: 16px;
+  border-right: 1px solid #e2e8f0; background: #f8fafc;
+  overflow-y: auto; max-height: 700px;
+}
+.dmt-section { margin-bottom: 16px; }
+.dmt-section-title {
+  font-weight: 700; font-size: 0.75rem; text-transform: uppercase;
+  letter-spacing: 0.5px; color: #475569; margin-bottom: 8px;
+}
+.dmt-section select,
+.dmt-section input[type="text"],
+.dmt-section input[type="number"] {
+  width: 100%; padding: 8px 10px; font-size: 0.88rem;
+  border: 2px solid #e2e8f0; border-radius: 6px;
+  background: white; margin-bottom: 6px; box-sizing: border-box;
+}
+.dmt-section select:focus,
+.dmt-section input:focus { outline: none; border-color: #667eea; }
+.dmt-district-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 8px; }
+.dmt-district-grid label { font-size: 0.72rem; color: #475569; font-weight: 600; display: block; margin-bottom: 2px; }
+.dmt-btn {
+  width: 100%; padding: 8px 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; border: none; border-radius: 6px;
+  font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s;
+}
+.dmt-btn:hover { opacity: 0.85; }
+.dmt-results { margin-top: 14px; display: none; }
+.dmt-result-title {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; color: #475569; margin-bottom: 6px;
+  padding-bottom: 4px; border-bottom: 2px solid #667eea;
+}
+.dmt-result-group { margin-bottom: 10px; }
+.dmt-result-group strong { font-size: 0.82rem; color: #334155; display: block; margin-bottom: 4px; }
+.dmt-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.dmt-badge {
+  display: inline-block; padding: 3px 8px;
+  background: white; border: 2px solid #667eea;
+  color: #667eea; border-radius: 5px; font-size: 0.78rem; font-weight: 700;
+}
+.dmt-badge-active { background: #667eea; color: white; }
+.dmt-counties { display: flex; flex-wrap: wrap; gap: 4px; }
+.dmt-county-item {
+  display: inline-block; padding: 2px 7px;
+  background: #f1f5f9; border-left: 3px solid #667eea;
+  border-radius: 3px; font-size: 0.78rem; color: #475569;
+}
+.dmt-error {
+  padding: 10px; background: #fee2e2; border-left: 3px solid #ef4444;
+  border-radius: 4px; color: #b91c1c; font-size: 0.85rem;
+}
+.dmt-candidates { margin-top: 4px; display: flex; flex-direction: column; gap: 3px; }
+.dmt-candidate {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.80rem; color: #334155;
+}
+.dmt-party {
+  display: inline-block; width: 18px; height: 18px; line-height: 18px;
+  text-align: center; border-radius: 3px; font-size: 0.70rem; font-weight: 800;
+  flex-shrink: 0;
+}
+.dmt-party-D { background: #dbeafe; color: #1d4ed8; }
+.dmt-party-R { background: #fee2e2; color: #b91c1c; }
+.dmt-party-L { background: #fef9c3; color: #92400e; }
+.dmt-party-I { background: #f1f5f9; color: #475569; }
+.dmt-map-side { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.dmt-layer-row {
+  display: flex; gap: 8px; padding: 10px 12px;
+  background: #f1f5f9; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap;
+}
+.dmt-layer-btn {
+  padding: 6px 14px; background: white; color: #64748b;
+  border: 2px solid #e2e8f0; border-radius: 6px;
+  font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.dmt-layer-btn:hover { border-color: #667eea; color: #667eea; }
+.dmt-layer-btn.dmt-active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white; border-color: transparent;
+}
+#dmt-map { flex: 1; min-height: 460px; }
+.dmt-map-status {
+  padding: 8px 14px; background: #f8fafc;
+  border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b;
+  text-align: center;
+}
+@media (max-width: 900px) {
+  .dmt-layout { flex-direction: column; }
+  .dmt-controls { width: 100%; max-height: none; border-right: none; border-bottom: 1px solid #e2e8f0; }
+  .dmt-district-grid { grid-template-columns: repeat(3, 1fr); }
+  #dmt-map { min-height: 350px; }
+}
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>District Match</h1>
+    <p>Find Indiana legislative districts by county, candidate, or district number</p>
+    <nav class="site-nav">
+      <a href="../directory/">Indiana Rural Summit Directory</a>
+      <a href="../power-packs/">Power Packs</a>
+      <a href="../">Indiana Partisan Lean Index</a>
+      <a class="active" href="./">District Match</a>
+    </nav>
+  </header>
+
+  <div class="dmt-layout">
+    <div class="dmt-controls">
+      <div class="dmt-section">
+        <div class="dmt-section-title">By Candidate</div>
+        <select id="dmt-cand-select" onchange="DMT.onCandidateChange()">
+          <option value="">Loading candidates…</option>
+        </select>
+      </div>
+      <div class="dmt-section">
+        <div class="dmt-section-title">By County</div>
+        <input type="text" id="dmt-county" list="dmt-county-list" placeholder="Type county name…" autocomplete="off">
+        <datalist id="dmt-county-list"></datalist>
+        <button class="dmt-btn" onclick="DMT.lookupByCounty()">Find Districts</button>
+      </div>
+      <div class="dmt-section">
+        <div class="dmt-section-title">By District Number</div>
+        <div class="dmt-district-grid">
+          <div>
+            <label>House</label>
+            <input type="number" id="dmt-hd" placeholder="1–100" min="1" max="100">
+          </div>
+          <div>
+            <label>Senate</label>
+            <input type="number" id="dmt-sd" placeholder="1–50" min="1" max="50">
+          </div>
+          <div>
+            <label>Congress</label>
+            <input type="number" id="dmt-cd" placeholder="1–9" min="1" max="9">
+          </div>
+        </div>
+        <button class="dmt-btn" onclick="DMT.lookupByDistricts()">Find Counties &amp; Related Districts</button>
+      </div>
+      <div id="dmt-results" class="dmt-results"></div>
+    </div>
+    <div class="dmt-map-side">
+      <div class="dmt-layer-row">
+        <button class="dmt-layer-btn dmt-active" id="dmt-btn-house" onclick="DMT.switchLayer('house')">House Districts (HD)</button>
+        <button class="dmt-layer-btn" id="dmt-btn-senate" onclick="DMT.switchLayer('senate')">Senate Districts (SD)</button>
+        <button class="dmt-layer-btn" id="dmt-btn-congressional" onclick="DMT.switchLayer('congressional')">Congressional (CD)</button>
+      </div>
+      <div id="dmt-map"></div>
+      <div id="dmt-map-status" class="dmt-map-status">Click a district on the map to look it up</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── District Match Tool module ───────────────────────────────────── */
+var DMT = (function() {
+  var _initialized = false;
+  var _mapInited = false;
+  var districtData = null;
+  var candidateRows = [];
+  var dmtMap = null;
+  var dmtLayers = {};
+  var dmtActiveLayer = 'house';
+
+  var CSV_URL = 'https://docs.google.com/spreadsheets/d/1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw/export?format=csv&gid=918237840';
+  var candidatesData = null;
+
+  function init() {
+    if (_initialized) {
+      if (dmtMap) setTimeout(function() { dmtMap.invalidateSize(); }, 150);
+      return;
+    }
+    _initialized = true;
+
+    fetch('../district_data.json')
+      .then(function(r) { return r.json(); })
+      .then(function(d) { districtData = d; populateCountyList(); })
+      .catch(function() {});
+
+    fetch('../candidates_2026.json')
+      .then(function(r) { return r.json(); })
+      .then(function(d) { candidatesData = d; })
+      .catch(function() {});
+
+    fetch(CSV_URL)
+      .then(function(r) { return r.text(); })
+      .then(function(csv) { candidateRows = parseCSVSimple(csv); populateCandidateSelect(); })
+      .catch(function() {
+        var sel = document.getElementById('dmt-cand-select');
+        if (sel) sel.innerHTML = '<option value="">Unable to load candidates</option>';
+      });
+
+    initMap();
+  }
+
+  function populateCountyList() {
+    if (!districtData || !districtData.all_counties) return;
+    var dl = document.getElementById('dmt-county-list');
+    if (dl) dl.innerHTML = districtData.all_counties.map(function(c) {
+      return '<option value="' + c + '">';
+    }).join('');
+  }
+
+  function populateCandidateSelect() {
+    var sel = document.getElementById('dmt-cand-select');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">-- Select a candidate or contact --</option>';
+    candidateRows.forEach(function(r, i) {
+      var name = ((r['First Name'] || '') + ' ' + (r['Last Name'] || '')).trim();
+      if (!name) return;
+      var role = r['Role'] ? ' — ' + r['Role'] : '';
+      var opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = name + role;
+      sel.appendChild(opt);
+    });
+  }
+
+  function parseCSVSimple(csv) {
+    var lines = [], cur = '', inQ = false;
+    for (var i = 0; i < csv.length; i++) {
+      var ch = csv[i];
+      if (inQ) {
+        if (ch === '"' && csv[i+1] === '"') { cur += '"'; i++; }
+        else if (ch === '"') { inQ = false; }
+        else { cur += ch; }
+      } else if (ch === '"') { inQ = true; }
+      else if (ch === '\n') { lines.push(cur); cur = ''; }
+      else if (ch !== '\r') { cur += ch; }
+    }
+    if (cur) lines.push(cur);
+    if (!lines.length) return [];
+    var headers = lines[0].split(',').map(function(h) { return h.trim(); });
+    var records = [];
+    for (var j = 1; j < lines.length; j++) {
+      if (!lines[j].trim()) continue;
+      var vals = lines[j].split(',');
+      var obj = {};
+      headers.forEach(function(h, idx) { obj[h] = (vals[idx] || '').trim(); });
+      records.push(obj);
+    }
+    return records;
+  }
+
+  function initMap() {
+    if (_mapInited) return;
+    _mapInited = true;
+
+    dmtMap = L.map('dmt-map', { zoomControl: true, attributionControl: false, scrollWheelZoom: false });
+    setTimeout(function() { dmtMap.invalidateSize(); }, 100);
+
+    // light_all includes county and city name labels
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      subdomains: 'abcd', maxZoom: 19
+    }).addTo(dmtMap);
+
+    var defaultStyle = { color: '#667eea', weight: 0.8, fillColor: '#e0e7ff', fillOpacity: 0.35 };
+    var hoverStyle   = { color: '#764ba2', weight: 2.5, fillColor: '#a78bfa', fillOpacity: 0.65 };
+    var statusEl = document.getElementById('dmt-map-status');
+
+    fetch('../districts_simplified.json')
+      .then(function(r) { return r.json(); })
+      .then(function(GEOJSON) {
+        ['congressional', 'senate', 'house'].forEach(function(dtype) {
+          var data = GEOJSON[dtype];
+          if (!data) return;
+          var features = Object.keys(data).map(function(dnum) {
+            var feat = data[dnum];
+            return { type: feat.type, geometry: feat.geometry,
+                     properties: feat.properties || {},
+                     _dtype: dtype, _dnum: parseInt(dnum, 10) };
+          });
+          var lyr = L.geoJSON({ type: 'FeatureCollection', features: features }, {
+            style: defaultStyle,
+            onEachFeature: function(feat, layer) {
+              var prefix = feat._dtype === 'congressional' ? 'CD' : feat._dtype === 'senate' ? 'SD' : 'HD';
+              layer.bindTooltip(prefix + '-' + feat._dnum, { sticky: true, opacity: 0.9 });
+              layer.on('mouseover', function() { layer.setStyle(hoverStyle); layer.bringToFront(); });
+              layer.on('mouseout',  function() { layer.setStyle(defaultStyle); });
+              layer.on('click',     function() { onMapClick(feat._dtype, feat._dnum); });
+            }
+          });
+          dmtLayers[dtype] = lyr;
+        });
+        if (dmtLayers.house) {
+          dmtLayers.house.addTo(dmtMap);
+          dmtMap.fitBounds(dmtLayers.house.getBounds(), { padding: [10, 10] });
+        }
+      })
+      .catch(function() {
+        if (statusEl) statusEl.textContent = 'Map unavailable — boundary file could not be loaded.';
+      });
+  }
+
+  function switchLayer(type) {
+    dmtActiveLayer = type;
+    ['house', 'senate', 'congressional'].forEach(function(t) {
+      if (!dmtLayers[t]) return;
+      if (t === type) dmtLayers[t].addTo(dmtMap);
+      else dmtMap.removeLayer(dmtLayers[t]);
+      var btn = document.getElementById('dmt-btn-' + t);
+      if (btn) btn.classList.toggle('dmt-active', t === type);
+    });
+    if (dmtLayers[type]) dmtMap.fitBounds(dmtLayers[type].getBounds(), { padding: [10, 10] });
+  }
+
+  function onMapClick(dtype, dnum) {
+    document.getElementById('dmt-hd').value = dtype === 'house'         ? dnum : '';
+    document.getElementById('dmt-sd').value = dtype === 'senate'        ? dnum : '';
+    document.getElementById('dmt-cd').value = dtype === 'congressional' ? dnum : '';
+    var prefix = dtype === 'congressional' ? 'CD' : dtype === 'senate' ? 'SD' : 'HD';
+    var statusEl = document.getElementById('dmt-map-status');
+    if (statusEl) statusEl.textContent = 'Selected ' + prefix + '-' + dnum + ' — results shown in left panel';
+    lookupByDistricts();
+  }
+
+  function xesc(s) {
+    return String(s || '').replace(/[&<>"']/g, function(c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function lookupByCounty() {
+    if (!districtData) { showResults('<div class="dmt-error">District data loading — please try again.</div>'); return; }
+    var county = document.getElementById('dmt-county').value.trim();
+    if (!county) { showResults('<div class="dmt-error">Please enter a county name.</div>'); return; }
+
+    var matched = null;
+    var low = county.toLowerCase();
+    for (var i = 0; i < districtData.all_counties.length; i++) {
+      if (districtData.all_counties[i].toLowerCase() === low) { matched = districtData.all_counties[i]; break; }
+    }
+    if (!matched) {
+      for (var i = 0; i < districtData.all_counties.length; i++) {
+        if (districtData.all_counties[i].toLowerCase().indexOf(low) !== -1) { matched = districtData.all_counties[i]; break; }
+      }
+    }
+    if (!matched) { showResults('<div class="dmt-error">County "' + xesc(county) + '" not found.</div>'); return; }
+
+    var hds = districtData.county_to_hds[matched] || [];
+    var sds = districtData.county_to_sds[matched] || [];
+    var cds = districtData.county_to_cds[matched] || [];
+
+    var sortedHds = hds.slice().sort(function(a,b){return a-b;});
+    var sortedSds = sds.slice().sort(function(a,b){return a-b;});
+    var sortedCds = cds.slice().sort(function(a,b){return a-b;});
+
+    var html = '<div class="dmt-result-title">📍 ' + xesc(matched) + ' County</div>';
+    if (hds.length) html += '<div class="dmt-result-group"><strong>House Districts:</strong>'
+      + '<div class="dmt-badges">' + sortedHds
+        .map(function(d){return '<span class="dmt-badge">HD ' + d + '</span>';}).join('') + '</div></div>';
+    if (sds.length) html += '<div class="dmt-result-group"><strong>Senate Districts:</strong>'
+      + '<div class="dmt-badges">' + sortedSds
+        .map(function(d){return '<span class="dmt-badge">SD ' + d + '</span>';}).join('') + '</div></div>';
+    if (cds.length) html += '<div class="dmt-result-group"><strong>Congressional:</strong>'
+      + '<div class="dmt-badges">' + sortedCds
+        .map(function(d){return '<span class="dmt-badge">CD ' + d + '</span>';}).join('') + '</div></div>';
+
+    var candHtml = candidatesSection('HD', 'hd', sortedHds, null)
+      + candidatesSection('SD', 'sd', sortedSds, null)
+      + candidatesSection('CD', 'cd', sortedCds, null);
+    if (candHtml) {
+      html += '<div class="dmt-result-title" style="margin-top:12px">2026 Primary Candidates</div>' + candHtml;
+    }
+
+    showResults(html);
+  }
+
+  function lookupByDistricts() {
+    if (!districtData) { showResults('<div class="dmt-error">District data loading — please try again.</div>'); return; }
+    var hd = document.getElementById('dmt-hd').value.trim();
+    var sd = document.getElementById('dmt-sd').value.trim();
+    var cd = document.getElementById('dmt-cd').value.trim();
+    if (!hd && !sd && !cd) { showResults('<div class="dmt-error">Enter at least one district number.</div>'); return; }
+
+    var knownCounties = null;
+    function intersect(arr) {
+      if (!knownCounties) { knownCounties = new Set(arr); }
+      else {
+        var f = arr.filter(function(c) { return knownCounties.has(c); });
+        knownCounties = f.length > 0 ? new Set(f) : new Set(arr);
+      }
+    }
+    if (hd) {
+      var c = districtData.hd_to_counties[hd] || [];
+      if (!c.length) { showResults('<div class="dmt-error">House District ' + xesc(hd) + ' not found.</div>'); return; }
+      intersect(c);
+    }
+    if (sd) {
+      var c = districtData.sd_to_counties[sd] || [];
+      if (!c.length) { showResults('<div class="dmt-error">Senate District ' + xesc(sd) + ' not found.</div>'); return; }
+      intersect(c);
+    }
+    if (cd) {
+      var c = districtData.cd_to_counties[cd] || [];
+      if (!c.length) { showResults('<div class="dmt-error">Congressional District ' + xesc(cd) + ' not found.</div>'); return; }
+      intersect(c);
+    }
+
+    var counties = knownCounties ? Array.from(knownCounties).sort() : [];
+    var pHds = new Set(), pSds = new Set(), pCds = new Set();
+    counties.forEach(function(cn) {
+      (districtData.county_to_hds[cn] || []).forEach(function(d) { pHds.add(d); });
+      (districtData.county_to_sds[cn] || []).forEach(function(d) { pSds.add(d); });
+      (districtData.county_to_cds[cn] || []).forEach(function(d) { pCds.add(d); });
+    });
+
+    if (sd && districtData.sd_to_hds && districtData.sd_to_hds[sd]) {
+      var direct = new Set(districtData.sd_to_hds[sd]);
+      var f = new Set(Array.from(pHds).filter(function(h) { return direct.has(h); }));
+      if (f.size > 0) pHds = f;
+    }
+    if (hd && districtData.hd_to_sds && districtData.hd_to_sds[hd]) {
+      var direct = new Set(districtData.hd_to_sds[hd]);
+      var f = new Set(Array.from(pSds).filter(function(s) { return direct.has(s); }));
+      if (f.size > 0) pSds = f;
+    }
+
+    var html = '<div class="dmt-result-title">Selected</div><div class="dmt-badges">';
+    if (hd) html += '<span class="dmt-badge dmt-badge-active">HD ' + xesc(hd) + '</span>';
+    if (sd) html += '<span class="dmt-badge dmt-badge-active">SD ' + xesc(sd) + '</span>';
+    if (cd) html += '<span class="dmt-badge dmt-badge-active">CD ' + xesc(cd) + '</span>';
+    html += '</div>';
+
+    if (counties.length) {
+      html += '<div class="dmt-result-group" style="margin-top:10px"><strong>Counties covered:</strong>'
+        + '<div class="dmt-counties">'
+        + counties.map(function(cn) { return '<span class="dmt-county-item">' + xesc(cn) + '</span>'; }).join('')
+        + '</div></div>';
+    }
+
+    html += '<div class="dmt-result-title" style="margin-top:12px">Overlapping Districts</div>';
+    if (pHds.size) {
+      html += '<div class="dmt-result-group"><strong>House (' + pHds.size + '):</strong><div class="dmt-badges">'
+        + Array.from(pHds).sort(function(a,b){return a-b;}).map(function(d) {
+            return '<span class="dmt-badge' + (String(d) === hd ? ' dmt-badge-active' : '') + '">HD ' + d + '</span>';
+          }).join('') + '</div></div>';
+    }
+    if (pSds.size) {
+      html += '<div class="dmt-result-group"><strong>Senate (' + pSds.size + '):</strong><div class="dmt-badges">'
+        + Array.from(pSds).sort(function(a,b){return a-b;}).map(function(d) {
+            return '<span class="dmt-badge' + (String(d) === sd ? ' dmt-badge-active' : '') + '">SD ' + d + '</span>';
+          }).join('') + '</div></div>';
+    }
+    if (pCds.size) {
+      html += '<div class="dmt-result-group"><strong>Congressional (' + pCds.size + '):</strong><div class="dmt-badges">'
+        + Array.from(pCds).sort(function(a,b){return a-b;}).map(function(d) {
+            return '<span class="dmt-badge' + (String(d) === cd ? ' dmt-badge-active' : '') + '">CD ' + d + '</span>';
+          }).join('') + '</div></div>';
+    }
+
+    // Show 2026 primary candidates for the entered district(s) only
+    var candHtml = '';
+    if (hd) candHtml += candidatesSection('HD', 'hd', [parseInt(hd, 10)], hd);
+    if (sd) candHtml += candidatesSection('SD', 'sd', [parseInt(sd, 10)], sd);
+    if (cd) candHtml += candidatesSection('CD', 'cd', [parseInt(cd, 10)], cd);
+    if (candHtml) {
+      html += '<div class="dmt-result-title" style="margin-top:12px">2026 Primary Candidates</div>' + candHtml;
+    }
+
+    showResults(html);
+  }
+
+  function extractDistrictNum(val) {
+    var m = String(val || '').match(/\d+/);
+    return m ? m[0] : '';
+  }
+
+  function onCandidateChange() {
+    var idx = document.getElementById('dmt-cand-select').value;
+    if (idx === '') return;
+    var r = candidateRows[parseInt(idx, 10)];
+    if (!r) return;
+    var hd = extractDistrictNum(r['House District'] || '');
+    var sd = extractDistrictNum(r['Senate District'] || '');
+    var cd = extractDistrictNum(r['Congressional District'] || '');
+    if (!hd && !sd && !cd) hd = extractDistrictNum(r['District'] || '');
+    document.getElementById('dmt-hd').value = hd;
+    document.getElementById('dmt-sd').value = sd;
+    document.getElementById('dmt-cd').value = cd;
+    if (hd || sd || cd) {
+      lookupByDistricts();
+    } else {
+      var county = ((r['Home County'] || r['Counties'] || '').split(',')[0] || '').trim();
+      if (county) { document.getElementById('dmt-county').value = county; lookupByCounty(); }
+    }
+  }
+
+  function renderCandidates(type, dnum) {
+    if (!candidatesData) return '';
+    var list = (candidatesData[type] || {})[String(dnum)];
+    if (!list || !list.length) return '';
+    var items = list.map(function(c) {
+      var pc = 'dmt-party-' + (c.party || 'I');
+      return '<div class="dmt-candidate"><span class="dmt-party ' + pc + '">' + xesc(c.party) + '</span>' + xesc(c.name) + '</div>';
+    }).join('');
+    return '<div class="dmt-candidates">' + items + '</div>';
+  }
+
+  function candidatesSection(label, type, dnums, activeNum) {
+    if (!candidatesData) return '';
+    var parts = [];
+    dnums.forEach(function(d) {
+      var html = renderCandidates(type, d);
+      if (!html) return;
+      var badge = label + ' ' + d;
+      var isActive = String(d) === String(activeNum);
+      parts.push(
+        '<div class="dmt-result-group" style="margin-top:6px">'
+        + '<strong>' + badge + (isActive ? ' <span style="color:#667eea">(selected)</span>' : '') + ' — 2026 Primary:</strong>'
+        + html + '</div>'
+      );
+    });
+    return parts.join('');
+  }
+
+  function showResults(html) {
+    var el = document.getElementById('dmt-results');
+    if (el) { el.innerHTML = html; el.style.display = 'block'; }
+  }
+
+  return {
+    init: init,
+    switchLayer: switchLayer,
+    lookupByCounty: lookupByCounty,
+    lookupByDistricts: lookupByDistricts,
+    onCandidateChange: onCandidateChange
+  };
+})();
+
+window.addEventListener('load', function() { DMT.init(); });
+</script>
+</body>
+</html>

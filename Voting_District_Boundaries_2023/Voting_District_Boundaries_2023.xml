@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+    <idinfo>
+        <citation>
+            <citeinfo>
+                <title>Voting District Boundaries 2023</title>
+                <geoform>vector digital data</geoform>
+            </citeinfo>
+        </citation>
+        <descript>
+            <abstract>A voting district is a geographical area which is represented by a seat or numerous seats in a legislative body. These boundaries are created by State and local governments for the purpose of administering elections. These boundaries are updated by the Indiana General Assembly by aggregating local data annually, and are often used to build Congress and General Assembly districts during the redistricting process.This dataset contains attributes for the district's county FIPS code, the district name, a full FIPS ID, and what US Congress, General Assembly House, and General Assembly Senate district each polygon resides in. This data is made available by the Indiana General Assembly on an annual basis.</abstract>
+            <purpose>This dataset contains polygon features representing the boundaries of voting districts (election district, precincts, or wards) in Indiana for 2023. This data was obtained from the Indiana General Assembly  in June of 2023.</purpose>
+        </descript>
+        <spdom>
+            <bounding>
+                <westbc>-88.097892</westbc>
+                <eastbc>-84.784535</eastbc>
+                <northbc>41.761368</northbc>
+                <southbc>37.771672</southbc>
+            </bounding>
+        </spdom>
+        <keywords>
+            <theme>
+                <themekt>None</themekt>
+                <themekey>Voting Districts</themekey>
+                <themekey>Election Districts</themekey>
+                <themekey>Precincts</themekey>
+                <themekey>Wards</themekey>
+            </theme>
+        </keywords>
+        <accconst>None</accconst>
+        <useconst>LIMITATION OF WARRANTIES AND LIABILITY - This product is provided &amp;quot;AS IS&amp;quot;, without any other warranties or conditions, expressed or implied, including, but not limited to, warranties for product quality, or suitability to a particular purpose or use. The risk or liability resulting from the use of this product is assumed by the user. The Indiana Geographic Information Office shares no liability with product users indirect, incidental, special, or consequential damages whatsoever, including, but not limited to, loss of revenue or profit, lost or damaged data or other commercial or economic loss. The Indiana Geographic Information Office is not responsible for claims by a third party. </useconst>
+        <datacred>Indiana General Assembly (IGA), Indiana Elections Division (IED)</datacred>
+        <native> Version 6.2 (Build 9200) ; Esri ArcGIS 10.9.1.28388</native>
+    </idinfo>
+    <spdoinfo>
+        <direct>Vector</direct>
+        <ptvctinf>
+            <sdtsterm>
+                <sdtstype>GT-polygon composed of chains</sdtstype>
+                <ptvctcnt>0</ptvctcnt>
+            </sdtsterm>
+        </ptvctinf>
+    </spdoinfo>
+    <eainfo>
+        <detailed>
+            <enttyp>
+                <enttypl>2023_PRECINCTS_DELTA_NOT_FINAL</enttypl>
+            </enttyp>
+            <attr>
+                <attrlabl>FID</attrlabl>
+                <attrdef>Internal feature number.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Sequential unique whole numbers that are automatically generated.</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Shape</attrlabl>
+                <attrdef>Feature geometry.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Coordinates defining the features.</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>COUNTY</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>P23</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>P23COUNTY</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>P23_STFID</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>C</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>S</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>H</attrlabl>
+            </attr>
+        </detailed>
+    </eainfo>
+    <metainfo>
+        <metd>20230328</metd>
+        <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+        <metstdv>FGDC-STD-001-1998</metstdv>
+        <mettc>local time</mettc>
+    </metainfo>
+</metadata>

@@ -1,0 +1,839 @@
+[
+  {
+    "County": "Adams",
+    "RegisteredVoters": 20039,
+    "VotersVoting": 9076,
+    "TurnOutPercentage": "45%",
+    "Electionday": 5558,
+    "Absentee": 3518,
+    "AbsenteePercentage": "39%"
+  },
+  {
+    "County": "Allen",
+    "RegisteredVoters": 270041,
+    "VotersVoting": 102933,
+    "TurnOutPercentage": "38%",
+    "Electionday": 66669,
+    "Absentee": 36264,
+    "AbsenteePercentage": "35%"
+  },
+  {
+    "County": "Bartholomew",
+    "RegisteredVoters": 53498,
+    "VotersVoting": 22805,
+    "TurnOutPercentage": "43%",
+    "Electionday": 11966,
+    "Absentee": 10839,
+    "AbsenteePercentage": "48%"
+  },
+  {
+    "County": "Benton",
+    "RegisteredVoters": 6069,
+    "VotersVoting": 2506,
+    "TurnOutPercentage": "41%",
+    "Electionday": 1989,
+    "Absentee": 517,
+    "AbsenteePercentage": "21%"
+  },
+  {
+    "County": "Blackford",
+    "RegisteredVoters": 8241,
+    "VotersVoting": 3491,
+    "TurnOutPercentage": "42%",
+    "Electionday": 1841,
+    "Absentee": 1650,
+    "AbsenteePercentage": "47%"
+  },
+  {
+    "County": "Boone",
+    "RegisteredVoters": 56847,
+    "VotersVoting": 25098,
+    "TurnOutPercentage": "44%",
+    "Electionday": 12220,
+    "Absentee": 12878,
+    "AbsenteePercentage": "51%"
+  },
+  {
+    "County": "Brown",
+    "RegisteredVoters": 12907,
+    "VotersVoting": 6552,
+    "TurnOutPercentage": "51%",
+    "Electionday": 4132,
+    "Absentee": 2420,
+    "AbsenteePercentage": "37%"
+  },
+  {
+    "County": "Carroll",
+    "RegisteredVoters": 14303,
+    "VotersVoting": 6299,
+    "TurnOutPercentage": "44%",
+    "Electionday": 3807,
+    "Absentee": 2492,
+    "AbsenteePercentage": "40%"
+  },
+  {
+    "County": "Cass",
+    "RegisteredVoters": 22555,
+    "VotersVoting": 8684,
+    "TurnOutPercentage": "39%",
+    "Electionday": 4034,
+    "Absentee": 4650,
+    "AbsenteePercentage": "54%"
+  },
+  {
+    "County": "Clark",
+    "RegisteredVoters": 98877,
+    "VotersVoting": 36846,
+    "TurnOutPercentage": "37%",
+    "Electionday": 29410,
+    "Absentee": 7436,
+    "AbsenteePercentage": "20%"
+  },
+  {
+    "County": "Clay",
+    "RegisteredVoters": 18884,
+    "VotersVoting": 7782,
+    "TurnOutPercentage": "41%",
+    "Electionday": 5372,
+    "Absentee": 2410,
+    "AbsenteePercentage": "31%"
+  },
+  {
+    "County": "Clinton",
+    "RegisteredVoters": 20373,
+    "VotersVoting": 7439,
+    "TurnOutPercentage": "37%",
+    "Electionday": 4672,
+    "Absentee": 2767,
+    "AbsenteePercentage": "37%"
+  },
+  {
+    "County": "Crawford",
+    "RegisteredVoters": 7573,
+    "VotersVoting": 3855,
+    "TurnOutPercentage": "51%",
+    "Electionday": 3051,
+    "Absentee": 804,
+    "AbsenteePercentage": "21%"
+  },
+  {
+    "County": "Daviess",
+    "RegisteredVoters": 17898,
+    "VotersVoting": 7129,
+    "TurnOutPercentage": "40%",
+    "Electionday": 5075,
+    "Absentee": 2054,
+    "AbsenteePercentage": "29%"
+  },
+  {
+    "County": "Dearborn",
+    "RegisteredVoters": 39894,
+    "VotersVoting": 14411,
+    "TurnOutPercentage": "36%",
+    "Electionday": 11476,
+    "Absentee": 2935,
+    "AbsenteePercentage": "20%"
+  },
+  {
+    "County": "Decatur",
+    "RegisteredVoters": 17188,
+    "VotersVoting": 8072,
+    "TurnOutPercentage": "47%",
+    "Electionday": 3715,
+    "Absentee": 4357,
+    "AbsenteePercentage": "54%"
+  },
+  {
+    "County": "DeKalb",
+    "RegisteredVoters": 29642,
+    "VotersVoting": 11871,
+    "TurnOutPercentage": "40%",
+    "Electionday": 7119,
+    "Absentee": 4752,
+    "AbsenteePercentage": "40%"
+  },
+  {
+    "County": "Delaware",
+    "RegisteredVoters": 78698,
+    "VotersVoting": 30579,
+    "TurnOutPercentage": "39%",
+    "Electionday": 22903,
+    "Absentee": 7676,
+    "AbsenteePercentage": "25%"
+  },
+  {
+    "County": "Dubois",
+    "RegisteredVoters": 30429,
+    "VotersVoting": 14028,
+    "TurnOutPercentage": "46%",
+    "Electionday": 7383,
+    "Absentee": 6645,
+    "AbsenteePercentage": "47%"
+  },
+  {
+    "County": "Elkhart",
+    "RegisteredVoters": 126855,
+    "VotersVoting": 45644,
+    "TurnOutPercentage": "36%",
+    "Electionday": 32909,
+    "Absentee": 12735,
+    "AbsenteePercentage": "28%"
+  },
+  {
+    "County": "Fayette",
+    "RegisteredVoters": 16580,
+    "VotersVoting": 6316,
+    "TurnOutPercentage": "38%",
+    "Electionday": 4098,
+    "Absentee": 2218,
+    "AbsenteePercentage": "35%"
+  },
+  {
+    "County": "Floyd",
+    "RegisteredVoters": 55091,
+    "VotersVoting": 27245,
+    "TurnOutPercentage": "49%",
+    "Electionday": 12577,
+    "Absentee": 14668,
+    "AbsenteePercentage": "54%"
+  },
+  {
+    "County": "Fountain",
+    "RegisteredVoters": 11949,
+    "VotersVoting": 5043,
+    "TurnOutPercentage": "42%",
+    "Electionday": 3893,
+    "Absentee": 1150,
+    "AbsenteePercentage": "23%"
+  },
+  {
+    "County": "Franklin",
+    "RegisteredVoters": 17101,
+    "VotersVoting": 7566,
+    "TurnOutPercentage": "44%",
+    "Electionday": 5991,
+    "Absentee": 1575,
+    "AbsenteePercentage": "21%"
+  },
+  {
+    "County": "Fulton",
+    "RegisteredVoters": 13297,
+    "VotersVoting": 5572,
+    "TurnOutPercentage": "42%",
+    "Electionday": 3329,
+    "Absentee": 2243,
+    "AbsenteePercentage": "40%"
+  },
+  {
+    "County": "Gibson",
+    "RegisteredVoters": 24237,
+    "VotersVoting": 10330,
+    "TurnOutPercentage": "43%",
+    "Electionday": 7517,
+    "Absentee": 2813,
+    "AbsenteePercentage": "27%"
+  },
+  {
+    "County": "Grant",
+    "RegisteredVoters": 44071,
+    "VotersVoting": 16045,
+    "TurnOutPercentage": "36%",
+    "Electionday": 11115,
+    "Absentee": 4930,
+    "AbsenteePercentage": "31%"
+  },
+  {
+    "County": "Greene",
+    "RegisteredVoters": 21167,
+    "VotersVoting": 9587,
+    "TurnOutPercentage": "45%",
+    "Electionday": 6578,
+    "Absentee": 3009,
+    "AbsenteePercentage": "31%"
+  },
+  {
+    "County": "Hamilton",
+    "RegisteredVoters": 270921,
+    "VotersVoting": 130355,
+    "TurnOutPercentage": "48%",
+    "Electionday": 77171,
+    "Absentee": 53184,
+    "AbsenteePercentage": "41%"
+  },
+  {
+    "County": "Hancock",
+    "RegisteredVoters": 61136,
+    "VotersVoting": 24092,
+    "TurnOutPercentage": "39%",
+    "Electionday": 11175,
+    "Absentee": 12917,
+    "AbsenteePercentage": "54%"
+  },
+  {
+    "County": "Harrison",
+    "RegisteredVoters": 29689,
+    "VotersVoting": 14108,
+    "TurnOutPercentage": "48%",
+    "Electionday": 10771,
+    "Absentee": 3337,
+    "AbsenteePercentage": "24%"
+  },
+  {
+    "County": "Hendricks",
+    "RegisteredVoters": 126714,
+    "VotersVoting": 49012,
+    "TurnOutPercentage": "39%",
+    "Electionday": 29925,
+    "Absentee": 19087,
+    "AbsenteePercentage": "39%"
+  },
+  {
+    "County": "Henry",
+    "RegisteredVoters": 31198,
+    "VotersVoting": 13674,
+    "TurnOutPercentage": "44%",
+    "Electionday": 10342,
+    "Absentee": 3332,
+    "AbsenteePercentage": "24%"
+  },
+  {
+    "County": "Howard",
+    "RegisteredVoters": 60977,
+    "VotersVoting": 25096,
+    "TurnOutPercentage": "41%",
+    "Electionday": 14992,
+    "Absentee": 10104,
+    "AbsenteePercentage": "40%"
+  },
+  {
+    "County": "Huntington",
+    "RegisteredVoters": 24315,
+    "VotersVoting": 11489,
+    "TurnOutPercentage": "47%",
+    "Electionday": 6579,
+    "Absentee": 4910,
+    "AbsenteePercentage": "43%"
+  },
+  {
+    "County": "Jackson",
+    "RegisteredVoters": 28446,
+    "VotersVoting": 11412,
+    "TurnOutPercentage": "40%",
+    "Electionday": 7616,
+    "Absentee": 3796,
+    "AbsenteePercentage": "33%"
+  },
+  {
+    "County": "Jasper",
+    "RegisteredVoters": 23057,
+    "VotersVoting": 9403,
+    "TurnOutPercentage": "41%",
+    "Electionday": 6981,
+    "Absentee": 2422,
+    "AbsenteePercentage": "26%"
+  },
+  {
+    "County": "Jay",
+    "RegisteredVoters": 12200,
+    "VotersVoting": 5520,
+    "TurnOutPercentage": "45%",
+    "Electionday": 3304,
+    "Absentee": 2216,
+    "AbsenteePercentage": "40%"
+  },
+  {
+    "County": "Jefferson",
+    "RegisteredVoters": 22059,
+    "VotersVoting": 10004,
+    "TurnOutPercentage": "45%",
+    "Electionday": 6705,
+    "Absentee": 3299,
+    "AbsenteePercentage": "33%"
+  },
+  {
+    "County": "Jennings",
+    "RegisteredVoters": 18238,
+    "VotersVoting": 8157,
+    "TurnOutPercentage": "45%",
+    "Electionday": 6541,
+    "Absentee": 1616,
+    "AbsenteePercentage": "20%"
+  },
+  {
+    "County": "Johnson",
+    "RegisteredVoters": 115837,
+    "VotersVoting": 45395,
+    "TurnOutPercentage": "39%",
+    "Electionday": 24173,
+    "Absentee": 21222,
+    "AbsenteePercentage": "47%"
+  },
+  {
+    "County": "Knox",
+    "RegisteredVoters": 22379,
+    "VotersVoting": 10431,
+    "TurnOutPercentage": "47%",
+    "Electionday": 6610,
+    "Absentee": 3821,
+    "AbsenteePercentage": "37%"
+  },
+  {
+    "County": "Kosciusko",
+    "RegisteredVoters": 54340,
+    "VotersVoting": 23280,
+    "TurnOutPercentage": "43%",
+    "Electionday": 18856,
+    "Absentee": 4424,
+    "AbsenteePercentage": "19%"
+  },
+  {
+    "County": "LaGrange",
+    "RegisteredVoters": 16659,
+    "VotersVoting": 6701,
+    "TurnOutPercentage": "40%",
+    "Electionday": 5490,
+    "Absentee": 1211,
+    "AbsenteePercentage": "18%"
+  },
+  {
+    "County": "Lake",
+    "RegisteredVoters": 369255,
+    "VotersVoting": 136315,
+    "TurnOutPercentage": "37%",
+    "Electionday": 89145,
+    "Absentee": 47170,
+    "AbsenteePercentage": "35%"
+  },
+  {
+    "County": "LaPorte",
+    "RegisteredVoters": 79451,
+    "VotersVoting": 32554,
+    "TurnOutPercentage": "41%",
+    "Electionday": 22154,
+    "Absentee": 10400,
+    "AbsenteePercentage": "32%"
+  },
+  {
+    "County": "Lawrence",
+    "RegisteredVoters": 33348,
+    "VotersVoting": 13000,
+    "TurnOutPercentage": "39%",
+    "Electionday": 6743,
+    "Absentee": 6257,
+    "AbsenteePercentage": "48%"
+  },
+  {
+    "County": "Madison",
+    "RegisteredVoters": 90563,
+    "VotersVoting": 36198,
+    "TurnOutPercentage": "40%",
+    "Electionday": 20025,
+    "Absentee": 16173,
+    "AbsenteePercentage": "45%"
+  },
+  {
+    "County": "Marion",
+    "RegisteredVoters": 658578,
+    "VotersVoting": 224149,
+    "TurnOutPercentage": "34%",
+    "Electionday": 151718,
+    "Absentee": 72431,
+    "AbsenteePercentage": "32%"
+  },
+  {
+    "County": "Marshall",
+    "RegisteredVoters": 29743,
+    "VotersVoting": 12933,
+    "TurnOutPercentage": "43%",
+    "Electionday": 8832,
+    "Absentee": 4101,
+    "AbsenteePercentage": "32%"
+  },
+  {
+    "County": "Martin",
+    "RegisteredVoters": 7706,
+    "VotersVoting": 3606,
+    "TurnOutPercentage": "47%",
+    "Electionday": 2576,
+    "Absentee": 1030,
+    "AbsenteePercentage": "29%"
+  },
+  {
+    "County": "Miami",
+    "RegisteredVoters": 22004,
+    "VotersVoting": 8642,
+    "TurnOutPercentage": "39%",
+    "Electionday": 4403,
+    "Absentee": 4239,
+    "AbsenteePercentage": "49%"
+  },
+  {
+    "County": "Monroe",
+    "RegisteredVoters": 98406,
+    "VotersVoting": 40489,
+    "TurnOutPercentage": "41%",
+    "Electionday": 22681,
+    "Absentee": 17808,
+    "AbsenteePercentage": "44%"
+  },
+  {
+    "County": "Montgomery",
+    "RegisteredVoters": 25650,
+    "VotersVoting": 9927,
+    "TurnOutPercentage": "39%",
+    "Electionday": 5971,
+    "Absentee": 3956,
+    "AbsenteePercentage": "40%"
+  },
+  {
+    "County": "Morgan",
+    "RegisteredVoters": 52501,
+    "VotersVoting": 21572,
+    "TurnOutPercentage": "41%",
+    "Electionday": 11602,
+    "Absentee": 9970,
+    "AbsenteePercentage": "46%"
+  },
+  {
+    "County": "Newton",
+    "RegisteredVoters": 10137,
+    "VotersVoting": 4082,
+    "TurnOutPercentage": "40%",
+    "Electionday": 3477,
+    "Absentee": 605,
+    "AbsenteePercentage": "15%"
+  },
+  {
+    "County": "Noble",
+    "RegisteredVoters": 30183,
+    "VotersVoting": 11675,
+    "TurnOutPercentage": "39%",
+    "Electionday": 7724,
+    "Absentee": 3951,
+    "AbsenteePercentage": "34%"
+  },
+  {
+    "County": "Ohio",
+    "RegisteredVoters": 5124,
+    "VotersVoting": 1997,
+    "TurnOutPercentage": "39%",
+    "Electionday": 1320,
+    "Absentee": 677,
+    "AbsenteePercentage": "34%"
+  },
+  {
+    "County": "Orange",
+    "RegisteredVoters": 14032,
+    "VotersVoting": 5500,
+    "TurnOutPercentage": "39%",
+    "Electionday": 4266,
+    "Absentee": 1234,
+    "AbsenteePercentage": "22%"
+  },
+  {
+    "County": "Owen",
+    "RegisteredVoters": 15057,
+    "VotersVoting": 6301,
+    "TurnOutPercentage": "42%",
+    "Electionday": 3778,
+    "Absentee": 2523,
+    "AbsenteePercentage": "40%"
+  },
+  {
+    "County": "Parke",
+    "RegisteredVoters": 10137,
+    "VotersVoting": 4568,
+    "TurnOutPercentage": "45%",
+    "Electionday": 3307,
+    "Absentee": 1261,
+    "AbsenteePercentage": "28%"
+  },
+  {
+    "County": "Perry",
+    "RegisteredVoters": 13266,
+    "VotersVoting": 6389,
+    "TurnOutPercentage": "48%",
+    "Electionday": 3477,
+    "Absentee": 2912,
+    "AbsenteePercentage": "46%"
+  },
+  {
+    "County": "Pike",
+    "RegisteredVoters": 9088,
+    "VotersVoting": 3742,
+    "TurnOutPercentage": "41%",
+    "Electionday": 2325,
+    "Absentee": 1417,
+    "AbsenteePercentage": "38%"
+  },
+  {
+    "County": "Porter",
+    "RegisteredVoters": 133292,
+    "VotersVoting": 58844,
+    "TurnOutPercentage": "44%",
+    "Electionday": 35413,
+    "Absentee": 23431,
+    "AbsenteePercentage": "40%"
+  },
+  {
+    "County": "Posey",
+    "RegisteredVoters": 18503,
+    "VotersVoting": 8889,
+    "TurnOutPercentage": "48%",
+    "Electionday": 6052,
+    "Absentee": 2837,
+    "AbsenteePercentage": "32%"
+  },
+  {
+    "County": "Pulaski",
+    "RegisteredVoters": 9119,
+    "VotersVoting": 3851,
+    "TurnOutPercentage": "42%",
+    "Electionday": 2659,
+    "Absentee": 1192,
+    "AbsenteePercentage": "31%"
+  },
+  {
+    "County": "Putnam",
+    "RegisteredVoters": 24404,
+    "VotersVoting": 10058,
+    "TurnOutPercentage": "41%",
+    "Electionday": 6856,
+    "Absentee": 3202,
+    "AbsenteePercentage": "32%"
+  },
+  {
+    "County": "Randolph",
+    "RegisteredVoters": 16552,
+    "VotersVoting": 7012,
+    "TurnOutPercentage": "42%",
+    "Electionday": 4959,
+    "Absentee": 2053,
+    "AbsenteePercentage": "29%"
+  },
+  {
+    "County": "Ripley",
+    "RegisteredVoters": 21594,
+    "VotersVoting": 8464,
+    "TurnOutPercentage": "39%",
+    "Electionday": 6756,
+    "Absentee": 1708,
+    "AbsenteePercentage": "20%"
+  },
+  {
+    "County": "Rush",
+    "RegisteredVoters": 11396,
+    "VotersVoting": 4961,
+    "TurnOutPercentage": "44%",
+    "Electionday": 3742,
+    "Absentee": 1219,
+    "AbsenteePercentage": "25%"
+  },
+  {
+    "County": "Scott",
+    "RegisteredVoters": 17187,
+    "VotersVoting": 7112,
+    "TurnOutPercentage": "41%",
+    "Electionday": 5021,
+    "Absentee": 2091,
+    "AbsenteePercentage": "29%"
+  },
+  {
+    "County": "Shelby",
+    "RegisteredVoters": 31034,
+    "VotersVoting": 11702,
+    "TurnOutPercentage": "38%",
+    "Electionday": 8012,
+    "Absentee": 3690,
+    "AbsenteePercentage": "32%"
+  },
+  {
+    "County": "Spencer",
+    "RegisteredVoters": 15161,
+    "VotersVoting": 7764,
+    "TurnOutPercentage": "51%",
+    "Electionday": 4898,
+    "Absentee": 2866,
+    "AbsenteePercentage": "37%"
+  },
+  {
+    "County": "St. Joseph",
+    "RegisteredVoters": 196919,
+    "VotersVoting": 72672,
+    "TurnOutPercentage": "37%",
+    "Electionday": 50332,
+    "Absentee": 22340,
+    "AbsenteePercentage": "31%"
+  },
+  {
+    "County": "Starke",
+    "RegisteredVoters": 17647,
+    "VotersVoting": 7116,
+    "TurnOutPercentage": "40%",
+    "Electionday": 4983,
+    "Absentee": 2133,
+    "AbsenteePercentage": "30%"
+  },
+  {
+    "County": "Steuben",
+    "RegisteredVoters": 25822,
+    "VotersVoting": 10401,
+    "TurnOutPercentage": "40%",
+    "Electionday": 6979,
+    "Absentee": 3422,
+    "AbsenteePercentage": "33%"
+  },
+  {
+    "County": "Sullivan",
+    "RegisteredVoters": 14391,
+    "VotersVoting": 6592,
+    "TurnOutPercentage": "46%",
+    "Electionday": 4822,
+    "Absentee": 1770,
+    "AbsenteePercentage": "27%"
+  },
+  {
+    "County": "Switzerland",
+    "RegisteredVoters": 7162,
+    "VotersVoting": 2725,
+    "TurnOutPercentage": "38%",
+    "Electionday": 1058,
+    "Absentee": 1667,
+    "AbsenteePercentage": "61%"
+  },
+  {
+    "County": "Tippecanoe",
+    "RegisteredVoters": 124198,
+    "VotersVoting": 39932,
+    "TurnOutPercentage": "32%",
+    "Electionday": 21306,
+    "Absentee": 18626,
+    "AbsenteePercentage": "47%"
+  },
+  {
+    "County": "Tipton",
+    "RegisteredVoters": 11855,
+    "VotersVoting": 5430,
+    "TurnOutPercentage": "46%",
+    "Electionday": 3821,
+    "Absentee": 1609,
+    "AbsenteePercentage": "30%"
+  },
+  {
+    "County": "Union",
+    "RegisteredVoters": 4994,
+    "VotersVoting": 2547,
+    "TurnOutPercentage": "51%",
+    "Electionday": 1666,
+    "Absentee": 881,
+    "AbsenteePercentage": "35%"
+  },
+  {
+    "County": "Vanderburgh",
+    "RegisteredVoters": 128820,
+    "VotersVoting": 47815,
+    "TurnOutPercentage": "37%",
+    "Electionday": 25872,
+    "Absentee": 21943,
+    "AbsenteePercentage": "46%"
+  },
+  {
+    "County": "Vermillion",
+    "RegisteredVoters": 10686,
+    "VotersVoting": 5252,
+    "TurnOutPercentage": "49%",
+    "Electionday": 3986,
+    "Absentee": 1266,
+    "AbsenteePercentage": "24%"
+  },
+  {
+    "County": "Vigo",
+    "RegisteredVoters": 75044,
+    "VotersVoting": 27400,
+    "TurnOutPercentage": "37%",
+    "Electionday": 12420,
+    "Absentee": 14980,
+    "AbsenteePercentage": "55%"
+  },
+  {
+    "County": "Wabash",
+    "RegisteredVoters": 20967,
+    "VotersVoting": 10040,
+    "TurnOutPercentage": "48%",
+    "Electionday": 5806,
+    "Absentee": 4234,
+    "AbsenteePercentage": "42%"
+  },
+  {
+    "County": "Warren",
+    "RegisteredVoters": 6198,
+    "VotersVoting": 2841,
+    "TurnOutPercentage": "46%",
+    "Electionday": 2165,
+    "Absentee": 676,
+    "AbsenteePercentage": "24%"
+  },
+  {
+    "County": "Warrick",
+    "RegisteredVoters": 47938,
+    "VotersVoting": 20312,
+    "TurnOutPercentage": "42%",
+    "Electionday": 12230,
+    "Absentee": 8082,
+    "AbsenteePercentage": "40%"
+  },
+  {
+    "County": "Washington",
+    "RegisteredVoters": 19121,
+    "VotersVoting": 8139,
+    "TurnOutPercentage": "43%",
+    "Electionday": 6544,
+    "Absentee": 1595,
+    "AbsenteePercentage": "20%"
+  },
+  {
+    "County": "Wayne",
+    "RegisteredVoters": 43277,
+    "VotersVoting": 16787,
+    "TurnOutPercentage": "39%",
+    "Electionday": 8712,
+    "Absentee": 8075,
+    "AbsenteePercentage": "48%"
+  },
+  {
+    "County": "Wells",
+    "RegisteredVoters": 19343,
+    "VotersVoting": 9262,
+    "TurnOutPercentage": "48%",
+    "Electionday": 5884,
+    "Absentee": 3378,
+    "AbsenteePercentage": "36%"
+  },
+  {
+    "County": "White",
+    "RegisteredVoters": 17426,
+    "VotersVoting": 6828,
+    "TurnOutPercentage": "39%",
+    "Electionday": 4195,
+    "Absentee": 2633,
+    "AbsenteePercentage": "39%"
+  },
+  {
+    "County": "Whitley",
+    "RegisteredVoters": 24132,
+    "VotersVoting": 11704,
+    "TurnOutPercentage": "48%",
+    "Electionday": 8074,
+    "Absentee": 3630,
+    "AbsenteePercentage": "31%"
+  },
+  {
+    "County": "Total",
+    "RegisteredVoters": 4760880,
+    "VotersVoting": 1887024,
+    "TurnOutPercentage": "40%",
+    "Electionday": 1198377,
+    "Absentee": 688647,
+    "AbsenteePercentage": "36%"
+  }
+]

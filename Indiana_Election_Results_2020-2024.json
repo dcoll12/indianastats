@@ -1,0 +1,5643 @@
+{
+  "source": "Indiana Election Results 2020-2024",
+  "statewide_races": {
+    "2020": {
+      "U.S. President": [
+        {
+          "candidate": "Donald Trump",
+          "party": "R",
+          "total_votes": 1729519,
+          "pct_votes": 57.1,
+          "winner": true
+        },
+        {
+          "candidate": "Joe Biden",
+          "party": "D",
+          "total_votes": 1242416,
+          "pct_votes": 41.0,
+          "winner": false
+        },
+        {
+          "candidate": "Jo Jorgensen",
+          "party": "LB",
+          "total_votes": 59232,
+          "pct_votes": 2.0,
+          "winner": false
+        }
+      ],
+      "Indiana Governor": [
+        {
+          "candidate": "Eric Holcomb",
+          "party": "R",
+          "total_votes": 1706727,
+          "pct_votes": 56.5,
+          "winner": true
+        },
+        {
+          "candidate": "Woodrow Myers",
+          "party": "D",
+          "total_votes": 968094,
+          "pct_votes": 32.1,
+          "winner": false
+        },
+        {
+          "candidate": "Donald Rainwater",
+          "party": "LB",
+          "total_votes": 345567,
+          "pct_votes": 11.4,
+          "winner": false
+        }
+      ]
+    },
+    "2022": {
+      "U.S. Senate": [
+        {
+          "candidate": "Todd Young",
+          "party": "R",
+          "total_votes": 1088428,
+          "pct_votes": 58.7,
+          "winner": true
+        },
+        {
+          "candidate": "Thomas McDermott",
+          "party": "D",
+          "total_votes": 702873,
+          "pct_votes": 37.9,
+          "winner": false
+        },
+        {
+          "candidate": "James Sceniak",
+          "party": "LB",
+          "total_votes": 63750,
+          "pct_votes": 3.4,
+          "winner": false
+        }
+      ]
+    },
+    "2024": {
+      "U.S. President": [
+        {
+          "candidate": "Donald Trump",
+          "party": "R",
+          "total_votes": 1715058,
+          "pct_votes": 58.6,
+          "winner": true
+        },
+        {
+          "candidate": "Kamala Harris",
+          "party": "D",
+          "total_votes": 1160146,
+          "pct_votes": 39.7,
+          "winner": false
+        },
+        {
+          "candidate": "Robert Kennedy Jr.",
+          "party": "O",
+          "total_votes": 29219,
+          "pct_votes": 1.0,
+          "winner": false
+        }
+      ],
+      "Indiana Governor": [
+        {
+          "candidate": "Mike Braun",
+          "party": "R",
+          "total_votes": 1561279,
+          "pct_votes": 54.4,
+          "winner": true
+        },
+        {
+          "candidate": "Jennifer McCormick",
+          "party": "D",
+          "total_votes": 1179967,
+          "pct_votes": 41.1,
+          "winner": false
+        }
+      ],
+      "U.S. Senate": [
+        {
+          "candidate": "Jim Banks",
+          "party": "R",
+          "total_votes": 1654350,
+          "pct_votes": 58.7,
+          "winner": true
+        },
+        {
+          "candidate": "Valerie McCray",
+          "party": "D",
+          "total_votes": 1093341,
+          "pct_votes": 38.8,
+          "winner": false
+        }
+      ]
+    }
+  },
+  "us_house": {
+    "2020": {
+      "district_1": [
+        {
+          "candidate": "Frank Mrvan",
+          "party": "D",
+          "total_votes": 185180,
+          "pct_votes": 56.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Mark Leyva",
+          "party": "R",
+          "total_votes": 132247,
+          "pct_votes": 40.4,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Michael Strauss",
+          "party": "LB",
+          "total_votes": 9521,
+          "pct_votes": 2.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_2": [
+        {
+          "candidate": "Jackie Walorski",
+          "party": "R",
+          "total_votes": 183601,
+          "pct_votes": 61.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Patricia Hackett",
+          "party": "D",
+          "total_votes": 114967,
+          "pct_votes": 38.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_3": [
+        {
+          "candidate": "Jim Banks",
+          "party": "R",
+          "total_votes": 220989,
+          "pct_votes": 67.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Chip Coldiron",
+          "party": "D",
+          "total_votes": 104762,
+          "pct_votes": 32.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_4": [
+        {
+          "candidate": "Jim Baird",
+          "party": "R",
+          "total_votes": 225531,
+          "pct_votes": 66.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Joe Mackey",
+          "party": "D",
+          "total_votes": 112984,
+          "pct_votes": 33.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_5": [
+        {
+          "candidate": "Victoria Spartz",
+          "party": "R",
+          "total_votes": 208212,
+          "pct_votes": 50.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Christina Hale",
+          "party": "D",
+          "total_votes": 191226,
+          "pct_votes": 45.9,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Kenneth Tucker",
+          "party": "LB",
+          "total_votes": 16788,
+          "pct_votes": 4.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_6": [
+        {
+          "candidate": "Greg Pence",
+          "party": "R",
+          "total_votes": 225319,
+          "pct_votes": 68.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jeannine Lake",
+          "party": "D",
+          "total_votes": 91103,
+          "pct_votes": 27.8,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Tom Ferkinhoff",
+          "party": "LB",
+          "total_votes": 11791,
+          "pct_votes": 3.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_7": [
+        {
+          "candidate": "Andre Carson",
+          "party": "D",
+          "total_votes": 176422,
+          "pct_votes": 62.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Susan Smith",
+          "party": "R",
+          "total_votes": 106146,
+          "pct_votes": 37.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_8": [
+        {
+          "candidate": "Larry Bucshon",
+          "party": "R",
+          "total_votes": 214643,
+          "pct_votes": 66.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Thomasina Marsili",
+          "party": "D",
+          "total_votes": 95691,
+          "pct_votes": 29.8,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "James Rodenberger",
+          "party": "LB",
+          "total_votes": 10283,
+          "pct_votes": 3.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_9": [
+        {
+          "candidate": "Trey Hollingsworth",
+          "party": "R",
+          "total_votes": 222057,
+          "pct_votes": 61.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Andy Ruff",
+          "party": "D",
+          "total_votes": 122566,
+          "pct_votes": 34.1,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Tonya Millis",
+          "party": "LB",
+          "total_votes": 14415,
+          "pct_votes": 4.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ]
+    },
+    "2022": {
+      "district_1": [
+        {
+          "candidate": "Frank J. Mrvan",
+          "party": "D",
+          "total_votes": 112539,
+          "pct_votes": 52.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jennifer-Ruth Green",
+          "party": "R",
+          "total_votes": 100486,
+          "pct_votes": 47.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_2": [
+        {
+          "candidate": "Rudy Yakym",
+          "party": "R",
+          "total_votes": 125222,
+          "pct_votes": 64.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Paul Steury",
+          "party": "D",
+          "total_votes": 62726,
+          "pct_votes": 32.4,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "William Henry",
+          "party": "LB",
+          "total_votes": 5782,
+          "pct_votes": 3.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_3": [
+        {
+          "candidate": "Jim Banks",
+          "party": "R",
+          "total_votes": 131252,
+          "pct_votes": 65.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Gary Snyder",
+          "party": "D",
+          "total_votes": 60312,
+          "pct_votes": 30.0,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Nathan Gotsch",
+          "party": "I",
+          "total_votes": 9354,
+          "pct_votes": 4.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_4": [
+        {
+          "candidate": "Jim Baird",
+          "party": "R",
+          "total_votes": 134442,
+          "pct_votes": 68.2,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Roger Day",
+          "party": "D",
+          "total_votes": 62668,
+          "pct_votes": 31.8,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_5": [
+        {
+          "candidate": "Victoria Spartz",
+          "party": "R",
+          "total_votes": 146496,
+          "pct_votes": 61.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jeannine Lake",
+          "party": "D",
+          "total_votes": 93373,
+          "pct_votes": 38.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_6": [
+        {
+          "candidate": "Greg Pence",
+          "party": "R",
+          "total_votes": 130482,
+          "pct_votes": 67.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Cynthia Wirth",
+          "party": "D",
+          "total_votes": 62743,
+          "pct_votes": 32.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_7": [
+        {
+          "candidate": "Andre Carson",
+          "party": "D",
+          "total_votes": 116870,
+          "pct_votes": 66.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Angela Grabovsky",
+          "party": "R",
+          "total_votes": 53487,
+          "pct_votes": 30.6,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Gavin Maple",
+          "party": "LB",
+          "total_votes": 4227,
+          "pct_votes": 2.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_8": [
+        {
+          "candidate": "Larry Bucshon",
+          "party": "R",
+          "total_votes": 141746,
+          "pct_votes": 65.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ray McCormick",
+          "party": "D",
+          "total_votes": 67947,
+          "pct_votes": 31.5,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Andrew Horning",
+          "party": "LB",
+          "total_votes": 5930,
+          "pct_votes": 2.8,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_9": [
+        {
+          "candidate": "Erin Houchin",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ]
+    },
+    "2024": {
+      "district_1": [
+        {
+          "candidate": "Frank Mrvan",
+          "party": "D",
+          "total_votes": 172118,
+          "pct_votes": 53.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Randy Niemeyer",
+          "party": "R",
+          "total_votes": 144886,
+          "pct_votes": 45.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_2": [
+        {
+          "candidate": "Rudy Yakym",
+          "party": "R",
+          "total_votes": 184226,
+          "pct_votes": 62.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Lori Camp",
+          "party": "D",
+          "total_votes": 101405,
+          "pct_votes": 34.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_3": [
+        {
+          "candidate": "Marlin Stutzman",
+          "party": "R",
+          "total_votes": 202610,
+          "pct_votes": 65.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kiley Adolph",
+          "party": "D",
+          "total_votes": 97846,
+          "pct_votes": 31.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_4": [
+        {
+          "candidate": "Jim Baird",
+          "party": "R",
+          "total_votes": 210250,
+          "pct_votes": 64.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Derrick Holder",
+          "party": "D",
+          "total_votes": 100173,
+          "pct_votes": 30.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_5": [
+        {
+          "candidate": "Victoria Spartz",
+          "party": "R",
+          "total_votes": 202549,
+          "pct_votes": 56.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Deborah Pickett",
+          "party": "D",
+          "total_votes": 136180,
+          "pct_votes": 38.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_6": [
+        {
+          "candidate": "Jefferson Shreve",
+          "party": "R",
+          "total_votes": 200494,
+          "pct_votes": 63.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Cynthia Wirth",
+          "party": "D",
+          "total_votes": 99361,
+          "pct_votes": 31.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_7": [
+        {
+          "candidate": "Andre Carson",
+          "party": "D",
+          "total_votes": 185733,
+          "pct_votes": 68.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "John Schmitz",
+          "party": "R",
+          "total_votes": 78707,
+          "pct_votes": 29.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_8": [
+        {
+          "candidate": "Mark Messmer",
+          "party": "R",
+          "total_votes": 219843,
+          "pct_votes": 68.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Erik Hurt",
+          "party": "D",
+          "total_votes": 95219,
+          "pct_votes": 29.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_9": [
+        {
+          "candidate": "Erin Houchin",
+          "party": "R",
+          "total_votes": 220576,
+          "pct_votes": 64.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Timothy Peck",
+          "party": "D",
+          "total_votes": 111901,
+          "pct_votes": 32.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ]
+    }
+  },
+  "indiana_state_senate": {
+    "2022": {
+      "district_1": [
+        {
+          "candidate": "Daniel Dernulc",
+          "party": "R",
+          "total_votes": 23470,
+          "pct_votes": 52.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Michael Griffin",
+          "party": "D",
+          "total_votes": 21367,
+          "pct_votes": 47.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_4": [
+        {
+          "candidate": "Rodney Pol",
+          "party": "D",
+          "total_votes": 20288,
+          "pct_votes": 52.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jeff Larson",
+          "party": "R",
+          "total_votes": 18499,
+          "pct_votes": 47.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ]
+    },
+    "2024": {
+      "district_2": [
+        {
+          "candidate": "Lonnie Randolph",
+          "party": "D",
+          "total_votes": 27967,
+          "pct_votes": 65.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Humberto Prado",
+          "party": "R",
+          "total_votes": 14630,
+          "pct_votes": 34.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_3": [
+        {
+          "candidate": "Mark Spencer",
+          "party": "D",
+          "total_votes": 33379,
+          "pct_votes": 73.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Will Miller",
+          "party": "R",
+          "total_votes": 12273,
+          "pct_votes": 26.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_5": [
+        {
+          "candidate": "Ed Charbonneau",
+          "party": "R",
+          "total_votes": 43467,
+          "pct_votes": 66.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Leslie Bamesberger",
+          "party": "D",
+          "total_votes": 22398,
+          "pct_votes": 34.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_7": [
+        {
+          "candidate": "Brian Buchanan",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_8": [
+        {
+          "candidate": "Mike Bohacek",
+          "party": "R",
+          "total_votes": 42380,
+          "pct_votes": 71.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Leon Smith",
+          "party": "D",
+          "total_votes": 16638,
+          "pct_votes": 28.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_9": [
+        {
+          "candidate": "Ryan Mishler",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_10": [
+        {
+          "candidate": "David Niezgodski",
+          "party": "D",
+          "total_votes": 30396,
+          "pct_votes": 77.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Tim Cotton",
+          "party": "LB",
+          "total_votes": 8680,
+          "pct_votes": 22.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_12": [
+        {
+          "candidate": "Blake Doriot",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_13": [
+        {
+          "candidate": "Susan Glick",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_16": [
+        {
+          "candidate": "Justin Busch",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_18": [
+        {
+          "candidate": "Stacey Donato",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_20": [
+        {
+          "candidate": "Scott Baldwin",
+          "party": "R",
+          "total_votes": 43873,
+          "pct_votes": 59.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Joel Levi",
+          "party": "D",
+          "total_votes": 29374,
+          "pct_votes": 40.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_24": [
+        {
+          "candidate": "Brett Clark",
+          "party": "R",
+          "total_votes": 40331,
+          "pct_votes": 65.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Veronica Pejril",
+          "party": "D",
+          "total_votes": 21181,
+          "pct_votes": 34.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_28": [
+        {
+          "candidate": "Michael Crider",
+          "party": "R",
+          "total_votes": 44663,
+          "pct_votes": 78.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Travis Chittum",
+          "party": "LB",
+          "total_votes": 12629,
+          "pct_votes": 22.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_30": [
+        {
+          "candidate": "Fady Qaddoura",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_32": [
+        {
+          "candidate": "Aaron Freeman",
+          "party": "R",
+          "total_votes": 34226,
+          "pct_votes": 60.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Katrina Owens",
+          "party": "D",
+          "total_votes": 22352,
+          "pct_votes": 39.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_33": [
+        {
+          "candidate": "Greg Taylor",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_34": [
+        {
+          "candidate": "La Keisha Jackson",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_35": [
+        {
+          "candidate": "Michael Young",
+          "party": "R",
+          "total_votes": 24665,
+          "pct_votes": 56.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jessica McCormick",
+          "party": "D",
+          "total_votes": 18681,
+          "pct_votes": 43.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_36": [
+        {
+          "candidate": "Cynthia Carrasco",
+          "party": "R",
+          "total_votes": 30242,
+          "pct_votes": 62.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Suzanne Fortenberry",
+          "party": "D",
+          "total_votes": 18181,
+          "pct_votes": 37.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_37": [
+        {
+          "candidate": "Rodric Bray",
+          "party": "R",
+          "total_votes": 50174,
+          "pct_votes": 75.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kimberly Schofield",
+          "party": "D",
+          "total_votes": 15923,
+          "pct_votes": 24.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_40": [
+        {
+          "candidate": "Shelli Yoder",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ]
+    }
+  },
+  "indiana_state_house": {
+    "2020": {
+      "district_1": [
+        {
+          "candidate": "Carolyn Jackson",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_2": [
+        {
+          "candidate": "Earl Harris",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_3": [
+        {
+          "candidate": "Ragen Hatcher",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_4": [
+        {
+          "candidate": "Ed Soliday",
+          "party": "R",
+          "total_votes": 20072,
+          "pct_votes": 54.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Debora Porter",
+          "party": "D",
+          "total_votes": 16704,
+          "pct_votes": 45.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_5": [
+        {
+          "candidate": "Dale DeVon",
+          "party": "R",
+          "total_votes": 14617,
+          "pct_votes": 50.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Donald Westerhausen",
+          "party": "D",
+          "total_votes": 14190,
+          "pct_votes": 49.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_6": [
+        {
+          "candidate": "Maureen Bauer",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_7": [
+        {
+          "candidate": "Jake Teshka",
+          "party": "R",
+          "total_votes": 14668,
+          "pct_votes": 54.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ross Deal",
+          "party": "D",
+          "total_votes": 12498,
+          "pct_votes": 46.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_8": [
+        {
+          "candidate": "Ryan Dvorak",
+          "party": "D",
+          "total_votes": 16554,
+          "pct_votes": 56.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Timothy Jaycox",
+          "party": "R",
+          "total_votes": 12568,
+          "pct_votes": 43.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_9": [
+        {
+          "candidate": "Patricia Boy",
+          "party": "D",
+          "total_votes": 15781,
+          "pct_votes": 56.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Dion Bergeron",
+          "party": "R",
+          "total_votes": 12096,
+          "pct_votes": 43.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_10": [
+        {
+          "candidate": "Charles Moseley",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_11": [
+        {
+          "candidate": "Michael Aylesworth",
+          "party": "R",
+          "total_votes": 25742,
+          "pct_votes": 68.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Keegan Damron",
+          "party": "D",
+          "total_votes": 11697,
+          "pct_votes": 31.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_12": [
+        {
+          "candidate": "Mike Andrade",
+          "party": "D",
+          "total_votes": 18733,
+          "pct_votes": 57.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Tom Wichlinski",
+          "party": "R",
+          "total_votes": 13730,
+          "pct_votes": 42.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_13": [
+        {
+          "candidate": "Sharon Negele",
+          "party": "R",
+          "total_votes": 22080,
+          "pct_votes": 72.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Loretta Barnes",
+          "party": "D",
+          "total_votes": 8256,
+          "pct_votes": 27.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_14": [
+        {
+          "candidate": "Vernon Smith",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_15": [
+        {
+          "candidate": "Hal Slager",
+          "party": "R",
+          "total_votes": 17813,
+          "pct_votes": 51.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Chris Chyung",
+          "party": "D",
+          "total_votes": 16751,
+          "pct_votes": 48.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_16": [
+        {
+          "candidate": "Douglas Gutwein",
+          "party": "R",
+          "total_votes": 21686,
+          "pct_votes": 74.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Michael Lovely",
+          "party": "D",
+          "total_votes": 7573,
+          "pct_votes": 25.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_17": [
+        {
+          "candidate": "Jack Jordan",
+          "party": "R",
+          "total_votes": 19955,
+          "pct_votes": 74.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Bianka Tinklenberg",
+          "party": "D",
+          "total_votes": 6748,
+          "pct_votes": 25.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_18": [
+        {
+          "candidate": "Craig Snow",
+          "party": "R",
+          "total_votes": 22637,
+          "pct_votes": 78.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Chad Harris",
+          "party": "D",
+          "total_votes": 6353,
+          "pct_votes": 21.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_19": [
+        {
+          "candidate": "Julie Olthoff",
+          "party": "R",
+          "total_votes": 19496,
+          "pct_votes": 51.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Lisa Beck",
+          "party": "D",
+          "total_votes": 18135,
+          "pct_votes": 48.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_20": [
+        {
+          "candidate": "Jim Pressel",
+          "party": "R",
+          "total_votes": 20028,
+          "pct_votes": 68.2,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Tim Gust",
+          "party": "D",
+          "total_votes": 9322,
+          "pct_votes": 31.8,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_21": [
+        {
+          "candidate": "Timothy Wesco",
+          "party": "R",
+          "total_votes": 15346,
+          "pct_votes": 64.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ryan Liedtky",
+          "party": "D",
+          "total_votes": 8446,
+          "pct_votes": 35.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_22": [
+        {
+          "candidate": "Curt Nisly",
+          "party": "R",
+          "total_votes": 20694,
+          "pct_votes": 72.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kelly Thompson",
+          "party": "D",
+          "total_votes": 8003,
+          "pct_votes": 27.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_23": [
+        {
+          "candidate": "Ethan Manning",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_24": [
+        {
+          "candidate": "Donna Schaibley",
+          "party": "R",
+          "total_votes": 30321,
+          "pct_votes": 58.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Naomi Bechtold",
+          "party": "D",
+          "total_votes": 21853,
+          "pct_votes": 41.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_25": [
+        {
+          "candidate": "Donald Lehe",
+          "party": "R",
+          "total_votes": 22475,
+          "pct_votes": 70.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Alex Sabol",
+          "party": "D",
+          "total_votes": 9500,
+          "pct_votes": 29.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_26": [
+        {
+          "candidate": "Chris Campbell",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_27": [
+        {
+          "candidate": "Sheila Klinker",
+          "party": "D",
+          "total_votes": 14631,
+          "pct_votes": 62.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "James Hass",
+          "party": "R",
+          "total_votes": 8934,
+          "pct_votes": 37.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_28": [
+        {
+          "candidate": "Jeffrey Thompson",
+          "party": "R",
+          "total_votes": 27826,
+          "pct_votes": 71.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Eric Shotwell",
+          "party": "D",
+          "total_votes": 11075,
+          "pct_votes": 28.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_29": [
+        {
+          "candidate": "Chuck Goodrich",
+          "party": "R",
+          "total_votes": 27618,
+          "pct_votes": 66.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Mike Vick",
+          "party": "D",
+          "total_votes": 14228,
+          "pct_votes": 34.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_30": [
+        {
+          "candidate": "Mike Karickhoff",
+          "party": "R",
+          "total_votes": 19226,
+          "pct_votes": 66.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Dylan McHenry",
+          "party": "D",
+          "total_votes": 9839,
+          "pct_votes": 33.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_31": [
+        {
+          "candidate": "Ann Vermilion",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_32": [
+        {
+          "candidate": "Anthony Cook",
+          "party": "R",
+          "total_votes": 26430,
+          "pct_votes": 75.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Amie Neiling",
+          "party": "D",
+          "total_votes": 8615,
+          "pct_votes": 24.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_33": [
+        {
+          "candidate": "John Prescott",
+          "party": "R",
+          "total_votes": 20198,
+          "pct_votes": 72.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Julie Snider",
+          "party": "D",
+          "total_votes": 7649,
+          "pct_votes": 27.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_34": [
+        {
+          "candidate": "Sue Errington",
+          "party": "D",
+          "total_votes": 11293,
+          "pct_votes": 56.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Dale Basham",
+          "party": "R",
+          "total_votes": 8744,
+          "pct_votes": 43.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_35": [
+        {
+          "candidate": "Elizabeth Rowray",
+          "party": "R",
+          "total_votes": 16767,
+          "pct_votes": 55.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Melanie Wright",
+          "party": "D",
+          "total_votes": 13570,
+          "pct_votes": 44.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_36": [
+        {
+          "candidate": "Terri Austin",
+          "party": "D",
+          "total_votes": 12951,
+          "pct_votes": 53.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kyle Pierce",
+          "party": "R",
+          "total_votes": 11485,
+          "pct_votes": 47.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_37": [
+        {
+          "candidate": "Todd Huston",
+          "party": "R",
+          "total_votes": 24591,
+          "pct_votes": 56.2,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Aimee Cole",
+          "party": "D",
+          "total_votes": 19159,
+          "pct_votes": 43.8,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_38": [
+        {
+          "candidate": "Heath VanNatter",
+          "party": "R",
+          "total_votes": 20746,
+          "pct_votes": 71.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Tom Hedde",
+          "party": "D",
+          "total_votes": 8272,
+          "pct_votes": 28.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_39": [
+        {
+          "candidate": "Jerry Torr",
+          "party": "R",
+          "total_votes": 23396,
+          "pct_votes": 53.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ashley Klein",
+          "party": "D",
+          "total_votes": 20262,
+          "pct_votes": 46.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_40": [
+        {
+          "candidate": "Gregory Steuerwald",
+          "party": "R",
+          "total_votes": 24004,
+          "pct_votes": 60.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kevin Short",
+          "party": "D",
+          "total_votes": 15974,
+          "pct_votes": 40.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_41": [
+        {
+          "candidate": "Tim Brown",
+          "party": "R",
+          "total_votes": 22639,
+          "pct_votes": 75.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Greg Woods",
+          "party": "D",
+          "total_votes": 7407,
+          "pct_votes": 24.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_42": [
+        {
+          "candidate": "Alan Morrison",
+          "party": "R",
+          "total_votes": 18945,
+          "pct_votes": 66.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Amy Adams",
+          "party": "D",
+          "total_votes": 9421,
+          "pct_votes": 33.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_43": [
+        {
+          "candidate": "Tonya Pfaff",
+          "party": "D",
+          "total_votes": 13172,
+          "pct_votes": 57.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Bill Treadway",
+          "party": "R",
+          "total_votes": 9722,
+          "pct_votes": 42.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_44": [
+        {
+          "candidate": "Beau Baird",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_45": [
+        {
+          "candidate": "Bruce Borders",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_46": [
+        {
+          "candidate": "Bob Heaton",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_47": [
+        {
+          "candidate": "John Young",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_48": [
+        {
+          "candidate": "Doug Miller",
+          "party": "R",
+          "total_votes": 16430,
+          "pct_votes": 64.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Aaron Mishler",
+          "party": "D",
+          "total_votes": 9105,
+          "pct_votes": 35.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_49": [
+        {
+          "candidate": "Christy Stutzman",
+          "party": "R",
+          "total_votes": 16539,
+          "pct_votes": 66.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Amanda Qualls",
+          "party": "D",
+          "total_votes": 8341,
+          "pct_votes": 33.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_50": [
+        {
+          "candidate": "Daniel Leonard",
+          "party": "R",
+          "total_votes": 21418,
+          "pct_votes": 71.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jorge Fernandez",
+          "party": "D",
+          "total_votes": 8517,
+          "pct_votes": 28.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_51": [
+        {
+          "candidate": "Dennis Zent",
+          "party": "R",
+          "total_votes": 17633,
+          "pct_votes": 77.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Michael Stephenson",
+          "party": "D",
+          "total_votes": 5250,
+          "pct_votes": 22.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_52": [
+        {
+          "candidate": "Ben Smaltz",
+          "party": "R",
+          "total_votes": 24713,
+          "pct_votes": 72.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Martha Lemert",
+          "party": "D",
+          "total_votes": 8322,
+          "pct_votes": 24.3,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Morgan Rigg",
+          "party": "LB",
+          "total_votes": 1271,
+          "pct_votes": 3.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_53": [
+        {
+          "candidate": "Robert Cherry",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_54": [
+        {
+          "candidate": "Thomas Saunders",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_55": [
+        {
+          "candidate": "Cindy Ziemke",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_56": [
+        {
+          "candidate": "Brad Barrett",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_57": [
+        {
+          "candidate": "Sean Eberhart",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_58": [
+        {
+          "candidate": "Michelle Davis",
+          "party": "R",
+          "total_votes": 22282,
+          "pct_votes": 67.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Cindy Reinert",
+          "party": "D",
+          "total_votes": 10664,
+          "pct_votes": 32.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_59": [
+        {
+          "candidate": "Ryan Lauer",
+          "party": "R",
+          "total_votes": 17729,
+          "pct_votes": 59.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Dale Nowlin",
+          "party": "D",
+          "total_votes": 11873,
+          "pct_votes": 40.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_60": [
+        {
+          "candidate": "Peggy Mayfield",
+          "party": "R",
+          "total_votes": 21712,
+          "pct_votes": 63.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Tiffany Grant",
+          "party": "D",
+          "total_votes": 12484,
+          "pct_votes": 36.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_61": [
+        {
+          "candidate": "Matt Pierce",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_62": [
+        {
+          "candidate": "Jeff Ellington",
+          "party": "R",
+          "total_votes": 19036,
+          "pct_votes": 60.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Alyssa Bailey",
+          "party": "D",
+          "total_votes": 12468,
+          "pct_votes": 39.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_63": [
+        {
+          "candidate": "Shane Lindauer",
+          "party": "R",
+          "total_votes": 21494,
+          "pct_votes": 73.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Teresa Kendall",
+          "party": "D",
+          "total_votes": 7626,
+          "pct_votes": 26.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_64": [
+        {
+          "candidate": "Matt Hostettler",
+          "party": "R",
+          "total_votes": 25191,
+          "pct_votes": 75.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ian Gamroth",
+          "party": "D",
+          "total_votes": 7986,
+          "pct_votes": 24.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_65": [
+        {
+          "candidate": "Chris May",
+          "party": "R",
+          "total_votes": 23721,
+          "pct_votes": 72.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Paula Staley",
+          "party": "D",
+          "total_votes": 8803,
+          "pct_votes": 27.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_66": [
+        {
+          "candidate": "Zach Payne",
+          "party": "R",
+          "total_votes": 16588,
+          "pct_votes": 55.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Terry Goodin",
+          "party": "D",
+          "total_votes": 13162,
+          "pct_votes": 44.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_67": [
+        {
+          "candidate": "Randy Frye",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_68": [
+        {
+          "candidate": "Randy Lyness",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_69": [
+        {
+          "candidate": "Jim Lucas",
+          "party": "R",
+          "total_votes": 18784,
+          "pct_votes": 67.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jeffery Prewitt",
+          "party": "D",
+          "total_votes": 4924,
+          "pct_votes": 17.7,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Katrina Hardwick",
+          "party": "I",
+          "total_votes": 4186,
+          "pct_votes": 15.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_70": [
+        {
+          "candidate": "Karen Engleman",
+          "party": "R",
+          "total_votes": 25166,
+          "pct_votes": 70.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kent Yeager",
+          "party": "D",
+          "total_votes": 10437,
+          "pct_votes": 29.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_71": [
+        {
+          "candidate": "Rita Fleming",
+          "party": "D",
+          "total_votes": 19167,
+          "pct_votes": 77.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Russell Brooksbank",
+          "party": "LB",
+          "total_votes": 5523,
+          "pct_votes": 22.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_72": [
+        {
+          "candidate": "Edward Clere",
+          "party": "R",
+          "total_votes": 20850,
+          "pct_votes": 59.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Erica Lawrence",
+          "party": "D",
+          "total_votes": 14275,
+          "pct_votes": 40.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_73": [
+        {
+          "candidate": "Steve Davisson",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_74": [
+        {
+          "candidate": "Stephen Bartels",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_75": [
+        {
+          "candidate": "Cindy Ledbetter",
+          "party": "R",
+          "total_votes": 20945,
+          "pct_votes": 61.2,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "John Hurley",
+          "party": "D",
+          "total_votes": 13306,
+          "pct_votes": 38.8,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_76": [
+        {
+          "candidate": "Wendy McNamara",
+          "party": "R",
+          "total_votes": 18507,
+          "pct_votes": 64.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Stephen Folz",
+          "party": "D",
+          "total_votes": 10391,
+          "pct_votes": 36.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_77": [
+        {
+          "candidate": "Ryan Hatfield",
+          "party": "D",
+          "total_votes": 13695,
+          "pct_votes": 63.2,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Gregory Peete",
+          "party": "R",
+          "total_votes": 7975,
+          "pct_votes": 36.8,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_78": [
+        {
+          "candidate": "Holli Sullivan",
+          "party": "R",
+          "total_votes": 20273,
+          "pct_votes": 63.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Tonda Pauley",
+          "party": "D",
+          "total_votes": 11453,
+          "pct_votes": 36.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_79": [
+        {
+          "candidate": "Matthew Lehman",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_80": [
+        {
+          "candidate": "Phil GiaQuinta",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_81": [
+        {
+          "candidate": "Martin Carbaugh",
+          "party": "R",
+          "total_votes": 13725,
+          "pct_votes": 52.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kyle Miller",
+          "party": "D",
+          "total_votes": 12653,
+          "pct_votes": 48.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_82": [
+        {
+          "candidate": "David Abbott",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_83": [
+        {
+          "candidate": "Christopher Judy",
+          "party": "R",
+          "total_votes": 24783,
+          "pct_votes": 64.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Michael Bienz",
+          "party": "D",
+          "total_votes": 11953,
+          "pct_votes": 31.2,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Jason Eicholtz",
+          "party": "LB",
+          "total_votes": 1578,
+          "pct_votes": 4.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_84": [
+        {
+          "candidate": "Bob Morris",
+          "party": "R",
+          "total_votes": 21482,
+          "pct_votes": 61.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Emma Steele",
+          "party": "D",
+          "total_votes": 13670,
+          "pct_votes": 38.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_85": [
+        {
+          "candidate": "Dave Heine",
+          "party": "R",
+          "total_votes": 21238,
+          "pct_votes": 71.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Pablo Hurtado",
+          "party": "D",
+          "total_votes": 8332,
+          "pct_votes": 28.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_86": [
+        {
+          "candidate": "Edward DeLaney",
+          "party": "D",
+          "total_votes": 27901,
+          "pct_votes": 70.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Paul Tinkle",
+          "party": "R",
+          "total_votes": 11930,
+          "pct_votes": 30.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_87": [
+        {
+          "candidate": "Carey Hamilton",
+          "party": "D",
+          "total_votes": 22729,
+          "pct_votes": 62.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ryan Royer",
+          "party": "R",
+          "total_votes": 13549,
+          "pct_votes": 37.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_88": [
+        {
+          "candidate": "Chris Jeter",
+          "party": "R",
+          "total_votes": 26659,
+          "pct_votes": 59.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Pam Dechert",
+          "party": "D",
+          "total_votes": 18285,
+          "pct_votes": 40.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_89": [
+        {
+          "candidate": "Mitch Gore",
+          "party": "D",
+          "total_votes": 13898,
+          "pct_votes": 51.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Cynthia Kirchhofer",
+          "party": "R",
+          "total_votes": 13173,
+          "pct_votes": 48.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_90": [
+        {
+          "candidate": "Mike Speedy",
+          "party": "R",
+          "total_votes": 22311,
+          "pct_votes": 63.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jordan Nienaber",
+          "party": "D",
+          "total_votes": 12584,
+          "pct_votes": 36.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_91": [
+        {
+          "candidate": "Robert Behning",
+          "party": "R",
+          "total_votes": 16113,
+          "pct_votes": 59.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Beverly McDermott-Piazza",
+          "party": "D",
+          "total_votes": 9300,
+          "pct_votes": 34.3,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Crystal Henry",
+          "party": "LB",
+          "total_votes": 1687,
+          "pct_votes": 6.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_92": [
+        {
+          "candidate": "Renee Pack",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_93": [
+        {
+          "candidate": "John Jacob",
+          "party": "R",
+          "total_votes": 18485,
+          "pct_votes": 61.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Angela Elliott",
+          "party": "D",
+          "total_votes": 11806,
+          "pct_votes": 39.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_94": [
+        {
+          "candidate": "Cherrish Pryor",
+          "party": "D",
+          "total_votes": 21430,
+          "pct_votes": 85.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Felipe Rios",
+          "party": "R",
+          "total_votes": 3629,
+          "pct_votes": 14.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_95": [
+        {
+          "candidate": "John Bartlett",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_96": [
+        {
+          "candidate": "Gregory Porter",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_97": [
+        {
+          "candidate": "Justin Moed",
+          "party": "D",
+          "total_votes": 9707,
+          "pct_votes": 55.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "John Schmitz",
+          "party": "R",
+          "total_votes": 6962,
+          "pct_votes": 39.8,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Mark Renholzberger",
+          "party": "LB",
+          "total_votes": 816,
+          "pct_votes": 4.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_98": [
+        {
+          "candidate": "Robin Shackleford",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_99": [
+        {
+          "candidate": "Vanessa Summers",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_100": [
+        {
+          "candidate": "Blake Johnson",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ]
+    },
+    "2022": {
+      "district_1": [
+        {
+          "candidate": "Carolyn Jackson",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_2": [
+        {
+          "candidate": "Earl Harris",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_3": [
+        {
+          "candidate": "Ragen Hatcher",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_4": [
+        {
+          "candidate": "Ed Soliday",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_5": [
+        {
+          "candidate": "Dale DeVon",
+          "party": "R",
+          "total_votes": 11738,
+          "pct_votes": 56.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Heidi Beidinger",
+          "party": "D",
+          "total_votes": 8965,
+          "pct_votes": 43.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_6": [
+        {
+          "candidate": "Maureen Bauer",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_7": [
+        {
+          "candidate": "Jake Teshka",
+          "party": "R",
+          "total_votes": 11969,
+          "pct_votes": 60.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ross Deal",
+          "party": "D",
+          "total_votes": 7701,
+          "pct_votes": 39.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_8": [
+        {
+          "candidate": "Ryan Dvorak",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_9": [
+        {
+          "candidate": "Patricia Boy",
+          "party": "D",
+          "total_votes": 11642,
+          "pct_votes": 54.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Dion Bergeron",
+          "party": "R",
+          "total_votes": 9576,
+          "pct_votes": 45.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_10": [
+        {
+          "candidate": "Charles Moseley",
+          "party": "D",
+          "total_votes": 10039,
+          "pct_votes": 52.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Manuel Maldonado",
+          "party": "R",
+          "total_votes": 8976,
+          "pct_votes": 47.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_11": [
+        {
+          "candidate": "Michael Aylesworth",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_12": [
+        {
+          "candidate": "Mike Andrade",
+          "party": "D",
+          "total_votes": 12543,
+          "pct_votes": 55.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Charles Kallas",
+          "party": "R",
+          "total_votes": 10026,
+          "pct_votes": 44.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_13": [
+        {
+          "candidate": "Sharon Negele",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_14": [
+        {
+          "candidate": "Vernon Smith",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_15": [
+        {
+          "candidate": "Hal Slager",
+          "party": "R",
+          "total_votes": 16279,
+          "pct_votes": 63.2,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Chris Kukuch",
+          "party": "D",
+          "total_votes": 9459,
+          "pct_votes": 36.8,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_16": [
+        {
+          "candidate": "Kendell Culp",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_17": [
+        {
+          "candidate": "Jack Jordan",
+          "party": "R",
+          "total_votes": 13863,
+          "pct_votes": 74.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jim White",
+          "party": "D",
+          "total_votes": 4673,
+          "pct_votes": 25.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_18": [
+        {
+          "candidate": "David Abbott",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_19": [
+        {
+          "candidate": "Julie Olthoff",
+          "party": "R",
+          "total_votes": 13647,
+          "pct_votes": 58.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Lisa Beck",
+          "party": "D",
+          "total_votes": 9594,
+          "pct_votes": 41.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_20": [
+        {
+          "candidate": "Jim Pressel",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_21": [
+        {
+          "candidate": "Timothy Wesco",
+          "party": "R",
+          "total_votes": 9337,
+          "pct_votes": 73.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Camden Chaffee",
+          "party": "D",
+          "total_votes": 3315,
+          "pct_votes": 26.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_22": [
+        {
+          "candidate": "Craig Snow",
+          "party": "R",
+          "total_votes": 14732,
+          "pct_votes": 79.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Dee Moore",
+          "party": "D",
+          "total_votes": 3045,
+          "pct_votes": 16.4,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Josh Vergiels",
+          "party": "LB",
+          "total_votes": 783,
+          "pct_votes": 4.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_23": [
+        {
+          "candidate": "Ethan Manning",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_24": [
+        {
+          "candidate": "Donna Schaibley",
+          "party": "R",
+          "total_votes": 14672,
+          "pct_votes": 56.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Joellyn Mayer",
+          "party": "D",
+          "total_votes": 10570,
+          "pct_votes": 40.8,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Kenneth Tucker",
+          "party": "I",
+          "total_votes": 660,
+          "pct_votes": 2.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_25": [
+        {
+          "candidate": "Becky Cash",
+          "party": "R",
+          "total_votes": 12361,
+          "pct_votes": 52.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jen Bass-Patino",
+          "party": "D",
+          "total_votes": 11084,
+          "pct_votes": 47.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_26": [
+        {
+          "candidate": "Chris Campbell",
+          "party": "D",
+          "total_votes": 7198,
+          "pct_votes": 59.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Fred Duttlinger",
+          "party": "R",
+          "total_votes": 4824,
+          "pct_votes": 40.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_27": [
+        {
+          "candidate": "Sheila Klinker",
+          "party": "D",
+          "total_votes": 7447,
+          "pct_votes": 60.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "James Hass",
+          "party": "R",
+          "total_votes": 4943,
+          "pct_votes": 39.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_28": [
+        {
+          "candidate": "Jeffrey Thompson",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_29": [
+        {
+          "candidate": "Chuck Goodrich",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_30": [
+        {
+          "candidate": "Mike Karickhoff",
+          "party": "R",
+          "total_votes": 12218,
+          "pct_votes": 67.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Robin Williams",
+          "party": "D",
+          "total_votes": 5878,
+          "pct_votes": 32.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_31": [
+        {
+          "candidate": "Ann Vermilion",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_32": [
+        {
+          "candidate": "Victoria Garcia Wilburn",
+          "party": "D",
+          "total_votes": 12497,
+          "pct_votes": 50.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Fred Glynn",
+          "party": "R",
+          "total_votes": 12255,
+          "pct_votes": 49.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_33": [
+        {
+          "candidate": "J.D. Prescott",
+          "party": "R",
+          "total_votes": 13978,
+          "pct_votes": 70.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "John E. Bartlett",
+          "party": "D",
+          "total_votes": 5880,
+          "pct_votes": 29.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_34": [
+        {
+          "candidate": "Sue Errington",
+          "party": "D",
+          "total_votes": 7657,
+          "pct_votes": 52.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Dale Basham",
+          "party": "R",
+          "total_votes": 6847,
+          "pct_votes": 47.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_35": [
+        {
+          "candidate": "Elizabeth Rowray",
+          "party": "R",
+          "total_votes": 14937,
+          "pct_votes": 70.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Brad Sowinski",
+          "party": "D",
+          "total_votes": 6386,
+          "pct_votes": 29.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_36": [
+        {
+          "candidate": "Kyle Pierce",
+          "party": "R",
+          "total_votes": 8888,
+          "pct_votes": 51.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Terri Austin",
+          "party": "D",
+          "total_votes": 8555,
+          "pct_votes": 49.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_37": [
+        {
+          "candidate": "Todd Huston",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_38": [
+        {
+          "candidate": "Heath VanNatter",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_39": [
+        {
+          "candidate": "Jerry Torr",
+          "party": "R",
+          "total_votes": 14753,
+          "pct_votes": 52.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Matt McNally",
+          "party": "D",
+          "total_votes": 13428,
+          "pct_votes": 47.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_40": [
+        {
+          "candidate": "Gregory Steuerwald",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_41": [
+        {
+          "candidate": "Mark Genda",
+          "party": "R",
+          "total_votes": 12812,
+          "pct_votes": 75.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Greg Woods",
+          "party": "D",
+          "total_votes": 4212,
+          "pct_votes": 24.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_42": [
+        {
+          "candidate": "Alan Morrison",
+          "party": "R",
+          "total_votes": 13799,
+          "pct_votes": 68.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Mark Spelbring",
+          "party": "D",
+          "total_votes": 6379,
+          "pct_votes": 31.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_43": [
+        {
+          "candidate": "Tonya Pfaff",
+          "party": "D",
+          "total_votes": 8891,
+          "pct_votes": 58.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Andrew McNeil",
+          "party": "R",
+          "total_votes": 6336,
+          "pct_votes": 41.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_44": [
+        {
+          "candidate": "Beau Baird",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_45": [
+        {
+          "candidate": "Bruce Borders",
+          "party": "R",
+          "total_votes": 13413,
+          "pct_votes": 69.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Cody Alsman",
+          "party": "I",
+          "total_votes": 5797,
+          "pct_votes": 30.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_46": [
+        {
+          "candidate": "Bob Heaton",
+          "party": "R",
+          "total_votes": 13416,
+          "pct_votes": 66.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kurtis Cummings",
+          "party": "D",
+          "total_votes": 6684,
+          "pct_votes": 33.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_47": [
+        {
+          "candidate": "Robb Greene",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_48": [
+        {
+          "candidate": "Doug Miller",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_49": [
+        {
+          "candidate": "Joanna King",
+          "party": "R",
+          "total_votes": 10348,
+          "pct_votes": 67.2,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Amanda Qualls",
+          "party": "D",
+          "total_votes": 5040,
+          "pct_votes": 32.8,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_50": [
+        {
+          "candidate": "Lorissa Sweet",
+          "party": "R",
+          "total_votes": 16416,
+          "pct_votes": 77.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Tammari Ingalls",
+          "party": "D",
+          "total_votes": 4737,
+          "pct_votes": 22.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_51": [
+        {
+          "candidate": "Dennis Zent",
+          "party": "R",
+          "total_votes": 10753,
+          "pct_votes": 75.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Michael Travis",
+          "party": "D",
+          "total_votes": 3469,
+          "pct_votes": 24.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_52": [
+        {
+          "candidate": "Ben Smaltz",
+          "party": "R",
+          "total_votes": 13376,
+          "pct_votes": 81.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Morgan Rigg",
+          "party": "LB",
+          "total_votes": 2998,
+          "pct_votes": 18.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_53": [
+        {
+          "candidate": "Robert Cherry",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_54": [
+        {
+          "candidate": "Cory Criswell",
+          "party": "R",
+          "total_votes": 13857,
+          "pct_votes": 73.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Nan Polk",
+          "party": "D",
+          "total_votes": 4949,
+          "pct_votes": 26.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_55": [
+        {
+          "candidate": "Lindsay Patterson",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_56": [
+        {
+          "candidate": "Brad Barrett",
+          "party": "R",
+          "total_votes": 11764,
+          "pct_votes": 69.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "C. Yvonne Washington",
+          "party": "D",
+          "total_votes": 5057,
+          "pct_votes": 30.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_57": [
+        {
+          "candidate": "Craig Haggard",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_58": [
+        {
+          "candidate": "Michelle Davis",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_59": [
+        {
+          "candidate": "Ryan Lauer",
+          "party": "R",
+          "total_votes": 11015,
+          "pct_votes": 61.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ross Thomas",
+          "party": "D",
+          "total_votes": 6948,
+          "pct_votes": 38.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_60": [
+        {
+          "candidate": "Peggy Mayfield",
+          "party": "R",
+          "total_votes": 16617,
+          "pct_votes": 75.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kathy Thorpe",
+          "party": "D",
+          "total_votes": 5412,
+          "pct_votes": 24.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_61": [
+        {
+          "candidate": "Matt Pierce",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_62": [
+        {
+          "candidate": "Dave Hall",
+          "party": "R",
+          "total_votes": 12975,
+          "pct_votes": 50.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Penny Githens",
+          "party": "D",
+          "total_votes": 12938,
+          "pct_votes": 49.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_63": [
+        {
+          "candidate": "Shane Lindauer",
+          "party": "R",
+          "total_votes": 14555,
+          "pct_votes": 76.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Teresa Kendall",
+          "party": "D",
+          "total_votes": 4363,
+          "pct_votes": 23.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_64": [
+        {
+          "candidate": "Matt Hostettler",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_65": [
+        {
+          "candidate": "Chris May",
+          "party": "R",
+          "total_votes": 14645,
+          "pct_votes": 77.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kevin Goodman",
+          "party": "D",
+          "total_votes": 4192,
+          "pct_votes": 22.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_66": [
+        {
+          "candidate": "Zach Payne",
+          "party": "R",
+          "total_votes": 14563,
+          "pct_votes": 69.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Nancy McDevitt",
+          "party": "D",
+          "total_votes": 6258,
+          "pct_votes": 30.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_67": [
+        {
+          "candidate": "Randy Frye",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_68": [
+        {
+          "candidate": "Randy Lyness",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_69": [
+        {
+          "candidate": "Jim Lucas",
+          "party": "R",
+          "total_votes": 12523,
+          "pct_votes": 73.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Chad Harmon",
+          "party": "D",
+          "total_votes": 4474,
+          "pct_votes": 26.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_70": [
+        {
+          "candidate": "Karen Engleman",
+          "party": "R",
+          "total_votes": 18003,
+          "pct_votes": 75.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jason Shemanski",
+          "party": "D",
+          "total_votes": 6007,
+          "pct_votes": 25.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_71": [
+        {
+          "candidate": "Rita Fleming",
+          "party": "D",
+          "total_votes": 9299,
+          "pct_votes": 50.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Scott Hawkins",
+          "party": "R",
+          "total_votes": 9074,
+          "pct_votes": 49.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_72": [
+        {
+          "candidate": "Edward Clere",
+          "party": "R",
+          "total_votes": 13379,
+          "pct_votes": 60.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Keil Roark",
+          "party": "D",
+          "total_votes": 8763,
+          "pct_votes": 39.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_73": [
+        {
+          "candidate": "Jennifer Meltzer",
+          "party": "R",
+          "total_votes": 13435,
+          "pct_votes": 77.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Mimi Pruett",
+          "party": "D",
+          "total_votes": 3987,
+          "pct_votes": 22.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_74": [
+        {
+          "candidate": "Stephen Bartels",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_75": [
+        {
+          "candidate": "Cindy Ledbetter",
+          "party": "R",
+          "total_votes": 14835,
+          "pct_votes": 70.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Zack Davis",
+          "party": "D",
+          "total_votes": 6201,
+          "pct_votes": 29.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_76": [
+        {
+          "candidate": "Wendy McNamara",
+          "party": "R",
+          "total_votes": 12561,
+          "pct_votes": 60.2,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Katherine Rybak",
+          "party": "D",
+          "total_votes": 6445,
+          "pct_votes": 30.9,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Cheryl Batteiger-Smith",
+          "party": "I",
+          "total_votes": 1860,
+          "pct_votes": 8.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_77": [
+        {
+          "candidate": "Ryan Hatfield",
+          "party": "D",
+          "total_votes": 8205,
+          "pct_votes": 76.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jada Burton",
+          "party": "LB",
+          "total_votes": 2503,
+          "pct_votes": 23.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_78": [
+        {
+          "candidate": "Tim O'Brien",
+          "party": "R",
+          "total_votes": 13115,
+          "pct_votes": 62.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jason Salstrom",
+          "party": "D",
+          "total_votes": 7791,
+          "pct_votes": 37.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_79": [
+        {
+          "candidate": "Matthew Lehman",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_80": [
+        {
+          "candidate": "Phil GiaQuinta",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_81": [
+        {
+          "candidate": "Martin Carbaugh",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_82": [
+        {
+          "candidate": "Kyle Miller",
+          "party": "D",
+          "total_votes": 7269,
+          "pct_votes": 56.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Davyd Jones",
+          "party": "R",
+          "total_votes": 5624,
+          "pct_votes": 43.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_83": [
+        {
+          "candidate": "Christopher Judy",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_84": [
+        {
+          "candidate": "Bob Morris",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_85": [
+        {
+          "candidate": "Dave Heine",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_86": [
+        {
+          "candidate": "Edward DeLaney",
+          "party": "D",
+          "total_votes": 19122,
+          "pct_votes": 71.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Mark Small",
+          "party": "R",
+          "total_votes": 7687,
+          "pct_votes": 28.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_87": [
+        {
+          "candidate": "Carey Hamilton",
+          "party": "D",
+          "total_votes": 15434,
+          "pct_votes": 62.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jordan Davis",
+          "party": "R",
+          "total_votes": 9108,
+          "pct_votes": 37.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_88": [
+        {
+          "candidate": "Chris Jeter",
+          "party": "R",
+          "total_votes": 14690,
+          "pct_votes": 59.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Donna Griffin",
+          "party": "D",
+          "total_votes": 9847,
+          "pct_votes": 40.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_89": [
+        {
+          "candidate": "Mitch Gore",
+          "party": "D",
+          "total_votes": 6942,
+          "pct_votes": 50.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Michael-Paul Hart",
+          "party": "R",
+          "total_votes": 6684,
+          "pct_votes": 49.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_90": [
+        {
+          "candidate": "Mike Speedy",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_91": [
+        {
+          "candidate": "Robert Behning",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_92": [
+        {
+          "candidate": "Renee Pack",
+          "party": "D",
+          "total_votes": 7795,
+          "pct_votes": 56.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "John Couch",
+          "party": "R",
+          "total_votes": 6105,
+          "pct_votes": 43.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_93": [
+        {
+          "candidate": "Julie McGuire",
+          "party": "R",
+          "total_votes": 7944,
+          "pct_votes": 57.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Andy Miller",
+          "party": "D",
+          "total_votes": 4945,
+          "pct_votes": 35.9,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Karl Knable",
+          "party": "I",
+          "total_votes": 874,
+          "pct_votes": 6.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_94": [
+        {
+          "candidate": "Cherrish Pryor",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_95": [
+        {
+          "candidate": "John L. Bartlett",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_96": [
+        {
+          "candidate": "Gregory Porter",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_97": [
+        {
+          "candidate": "Justin Moed",
+          "party": "D",
+          "total_votes": 5082,
+          "pct_votes": 58.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "John Schmitz",
+          "party": "R",
+          "total_votes": 3322,
+          "pct_votes": 38.4,
+          "unopposed": false,
+          "winner": false
+        },
+        {
+          "candidate": "Edgar Amaro Villegas",
+          "party": "LB",
+          "total_votes": 238,
+          "pct_votes": 2.8,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_98": [
+        {
+          "candidate": "Robin Shackleford",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_99": [
+        {
+          "candidate": "Vanessa Summers",
+          "party": "D",
+          "total_votes": 8503,
+          "pct_votes": 82.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Felipe Rios",
+          "party": "R",
+          "total_votes": 1797,
+          "pct_votes": 17.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_100": [
+        {
+          "candidate": "Blake Johnson",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ]
+    },
+    "2024": {
+      "district_1": [
+        {
+          "candidate": "Carolyn Jackson",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_2": [
+        {
+          "candidate": "Earl Harris",
+          "party": "D",
+          "total_votes": 14986,
+          "pct_votes": 82.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ben Ruiz",
+          "party": "R",
+          "total_votes": 3289,
+          "pct_votes": 18.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_3": [
+        {
+          "candidate": "Ragen Hatcher",
+          "party": "D",
+          "total_votes": 14756,
+          "pct_votes": 63.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Leslie Dallner",
+          "party": "R",
+          "total_votes": 8614,
+          "pct_votes": 36.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_4": [
+        {
+          "candidate": "Ed Soliday",
+          "party": "R",
+          "total_votes": 20093,
+          "pct_votes": 57.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Erika Robinson-Watkins",
+          "party": "D",
+          "total_votes": 14782,
+          "pct_votes": 42.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_5": [
+        {
+          "candidate": "Dale DeVon",
+          "party": "R",
+          "total_votes": 16822,
+          "pct_votes": 54.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Heidi Beidinger",
+          "party": "D",
+          "total_votes": 14004,
+          "pct_votes": 45.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_6": [
+        {
+          "candidate": "Maureen Bauer",
+          "party": "D",
+          "total_votes": 14852,
+          "pct_votes": 81.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Charlie Florance",
+          "party": "LB",
+          "total_votes": 3482,
+          "pct_votes": 19.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_7": [
+        {
+          "candidate": "Jake Teshka",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_8": [
+        {
+          "candidate": "Ryan Dvorak",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_9": [
+        {
+          "candidate": "Patricia Boy",
+          "party": "D",
+          "total_votes": 14977,
+          "pct_votes": 50.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Joel Florek",
+          "party": "R",
+          "total_votes": 14482,
+          "pct_votes": 49.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_10": [
+        {
+          "candidate": "Charles Moseley",
+          "party": "D",
+          "total_votes": 15394,
+          "pct_votes": 52.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jeff Larson",
+          "party": "R",
+          "total_votes": 14141,
+          "pct_votes": 47.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_11": [
+        {
+          "candidate": "Michael Aylesworth",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_12": [
+        {
+          "candidate": "Mike Andrade",
+          "party": "D",
+          "total_votes": 17930,
+          "pct_votes": 55.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jim Lietz",
+          "party": "R",
+          "total_votes": 14634,
+          "pct_votes": 44.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_13": [
+        {
+          "candidate": "Matthew Commons",
+          "party": "R",
+          "total_votes": 23423,
+          "pct_votes": 73.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Edward Moyer",
+          "party": "D",
+          "total_votes": 8373,
+          "pct_votes": 26.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_14": [
+        {
+          "candidate": "Vernon Smith",
+          "party": "D",
+          "total_votes": 17552,
+          "pct_votes": 72.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ivan Ursery",
+          "party": "R",
+          "total_votes": 6781,
+          "pct_votes": 27.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_15": [
+        {
+          "candidate": "Hal Slager",
+          "party": "R",
+          "total_votes": 23521,
+          "pct_votes": 63.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "John Walter",
+          "party": "D",
+          "total_votes": 13603,
+          "pct_votes": 36.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_16": [
+        {
+          "candidate": "Kendell Culp",
+          "party": "R",
+          "total_votes": 22491,
+          "pct_votes": 77.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Dennis Collins",
+          "party": "D",
+          "total_votes": 6737,
+          "pct_votes": 23.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_17": [
+        {
+          "candidate": "Jack Jordan",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_18": [
+        {
+          "candidate": "David Abbott",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_19": [
+        {
+          "candidate": "Julie Olthoff",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_20": [
+        {
+          "candidate": "Jim Pressel",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_21": [
+        {
+          "candidate": "Timothy Wesco",
+          "party": "R",
+          "total_votes": 14699,
+          "pct_votes": 79.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Melissa Kauffman",
+          "party": "LB",
+          "total_votes": 3919,
+          "pct_votes": 21.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_22": [
+        {
+          "candidate": "Craig Snow",
+          "party": "R",
+          "total_votes": 21110,
+          "pct_votes": 86.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Josh Vergiels",
+          "party": "LB",
+          "total_votes": 3321,
+          "pct_votes": 13.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_23": [
+        {
+          "candidate": "Ethan Manning",
+          "party": "R",
+          "total_votes": 18327,
+          "pct_votes": 73.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Richard Rouser",
+          "party": "D",
+          "total_votes": 6468,
+          "pct_votes": 26.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_24": [
+        {
+          "candidate": "Hunter Smith",
+          "party": "R",
+          "total_votes": 23359,
+          "pct_votes": 56.2,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Josh Lowry",
+          "party": "D",
+          "total_votes": 18233,
+          "pct_votes": 43.8,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_25": [
+        {
+          "candidate": "Becky Cash",
+          "party": "R",
+          "total_votes": 18793,
+          "pct_votes": 50.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Tiffany Stoner",
+          "party": "D",
+          "total_votes": 18727,
+          "pct_votes": 49.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_26": [
+        {
+          "candidate": "Chris Campbell",
+          "party": "D",
+          "total_votes": 11501,
+          "pct_votes": 64.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "James Schenke",
+          "party": "R",
+          "total_votes": 6443,
+          "pct_votes": 35.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_27": [
+        {
+          "candidate": "Sheila Klinker",
+          "party": "D",
+          "total_votes": 13392,
+          "pct_votes": 61.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Oscar Alvarez",
+          "party": "R",
+          "total_votes": 8379,
+          "pct_votes": 38.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_28": [
+        {
+          "candidate": "Jeffrey Thompson",
+          "party": "R",
+          "total_votes": 23981,
+          "pct_votes": 71.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Karen Whitney",
+          "party": "D",
+          "total_votes": 9438,
+          "pct_votes": 28.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_29": [
+        {
+          "candidate": "Alaina Shonkwiler",
+          "party": "R",
+          "total_votes": 22787,
+          "pct_votes": 63.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Christopher Hartig",
+          "party": "D",
+          "total_votes": 13169,
+          "pct_votes": 36.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_30": [
+        {
+          "candidate": "Mike Karickhoff",
+          "party": "R",
+          "total_votes": 18635,
+          "pct_votes": 67.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Michael Katcher",
+          "party": "D",
+          "total_votes": 9042,
+          "pct_votes": 32.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_31": [
+        {
+          "candidate": "Lori Goss-Reaves",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_32": [
+        {
+          "candidate": "Victoria Garcia Wilburn",
+          "party": "D",
+          "total_votes": 17981,
+          "pct_votes": 52.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Patricia Bratton",
+          "party": "R",
+          "total_votes": 16539,
+          "pct_votes": 47.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_33": [
+        {
+          "candidate": "John Prescott",
+          "party": "R",
+          "total_votes": 21155,
+          "pct_votes": 73.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "John Bartlett",
+          "party": "D",
+          "total_votes": 7817,
+          "pct_votes": 27.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_34": [
+        {
+          "candidate": "Sue Errington",
+          "party": "D",
+          "total_votes": 12149,
+          "pct_votes": 55.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Susan Dillon",
+          "party": "R",
+          "total_votes": 9908,
+          "pct_votes": 44.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_35": [
+        {
+          "candidate": "Elizabeth Rowray",
+          "party": "R",
+          "total_votes": 22519,
+          "pct_votes": 71.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Philip Gift",
+          "party": "D",
+          "total_votes": 9198,
+          "pct_votes": 29.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_36": [
+        {
+          "candidate": "Kyle Pierce",
+          "party": "R",
+          "total_votes": 15295,
+          "pct_votes": 59.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Thonja Nicholson",
+          "party": "D",
+          "total_votes": 10615,
+          "pct_votes": 41.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_37": [
+        {
+          "candidate": "Todd Huston",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_38": [
+        {
+          "candidate": "Heath VanNatter",
+          "party": "R",
+          "total_votes": 25319,
+          "pct_votes": 75.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Carl Seese",
+          "party": "D",
+          "total_votes": 8317,
+          "pct_votes": 24.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_39": [
+        {
+          "candidate": "Daniel Lopez",
+          "party": "R",
+          "total_votes": 21158,
+          "pct_votes": 53.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Matt McNally",
+          "party": "D",
+          "total_votes": 18221,
+          "pct_votes": 46.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_40": [
+        {
+          "candidate": "Gregory Steuerwald",
+          "party": "R",
+          "total_votes": 17486,
+          "pct_votes": 58.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Robert Pope",
+          "party": "D",
+          "total_votes": 12475,
+          "pct_votes": 41.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_41": [
+        {
+          "candidate": "Mark Genda",
+          "party": "R",
+          "total_votes": 20486,
+          "pct_votes": 73.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Dan Sikes",
+          "party": "D",
+          "total_votes": 7540,
+          "pct_votes": 26.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_42": [
+        {
+          "candidate": "Alan Morrison",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_43": [
+        {
+          "candidate": "Tonya Pfaff",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_44": [
+        {
+          "candidate": "Beau Baird",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_45": [
+        {
+          "candidate": "Bruce Borders",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_46": [
+        {
+          "candidate": "Bob Heaton",
+          "party": "R",
+          "total_votes": 20827,
+          "pct_votes": 67.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kurtis Cummings",
+          "party": "D",
+          "total_votes": 9834,
+          "pct_votes": 32.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_47": [
+        {
+          "candidate": "Robb Greene",
+          "party": "R",
+          "total_votes": 23885,
+          "pct_votes": 74.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Michael Potter",
+          "party": "D",
+          "total_votes": 8401,
+          "pct_votes": 26.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_48": [
+        {
+          "candidate": "Doug Miller",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_49": [
+        {
+          "candidate": "Joanna King",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_50": [
+        {
+          "candidate": "Lorissa Sweet",
+          "party": "R",
+          "total_votes": 23782,
+          "pct_votes": 76.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Joe Swisher",
+          "party": "D",
+          "total_votes": 7134,
+          "pct_votes": 23.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_51": [
+        {
+          "candidate": "Tony Isa",
+          "party": "R",
+          "total_votes": 16774,
+          "pct_votes": 74.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Judy Rowe",
+          "party": "D",
+          "total_votes": 5763,
+          "pct_votes": 25.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_52": [
+        {
+          "candidate": "Ben Smaltz",
+          "party": "R",
+          "total_votes": 22276,
+          "pct_votes": 76.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Walt Sorg",
+          "party": "D",
+          "total_votes": 6750,
+          "pct_votes": 23.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_53": [
+        {
+          "candidate": "Ethan Lawson",
+          "party": "R",
+          "total_votes": 24443,
+          "pct_votes": 70.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Nate Anderson",
+          "party": "D",
+          "total_votes": 10271,
+          "pct_votes": 29.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_54": [
+        {
+          "candidate": "Cory Criswell",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_55": [
+        {
+          "candidate": "Lindsay Patterson",
+          "party": "R",
+          "total_votes": 24820,
+          "pct_votes": 80.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Victoria Martz",
+          "party": "D",
+          "total_votes": 6014,
+          "pct_votes": 19.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_56": [
+        {
+          "candidate": "Bradford Barrett",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_57": [
+        {
+          "candidate": "Craig Haggard",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_58": [
+        {
+          "candidate": "Michelle Davis",
+          "party": "R",
+          "total_votes": 18730,
+          "pct_votes": 67.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Sandy James",
+          "party": "D",
+          "total_votes": 9047,
+          "pct_votes": 32.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_59": [
+        {
+          "candidate": "Ryan Lauer",
+          "party": "R",
+          "total_votes": 17144,
+          "pct_votes": 63.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ross Thomas",
+          "party": "D",
+          "total_votes": 9709,
+          "pct_votes": 36.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_60": [
+        {
+          "candidate": "Peggy Mayfield",
+          "party": "R",
+          "total_votes": 25758,
+          "pct_votes": 75.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Michelle Higgs",
+          "party": "D",
+          "total_votes": 8271,
+          "pct_votes": 24.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_61": [
+        {
+          "candidate": "Matt Pierce",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_62": [
+        {
+          "candidate": "Dave Hall",
+          "party": "R",
+          "total_votes": 18367,
+          "pct_votes": 51.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Thomas Horrocks",
+          "party": "D",
+          "total_votes": 17572,
+          "pct_votes": 48.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_63": [
+        {
+          "candidate": "Shane Lindauer",
+          "party": "R",
+          "total_votes": 21649,
+          "pct_votes": 76.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Teresa Kendall",
+          "party": "D",
+          "total_votes": 6709,
+          "pct_votes": 23.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_64": [
+        {
+          "candidate": "Matt Hostettler",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_65": [
+        {
+          "candidate": "Chris May",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_66": [
+        {
+          "candidate": "Zach Payne",
+          "party": "R",
+          "total_votes": 21370,
+          "pct_votes": 69.2,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jennifer David",
+          "party": "D",
+          "total_votes": 9520,
+          "pct_votes": 30.8,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_67": [
+        {
+          "candidate": "Alex Zimmerman",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_68": [
+        {
+          "candidate": "Garrett Bascom",
+          "party": "R",
+          "total_votes": 26971,
+          "pct_votes": 79.5,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Lisa Barker",
+          "party": "D",
+          "total_votes": 6962,
+          "pct_votes": 20.5,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_69": [
+        {
+          "candidate": "Jim Lucas",
+          "party": "R",
+          "total_votes": 18521,
+          "pct_votes": 68.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Trish Whitcomb",
+          "party": "D",
+          "total_votes": 8450,
+          "pct_votes": 31.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_70": [
+        {
+          "candidate": "Karen Engleman",
+          "party": "R",
+          "total_votes": 25737,
+          "pct_votes": 73.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Sarah Blessing",
+          "party": "D",
+          "total_votes": 9315,
+          "pct_votes": 26.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_71": [
+        {
+          "candidate": "Wendy Dant Chesser",
+          "party": "D",
+          "total_votes": 13295,
+          "pct_votes": 49.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Scott Hawkins",
+          "party": "R",
+          "total_votes": 12326,
+          "pct_votes": 46.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_72": [
+        {
+          "candidate": "Edward Clere",
+          "party": "R",
+          "total_votes": 19491,
+          "pct_votes": 57.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Jason Applegate",
+          "party": "D",
+          "total_votes": 14543,
+          "pct_votes": 42.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_73": [
+        {
+          "candidate": "Jennifer Meltzer",
+          "party": "R",
+          "total_votes": 20900,
+          "pct_votes": 76.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Hollie Payton",
+          "party": "D",
+          "total_votes": 6284,
+          "pct_votes": 23.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_74": [
+        {
+          "candidate": "Stephen Bartels",
+          "party": "R",
+          "total_votes": 21674,
+          "pct_votes": 68.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Bob Compton",
+          "party": "D",
+          "total_votes": 9939,
+          "pct_votes": 31.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_75": [
+        {
+          "candidate": "Cindy Ledbetter",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_76": [
+        {
+          "candidate": "Wendy McNamara",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_77": [
+        {
+          "candidate": "Alex Burton",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_78": [
+        {
+          "candidate": "Tim O'Brien",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_79": [
+        {
+          "candidate": "Matthew Lehman",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_80": [
+        {
+          "candidate": "Phil GiaQuinta",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_81": [
+        {
+          "candidate": "Martin Carbaugh",
+          "party": "R",
+          "total_votes": 20912,
+          "pct_votes": 64.9,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Abby Norden",
+          "party": "D",
+          "total_votes": 11329,
+          "pct_votes": 35.1,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_82": [
+        {
+          "candidate": "Kyle Miller",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_83": [
+        {
+          "candidate": "Christopher Judy",
+          "party": "R",
+          "total_votes": 22109,
+          "pct_votes": 64.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Kyle Thele",
+          "party": "D",
+          "total_votes": 12424,
+          "pct_votes": 36.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_84": [
+        {
+          "candidate": "Bob Morris",
+          "party": "R",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_85": [
+        {
+          "candidate": "Dave Heine",
+          "party": "R",
+          "total_votes": 23158,
+          "pct_votes": 74.4,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Phil Goss",
+          "party": "D",
+          "total_votes": 7968,
+          "pct_votes": 25.6,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_86": [
+        {
+          "candidate": "Edward DeLaney",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_87": [
+        {
+          "candidate": "Carey Hamilton",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_88": [
+        {
+          "candidate": "Chris Jeter",
+          "party": "R",
+          "total_votes": 23058,
+          "pct_votes": 57.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Stephanie Yocum",
+          "party": "D",
+          "total_votes": 16814,
+          "pct_votes": 42.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_89": [
+        {
+          "candidate": "Mitch Gore",
+          "party": "D",
+          "total_votes": 12940,
+          "pct_votes": 55.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Yvonne Metcalfe",
+          "party": "R",
+          "total_votes": 10230,
+          "pct_votes": 44.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_90": [
+        {
+          "candidate": "Andrew Ireland",
+          "party": "R",
+          "total_votes": 19435,
+          "pct_votes": 63.6,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Dominique Davie",
+          "party": "D",
+          "total_votes": 11112,
+          "pct_votes": 36.4,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_91": [
+        {
+          "candidate": "Robert Behning",
+          "party": "R",
+          "total_votes": 13705,
+          "pct_votes": 60.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Andrew Locke",
+          "party": "D",
+          "total_votes": 9085,
+          "pct_votes": 39.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_92": [
+        {
+          "candidate": "Renee Pack",
+          "party": "D",
+          "total_votes": 12626,
+          "pct_votes": 58.8,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "John Couch",
+          "party": "R",
+          "total_votes": 8833,
+          "pct_votes": 41.2,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_93": [
+        {
+          "candidate": "Julie McGuire",
+          "party": "R",
+          "total_votes": 13543,
+          "pct_votes": 62.1,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Ryan Hughey",
+          "party": "D",
+          "total_votes": 8251,
+          "pct_votes": 37.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_94": [
+        {
+          "candidate": "Cherrish Pryor",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_95": [
+        {
+          "candidate": "John Bartlett",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_96": [
+        {
+          "candidate": "Gregory Porter",
+          "party": "D",
+          "total_votes": null,
+          "pct_votes": null,
+          "unopposed": true,
+          "winner": true
+        }
+      ],
+      "district_97": [
+        {
+          "candidate": "Justin Moed",
+          "party": "D",
+          "total_votes": 8822,
+          "pct_votes": 58.2,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Stephen Whitmer",
+          "party": "R",
+          "total_votes": 5900,
+          "pct_votes": 38.9,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_98": [
+        {
+          "candidate": "Robin Shackleford",
+          "party": "D",
+          "total_votes": 14760,
+          "pct_votes": 89.0,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Elizabeth Glass",
+          "party": "LB",
+          "total_votes": 1817,
+          "pct_votes": 11.0,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_99": [
+        {
+          "candidate": "Vanessa Summers",
+          "party": "D",
+          "total_votes": 13643,
+          "pct_votes": 81.3,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Felipe Rios",
+          "party": "R",
+          "total_votes": 3147,
+          "pct_votes": 18.7,
+          "unopposed": false,
+          "winner": false
+        }
+      ],
+      "district_100": [
+        {
+          "candidate": "Blake Johnson",
+          "party": "D",
+          "total_votes": 16653,
+          "pct_votes": 71.7,
+          "unopposed": false,
+          "winner": true
+        },
+        {
+          "candidate": "Joseph Bortka",
+          "party": "R",
+          "total_votes": 6577,
+          "pct_votes": 28.3,
+          "unopposed": false,
+          "winner": false
+        }
+      ]
+    }
+  }
+}

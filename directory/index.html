@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indiana Rural Summit Directory</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌻</text></svg>">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+  color: #1e293b;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.header {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  color: white;
+  padding: 40px;
+  text-align: center;
+}
+
+.header h1 { font-size: 2.4rem; margin-bottom: 10px; font-weight: 700; }
+.header p { font-size: 1.05rem; opacity: 0.95; }
+
+.header-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.header-btn {
+  padding: 12px 24px;
+  background: white;
+  color: #1e3a8a;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.header-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.header-btn.secondary {
+  background: rgba(255, 255, 255, 0.18);
+  color: white;
+  border: 2px solid white;
+}
+
+.site-nav {
+  margin-bottom: 18px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.site-nav a {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.18);
+  color: white;
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.site-nav a:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: white;
+}
+
+.site-nav a.active {
+  background: white;
+  color: #1e3a8a;
+  border-color: white;
+}
+
+.controls {
+  padding: 24px 40px;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-box { flex: 1; min-width: 260px; }
+
+.search-box input,
+.filter-group select,
+.sort-select {
+  padding: 12px 16px;
+  font-size: 1rem;
+  border: 2px solid #cbd5e1;
+  border-radius: 8px;
+  background: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-box input { width: 100%; }
+
+.search-box input:focus,
+.filter-group select:focus,
+.sort-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.filter-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.reset-btn {
+  padding: 12px 20px;
+  background: #ef4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.reset-btn:hover { background: #dc2626; transform: translateY(-2px); }
+
+.stats {
+  padding: 15px 40px;
+  background: #eff6ff;
+  border-bottom: 1px solid #dbeafe;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stats-item { font-size: 1rem; color: #1e40af; font-weight: 600; }
+.stats-item + .stats-item { margin-left: 20px; }
+
+.view-toggle {
+  display: flex;
+  gap: 4px;
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.view-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  background: transparent;
+  color: #64748b;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.view-btn:hover { color: #3b82f6; background: rgba(59, 130, 246, 0.08); }
+.view-btn.active {
+  background: #3b82f6;
+  color: white;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+}
+
+/* ── Grid view ───────────────────────────────────────────────────────── */
+.directory-grid {
+  padding: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.contact-card {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.contact-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px 12px 0 0;
+}
+.contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  border-color: #3b82f6;
+}
+
+.contact-photo-area {
+  background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 0 16px;
+  border-bottom: 1px solid #e2e8f0;
+  border-radius: 10px 10px 0 0;
+}
+
+.contact-photo,
+.contact-photo-placeholder {
+  width: 96px;
+  height: 96px;
+  border-radius: 8px;
+  border: 3px solid white;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+.contact-photo { object-fit: cover; }
+.contact-photo-placeholder {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+}
+
+.contact-header { padding: 16px 20px 12px; text-align: center; }
+.contact-name { font-size: 1.15rem; font-weight: 700; color: #1e293b; margin-bottom: 5px; }
+.contact-role { font-size: 0.95rem; color: #3b82f6; font-weight: 600; margin-bottom: 3px; }
+.contact-title { font-size: 0.9rem; color: #64748b; }
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.contact-info {
+  padding: 12px 20px 10px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+.info-label {
+  font-weight: 600;
+  color: #475569;
+  min-width: 130px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+.info-value { color: #64748b; word-break: break-word; }
+.info-value a { color: #3b82f6; text-decoration: none; }
+.info-value a:hover { color: #2563eb; text-decoration: underline; }
+
+.social-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding: 12px 20px 16px;
+  border-top: 1px solid #e2e8f0;
+}
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  background: #eff6ff;
+  color: #1e40af;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.social-btn:hover {
+  background: #3b82f6;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* ── List view ───────────────────────────────────────────────────────── */
+.directory-list { padding: 0 40px 40px; }
+
+.list-header,
+.list-item {
+  display: grid;
+  grid-template-columns: 52px 2fr 1fr 1.5fr 1fr 200px;
+  gap: 20px;
+  padding: 14px 20px;
+}
+
+.list-photo-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-photo,
+.list-photo-placeholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  border: 2px solid #e2e8f0;
+  flex-shrink: 0;
+}
+.list-photo { object-fit: cover; }
+.list-photo-placeholder {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+}
+
+.list-header {
+  background: #f1f5f9;
+  border: 2px solid #e2e8f0;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  font-weight: 700;
+  color: #475569;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 8px;
+}
+.list-header button {
+  all: unset;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+}
+.list-header button:hover { color: #1e40af; }
+.list-header .sort-arrow { margin-left: 4px; opacity: 0.7; }
+
+.list-item {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-top: none;
+  align-items: center;
+  min-height: 72px;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.list-item:last-child { border-radius: 0 0 8px 8px; }
+.list-item:hover {
+  background: #f8faff;
+  border-color: #3b82f6;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 2px 10px rgba(59, 130, 246, 0.12);
+}
+
+.list-name { font-size: 1rem; font-weight: 700; color: #1e293b; }
+.list-role { color: #3b82f6; font-weight: 600; font-size: 0.85rem; margin-top: 2px; }
+.list-title { font-size: 0.82rem; color: #64748b; margin-top: 2px; }
+.list-cell { color: #64748b; font-size: 0.9rem; }
+
+.list-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.list-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  background: #eff6ff;
+  color: #1e40af;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: background 0.2s, transform 0.2s;
+}
+.list-actions a:hover {
+  background: #3b82f6;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+}
+
+.status-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: #64748b;
+}
+.status-message h2 { font-size: 1.5rem; margin-bottom: 10px; color: #475569; }
+.status-message.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 2px solid #fecaca;
+  border-radius: 8px;
+  margin: 20px;
+  padding: 24px;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  margin: 0 auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 1200px) {
+  .list-header { display: none; }
+  .list-item {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    min-height: unset;
+  }
+  .list-item:last-child { border-radius: 8px; }
+  .list-actions { justify-content: flex-start; }
+}
+
+@media (max-width: 768px) {
+  .header { padding: 28px 20px; }
+  .header h1 { font-size: 1.8rem; }
+  .controls { padding: 20px; }
+  .stats { padding: 15px 20px; }
+  .directory-grid { grid-template-columns: 1fr; padding: 20px; }
+  .directory-list { padding: 0 20px 20px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <nav class="site-nav">
+      <a class="active" href="./">Indiana Rural Summit Directory</a>
+      <a href="../power-packs/">Power Packs</a>
+      <a href="../">Indiana Partisan Lean Index</a>
+      <a href="../district-match/">District Match</a>
+    </nav>
+    <h1>🌻 Indiana Rural Summit Directory</h1>
+    <p>Candidates, volunteers, and committee members across Indiana</p>
+    <div class="header-buttons">
+      <a class="header-btn"
+         href="https://docs.google.com/forms/d/e/1FAIpQLSdB3WPT2o6AZ9gqiio0OPMzbyUiSAv6qm7Q2l1W3wVlOLK9zw/viewform?usp=header"
+         target="_blank" rel="noopener">📝 Submit Your Info</a>
+      <a class="header-btn secondary"
+         href="https://docs.google.com/forms/d/e/1FAIpQLSfU8KkjPEUUT_AF-DERaV5lfP1leZsIoFOWyp5E2uPZcp7M4Q/viewform?usp=header"
+         target="_blank" rel="noopener">✏️ Update/Correct Info</a>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="search-box">
+      <input type="text" id="searchInput"
+             placeholder="🔍 Search by name, location, occupation, or opponent…"
+             aria-label="Search directory">
+    </div>
+    <div class="filter-group">
+      <select id="roleFilter" aria-label="Filter by role"><option value="">All Roles</option></select>
+      <select id="districtFilter" aria-label="Filter by district"><option value="">All Districts</option></select>
+      <select id="countyFilter" aria-label="Filter by county"><option value="">All Counties</option></select>
+      <select id="sortSelect" class="sort-select" aria-label="Sort by">
+        <option value="last-asc">Last Name (A–Z)</option>
+        <option value="last-desc">Last Name (Z–A)</option>
+        <option value="first-asc">First Name (A–Z)</option>
+        <option value="first-desc">First Name (Z–A)</option>
+        <option value="role-asc">Role (A–Z)</option>
+        <option value="city-asc">Location (A–Z)</option>
+      </select>
+      <button class="reset-btn" id="resetBtn" type="button">Reset</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div>
+      <span class="stats-item">Total Contacts: <span id="totalCount">0</span></span>
+      <span class="stats-item">Showing: <span id="visibleCount">0</span></span>
+    </div>
+    <div class="view-toggle">
+      <button class="view-btn active" id="gridViewBtn" type="button">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/>
+          <rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/>
+        </svg>Grid
+      </button>
+      <button class="view-btn" id="listViewBtn" type="button">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <rect x="1" y="2" width="14" height="2" rx="1"/><rect x="1" y="7" width="14" height="2" rx="1"/>
+          <rect x="1" y="12" width="14" height="2" rx="1"/>
+        </svg>List
+      </button>
+    </div>
+  </div>
+
+  <div id="directoryOutput"></div>
+</div>
+
+<script>
+'use strict';
+
+const SPREADSHEET_ID = '1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw';
+const SHEET_GID = '918237840';
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
+
+const DISTRICT_FIELDS = ['District', 'Congressional District', 'House District', 'Senate District'];
+const SEARCH_FIELDS = [
+  'First Name', 'Last Name', 'Role', 'Occupation',
+  'Home City', 'Counties', 'Elected Opponent', 'Primary Opponent',
+];
+
+const state = {
+  rows: [],
+  headers: [],
+  view: 'grid',
+};
+
+// ── Utility helpers ────────────────────────────────────────────────────
+const $ = (id) => document.getElementById(id);
+const clean = (row, key) => String(row[key] ?? '').trim();
+const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+}[c]));
+
+function convertDriveUrl(url) {
+  if (!url) return '';
+  const m1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (m1) return `https://drive.google.com/thumbnail?id=${m1[1]}&sz=w400`;
+  const m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (m2) return `https://drive.google.com/thumbnail?id=${m2[1]}&sz=w400`;
+  return url;
+}
+
+function formatPhone(phone) {
+  const p = String(phone ?? '').trim();
+  return /^\d{10}$/.test(p) ? `(${p.slice(0, 3)}) ${p.slice(3, 6)}-${p.slice(6)}` : p;
+}
+
+function splitValues(raw) {
+  return String(raw ?? '')
+    .split(',')
+    .map((v) => v.trim())
+    .filter(Boolean);
+}
+
+// ── CSV parsing (quote-aware, handles newlines inside quoted fields) ───
+function parseCSV(csv) {
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+  for (let i = 0; i < csv.length; i++) {
+    const ch = csv[i];
+    if (inQuotes) {
+      if (ch === '"' && csv[i + 1] === '"') { field += '"'; i++; }
+      else if (ch === '"') { inQuotes = false; }
+      else { field += ch; }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ',') {
+      row.push(field); field = '';
+    } else if (ch === '\r') {
+      // skip; handled by \n
+    } else if (ch === '\n') {
+      row.push(field); field = '';
+      rows.push(row); row = [];
+    } else {
+      field += ch;
+    }
+  }
+  if (field.length || row.length) { row.push(field); rows.push(row); }
+
+  if (rows.length === 0) return { headers: [], records: [] };
+  const headers = rows[0].map((h) => h.trim());
+  const records = [];
+  for (let i = 1; i < rows.length; i++) {
+    const raw = rows[i];
+    if (!raw || raw.every((v) => !String(v).trim())) continue;
+    const obj = {};
+    headers.forEach((h, idx) => { obj[h] = (raw[idx] ?? '').trim(); });
+    records.push(obj);
+  }
+  return { headers, records };
+}
+
+// ── Data fetching ──────────────────────────────────────────────────────
+function showStatus(html, className = '') {
+  $('directoryOutput').innerHTML =
+    `<div class="status-message ${className}">${html}</div>`;
+  $('totalCount').textContent = state.rows.length;
+  $('visibleCount').textContent = 0;
+}
+
+async function loadDirectory() {
+  showStatus(`<div class="spinner" aria-hidden="true"></div><p>Loading directory from Google Sheets…</p>`);
+  try {
+    const response = await fetch(CSV_URL);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const csvText = await response.text();
+    const { headers, records } = parseCSV(csvText);
+    if (!records.length) throw new Error('No data found in sheet');
+    state.headers = headers;
+    // Strip trailing ".0" left over from spreadsheet phone numbers
+    for (const r of records) {
+      if (r.Phone) r.Phone = r.Phone.replace(/\.0$/, '');
+    }
+    state.rows = records;
+    populateFilters();
+    render();
+  } catch (err) {
+    console.error('Failed to load directory:', err);
+    showStatus(`
+      <h2>⚠️ Unable to load directory</h2>
+      <p><strong>Error:</strong> ${escapeHtml(err.message)}</p>
+      <p style="margin-top: 12px;">Check that the Google Sheet is shared as
+      "Anyone with the link can view".</p>
+      <p style="margin-top: 16px;">
+        <a href="#" onclick="location.reload(); return false;"
+           style="color: #991b1b; text-decoration: underline;">Retry</a>
+      </p>
+    `, 'error');
+  }
+}
+
+function populateFilters() {
+  const roles = new Set();
+  const districts = new Set();
+  const counties = new Set();
+  for (const r of state.rows) {
+    splitValues(r.Role).forEach((v) => roles.add(v));
+    DISTRICT_FIELDS.forEach((f) => splitValues(r[f]).forEach((v) => districts.add(v)));
+    splitValues(r.Counties).forEach((v) => counties.add(v));
+  }
+  fillSelect($('roleFilter'), 'All Roles', [...roles].sort());
+  fillSelect($('districtFilter'), 'All Districts', [...districts].sort());
+  fillSelect($('countyFilter'), 'All Counties', [...counties].sort());
+}
+
+function fillSelect(select, allLabel, options) {
+  select.innerHTML = `<option value="">${allLabel}</option>` +
+    options.map((v) => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+}
+
+// ── Filtering + sorting ────────────────────────────────────────────────
+function getFiltered() {
+  const search = $('searchInput').value.trim().toLowerCase();
+  const role = $('roleFilter').value;
+  const district = $('districtFilter').value;
+  const county = $('countyFilter').value;
+
+  return state.rows.filter((r) => {
+    if (search && !SEARCH_FIELDS.some((f) => clean(r, f).toLowerCase().includes(search))) {
+      return false;
+    }
+    if (role && !splitValues(r.Role).includes(role)) return false;
+    if (district && !DISTRICT_FIELDS.some((f) => splitValues(r[f]).includes(district))) return false;
+    if (county && !splitValues(r.Counties).includes(county)) return false;
+    return true;
+  });
+}
+
+function sortRows(rows) {
+  const [key, dir] = $('sortSelect').value.split('-');
+  const columns = { last: 'Last Name', first: 'First Name', role: 'Role', city: 'Home City' };
+  const col = columns[key] || 'Last Name';
+  const asc = dir !== 'desc';
+  return [...rows].sort((a, b) => {
+    const av = clean(a, col).toLowerCase();
+    const bv = clean(b, col).toLowerCase();
+    return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+  });
+}
+
+// ── Derivations per row ────────────────────────────────────────────────
+function runningForDistrict(r) {
+  const title = clean(r, 'Title').toLowerCase();
+  const fallback = clean(r, 'District');
+  if (title.includes('congress') || title.includes('us house')) return clean(r, 'Congressional District') || fallback;
+  if (title.includes('house')) return clean(r, 'House District') || fallback;
+  if (title.includes('senate')) return clean(r, 'Senate District') || fallback;
+  return fallback;
+}
+
+function photoUrl(r) {
+  for (const key of ['Photo URL', 'Photo']) {
+    const v = clean(r, key);
+    if (v) return convertDriveUrl(v);
+  }
+  const firstCol = state.headers[0] ? clean(r, state.headers[0]) : '';
+  return firstCol.startsWith('http') ? convertDriveUrl(firstCol) : '';
+}
+
+function socialLinks(r) {
+  const out = [];
+  const website = clean(r, 'Website');
+  const facebook = clean(r, 'Facebook');
+  const instagram = clean(r, 'Instagram');
+  if (website && website !== '?' && website.startsWith('http')) {
+    out.push({ emoji: '🌐', label: 'Website', href: website });
+  }
+  if (facebook && facebook !== '?' && facebook !== 'No Campaign page?' && facebook.startsWith('http')) {
+    out.push({ emoji: '📘', label: 'Facebook', href: facebook });
+  }
+  if (instagram && instagram !== '?') {
+    out.push({
+      emoji: '📸', label: 'Instagram',
+      href: `https://instagram.com/${instagram.replace(/^@/, '')}`,
+    });
+  }
+  for (const key of ['Other Social 1', 'Other Social 2']) {
+    const link = clean(r, key);
+    if (link && link.startsWith('http')) {
+      let host = 'Link';
+      try { host = new URL(link).hostname.replace(/^www\./, ''); } catch (_) {}
+      out.push({ emoji: '🔗', label: host, href: link });
+    }
+  }
+  return out;
+}
+
+// ── Card renderer ──────────────────────────────────────────────────────
+function infoRow(label, value, opts = {}) {
+  if (!value) return '';
+  const { href } = opts;
+  const safeLabel = escapeHtml(label);
+  const rendered = href
+    ? `<a href="${escapeHtml(href)}">${escapeHtml(value)}</a>`
+    : escapeHtml(value);
+  return `<div class="info-row"><span class="info-label">${safeLabel}:</span>`
+    + `<span class="info-value">${rendered}</span></div>`;
+}
+
+function renderCard(r) {
+  const first = clean(r, 'First Name');
+  const last = clean(r, 'Last Name');
+  const name = `${first} ${last}`.trim() || '—';
+  const role = clean(r, 'Role');
+  const title = clean(r, 'Title');
+  const roleLower = role.toLowerCase();
+  const isCandidate = roleLower.includes('candidate');
+  const isFormer = roleLower.includes('former');
+
+  const running = runningForDistrict(r);
+  const districts = ['House District', 'Senate District', 'Congressional District']
+    .map((f) => clean(r, f)).filter(Boolean);
+  const initials = ((first[0] || '') + (last[0] || '')).toUpperCase() || '?';
+
+  const photo = photoUrl(r);
+  const photoHtml = photo
+    ? `<img class="contact-photo" src="${escapeHtml(photo)}" alt="${escapeHtml(name)}"
+             onerror="this.onerror=null;this.style.display='none';var n=this.nextElementSibling;if(n)n.style.display='flex';"
+             onload="if(!this.naturalWidth||!this.naturalHeight){this.style.display='none';var n=this.nextElementSibling;if(n)n.style.display='flex';}">
+       <div class="contact-photo-placeholder" style="display:none;">${escapeHtml(initials)}</div>`
+    : `<div class="contact-photo-placeholder">${escapeHtml(initials)}</div>`;
+
+  const city = clean(r, 'Home City');
+  const county = clean(r, 'Home County');
+  const location = city && county ? `${city}, ${county}` : city;
+  const phone = clean(r, 'Phone');
+
+  const infoRows = [
+    running && isFormer ? infoRow('Ran for', running) : '',
+    districts.length ? infoRow('Districts', districts.join(' | ')) : '',
+    infoRow('Counties', clean(r, 'Counties')),
+    infoRow('Opponent', clean(r, 'Elected Opponent')),
+    infoRow('Primary Opponent', clean(r, 'Primary Opponent')),
+    infoRow('Location', location),
+    infoRow('Occupation', clean(r, 'Occupation')),
+    infoRow('Email', clean(r, 'Email'), { href: `mailto:${clean(r, 'Email')}` }),
+    phone ? infoRow('Phone', formatPhone(phone), { href: `tel:${phone}` }) : '',
+  ].join('');
+
+  const socials = socialLinks(r)
+    .map((s) => `<a href="${escapeHtml(s.href)}" target="_blank" rel="noopener" class="social-btn">${s.emoji} ${escapeHtml(s.label)}</a>`)
+    .join('');
+
+  return `
+    <div class="contact-card">
+      <div class="contact-photo-area">${photoHtml}</div>
+      <div class="contact-header">
+        <div class="contact-name">${escapeHtml(name)}</div>
+        ${role ? `<div class="contact-role">${escapeHtml(role)}</div>` : ''}
+        ${title ? `<div class="contact-title">${escapeHtml(title)}</div>` : ''}
+        ${running && isCandidate && !isFormer
+          ? `<span class="badge">Running for: ${escapeHtml(running)}</span>` : ''}
+      </div>
+      <div class="contact-info">${infoRows}</div>
+      ${socials ? `<div class="social-links">${socials}</div>` : ''}
+    </div>
+  `;
+}
+
+// ── List renderer ──────────────────────────────────────────────────────
+function listSubtitle(r) {
+  const role = clean(r, 'Role').toLowerCase();
+  const title = clean(r, 'Title');
+  const titleLower = title.toLowerCase();
+  const isCandidate = role.includes('candidate');
+  const isFormer = role.includes('former');
+  if (!isCandidate) return title;
+  const running = runningForDistrict(r);
+  if (!running) return title;
+  const runningLower = running.toLowerCase();
+  let district;
+  if (titleLower.includes('senate') && !runningLower.includes('senate'))
+    district = `Senate District ${running}`;
+  else if ((titleLower.includes('congress') || titleLower.includes('us house')) && !runningLower.includes('congressional'))
+    district = `Congressional District ${running}`;
+  else if (titleLower.includes('house') && !runningLower.includes('house'))
+    district = `House District ${running}`;
+  else
+    district = running;
+  return isFormer ? `Ran for ${district}` : district;
+}
+
+function renderListItem(r) {
+  const first = clean(r, 'First Name');
+  const last = clean(r, 'Last Name');
+  const name = `${first} ${last}`.trim() || '—';
+  const role = clean(r, 'Role');
+  const title = listSubtitle(r);
+  const city = clean(r, 'Home City');
+  const county = clean(r, 'Home County');
+  const location = city && county ? `${city}, ${county}` : city || '—';
+  const occupation = clean(r, 'Occupation') || '—';
+
+  const districts = DISTRICT_FIELDS.map((f) => clean(r, f)).filter(Boolean);
+  const districtText = districts.length ? districts.join(', ') : '—';
+
+  const email = clean(r, 'Email');
+  const phone = clean(r, 'Phone');
+  const actions = [
+    email ? `<a href="mailto:${escapeHtml(email)}" title="Email">📧</a>` : '',
+    phone ? `<a href="tel:${escapeHtml(phone)}" title="Call">📞</a>` : '',
+    ...socialLinks(r).map(
+      (s) => `<a href="${escapeHtml(s.href)}" target="_blank" rel="noopener" title="${escapeHtml(s.label)}">${s.emoji}</a>`,
+    ),
+  ].join('');
+
+  const initials = ((first[0] || '') + (last[0] || '')).toUpperCase() || '?';
+  const photo = photoUrl(r);
+  const photoHtml = photo
+    ? `<img class="list-photo" src="${escapeHtml(photo)}" alt="${escapeHtml(name)}"
+           onerror="this.onerror=null;this.style.display='none';var n=this.nextElementSibling;if(n)n.style.display='flex';">
+       <div class="list-photo-placeholder" style="display:none;">${escapeHtml(initials)}</div>`
+    : `<div class="list-photo-placeholder">${escapeHtml(initials)}</div>`;
+
+  return `
+    <div class="list-item">
+      <div class="list-photo-cell">${photoHtml}</div>
+      <div>
+        <div class="list-name">${escapeHtml(name)}</div>
+        ${role ? `<div class="list-role">${escapeHtml(role)}</div>` : ''}
+        ${title ? `<div class="list-title">${escapeHtml(title)}</div>` : ''}
+      </div>
+      <div class="list-cell">${escapeHtml(location)}</div>
+      <div class="list-cell">${escapeHtml(districtText)}</div>
+      <div class="list-cell">${escapeHtml(occupation)}</div>
+      <div class="list-actions">${actions}</div>
+    </div>
+  `;
+}
+
+function listHeader() {
+  return `
+    <div class="list-header">
+      <div></div>
+      <div>Name &amp; Role</div>
+      <div>Location</div>
+      <div>District</div>
+      <div>Occupation</div>
+      <div>Contact</div>
+    </div>
+  `;
+}
+
+// ── Render dispatch ────────────────────────────────────────────────────
+function render() {
+  const rows = sortRows(getFiltered());
+  const out = $('directoryOutput');
+  $('totalCount').textContent = state.rows.length;
+  $('visibleCount').textContent = rows.length;
+
+  if (rows.length === 0) {
+    out.className = '';
+    out.innerHTML = `
+      <div class="status-message">
+        <h2>No contacts found</h2>
+        <p>Try adjusting your search or filters.</p>
+      </div>`;
+    return;
+  }
+
+  if (state.view === 'grid') {
+    out.className = 'directory-grid';
+    out.innerHTML = rows.map(renderCard).join('');
+  } else {
+    out.className = 'directory-list';
+    out.innerHTML = listHeader() + rows.map(renderListItem).join('');
+  }
+}
+
+function setView(view) {
+  state.view = view;
+  $('gridViewBtn').classList.toggle('active', view === 'grid');
+  $('listViewBtn').classList.toggle('active', view === 'list');
+  render();
+}
+
+function resetFilters() {
+  $('searchInput').value = '';
+  $('roleFilter').value = '';
+  $('districtFilter').value = '';
+  $('countyFilter').value = '';
+  $('sortSelect').value = 'last-asc';
+  render();
+}
+
+// ── Event wiring ───────────────────────────────────────────────────────
+['searchInput', 'roleFilter', 'districtFilter', 'countyFilter', 'sortSelect']
+  .forEach((id) => {
+    const el = $(id);
+    const evt = el.tagName === 'SELECT' ? 'change' : 'input';
+    el.addEventListener(evt, render);
+  });
+$('resetBtn').addEventListener('click', resetFilters);
+$('gridViewBtn').addEventListener('click', () => setView('grid'));
+$('listViewBtn').addEventListener('click', () => setView('list'));
+
+window.addEventListener('DOMContentLoaded', loadDirectory);
+</script>
+</body>
+</html>

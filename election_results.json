@@ -1,0 +1,1998 @@
+{
+    "US_Congressional_Results": [
+        {
+            "district": "District 1",
+            "results": [
+                {
+                    "candidate": "Frank Mrvan (D)",
+                    "incumbent": true,
+                    "total_votes": "172118",
+                    "percent_votes": "0.534"
+                },
+                {
+                    "candidate": "Randy Niemeyer (R)",
+                    "incumbent": false,
+                    "total_votes": "144886",
+                    "percent_votes": "0.45"
+                }
+            ]
+        },
+        {
+            "district": "District 2",
+            "results": [
+                {
+                    "candidate": "Rudy Yakym (R)",
+                    "incumbent": true,
+                    "total_votes": "184226",
+                    "percent_votes": "0.628"
+                },
+                {
+                    "candidate": "Lori Camp (D)",
+                    "incumbent": false,
+                    "total_votes": "101405",
+                    "percent_votes": "0.346"
+                }
+            ]
+        },
+        {
+            "district": "District 3",
+            "results": [
+                {
+                    "candidate": "Marlin Stutzman (R)",
+                    "incumbent": false,
+                    "total_votes": "202610",
+                    "percent_votes": "0.65"
+                },
+                {
+                    "candidate": "Kiley Adolph (D)",
+                    "incumbent": false,
+                    "total_votes": "97846",
+                    "percent_votes": "0.314"
+                }
+            ]
+        },
+        {
+            "district": "District 4",
+            "results": [
+                {
+                    "candidate": "Jim Baird (R)",
+                    "incumbent": true,
+                    "total_votes": "210250",
+                    "percent_votes": "0.649"
+                },
+                {
+                    "candidate": "Derrick Holder (D)",
+                    "incumbent": false,
+                    "total_votes": "100173",
+                    "percent_votes": "0.309"
+                }
+            ]
+        },
+        {
+            "district": "District 5",
+            "results": [
+                {
+                    "candidate": "Victoria Spartz (R)",
+                    "incumbent": true,
+                    "total_votes": "202549",
+                    "percent_votes": "0.566"
+                },
+                {
+                    "candidate": "Deborah Pickett (D)",
+                    "incumbent": false,
+                    "total_votes": "136180",
+                    "percent_votes": "0.38"
+                }
+            ]
+        },
+        {
+            "district": "District 6",
+            "results": [
+                {
+                    "candidate": "Jefferson Shreve (R)",
+                    "incumbent": false,
+                    "total_votes": "200494",
+                    "percent_votes": "0.639"
+                },
+                {
+                    "candidate": "Cynthia Wirth (D)",
+                    "incumbent": false,
+                    "total_votes": "99361",
+                    "percent_votes": "0.317"
+                }
+            ]
+        },
+        {
+            "district": "District 7",
+            "results": [
+                {
+                    "candidate": "Andre Carson (D)",
+                    "incumbent": true,
+                    "total_votes": "185733",
+                    "percent_votes": "0.683"
+                },
+                {
+                    "candidate": "John Schmitz (R)",
+                    "incumbent": false,
+                    "total_votes": "78707",
+                    "percent_votes": "0.29"
+                }
+            ]
+        },
+        {
+            "district": "District 8",
+            "results": [
+                {
+                    "candidate": "Mark Messmer (R)",
+                    "incumbent": false,
+                    "total_votes": "219843",
+                    "percent_votes": "0.68"
+                },
+                {
+                    "candidate": "Erik Hurt (D)",
+                    "incumbent": false,
+                    "total_votes": "95219",
+                    "percent_votes": "0.294"
+                }
+            ]
+        },
+        {
+            "district": "District 9",
+            "results": [
+                {
+                    "candidate": "Erin Houchin (R)",
+                    "incumbent": true,
+                    "total_votes": "220576",
+                    "percent_votes": "0.645"
+                },
+                {
+                    "candidate": "Timothy Peck (D)",
+                    "incumbent": false,
+                    "total_votes": "111901",
+                    "percent_votes": "0.327"
+                }
+            ]
+        }
+    ],
+    "State_Senate_Results": [
+        {
+            "district": "District 2",
+            "results": [
+                {
+                    "candidate": "Lonnie Randolph (D)",
+                    "incumbent": true,
+                    "total_votes": "27967",
+                    "percent_votes": "0.657"
+                },
+                {
+                    "candidate": "Humberto Prado (R)",
+                    "incumbent": false,
+                    "total_votes": "14630",
+                    "percent_votes": "0.343"
+                }
+            ]
+        },
+        {
+            "district": "District 3",
+            "results": [
+                {
+                    "candidate": "Mark Spencer (D)",
+                    "incumbent": false,
+                    "total_votes": "33379",
+                    "percent_votes": "0.731"
+                },
+                {
+                    "candidate": "Will Miller (R)",
+                    "incumbent": false,
+                    "total_votes": "12273",
+                    "percent_votes": "0.269"
+                }
+            ]
+        },
+        {
+            "district": "District 5",
+            "results": [
+                {
+                    "candidate": "Ed Charbonneau (R)",
+                    "incumbent": true,
+                    "total_votes": "43467",
+                    "percent_votes": "0.66"
+                },
+                {
+                    "candidate": "Leslie Bamesberger (D)",
+                    "incumbent": false,
+                    "total_votes": "22398",
+                    "percent_votes": "0.34"
+                }
+            ]
+        },
+        {
+            "district": "District 7",
+            "results": [
+                {
+                    "candidate": "Brian Buchanan (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 8",
+            "results": [
+                {
+                    "candidate": "Mike Bohacek (R)",
+                    "incumbent": true,
+                    "total_votes": "42380",
+                    "percent_votes": "0.718"
+                },
+                {
+                    "candidate": "Leon Smith (D)",
+                    "incumbent": false,
+                    "total_votes": "16638",
+                    "percent_votes": "0.282"
+                }
+            ]
+        },
+        {
+            "district": "District 9",
+            "results": [
+                {
+                    "candidate": "Ryan Mishler (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 10",
+            "results": [
+                {
+                    "candidate": "David Niezgodski (D)",
+                    "incumbent": true,
+                    "total_votes": "30396",
+                    "percent_votes": "0.778"
+                },
+                {
+                    "candidate": "Tim Cotton (LB)",
+                    "incumbent": false,
+                    "total_votes": "8680",
+                    "percent_votes": "0.222"
+                }
+            ]
+        },
+        {
+            "district": "District 12",
+            "results": [
+                {
+                    "candidate": "Blake Doriot (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 13",
+            "results": [
+                {
+                    "candidate": "Susan Glick (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 16",
+            "results": [
+                {
+                    "candidate": "Justin Busch (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 18",
+            "results": [
+                {
+                    "candidate": "Stacey Donato (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 20",
+            "results": [
+                {
+                    "candidate": "Scott Baldwin (R)",
+                    "incumbent": true,
+                    "total_votes": "43873",
+                    "percent_votes": "0.599"
+                },
+                {
+                    "candidate": "Joel Levi (D)",
+                    "incumbent": false,
+                    "total_votes": "29374",
+                    "percent_votes": "0.401"
+                }
+            ]
+        },
+        {
+            "district": "District 24",
+            "results": [
+                {
+                    "candidate": "Brett Clark (R)",
+                    "incumbent": false,
+                    "total_votes": "40331",
+                    "percent_votes": "0.656"
+                },
+                {
+                    "candidate": "Veronica Pejril (D)",
+                    "incumbent": false,
+                    "total_votes": "21181",
+                    "percent_votes": "0.344"
+                }
+            ]
+        },
+        {
+            "district": "District 28",
+            "results": [
+                {
+                    "candidate": "Michael Crider (R)",
+                    "incumbent": true,
+                    "total_votes": "44663",
+                    "percent_votes": "0.78"
+                },
+                {
+                    "candidate": "Travis Chittum (LB)",
+                    "incumbent": false,
+                    "total_votes": "12629",
+                    "percent_votes": "0.22"
+                }
+            ]
+        },
+        {
+            "district": "District 30",
+            "results": [
+                {
+                    "candidate": "Fady Qaddoura (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 32",
+            "results": [
+                {
+                    "candidate": "Aaron Freeman (R)",
+                    "incumbent": true,
+                    "total_votes": "34226",
+                    "percent_votes": "0.605"
+                },
+                {
+                    "candidate": "Katrina Owens (D)",
+                    "incumbent": false,
+                    "total_votes": "22352",
+                    "percent_votes": "0.395"
+                }
+            ]
+        },
+        {
+            "district": "District 33",
+            "results": [
+                {
+                    "candidate": "Greg Taylor (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 34",
+            "results": [
+                {
+                    "candidate": "La Keisha Jackson (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 35",
+            "results": [
+                {
+                    "candidate": "Michael Young (R)",
+                    "incumbent": true,
+                    "total_votes": "24665",
+                    "percent_votes": "0.569"
+                },
+                {
+                    "candidate": "Jessica McCormick (D)",
+                    "incumbent": false,
+                    "total_votes": "18681",
+                    "percent_votes": "0.431"
+                }
+            ]
+        },
+        {
+            "district": "District 36",
+            "results": [
+                {
+                    "candidate": "Cynthia Carrasco (R)",
+                    "incumbent": true,
+                    "total_votes": "30242",
+                    "percent_votes": "0.625"
+                },
+                {
+                    "candidate": "Suzanne Fortenberry (D)",
+                    "incumbent": false,
+                    "total_votes": "18181",
+                    "percent_votes": "0.375"
+                }
+            ]
+        },
+        {
+            "district": "District 37",
+            "results": [
+                {
+                    "candidate": "Rodric Bray (R)",
+                    "incumbent": true,
+                    "total_votes": "50174",
+                    "percent_votes": "0.759"
+                },
+                {
+                    "candidate": "Kimberly Schofield (D)",
+                    "incumbent": false,
+                    "total_votes": "15923",
+                    "percent_votes": "0.241"
+                }
+            ]
+        },
+        {
+            "district": "District 40",
+            "results": [
+                {
+                    "candidate": "Shelli Yoder (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 42",
+            "results": [
+                {
+                    "candidate": "Jean Leising (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 44",
+            "results": [
+                {
+                    "candidate": "Eric Koch (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 50",
+            "results": [
+                {
+                    "candidate": "Vaneta Becker (R)",
+                    "incumbent": true,
+                    "total_votes": "43353",
+                    "percent_votes": "0.807"
+                },
+                {
+                    "candidate": "John Woodard (I)",
+                    "incumbent": false,
+                    "total_votes": "10352",
+                    "percent_votes": "0.193"
+                }
+            ]
+        }
+    ],
+    "State_House_Results": [
+        {
+            "district": "District 1",
+            "results": [
+                {
+                    "candidate": "Carolyn Jackson (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 2",
+            "results": [
+                {
+                    "candidate": "Earl Harris (D)",
+                    "incumbent": true,
+                    "total_votes": "14986",
+                    "percent_votes": "0.82"
+                },
+                {
+                    "candidate": "Ben Ruiz (R)",
+                    "incumbent": false,
+                    "total_votes": "3289",
+                    "percent_votes": "0.18"
+                }
+            ]
+        },
+        {
+            "district": "District 3",
+            "results": [
+                {
+                    "candidate": "Ragen Hatcher (D)",
+                    "incumbent": true,
+                    "total_votes": "14756",
+                    "percent_votes": "0.631"
+                },
+                {
+                    "candidate": "Leslie Dallner (R)",
+                    "incumbent": false,
+                    "total_votes": "8614",
+                    "percent_votes": "0.369"
+                }
+            ]
+        },
+        {
+            "district": "District 4",
+            "results": [
+                {
+                    "candidate": "Ed Soliday (R)",
+                    "incumbent": true,
+                    "total_votes": "20093",
+                    "percent_votes": "0.576"
+                },
+                {
+                    "candidate": "Erika Robinson-Watkins (D)",
+                    "incumbent": false,
+                    "total_votes": "14782",
+                    "percent_votes": "0.424"
+                }
+            ]
+        },
+        {
+            "district": "District 5",
+            "results": [
+                {
+                    "candidate": "Dale DeVon (R)",
+                    "incumbent": true,
+                    "total_votes": "16822",
+                    "percent_votes": "0.546"
+                },
+                {
+                    "candidate": "Heidi Beidinger (D)",
+                    "incumbent": false,
+                    "total_votes": "14004",
+                    "percent_votes": "0.454"
+                }
+            ]
+        },
+        {
+            "district": "District 6",
+            "results": [
+                {
+                    "candidate": "Maureen Bauer (D)",
+                    "incumbent": true,
+                    "total_votes": "14852",
+                    "percent_votes": "0.81"
+                },
+                {
+                    "candidate": "Charlie Florance (LB)",
+                    "incumbent": false,
+                    "total_votes": "3482",
+                    "percent_votes": "0.19"
+                }
+            ]
+        },
+        {
+            "district": "District 7",
+            "results": [
+                {
+                    "candidate": "Jake Teshka (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 8",
+            "results": [
+                {
+                    "candidate": "Ryan Dvorak (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 9",
+            "results": [
+                {
+                    "candidate": "Patricia Boy (D)",
+                    "incumbent": true,
+                    "total_votes": "14977",
+                    "percent_votes": "0.508"
+                },
+                {
+                    "candidate": "Joel Florek (R)",
+                    "incumbent": false,
+                    "total_votes": "14482",
+                    "percent_votes": "0.492"
+                }
+            ]
+        },
+        {
+            "district": "District 10",
+            "results": [
+                {
+                    "candidate": "Charles Moseley (D)",
+                    "incumbent": true,
+                    "total_votes": "15394",
+                    "percent_votes": "0.521"
+                },
+                {
+                    "candidate": "Jeff Larson (R)",
+                    "incumbent": false,
+                    "total_votes": "14141",
+                    "percent_votes": "0.479"
+                }
+            ]
+        },
+        {
+            "district": "District 11",
+            "results": [
+                {
+                    "candidate": "Michael Aylesworth (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 12",
+            "results": [
+                {
+                    "candidate": "Mike Andrade (D)",
+                    "incumbent": true,
+                    "total_votes": "17930",
+                    "percent_votes": "0.551"
+                },
+                {
+                    "candidate": "Jim Lietz (R)",
+                    "incumbent": false,
+                    "total_votes": "14634",
+                    "percent_votes": "0.449"
+                }
+            ]
+        },
+        {
+            "district": "District 13",
+            "results": [
+                {
+                    "candidate": "Matthew Commons (R)",
+                    "incumbent": false,
+                    "total_votes": "23423",
+                    "percent_votes": "0.737"
+                },
+                {
+                    "candidate": "Edward Moyer (D)",
+                    "incumbent": false,
+                    "total_votes": "8373",
+                    "percent_votes": "0.263"
+                }
+            ]
+        },
+        {
+            "district": "District 14",
+            "results": [
+                {
+                    "candidate": "Vernon Smith (D)",
+                    "incumbent": true,
+                    "total_votes": "17552",
+                    "percent_votes": "0.721"
+                },
+                {
+                    "candidate": "Ivan Ursery (R)",
+                    "incumbent": false,
+                    "total_votes": "6781",
+                    "percent_votes": "0.279"
+                }
+            ]
+        },
+        {
+            "district": "District 15",
+            "results": [
+                {
+                    "candidate": "Hal Slager (R)",
+                    "incumbent": true,
+                    "total_votes": "23521",
+                    "percent_votes": "0.634"
+                },
+                {
+                    "candidate": "John Walter (D)",
+                    "incumbent": false,
+                    "total_votes": "13603",
+                    "percent_votes": "0.366"
+                }
+            ]
+        },
+        {
+            "district": "District 16",
+            "results": [
+                {
+                    "candidate": "Kendell Culp (R)",
+                    "incumbent": true,
+                    "total_votes": "22491",
+                    "percent_votes": "0.77"
+                },
+                {
+                    "candidate": "Dennis Collins (D)",
+                    "incumbent": false,
+                    "total_votes": "6737",
+                    "percent_votes": "0.23"
+                }
+            ]
+        },
+        {
+            "district": "District 17",
+            "results": [
+                {
+                    "candidate": "Jack Jordan (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 18",
+            "results": [
+                {
+                    "candidate": "David Abbott (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 19",
+            "results": [
+                {
+                    "candidate": "Julie Olthoff (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 20",
+            "results": [
+                {
+                    "candidate": "Jim Pressel (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 21",
+            "results": [
+                {
+                    "candidate": "Timothy Wesco (R)",
+                    "incumbent": true,
+                    "total_votes": "14699",
+                    "percent_votes": "0.79"
+                },
+                {
+                    "candidate": "Melissa Kauffman (LB)",
+                    "incumbent": false,
+                    "total_votes": "3919",
+                    "percent_votes": "0.21"
+                }
+            ]
+        },
+        {
+            "district": "District 22",
+            "results": [
+                {
+                    "candidate": "Craig Snow (R)",
+                    "incumbent": true,
+                    "total_votes": "21110",
+                    "percent_votes": "0.864"
+                },
+                {
+                    "candidate": "Josh Vergiels (LB)",
+                    "incumbent": false,
+                    "total_votes": "3321",
+                    "percent_votes": "0.136"
+                }
+            ]
+        },
+        {
+            "district": "District 23",
+            "results": [
+                {
+                    "candidate": "Ethan Manning (R)",
+                    "incumbent": true,
+                    "total_votes": "18327",
+                    "percent_votes": "0.739"
+                },
+                {
+                    "candidate": "Richard Rouser (D)",
+                    "incumbent": false,
+                    "total_votes": "6468",
+                    "percent_votes": "0.261"
+                }
+            ]
+        },
+        {
+            "district": "District 24",
+            "results": [
+                {
+                    "candidate": "Hunter Smith (R)",
+                    "incumbent": false,
+                    "total_votes": "23359",
+                    "percent_votes": "0.562"
+                },
+                {
+                    "candidate": "Josh Lowry (D)",
+                    "incumbent": false,
+                    "total_votes": "18233",
+                    "percent_votes": "0.438"
+                }
+            ]
+        },
+        {
+            "district": "District 25",
+            "results": [
+                {
+                    "candidate": "Becky Cash (R)",
+                    "incumbent": true,
+                    "total_votes": "18793",
+                    "percent_votes": "0.501"
+                },
+                {
+                    "candidate": "Tiffany Stoner (D)",
+                    "incumbent": false,
+                    "total_votes": "18727",
+                    "percent_votes": "0.499"
+                }
+            ]
+        },
+        {
+            "district": "District 26",
+            "results": [
+                {
+                    "candidate": "Chris Campbell (D)",
+                    "incumbent": true,
+                    "total_votes": "11501",
+                    "percent_votes": "0.641"
+                },
+                {
+                    "candidate": "James Schenke (R)",
+                    "incumbent": false,
+                    "total_votes": "6443",
+                    "percent_votes": "0.359"
+                }
+            ]
+        },
+        {
+            "district": "District 27",
+            "results": [
+                {
+                    "candidate": "Sheila Klinker (D)",
+                    "incumbent": true,
+                    "total_votes": "13392",
+                    "percent_votes": "0.615"
+                },
+                {
+                    "candidate": "Oscar Alvarez (R)",
+                    "incumbent": false,
+                    "total_votes": "8379",
+                    "percent_votes": "0.385"
+                }
+            ]
+        },
+        {
+            "district": "District 28",
+            "results": [
+                {
+                    "candidate": "Jeffrey Thompson (R)",
+                    "incumbent": true,
+                    "total_votes": "23981",
+                    "percent_votes": "0.718"
+                },
+                {
+                    "candidate": "Karen Whitney (D)",
+                    "incumbent": false,
+                    "total_votes": "9438",
+                    "percent_votes": "0.282"
+                }
+            ]
+        },
+        {
+            "district": "District 29",
+            "results": [
+                {
+                    "candidate": "Alaina Shonkwiler (R)",
+                    "incumbent": false,
+                    "total_votes": "22787",
+                    "percent_votes": "0.634"
+                },
+                {
+                    "candidate": "Christopher Hartig (D)",
+                    "incumbent": false,
+                    "total_votes": "13169",
+                    "percent_votes": "0.366"
+                }
+            ]
+        },
+        {
+            "district": "District 30",
+            "results": [
+                {
+                    "candidate": "Mike Karickhoff (R)",
+                    "incumbent": true,
+                    "total_votes": "18635",
+                    "percent_votes": "0.673"
+                },
+                {
+                    "candidate": "Michael Katcher (D)",
+                    "incumbent": false,
+                    "total_votes": "9042",
+                    "percent_votes": "0.327"
+                }
+            ]
+        },
+        {
+            "district": "District 31",
+            "results": [
+                {
+                    "candidate": "Lori Goss-Reaves (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 32",
+            "results": [
+                {
+                    "candidate": "Victoria Garcia Wilburn (D)",
+                    "incumbent": true,
+                    "total_votes": "17981",
+                    "percent_votes": "0.521"
+                },
+                {
+                    "candidate": "Patricia Bratton (R)",
+                    "incumbent": false,
+                    "total_votes": "16539",
+                    "percent_votes": "0.479"
+                }
+            ]
+        },
+        {
+            "district": "District 33",
+            "results": [
+                {
+                    "candidate": "John Prescott (R)",
+                    "incumbent": true,
+                    "total_votes": "21155",
+                    "percent_votes": "0.73"
+                },
+                {
+                    "candidate": "John Bartlett (D)",
+                    "incumbent": false,
+                    "total_votes": "7817",
+                    "percent_votes": "0.27"
+                }
+            ]
+        },
+        {
+            "district": "District 34",
+            "results": [
+                {
+                    "candidate": "Sue Errington (D)",
+                    "incumbent": true,
+                    "total_votes": "12149",
+                    "percent_votes": "0.551"
+                },
+                {
+                    "candidate": "Susan Dillon (R)",
+                    "incumbent": false,
+                    "total_votes": "9908",
+                    "percent_votes": "0.449"
+                }
+            ]
+        },
+        {
+            "district": "District 35",
+            "results": [
+                {
+                    "candidate": "Elizabeth Rowray (R)",
+                    "incumbent": true,
+                    "total_votes": "22519",
+                    "percent_votes": "0.71"
+                },
+                {
+                    "candidate": "Philip Gift (D)",
+                    "incumbent": false,
+                    "total_votes": "9198",
+                    "percent_votes": "0.29"
+                }
+            ]
+        },
+        {
+            "district": "District 36",
+            "results": [
+                {
+                    "candidate": "Kyle Pierce (R)",
+                    "incumbent": true,
+                    "total_votes": "15295",
+                    "percent_votes": "0.59"
+                },
+                {
+                    "candidate": "Thonja Nicholson (D)",
+                    "incumbent": false,
+                    "total_votes": "10615",
+                    "percent_votes": "0.41"
+                }
+            ]
+        },
+        {
+            "district": "District 37",
+            "results": [
+                {
+                    "candidate": "Todd Huston (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 38",
+            "results": [
+                {
+                    "candidate": "Heath VanNatter (R)",
+                    "incumbent": true,
+                    "total_votes": "25319",
+                    "percent_votes": "0.753"
+                },
+                {
+                    "candidate": "Carl Seese (D)",
+                    "incumbent": false,
+                    "total_votes": "8317",
+                    "percent_votes": "0.247"
+                }
+            ]
+        },
+        {
+            "district": "District 39",
+            "results": [
+                {
+                    "candidate": "Daniel Lopez (R)",
+                    "incumbent": false,
+                    "total_votes": "21158",
+                    "percent_votes": "0.537"
+                },
+                {
+                    "candidate": "Matt McNally (D)",
+                    "incumbent": false,
+                    "total_votes": "18221",
+                    "percent_votes": "0.463"
+                }
+            ]
+        },
+        {
+            "district": "District 40",
+            "results": [
+                {
+                    "candidate": "Gregory Steuerwald (R)",
+                    "incumbent": true,
+                    "total_votes": "17486",
+                    "percent_votes": "0.584"
+                },
+                {
+                    "candidate": "Robert Pope (D)",
+                    "incumbent": false,
+                    "total_votes": "12475",
+                    "percent_votes": "0.416"
+                }
+            ]
+        },
+        {
+            "district": "District 41",
+            "results": [
+                {
+                    "candidate": "Mark Genda (R)",
+                    "incumbent": true,
+                    "total_votes": "20486",
+                    "percent_votes": "0.731"
+                },
+                {
+                    "candidate": "Dan Sikes (D)",
+                    "incumbent": false,
+                    "total_votes": "7540",
+                    "percent_votes": "0.269"
+                }
+            ]
+        },
+        {
+            "district": "District 42",
+            "results": [
+                {
+                    "candidate": "Alan Morrison (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 43",
+            "results": [
+                {
+                    "candidate": "Tonya Pfaff (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 44",
+            "results": [
+                {
+                    "candidate": "Beau Baird (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 45",
+            "results": [
+                {
+                    "candidate": "Bruce Borders (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 46",
+            "results": [
+                {
+                    "candidate": "Bob Heaton (R)",
+                    "incumbent": true,
+                    "total_votes": "20827",
+                    "percent_votes": "0.679"
+                },
+                {
+                    "candidate": "Kurtis Cummings (D)",
+                    "incumbent": false,
+                    "total_votes": "9834",
+                    "percent_votes": "0.321"
+                }
+            ]
+        },
+        {
+            "district": "District 47",
+            "results": [
+                {
+                    "candidate": "Robb Greene (R)",
+                    "incumbent": true,
+                    "total_votes": "23885",
+                    "percent_votes": "0.74"
+                },
+                {
+                    "candidate": "Michael Potter (D)",
+                    "incumbent": false,
+                    "total_votes": "8401",
+                    "percent_votes": "0.26"
+                }
+            ]
+        },
+        {
+            "district": "District 48",
+            "results": [
+                {
+                    "candidate": "Doug Miller (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 49",
+            "results": [
+                {
+                    "candidate": "Joanna King (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 50",
+            "results": [
+                {
+                    "candidate": "Lorissa Sweet (R)",
+                    "incumbent": true,
+                    "total_votes": "23782",
+                    "percent_votes": "0.769"
+                },
+                {
+                    "candidate": "Joe Swisher (D)",
+                    "incumbent": false,
+                    "total_votes": "7134",
+                    "percent_votes": "0.231"
+                }
+            ]
+        },
+        {
+            "district": "District 51",
+            "results": [
+                {
+                    "candidate": "Tony Isa (R)",
+                    "incumbent": false,
+                    "total_votes": "16774",
+                    "percent_votes": "0.744"
+                },
+                {
+                    "candidate": "Judy Rowe (D)",
+                    "incumbent": false,
+                    "total_votes": "5763",
+                    "percent_votes": "0.256"
+                }
+            ]
+        },
+        {
+            "district": "District 52",
+            "results": [
+                {
+                    "candidate": "Ben Smaltz (R)",
+                    "incumbent": true,
+                    "total_votes": "22276",
+                    "percent_votes": "0.767"
+                },
+                {
+                    "candidate": "Walt Sorg (D)",
+                    "incumbent": false,
+                    "total_votes": "6750",
+                    "percent_votes": "0.233"
+                }
+            ]
+        },
+        {
+            "district": "District 53",
+            "results": [
+                {
+                    "candidate": "Ethan Lawson (R)",
+                    "incumbent": false,
+                    "total_votes": "24443",
+                    "percent_votes": "0.704"
+                },
+                {
+                    "candidate": "Nate Anderson (D)",
+                    "incumbent": false,
+                    "total_votes": "10271",
+                    "percent_votes": "0.296"
+                }
+            ]
+        },
+        {
+            "district": "District 54",
+            "results": [
+                {
+                    "candidate": "Cory Criswell (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 55",
+            "results": [
+                {
+                    "candidate": "Lindsay Patterson (R)",
+                    "incumbent": true,
+                    "total_votes": "24820",
+                    "percent_votes": "0.805"
+                },
+                {
+                    "candidate": "Victoria Martz (D)",
+                    "incumbent": false,
+                    "total_votes": "6014",
+                    "percent_votes": "0.195"
+                }
+            ]
+        },
+        {
+            "district": "District 56",
+            "results": [
+                {
+                    "candidate": "Bradford Barrett (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 57",
+            "results": [
+                {
+                    "candidate": "Craig Haggard (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 58",
+            "results": [
+                {
+                    "candidate": "Michelle Davis (R)",
+                    "incumbent": true,
+                    "total_votes": "18730",
+                    "percent_votes": "0.674"
+                },
+                {
+                    "candidate": "Sandy James (D)",
+                    "incumbent": false,
+                    "total_votes": "9047",
+                    "percent_votes": "0.326"
+                }
+            ]
+        },
+        {
+            "district": "District 59",
+            "results": [
+                {
+                    "candidate": "Ryan Lauer (R)",
+                    "incumbent": true,
+                    "total_votes": "17144",
+                    "percent_votes": "0.638"
+                },
+                {
+                    "candidate": "Ross Thomas (D)",
+                    "incumbent": false,
+                    "total_votes": "9709",
+                    "percent_votes": "0.362"
+                }
+            ]
+        },
+        {
+            "district": "District 60",
+            "results": [
+                {
+                    "candidate": "Peggy Mayfield (R)",
+                    "incumbent": true,
+                    "total_votes": "25758",
+                    "percent_votes": "0.757"
+                },
+                {
+                    "candidate": "Michelle Higgs (D)",
+                    "incumbent": false,
+                    "total_votes": "8271",
+                    "percent_votes": "0.243"
+                }
+            ]
+        },
+        {
+            "district": "District 61",
+            "results": [
+                {
+                    "candidate": "Matt Pierce (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 62",
+            "results": [
+                {
+                    "candidate": "Dave Hall (R)",
+                    "incumbent": true,
+                    "total_votes": "18367",
+                    "percent_votes": "0.511"
+                },
+                {
+                    "candidate": "Thomas Horrocks (D)",
+                    "incumbent": false,
+                    "total_votes": "17572",
+                    "percent_votes": "0.489"
+                }
+            ]
+        },
+        {
+            "district": "District 63",
+            "results": [
+                {
+                    "candidate": "Shane Lindauer (R)",
+                    "incumbent": true,
+                    "total_votes": "21649",
+                    "percent_votes": "0.763"
+                },
+                {
+                    "candidate": "Teresa Kendall (D)",
+                    "incumbent": false,
+                    "total_votes": "6709",
+                    "percent_votes": "0.237"
+                }
+            ]
+        },
+        {
+            "district": "District 64",
+            "results": [
+                {
+                    "candidate": "Matt Hostettler (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 65",
+            "results": [
+                {
+                    "candidate": "Chris May (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 66",
+            "results": [
+                {
+                    "candidate": "Zach Payne (R)",
+                    "incumbent": true,
+                    "total_votes": "21370",
+                    "percent_votes": "0.692"
+                },
+                {
+                    "candidate": "Jennifer David (D)",
+                    "incumbent": false,
+                    "total_votes": "9520",
+                    "percent_votes": "0.308"
+                }
+            ]
+        },
+        {
+            "district": "District 67",
+            "results": [
+                {
+                    "candidate": "Alex Zimmerman (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 68",
+            "results": [
+                {
+                    "candidate": "Garrett Bascom (R)",
+                    "incumbent": false,
+                    "total_votes": "26971",
+                    "percent_votes": "0.795"
+                },
+                {
+                    "candidate": "Lisa Barker (D)",
+                    "incumbent": false,
+                    "total_votes": "6962",
+                    "percent_votes": "0.205"
+                }
+            ]
+        },
+        {
+            "district": "District 69",
+            "results": [
+                {
+                    "candidate": "Jim Lucas (R)",
+                    "incumbent": true,
+                    "total_votes": "18521",
+                    "percent_votes": "0.687"
+                },
+                {
+                    "candidate": "Trish Whitcomb (D)",
+                    "incumbent": false,
+                    "total_votes": "8450",
+                    "percent_votes": "0.313"
+                }
+            ]
+        },
+        {
+            "district": "District 70",
+            "results": [
+                {
+                    "candidate": "Karen Engleman (R)",
+                    "incumbent": true,
+                    "total_votes": "25737",
+                    "percent_votes": "0.734"
+                },
+                {
+                    "candidate": "Sarah Blessing (D)",
+                    "incumbent": false,
+                    "total_votes": "9315",
+                    "percent_votes": "0.266"
+                }
+            ]
+        },
+        {
+            "district": "District 71",
+            "results": [
+                {
+                    "candidate": "Wendy Dant Chesser (D)",
+                    "incumbent": true,
+                    "total_votes": "13295",
+                    "percent_votes": "0.499"
+                },
+                {
+                    "candidate": "Scott Hawkins (R)",
+                    "incumbent": false,
+                    "total_votes": "12326",
+                    "percent_votes": "0.463"
+                }
+            ]
+        },
+        {
+            "district": "District 72",
+            "results": [
+                {
+                    "candidate": "Edward Clere (R)",
+                    "incumbent": true,
+                    "total_votes": "19491",
+                    "percent_votes": "0.573"
+                },
+                {
+                    "candidate": "Jason Applegate (D)",
+                    "incumbent": false,
+                    "total_votes": "14543",
+                    "percent_votes": "0.427"
+                }
+            ]
+        },
+        {
+            "district": "District 73",
+            "results": [
+                {
+                    "candidate": "Jennifer Meltzer (R)",
+                    "incumbent": true,
+                    "total_votes": "20900",
+                    "percent_votes": "0.769"
+                },
+                {
+                    "candidate": "Hollie Payton (D)",
+                    "incumbent": false,
+                    "total_votes": "6284",
+                    "percent_votes": "0.231"
+                }
+            ]
+        },
+        {
+            "district": "District 74",
+            "results": [
+                {
+                    "candidate": "Stephen Bartels (R)",
+                    "incumbent": true,
+                    "total_votes": "21674",
+                    "percent_votes": "0.686"
+                },
+                {
+                    "candidate": "Bob Compton (D)",
+                    "incumbent": false,
+                    "total_votes": "9939",
+                    "percent_votes": "0.314"
+                }
+            ]
+        },
+        {
+            "district": "District 75",
+            "results": [
+                {
+                    "candidate": "Cindy Ledbetter (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 76",
+            "results": [
+                {
+                    "candidate": "Wendy McNamara (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 77",
+            "results": [
+                {
+                    "candidate": "Alex Burton (D)",
+                    "incumbent": false,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 78",
+            "results": [
+                {
+                    "candidate": "Tim O'Brien (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 79",
+            "results": [
+                {
+                    "candidate": "Matthew Lehman (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 80",
+            "results": [
+                {
+                    "candidate": "Phil GiaQuinta (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 81",
+            "results": [
+                {
+                    "candidate": "Martin Carbaugh (R)",
+                    "incumbent": true,
+                    "total_votes": "20912",
+                    "percent_votes": "0.649"
+                },
+                {
+                    "candidate": "Abby Norden (D)",
+                    "incumbent": false,
+                    "total_votes": "11329",
+                    "percent_votes": "0.351"
+                }
+            ]
+        },
+        {
+            "district": "District 82",
+            "results": [
+                {
+                    "candidate": "Kyle Miller (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 83",
+            "results": [
+                {
+                    "candidate": "Christopher Judy (R)",
+                    "incumbent": true,
+                    "total_votes": "22109",
+                    "percent_votes": "0.64"
+                },
+                {
+                    "candidate": "Kyle Thele (D)",
+                    "incumbent": false,
+                    "total_votes": "12424",
+                    "percent_votes": "0.36"
+                }
+            ]
+        },
+        {
+            "district": "District 84",
+            "results": [
+                {
+                    "candidate": "Bob Morris (R)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 85",
+            "results": [
+                {
+                    "candidate": "Dave Heine (R)",
+                    "incumbent": true,
+                    "total_votes": "23158",
+                    "percent_votes": "0.744"
+                },
+                {
+                    "candidate": "Phil Goss (D)",
+                    "incumbent": false,
+                    "total_votes": "7968",
+                    "percent_votes": "0.256"
+                }
+            ]
+        },
+        {
+            "district": "District 86",
+            "results": [
+                {
+                    "candidate": "Edward DeLaney (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 87",
+            "results": [
+                {
+                    "candidate": "Carey Hamilton (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 88",
+            "results": [
+                {
+                    "candidate": "Chris Jeter (R)",
+                    "incumbent": true,
+                    "total_votes": "23058",
+                    "percent_votes": "0.578"
+                },
+                {
+                    "candidate": "Stephanie Yocum (D)",
+                    "incumbent": false,
+                    "total_votes": "16814",
+                    "percent_votes": "0.422"
+                }
+            ]
+        },
+        {
+            "district": "District 89",
+            "results": [
+                {
+                    "candidate": "Mitch Gore (D)",
+                    "incumbent": true,
+                    "total_votes": "12940",
+                    "percent_votes": "0.558"
+                },
+                {
+                    "candidate": "Yvonne Metcalfe (R)",
+                    "incumbent": false,
+                    "total_votes": "10230",
+                    "percent_votes": "0.442"
+                }
+            ]
+        },
+        {
+            "district": "District 90",
+            "results": [
+                {
+                    "candidate": "Andrew Ireland (R)",
+                    "incumbent": false,
+                    "total_votes": "19435",
+                    "percent_votes": "0.636"
+                },
+                {
+                    "candidate": "Dominique Davie (D)",
+                    "incumbent": false,
+                    "total_votes": "11112",
+                    "percent_votes": "0.364"
+                }
+            ]
+        },
+        {
+            "district": "District 91",
+            "results": [
+                {
+                    "candidate": "Robert Behning (R)",
+                    "incumbent": true,
+                    "total_votes": "13705",
+                    "percent_votes": "0.601"
+                },
+                {
+                    "candidate": "Andrew Locke (D)",
+                    "incumbent": false,
+                    "total_votes": "9085",
+                    "percent_votes": "0.399"
+                }
+            ]
+        },
+        {
+            "district": "District 92",
+            "results": [
+                {
+                    "candidate": "Renee Pack (D)",
+                    "incumbent": true,
+                    "total_votes": "12626",
+                    "percent_votes": "0.588"
+                },
+                {
+                    "candidate": "John Couch (R)",
+                    "incumbent": false,
+                    "total_votes": "8833",
+                    "percent_votes": "0.412"
+                }
+            ]
+        },
+        {
+            "district": "District 93",
+            "results": [
+                {
+                    "candidate": "Julie McGuire (R)",
+                    "incumbent": true,
+                    "total_votes": "13543",
+                    "percent_votes": "0.621"
+                },
+                {
+                    "candidate": "Ryan Hughey (D)",
+                    "incumbent": false,
+                    "total_votes": "8251",
+                    "percent_votes": "0.379"
+                }
+            ]
+        },
+        {
+            "district": "District 94",
+            "results": [
+                {
+                    "candidate": "Cherrish Pryor (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 95",
+            "results": [
+                {
+                    "candidate": "John Bartlett (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 96",
+            "results": [
+                {
+                    "candidate": "Gregory Porter (D)",
+                    "incumbent": true,
+                    "total_votes": "N/A",
+                    "percent_votes": "N/A"
+                }
+            ]
+        },
+        {
+            "district": "District 97",
+            "results": [
+                {
+                    "candidate": "Justin Moed (D)",
+                    "incumbent": true,
+                    "total_votes": "8822",
+                    "percent_votes": "0.582"
+                },
+                {
+                    "candidate": "Stephen Whitmer (R)",
+                    "incumbent": false,
+                    "total_votes": "5900",
+                    "percent_votes": "0.389"
+                }
+            ]
+        },
+        {
+            "district": "District 98",
+            "results": [
+                {
+                    "candidate": "Robin Shackleford (D)",
+                    "incumbent": true,
+                    "total_votes": "14760",
+                    "percent_votes": "0.89"
+                },
+                {
+                    "candidate": "Elizabeth Glass (LB)",
+                    "incumbent": false,
+                    "total_votes": "1817",
+                    "percent_votes": "0.11"
+                }
+            ]
+        },
+        {
+            "district": "District 99",
+            "results": [
+                {
+                    "candidate": "Vanessa Summers (D)",
+                    "incumbent": true,
+                    "total_votes": "13643",
+                    "percent_votes": "0.813"
+                },
+                {
+                    "candidate": "Felipe Rios (R)",
+                    "incumbent": false,
+                    "total_votes": "3147",
+                    "percent_votes": "0.187"
+                }
+            ]
+        },
+        {
+            "district": "District 100",
+            "results": [
+                {
+                    "candidate": "Blake Johnson (D)",
+                    "incumbent": true,
+                    "total_votes": "16653",
+                    "percent_votes": "0.717"
+                },
+                {
+                    "candidate": "Joseph Bortka (R)",
+                    "incumbent": false,
+                    "total_votes": "6577",
+                    "percent_votes": "0.283"
+                }
+            ]
+        }
+    ]
+}
