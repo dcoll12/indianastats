@@ -538,19 +538,25 @@ def get_color_class(value):
 
 def generate_table_rows(districts, prefix):
     """Generate HTML table rows for a chamber."""
+    is_house = (prefix == 'HD')
     rows = []
     for d in districts:
         party_class = 'party-r' if d['party'] == 'Republican' else 'party-d'
         party_letter = 'R' if d['party'] == 'Republican' else 'D'
 
-        cls_2020 = get_color_class(d['margin_2020'])
-        cls_2022 = get_color_class(d['margin_2022'])
+        m2020 = d.get('margin_2020_race') if is_house else d['margin_2020']
+        m2022 = d.get('margin_2022_race') if is_house else d['margin_2022']
+        l2020 = d.get('label_2020_race', 'N/A') if is_house else d['label_2020']
+        l2022 = d.get('label_2022_race', 'N/A') if is_house else d['label_2022']
+
+        cls_2020 = get_color_class(m2020)
+        cls_2022 = get_color_class(m2022)
         cls_2024 = get_color_class(d['margin_2024'])
         cls_race = get_color_class(d['race_margin'])
         cls_avg = get_color_class(d['in_index'])
 
-        sort_2020 = d['margin_2020'] if d['margin_2020'] is not None else 999
-        sort_2022 = d['margin_2022'] if d['margin_2022'] is not None else 999
+        sort_2020 = m2020 if m2020 is not None else 999
+        sort_2022 = m2022 if m2022 is not None else 999
         sort_2024 = d['margin_2024'] if d['margin_2024'] is not None else 999
         sort_race = d['race_margin'] if d['race_margin'] is not None else 999
         sort_avg = d['in_index'] if d['in_index'] is not None else 999
@@ -560,8 +566,8 @@ def generate_table_rows(districts, prefix):
             name_html = f'<a href="{d["url"]}" target="_blank" rel="noopener">{d["representative"]}</a>'
 
         rows.append(f'''        <tr>
-          <td class="{cls_2020}" data-sort-value="{sort_2020}">{d['label_2020']}</td>
-          <td class="{cls_2022}" data-sort-value="{sort_2022}">{d['label_2022']}</td>
+          <td class="{cls_2020}" data-sort-value="{sort_2020}">{l2020}</td>
+          <td class="{cls_2022}" data-sort-value="{sort_2022}">{l2022}</td>
           <td class="{cls_2024}" data-sort-value="{sort_2024}">{d['label_2024']}</td>
           <td class="{cls_race}" data-sort-value="{sort_race}">{d['race_label']}</td>
           <td class="{cls_avg} col-avg" data-sort-value="{sort_avg}">{d['in_index_label']}</td>
@@ -1071,12 +1077,16 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
 
     for district in data['house']:
         dist_str = str(district['district'])
+        # Store actual 2020/2022 State House race results in separate _race fields.
+        # margin_2020/label_2020 retains the county-level presidential value used by power-packs.
         m20, l20 = race_margins['state_house_2020'].get(dist_str, (None, 'N/A'))
-        district['margin_2020'] = round(m20, 4) if m20 is not None else None
-        district['label_2020'] = l20
+        district['margin_2020_race'] = round(m20, 4) if m20 is not None else None
+        district['label_2020_race'] = l20
         m22, l22 = race_margins['state_house_2022'].get(dist_str, (None, 'N/A'))
         district['margin_2022'] = round(m22, 4) if m22 is not None else None
         district['label_2022'] = l22
+        district['margin_2022_race'] = round(m22, 4) if m22 is not None else None
+        district['label_2022_race'] = l22
 
     with open(out_json, 'w') as f:
         json.dump(data, f, indent=2)
