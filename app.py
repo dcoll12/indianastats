@@ -4,7 +4,7 @@ import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
 import requests
-from io import StringIO
+from io import StringIO, BytesIO
 from itertools import groupby
 from pathlib import Path
 from urllib.parse import urlparse
@@ -1984,6 +1984,33 @@ if 'list_sort_col' not in st.session_state:
     st.session_state.list_sort_col = 'Last Name'
 if 'list_sort_asc' not in st.session_state:
     st.session_state.list_sort_asc = True
+
+# ── Download export ──────────────────────────────────────────────────────────
+def _to_excel(frame: pd.DataFrame) -> bytes:
+    buf = BytesIO()
+    with pd.ExcelWriter(buf, engine='openpyxl') as writer:
+        frame.to_excel(writer, index=False, sheet_name='Directory')
+    return buf.getvalue()
+
+_, _dl_col = st.columns([4, 2])
+with _dl_col:
+    _dl1, _dl2 = st.columns(2)
+    with _dl1:
+        st.download_button(
+            "⬇ Download CSV",
+            data=filtered.to_csv(index=False).encode('utf-8'),
+            file_name="indiana_directory.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
+    with _dl2:
+        st.download_button(
+            "⬇ Download Excel",
+            data=_to_excel(filtered),
+            file_name="indiana_directory.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True,
+        )
 
 # ── Stats bar + view toggle ───────────────────────────────────────────────────
 stats_col, view_col = st.columns([5, 1])
