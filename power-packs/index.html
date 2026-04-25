@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Power Packs — Indiana Rural Summit</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -303,6 +304,7 @@ footer {
       <input type="text" id="pp-search" placeholder="🔍 Search candidates by name or location…" oninput="PP.render()">
     </div>
     <button class="gr-reset-btn" onclick="PP.reset()">Reset</button>
+    <button class="gr-reset-btn" style="background:#1e3a8a" onclick="PP.export()">&#11015; Download Excel</button>
   </div>
   <div class="pp-stats" id="pp-stats"></div>
   <div id="pp-output"><div class="pp-status"><div class="pp-spinner"></div><p>Loading power packs…</p></div></div>
@@ -1096,7 +1098,16 @@ var PP = (function() {
     });
   }
 
-  return { init: init, render: render, reset: reset, setMode: setMode, _reload: function(){state.loaded=false;init();} };
+  function exportData() {
+    if (!state.rows || !state.rows.length) { alert('Data not loaded yet — please wait and try again.'); return; }
+    var wb = XLSX.utils.book_new();
+    var headers = Object.keys(state.rows[0]);
+    var aoa = [headers].concat(state.rows.map(function(r) { return headers.map(function(h) { return r[h] || ''; }); }));
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(aoa), 'Candidates');
+    XLSX.writeFile(wb, 'Indiana_Power_Packs_Candidates.xlsx');
+  }
+
+  return { init: init, render: render, reset: reset, setMode: setMode, export: exportData, _reload: function(){state.loaded=false;init();} };
 })();
 
 window.addEventListener('load', function() { PP.init(); });
