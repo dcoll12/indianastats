@@ -149,11 +149,6 @@ header p {
   background: #2563eb;
 }
 
-.export-btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
 .export-btn-all {
   padding: 9px 18px;
   font-size: 14px;
@@ -323,7 +318,7 @@ footer .sources {
   </div>
 
   <div class="export-toolbar">
-    <button id="download-all-btn" class="export-btn export-btn-all" onclick="downloadAllData()">&#11015; Download All Data (Excel)</button>
+    <button class="export-btn export-btn-all" onclick="downloadAllData()">&#11015; Download All Districts (Excel)</button>
   </div>
 
   <div class="tab-content active" id="tab-congressional">
@@ -2037,30 +2032,16 @@ function exportTable(tableId, filename) {
   XLSX.writeFile(wb, filename);
 }
 
-async function downloadAllData() {
-  const btn = document.getElementById('download-all-btn');
-  btn.textContent = '⏳ Preparing…';
-  btn.disabled = true;
-  try {
-    const wb = XLSX.utils.book_new();
-    [
-      { id: 'table-congressional', name: 'Congressional' },
-      { id: 'table-senate',        name: 'State Senate'  },
-      { id: 'table-house',         name: 'State House'   },
-    ].forEach(function({ id, name }) {
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.table_to_sheet(document.getElementById(id)), name);
-    });
-    const resp = await fetch('https://docs.google.com/spreadsheets/d/1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw/export?format=csv&gid=918237840');
-    const csv  = await resp.text();
-    const tmp  = XLSX.read(csv, { type: 'string' });
-    XLSX.utils.book_append_sheet(wb, tmp.Sheets[tmp.SheetNames[0]], 'Candidates');
-    XLSX.writeFile(wb, 'Indiana_Rural_Summit_All_Data.xlsx');
-  } catch(e) {
-    alert('Download failed: ' + e.message);
-  } finally {
-    btn.textContent = '⬇ Download All Data (Excel)';
-    btn.disabled = false;
-  }
+function downloadAllData() {
+  const wb = XLSX.utils.book_new();
+  [
+    { id: 'table-congressional', name: 'Congressional' },
+    { id: 'table-senate',        name: 'State Senate'  },
+    { id: 'table-house',         name: 'State House'   },
+  ].forEach(function({ id, name }) {
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.table_to_sheet(document.getElementById(id)), name);
+  });
+  XLSX.writeFile(wb, 'IN-Index_All_Districts.xlsx');
 }
 
 function switchTab(tab) {
