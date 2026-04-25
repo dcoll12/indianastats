@@ -487,6 +487,7 @@ def load_race_margins_from_json(json_path):
         'state_senate': extract_margins(data.get('indiana_state_senate', {}), ['2024', '2022']),
         'state_house': extract_margins(data.get('indiana_state_house', {}), ['2024', '2022', '2020']),
         'state_house_2022': extract_margins(data.get('indiana_state_house', {}), ['2022']),
+        'state_house_2020': extract_margins(data.get('indiana_state_house', {}), ['2020']),
     }
 
 
@@ -919,14 +920,14 @@ footer .sources {{
 
   <div class="tab-content" id="tab-house">
     <div class="house-note">
-      <strong>Note:</strong> 2020 and 2022 columns show county-level results distributed by precinct turnout weight — all districts within the same county share the same value and are shown for regional context only. The <strong>IN-Index equals the 2024 presidential margin</strong>, the only district-specific measure available for all 100 house seats.
+      <strong>Note:</strong> 2020 and 2022 columns show actual State House race results (not presidential). The <strong>IN-Index equals the 2024 presidential margin</strong> — the only district-specific presidential measure available for all 100 house seats.
     </div>
     <div class="table-wrap">
       <table id="table-house">
         <thead>
           <tr>
-            <th onclick="sortTable('table-house', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 1, 'num')">2022 House <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 0, 'num')">2020 House Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 1, 'num')">2022 House Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 3, 'num')">State House Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
@@ -948,8 +949,7 @@ footer .sources {{
       The <strong>IN-Index</strong> measures partisan lean for each Indiana legislative and congressional
       district. For Congressional and Senate districts it is the average of 2020 presidential, 2022 US Senate,
       and 2024 presidential margins. For House districts it equals the 2024 presidential margin — the only
-      district-specific measure available, since county-level apportionment assigns identical 2020/2022
-      values to every district within the same county.
+      district-specific presidential measure available for all 100 seats.
     </p>
     <p>
       <strong>2024 data</strong> uses precinct-level results from the VEST (Voting and Election Science Team)
@@ -957,14 +957,14 @@ footer .sources {{
       the district assignments in the shapefile attribute table — the most accurate method available.
     </p>
     <p>
-      <strong>2022 data</strong> uses county-level US Senate results (Todd Young vs. Thomas McDermott).
-      For Congressional and Senate districts, county votes are apportioned using census block assignment
-      weights (PlanScore). For House districts, precinct-level 2024 turnout is used as the geographic
-      weight to apportion county votes (shown in the 2022 column for regional context only).
+      <strong>2022 data</strong> uses county-level US Senate results for Congressional and Senate districts
+      (apportioned by census block weights). For House districts, the 2022 column shows the actual
+      2022 State House race result for each district.
     </p>
     <p>
-      <strong>2020 data</strong> uses county-level presidential results with the same apportionment
-      methods. The two-party margin is
+      <strong>2020 data</strong> uses county-level presidential results for Congressional and Senate
+      districts (apportioned by census block weights). For House districts, the 2020 column shows the
+      actual 2020 State House race result. The two-party margin is
       <code>(R votes &minus; D votes) / (R votes + D votes)</code>. A result of "+10R" means the district
       leans Republican by 10 percentage points.
     </p>
@@ -1071,6 +1071,9 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
 
     for district in data['house']:
         dist_str = str(district['district'])
+        m20, l20 = race_margins['state_house_2020'].get(dist_str, (None, 'N/A'))
+        district['margin_2020'] = round(m20, 4) if m20 is not None else None
+        district['label_2020'] = l20
         m22, l22 = race_margins['state_house_2022'].get(dist_str, (None, 'N/A'))
         district['margin_2022'] = round(m22, 4) if m22 is not None else None
         district['label_2022'] = l22

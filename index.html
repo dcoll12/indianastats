@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Indiana Partisan Lean Index (IN-Index)</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -119,40 +118,6 @@ header p {
 
 .tab-content.active {
   display: block;
-}
-
-.export-toolbar {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 8px;
-}
-
-.export-bar {
-  padding: 10px 16px 6px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.export-btn {
-  background: #1e3a8a;
-  color: white;
-  border: none;
-  padding: 7px 14px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.export-btn:hover {
-  background: #2563eb;
-}
-
-.export-btn-all {
-  padding: 9px 18px;
-  font-size: 14px;
-  background: #0f4c81;
 }
 
 .table-wrap {
@@ -317,14 +282,7 @@ footer .sources {
     </button>
   </div>
 
-  <div class="export-toolbar">
-    <button class="export-btn export-btn-all" onclick="downloadAllData()">&#11015; Download All Districts (Excel)</button>
-  </div>
-
   <div class="tab-content active" id="tab-congressional">
-    <div class="export-bar">
-      <button class="export-btn" onclick="exportTable('table-congressional', 'IN-Index_Congressional.xlsx')">&#11015; Download Excel</button>
-    </div>
     <div class="table-wrap">
       <table id="table-congressional">
         <thead>
@@ -436,9 +394,6 @@ footer .sources {
   </div>
 
   <div class="tab-content" id="tab-senate">
-    <div class="export-bar">
-      <button class="export-btn" onclick="exportTable('table-senate', 'IN-Index_State_Senate.xlsx')">&#11015; Download Excel</button>
-    </div>
     <div class="table-wrap">
       <table id="table-senate">
         <thead>
@@ -960,18 +915,15 @@ footer .sources {
   </div>
 
   <div class="tab-content" id="tab-house">
-    <div class="export-bar">
-      <button class="export-btn" onclick="exportTable('table-house', 'IN-Index_State_House.xlsx')">&#11015; Download Excel</button>
-    </div>
     <div class="house-note">
-      <strong>Note:</strong> 2020 and 2022 columns show county-level results distributed by precinct turnout weight — all districts within the same county share the same value and are shown for regional context only. The <strong>IN-Index equals the 2024 presidential margin</strong>, the only district-specific measure available for all 100 house seats.
+      <strong>Note:</strong> 2020 and 2022 columns show actual State House race results (not presidential). The <strong>IN-Index equals the 2024 presidential margin</strong> — the only district-specific presidential measure available for all 100 house seats.
     </div>
     <div class="table-wrap">
       <table id="table-house">
         <thead>
           <tr>
-            <th onclick="sortTable('table-house', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 1, 'num')">2022 House <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 0, 'num')">2020 House Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 1, 'num')">2022 House Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 3, 'num')">State House Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
@@ -982,7 +934,7 @@ footer .sources {
         </thead>
         <tbody>
         <tr>
-          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.2616">+26.2D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -992,7 +944,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.5869">+58.7D</td>
           <td class="lean-d-strong" data-sort-value="-0.6401">+64D</td>
@@ -1002,7 +954,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.2239">+22.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.2628">+26.3D</td>
@@ -1012,7 +964,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-lean" data-sort-value="0.0621">+6.2R</td>
+          <td class="lean-r-lean" data-sort-value="0.0916">+9.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-moderate" data-sort-value="0.1005">+10R</td>
           <td class="lean-r-moderate" data-sort-value="0.1523">+15.2R</td>
@@ -1022,7 +974,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-lean" data-sort-value="-0.0595">+6D</td>
+          <td class="lean-r-slight" data-sort-value="0.0148">+1.5R</td>
           <td class="lean-r-moderate" data-sort-value="0.1339">+13.4R</td>
           <td class="lean-r-lean" data-sort-value="0.0972">+9.7R</td>
           <td class="lean-r-lean" data-sort-value="0.0914">+9.1R</td>
@@ -1032,7 +984,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-lean" data-sort-value="-0.0595">+6D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.3124">+31.2D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1042,7 +994,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-slight" data-sort-value="-0.0451">+4.5D</td>
+          <td class="lean-r-lean" data-sort-value="0.0799">+8R</td>
           <td class="lean-r-strong" data-sort-value="0.217">+21.7R</td>
           <td class="lean-r-moderate" data-sort-value="0.172">+17.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1052,7 +1004,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-lean" data-sort-value="-0.0595">+6D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1369">+13.7D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-moderate" data-sort-value="-0.1249">+12.5D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1062,7 +1014,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-lean" data-sort-value="0.0695">+7R</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1322">+13.2D</td>
           <td class="lean-d-lean" data-sort-value="-0.0974">+9.7D</td>
           <td class="lean-d-slight" data-sort-value="-0.0174">+1.7D</td>
           <td class="lean-d-slight" data-sort-value="-0.0168">+1.7D</td>
@@ -1072,7 +1024,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-lean" data-sort-value="0.0621">+6.2R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-lean" data-sort-value="-0.0559">+5.6D</td>
           <td class="lean-r-lean" data-sort-value="0.054">+5.4R</td>
           <td class="lean-d-slight" data-sort-value="-0.0424">+4.2D</td>
@@ -1082,7 +1034,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-lean" data-sort-value="0.0956">+9.6R</td>
+          <td class="lean-r-strong" data-sort-value="0.3751">+37.5R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4819">+48.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1092,7 +1044,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1541">+15.4D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1115">+11.2D</td>
           <td class="lean-d-slight" data-sort-value="-0.0396">+4D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1012">+10.1D</td>
@@ -1102,7 +1054,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2973">+29.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.4557">+45.6R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4066">+40.7R</td>
           <td class="lean-r-strong" data-sort-value="0.4733">+47.3R</td>
@@ -1112,7 +1064,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.4038">+40.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.4426">+44.3D</td>
@@ -1122,7 +1074,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-r-slight" data-sort-value="0.0307">+3.1R</td>
           <td class="lean-r-strong" data-sort-value="0.265">+26.5R</td>
           <td class="lean-r-strong" data-sort-value="0.2046">+20.5R</td>
           <td class="lean-r-strong" data-sort-value="0.2672">+26.7R</td>
@@ -1132,7 +1084,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4734">+47.3R</td>
+          <td class="lean-r-strong" data-sort-value="0.4823">+48.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5074">+50.7R</td>
           <td class="lean-r-strong" data-sort-value="0.539">+53.9R</td>
@@ -1142,7 +1094,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4422">+44.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.4946">+49.5R</td>
           <td class="lean-r-strong" data-sort-value="0.4958">+49.6R</td>
           <td class="lean-r-strong" data-sort-value="0.4691">+46.9R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1152,7 +1104,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4804">+48R</td>
+          <td class="lean-r-strong" data-sort-value="0.5617">+56.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5483">+54.8R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1162,7 +1114,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-moderate" data-sort-value="-0.1137">+11.4D</td>
+          <td class="lean-r-slight" data-sort-value="0.0362">+3.6R</td>
           <td class="lean-r-moderate" data-sort-value="0.1744">+17.4R</td>
           <td class="lean-r-strong" data-sort-value="0.2007">+20.1R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1172,7 +1124,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1098">+11R</td>
+          <td class="lean-r-strong" data-sort-value="0.3648">+36.5R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.3082">+30.8R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1182,7 +1134,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2471">+24.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.29">+29R</td>
           <td class="lean-r-strong" data-sort-value="0.476">+47.6R</td>
           <td class="lean-r-strong" data-sort-value="0.3528">+35.3R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1192,7 +1144,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.5198">+52R</td>
+          <td class="lean-r-strong" data-sort-value="0.4422">+44.2R</td>
           <td class="lean-r-strong" data-sort-value="0.6574">+65.7R</td>
           <td class="lean-r-strong" data-sort-value="0.5412">+54.1R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1202,7 +1154,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4828">+48.3R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5014">+50.1R</td>
           <td class="lean-r-strong" data-sort-value="0.4783">+47.8R</td>
@@ -1212,7 +1164,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-lean" data-sort-value="0.0769">+7.7R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1623">+16.2R</td>
           <td class="lean-r-moderate" data-sort-value="0.1625">+16.3R</td>
           <td class="lean-r-lean" data-sort-value="0.0785">+7.8R</td>
           <td class="lean-r-moderate" data-sort-value="0.1232">+12.3R</td>
@@ -1222,7 +1174,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2106">+21.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.4058">+40.6R</td>
           <td class="lean-r-lean" data-sort-value="0.0545">+5.4R</td>
           <td class="lean-r-slight" data-sort-value="0.0296">+3R</td>
           <td class="lean-r-slight" data-sort-value="0.0018">+0.2R</td>
@@ -1232,7 +1184,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-slight" data-sort-value="-0.0063">+0.6D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-moderate" data-sort-value="-0.1975">+19.7D</td>
           <td class="lean-d-strong" data-sort-value="-0.2427">+24.3D</td>
           <td class="lean-d-strong" data-sort-value="-0.2819">+28.2D</td>
@@ -1242,7 +1194,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-slight" data-sort-value="-0.0063">+0.6D</td>
+          <td class="lean-d-strong" data-sort-value="-0.2418">+24.2D</td>
           <td class="lean-d-strong" data-sort-value="-0.2021">+20.2D</td>
           <td class="lean-d-lean" data-sort-value="-0.0721">+7.2D</td>
           <td class="lean-d-strong" data-sort-value="-0.2303">+23D</td>
@@ -1252,7 +1204,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2597">+26R</td>
+          <td class="lean-r-strong" data-sort-value="0.4306">+43.1R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4046">+40.5R</td>
           <td class="lean-r-strong" data-sort-value="0.4352">+43.5R</td>
@@ -1262,7 +1214,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-lean" data-sort-value="0.0695">+6.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.32">+32R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-moderate" data-sort-value="0.1693">+16.9R</td>
           <td class="lean-r-strong" data-sort-value="0.2675">+26.7R</td>
@@ -1272,7 +1224,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.3326">+33.3R</td>
+          <td class="lean-r-strong" data-sort-value="0.323">+32.3R</td>
           <td class="lean-r-strong" data-sort-value="0.3504">+35R</td>
           <td class="lean-r-strong" data-sort-value="0.3258">+32.6R</td>
           <td class="lean-r-strong" data-sort-value="0.3466">+34.7R</td>
@@ -1282,7 +1234,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.3885">+38.8R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4256">+42.6R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1292,7 +1244,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-slight" data-sort-value="0.0316">+3.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.5083">+50.8R</td>
           <td class="lean-d-slight" data-sort-value="-0.0098">+1D</td>
           <td class="lean-d-lean" data-sort-value="-0.0895">+9D</td>
           <td class="lean-d-slight" data-sort-value="-0.0418">+4.2D</td>
@@ -1302,7 +1254,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4241">+42.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.4506">+45.1R</td>
           <td class="lean-r-strong" data-sort-value="0.4078">+40.8R</td>
           <td class="lean-r-strong" data-sort-value="0.5042">+50.4R</td>
           <td class="lean-r-strong" data-sort-value="0.4604">+46R</td>
@@ -1312,7 +1264,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1343">+13.4R</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1272">+12.7D</td>
           <td class="lean-d-lean" data-sort-value="-0.0558">+5.6D</td>
           <td class="lean-d-slight" data-sort-value="-0.0389">+3.9D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1016">+10.2D</td>
@@ -1322,7 +1274,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1817">+18.2R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1054">+10.5R</td>
           <td class="lean-r-strong" data-sort-value="0.401">+40.1R</td>
           <td class="lean-r-strong" data-sort-value="0.3892">+38.9R</td>
           <td class="lean-r-strong" data-sort-value="0.42">+42R</td>
@@ -1332,7 +1284,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2304">+23R</td>
+          <td class="lean-d-lean" data-sort-value="-0.06">+6D</td>
           <td class="lean-r-slight" data-sort-value="0.0191">+1.9R</td>
           <td class="lean-r-moderate" data-sort-value="0.1342">+13.4R</td>
           <td class="lean-r-moderate" data-sort-value="0.1806">+18.1R</td>
@@ -1342,7 +1294,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-lean" data-sort-value="0.0695">+6.9R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1242">+12.4R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-moderate" data-sort-value="0.1191">+11.9R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1352,7 +1304,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4103">+41R</td>
+          <td class="lean-r-strong" data-sort-value="0.4299">+43R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4914">+49.1R</td>
           <td class="lean-r-strong" data-sort-value="0.5055">+50.5R</td>
@@ -1362,7 +1314,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-lean" data-sort-value="0.0695">+6.9R</td>
+          <td class="lean-r-lean" data-sort-value="0.0718">+7.2R</td>
           <td class="lean-r-slight" data-sort-value="0.047">+4.7R</td>
           <td class="lean-r-slight" data-sort-value="0.0038">+0.4R</td>
           <td class="lean-r-lean" data-sort-value="0.0746">+7.5R</td>
@@ -1372,7 +1324,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2453">+24.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.2009">+20.1R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-moderate" data-sort-value="0.1242">+12.4R</td>
           <td class="lean-r-moderate" data-sort-value="0.1673">+16.7R</td>
@@ -1382,7 +1334,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2371">+23.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.507">+50.7R</td>
           <td class="lean-r-strong" data-sort-value="0.5052">+50.5R</td>
           <td class="lean-r-strong" data-sort-value="0.4006">+40.1R</td>
           <td class="lean-r-strong" data-sort-value="0.4619">+46.2R</td>
@@ -1392,7 +1344,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4382">+43.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.3358">+33.6R</td>
           <td class="lean-r-strong" data-sort-value="0.3677">+36.8R</td>
           <td class="lean-r-strong" data-sort-value="0.5068">+50.7R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1402,7 +1354,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1505">+15.1R</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1507">+15.1D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1678">+16.8D</td>
           <td class="lean-r-lean" data-sort-value="0.0746">+7.5R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1412,7 +1364,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.5077">+50.8R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.501">+50.1R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1422,7 +1374,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.5039">+50.4R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5647">+56.5R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1432,7 +1384,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1575">+15.8R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.3349">+33.5R</td>
           <td class="lean-r-strong" data-sort-value="0.3215">+32.2R</td>
           <td class="lean-r-strong" data-sort-value="0.3585">+35.9R</td>
@@ -1442,7 +1394,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.3791">+37.9R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4406">+44.1R</td>
           <td class="lean-r-strong" data-sort-value="0.4796">+48R</td>
@@ -1452,7 +1404,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2855">+28.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.2869">+28.7R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.2866">+28.7R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1462,7 +1414,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2855">+28.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.3295">+33R</td>
           <td class="lean-r-strong" data-sort-value="0.3449">+34.5R</td>
           <td class="lean-r-strong" data-sort-value="0.2972">+29.7R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1472,7 +1424,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.5122">+51.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.431">+43.1R</td>
           <td class="lean-r-strong" data-sort-value="0.5521">+55.2R</td>
           <td class="lean-r-strong" data-sort-value="0.5048">+50.5R</td>
           <td class="lean-r-strong" data-sort-value="0.5385">+53.8R</td>
@@ -1482,7 +1434,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4842">+48.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.5411">+54.1R</td>
           <td class="lean-r-strong" data-sort-value="0.5122">+51.2R</td>
           <td class="lean-r-strong" data-sort-value="0.4845">+48.5R</td>
           <td class="lean-r-strong" data-sort-value="0.4886">+48.9R</td>
@@ -1492,7 +1444,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4828">+48.3R</td>
+          <td class="lean-r-strong" data-sort-value="0.4962">+49.6R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4801">+48R</td>
           <td class="lean-r-strong" data-sort-value="0.5349">+53.5R</td>
@@ -1502,7 +1454,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.356">+35.6R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4101">+41R</td>
           <td class="lean-r-strong" data-sort-value="0.4083">+40.8R</td>
@@ -1512,7 +1464,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4831">+48.3R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4737">+47.4R</td>
           <td class="lean-r-strong" data-sort-value="0.5088">+50.9R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1522,7 +1474,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.5963">+59.6R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.6016">+60.2R</td>
           <td class="lean-r-strong" data-sort-value="0.6099">+61R</td>
@@ -1532,7 +1484,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2989">+29.9R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.3987">+39.9R</td>
           <td class="lean-r-strong" data-sort-value="0.3333">+33.3R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1542,7 +1494,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.3889">+38.9R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.3275">+32.8R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1552,7 +1504,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.3487">+34.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.3526">+35.3R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.3283">+32.8R</td>
           <td class="lean-r-strong" data-sort-value="0.3486">+34.9R</td>
@@ -1562,7 +1514,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2681">+26.8R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1978">+19.8R</td>
           <td class="lean-r-strong" data-sort-value="0.2264">+22.6R</td>
           <td class="lean-r-strong" data-sort-value="0.2254">+22.5R</td>
           <td class="lean-r-strong" data-sort-value="0.2769">+27.7R</td>
@@ -1572,7 +1524,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4585">+45.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.2699">+27R</td>
           <td class="lean-r-strong" data-sort-value="0.5086">+50.9R</td>
           <td class="lean-r-strong" data-sort-value="0.5008">+50.1R</td>
           <td class="lean-r-strong" data-sort-value="0.5139">+51.4R</td>
@@ -1582,7 +1534,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2873">+28.7D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.6237">+62.4D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1592,7 +1544,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-moderate" data-sort-value="-0.1123">+11.2D</td>
+          <td class="lean-r-strong" data-sort-value="0.2085">+20.8R</td>
           <td class="lean-r-slight" data-sort-value="0.0014">+0.1R</td>
           <td class="lean-d-slight" data-sort-value="-0.0143">+1.4D</td>
           <td class="lean-r-slight" data-sort-value="0.0221">+2.2R</td>
@@ -1602,7 +1554,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.5224">+52.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.4762">+47.6R</td>
           <td class="lean-r-strong" data-sort-value="0.5387">+53.9R</td>
           <td class="lean-r-strong" data-sort-value="0.5334">+53.3R</td>
           <td class="lean-r-strong" data-sort-value="0.5268">+52.7R</td>
@@ -1612,7 +1564,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4008">+40.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.5186">+51.9R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4813">+48.1R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1622,7 +1574,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.5106">+51.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.4587">+45.9R</td>
           <td class="lean-r-strong" data-sort-value="0.5549">+55.5R</td>
           <td class="lean-r-strong" data-sort-value="0.5318">+53.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1632,7 +1584,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2475">+24.8R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1152">+11.5R</td>
           <td class="lean-r-strong" data-sort-value="0.3989">+39.9R</td>
           <td class="lean-r-strong" data-sort-value="0.408">+40.8R</td>
           <td class="lean-r-strong" data-sort-value="0.3836">+38.4R</td>
@@ -1642,7 +1594,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.5022">+50.2R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5412">+54.1R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1652,7 +1604,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.5526">+55.3R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5867">+58.7R</td>
           <td class="lean-r-strong" data-sort-value="0.5897">+59R</td>
@@ -1662,7 +1614,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.5224">+52.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.5846">+58.5R</td>
           <td class="lean-r-strong" data-sort-value="0.4736">+47.4R</td>
           <td class="lean-r-strong" data-sort-value="0.5425">+54.2R</td>
           <td class="lean-r-strong" data-sort-value="0.3734">+37.3R</td>
@@ -1672,7 +1624,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.3814">+38.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.4137">+41.4R</td>
           <td class="lean-r-strong" data-sort-value="0.4996">+50R</td>
           <td class="lean-r-strong" data-sort-value="0.4711">+47.1R</td>
           <td class="lean-r-strong" data-sort-value="0.4685">+46.9R</td>
@@ -1682,7 +1634,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1857">+18.6R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-slight" data-sort-value="-0.0122">+1.2D</td>
           <td class="lean-r-slight" data-sort-value="0.0032">+0.3R</td>
           <td class="lean-d-slight" data-sort-value="-0.0378">+3.8D</td>
@@ -1692,7 +1644,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1439">+14.4R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1872">+18.7R</td>
           <td class="lean-r-strong" data-sort-value="0.2085">+20.8R</td>
           <td class="lean-r-moderate" data-sort-value="0.1246">+12.5R</td>
           <td class="lean-r-moderate" data-sort-value="0.1454">+14.5R</td>
@@ -1702,7 +1654,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.4769">+47.7R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5423">+54.2R</td>
           <td class="lean-r-strong" data-sort-value="0.4962">+49.6R</td>
           <td class="lean-r-strong" data-sort-value="0.5377">+53.8R</td>
@@ -1712,7 +1664,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.369">+36.9R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4144">+41.4R</td>
           <td class="lean-r-strong" data-sort-value="0.3712">+37.1R</td>
@@ -1722,7 +1674,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.3308">+33.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.223">+22.3R</td>
           <td class="lean-r-strong" data-sort-value="0.4104">+41R</td>
           <td class="lean-r-strong" data-sort-value="0.3678">+36.8R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1732,7 +1684,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.2249">+22.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.2808">+28.1R</td>
           <td class="lean-r-strong" data-sort-value="0.3218">+32.2R</td>
           <td class="lean-r-strong" data-sort-value="0.33">+33R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1742,7 +1694,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-lean" data-sort-value="0.0974">+9.7R</td>
+          <td class="lean-d-strong" data-sort-value="-0.264">+26.4D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-moderate" data-sort-value="-0.125">+12.5D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1752,7 +1704,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1271">+12.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.278">+27.8R</td>
           <td class="lean-r-strong" data-sort-value="0.2547">+25.5R</td>
           <td class="lean-r-moderate" data-sort-value="0.172">+17.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1762,7 +1714,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.5537">+55.4R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5676">+56.8R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1772,7 +1724,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1143">+11.4R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.3346">+33.5D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1782,7 +1734,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1143">+11.4R</td>
+          <td class="lean-r-slight" data-sort-value="0.0406">+4.1R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.2419">+24.2R</td>
           <td class="lean-r-strong" data-sort-value="0.2972">+29.7R</td>
@@ -1792,7 +1744,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1143">+11.4R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-moderate" data-sort-value="-0.1276">+12.8D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1519">+15.2D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1802,7 +1754,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-strong" data-sort-value="0.218">+21.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.3492">+34.9R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.2236">+22.4R</td>
           <td class="lean-r-strong" data-sort-value="0.2805">+28R</td>
@@ -1812,7 +1764,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1143">+11.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.2222">+22.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-moderate" data-sort-value="0.1723">+17.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1822,7 +1774,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-r-moderate" data-sort-value="0.1143">+11.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.4365">+43.6R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4143">+41.4R</td>
           <td class="lean-r-strong" data-sort-value="0.488">+48.8R</td>
@@ -1832,7 +1784,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.401">+40.1D</td>
           <td class="lean-d-strong" data-sort-value="-0.4265">+42.7D</td>
           <td class="lean-d-strong" data-sort-value="-0.4713">+47.1D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1842,7 +1794,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.253">+25.3D</td>
           <td class="lean-d-strong" data-sort-value="-0.2578">+25.8D</td>
           <td class="lean-d-strong" data-sort-value="-0.3062">+30.6D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1852,7 +1804,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-r-lean" data-sort-value="0.0929">+9.3R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1863">+18.6R</td>
           <td class="lean-r-moderate" data-sort-value="0.1974">+19.7R</td>
           <td class="lean-r-moderate" data-sort-value="0.1016">+10.2R</td>
           <td class="lean-r-moderate" data-sort-value="0.1566">+15.7R</td>
@@ -1862,7 +1814,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-slight" data-sort-value="-0.0268">+2.7D</td>
           <td class="lean-d-slight" data-sort-value="-0.0189">+1.9D</td>
           <td class="lean-d-lean" data-sort-value="-0.0644">+6.4D</td>
           <td class="lean-d-moderate" data-sort-value="-0.117">+11.7D</td>
@@ -1872,7 +1824,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-r-strong" data-sort-value="0.2788">+27.9R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.2053">+20.5R</td>
           <td class="lean-r-strong" data-sort-value="0.2725">+27.2R</td>
@@ -1882,7 +1834,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-r-strong" data-sort-value="0.2681">+26.8R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.2079">+20.8R</td>
           <td class="lean-r-strong" data-sort-value="0.2027">+20.3R</td>
@@ -1892,7 +1844,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-moderate" data-sort-value="-0.1216">+12.2D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1638">+16.4D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1768">+17.7D</td>
@@ -1902,7 +1854,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-r-strong" data-sort-value="0.2205">+22R</td>
           <td class="lean-r-strong" data-sort-value="0.2327">+23.3R</td>
           <td class="lean-r-moderate" data-sort-value="0.181">+18.1R</td>
           <td class="lean-r-strong" data-sort-value="0.2428">+24.3R</td>
@@ -1912,7 +1864,7 @@ footer .sources {
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.7104">+71D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.6716">+67.2D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1922,7 +1874,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.4903">+49D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1932,7 +1884,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.714">+71.4D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1942,7 +1894,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1647">+16.5D</td>
           <td class="lean-d-strong" data-sort-value="-0.2094">+20.9D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1353">+13.5D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1985">+19.8D</td>
@@ -1952,7 +1904,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.6262">+62.6D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
@@ -1962,7 +1914,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.6511">+65.1D</td>
           <td class="lean-d-strong" data-sort-value="-0.6146">+61.5D</td>
           <td class="lean-d-strong" data-sort-value="-0.6251">+62.5D</td>
@@ -1972,7 +1924,7 @@ footer .sources {
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr>
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.4384">+43.8D</td>
           <td class="lean-d-strong" data-sort-value="-0.4337">+43.4D</td>
@@ -1992,8 +1944,7 @@ footer .sources {
       The <strong>IN-Index</strong> measures partisan lean for each Indiana legislative and congressional
       district. For Congressional and Senate districts it is the average of 2020 presidential, 2022 US Senate,
       and 2024 presidential margins. For House districts it equals the 2024 presidential margin — the only
-      district-specific measure available, since county-level apportionment assigns identical 2020/2022
-      values to every district within the same county.
+      district-specific presidential measure available for all 100 seats.
     </p>
     <p>
       <strong>2024 data</strong> uses precinct-level results from the VEST (Voting and Election Science Team)
@@ -2001,14 +1952,14 @@ footer .sources {
       the district assignments in the shapefile attribute table — the most accurate method available.
     </p>
     <p>
-      <strong>2022 data</strong> uses county-level US Senate results (Todd Young vs. Thomas McDermott).
-      For Congressional and Senate districts, county votes are apportioned using census block assignment
-      weights (PlanScore). For House districts, precinct-level 2024 turnout is used as the geographic
-      weight to apportion county votes (shown in the 2022 column for regional context only).
+      <strong>2022 data</strong> uses county-level US Senate results for Congressional and Senate districts
+      (apportioned by census block weights). For House districts, the 2022 column shows the actual
+      2022 State House race result for each district.
     </p>
     <p>
-      <strong>2020 data</strong> uses county-level presidential results with the same apportionment
-      methods. The two-party margin is
+      <strong>2020 data</strong> uses county-level presidential results for Congressional and Senate
+      districts (apportioned by census block weights). For House districts, the 2020 column shows the
+      actual 2020 State House race result. The two-party margin is
       <code>(R votes &minus; D votes) / (R votes + D votes)</code>. A result of "+10R" means the district
       leans Republican by 10 percentage points.
     </p>
@@ -2024,26 +1975,6 @@ footer .sources {
 </div>
 
 <script>
-function exportTable(tableId, filename) {
-  const table = document.getElementById(tableId);
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.table_to_sheet(table);
-  XLSX.utils.book_append_sheet(wb, ws, 'Data');
-  XLSX.writeFile(wb, filename);
-}
-
-function downloadAllData() {
-  const wb = XLSX.utils.book_new();
-  [
-    { id: 'table-congressional', name: 'Congressional' },
-    { id: 'table-senate',        name: 'State Senate'  },
-    { id: 'table-house',         name: 'State House'   },
-  ].forEach(function({ id, name }) {
-    XLSX.utils.book_append_sheet(wb, XLSX.utils.table_to_sheet(document.getElementById(id)), name);
-  });
-  XLSX.writeFile(wb, 'IN-Index_All_Districts.xlsx');
-}
-
 function switchTab(tab) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
