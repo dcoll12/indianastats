@@ -692,7 +692,7 @@ var PP = (function() {
     var m2022 = lean ? lean.margin_2022 : null;
     var m2024 = lean ? lean.margin_2024 : null;
     var midx  = lean ? lean.in_index    : null;
-    var l2020 = lean ? (lean.label_2020 === 'Unop.' ? '—' : (lean.label_2020 || '—')) : 'N/A';
+    var l2020 = lean ? (lean.label_2020 || '—') : 'N/A';
     var l2022 = lean ? (lean.label_2022 || '—') : '—';
     var l2024 = lean ? (lean.label_2024 || '—') : '—';
     var lidx  = lean ? (lean.in_index_label || '—') : '—';
@@ -1129,7 +1129,7 @@ var PP = (function() {
         clean(r, 'Home City'),
         clean(r, 'Role'),
         lean ? (lean.in_index_label || '') : '',
-        lean ? (lean.label_2020 === 'Unop.' ? '' : (lean.label_2020 || '')) : '',
+        lean ? (lean.label_2020 || '') : '',
         lean ? (lean.label_2022 || '') : '',
         lean ? (lean.label_2024 || '') : '',
         lean ? (lean.representative || '') : '',
