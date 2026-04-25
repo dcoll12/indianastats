@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Indiana Partisan Lean Index (IN-Index)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -118,6 +119,28 @@ header p {
 
 .tab-content.active {
   display: block;
+}
+
+.export-bar {
+  padding: 10px 16px 6px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.export-btn {
+  background: #1e3a8a;
+  color: white;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.export-btn:hover {
+  background: #2563eb;
 }
 
 .table-wrap {
@@ -283,6 +306,9 @@ footer .sources {
   </div>
 
   <div class="tab-content active" id="tab-congressional">
+    <div class="export-bar">
+      <button class="export-btn" onclick="exportTable('table-congressional', 'IN-Index_Congressional.xlsx')">&#11015; Download Excel</button>
+    </div>
     <div class="table-wrap">
       <table id="table-congressional">
         <thead>
@@ -394,6 +420,9 @@ footer .sources {
   </div>
 
   <div class="tab-content" id="tab-senate">
+    <div class="export-bar">
+      <button class="export-btn" onclick="exportTable('table-senate', 'IN-Index_State_Senate.xlsx')">&#11015; Download Excel</button>
+    </div>
     <div class="table-wrap">
       <table id="table-senate">
         <thead>
@@ -915,6 +944,9 @@ footer .sources {
   </div>
 
   <div class="tab-content" id="tab-house">
+    <div class="export-bar">
+      <button class="export-btn" onclick="exportTable('table-house', 'IN-Index_State_House.xlsx')">&#11015; Download Excel</button>
+    </div>
     <div class="house-note">
       <strong>Note:</strong> 2020 and 2022 columns show county-level results distributed by precinct turnout weight — all districts within the same county share the same value and are shown for regional context only. The <strong>IN-Index equals the 2024 presidential margin</strong>, the only district-specific measure available for all 100 house seats.
     </div>
@@ -1976,6 +2008,14 @@ footer .sources {
 </div>
 
 <script>
+function exportTable(tableId, filename) {
+  const table = document.getElementById(tableId);
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.table_to_sheet(table);
+  XLSX.utils.book_append_sheet(wb, ws, 'Data');
+  XLSX.writeFile(wb, filename);
+}
+
 function switchTab(tab) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
