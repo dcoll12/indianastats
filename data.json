@@ -8,19 +8,19 @@
       "party": "Democratic",
       "url": "https://mrvan.house.gov/",
       "margin_2020": -0.1201,
-      "margin_2022": -0.0566,
+      "margin_2022": -0.0568,
       "margin_2024": -0.004,
-      "in_index": -0.0602,
+      "in_index": -0.0603,
       "in_index_label": "+6D",
       "label_2020": "+12D",
       "label_2022": "+5.7D",
       "label_2024": "+0.4D",
       "r_votes_2024": 160330,
       "d_votes_2024": 161625,
-      "race_margin": -0.0859,
+      "race_margin": -0.0863,
       "race_label": "+8.6D",
-      "r_votes_2022": 100486,
-      "d_votes_2022": 112539
+      "r_votes_2022": 100542,
+      "d_votes_2022": 112656
     },
     {
       "district": 2,
@@ -28,19 +28,19 @@
       "party": "Republican",
       "url": "https://yakym.house.gov/",
       "margin_2020": 0.0982,
-      "margin_2022": 0.3325,
+      "margin_2022": 0.332,
       "margin_2024": 0.2692,
-      "in_index": 0.2333,
+      "in_index": 0.2331,
       "in_index_label": "+23.3R",
       "label_2020": "+9.8R",
-      "label_2022": "+33.3R",
+      "label_2022": "+33.2R",
       "label_2024": "+26.9R",
       "r_votes_2024": 187184,
       "d_votes_2024": 107779,
-      "race_margin": 0.29,
-      "race_label": "+29R",
-      "r_votes_2022": 125222,
-      "d_votes_2022": 62726
+      "race_margin": 0.289,
+      "race_label": "+28.9R",
+      "r_votes_2022": 125537,
+      "d_votes_2022": 62955
     },
     {
       "district": 3,
@@ -48,9 +48,9 @@
       "party": "Republican",
       "url": "https://banks.house.gov/",
       "margin_2020": 0.1852,
-      "margin_2022": 0.3703,
+      "margin_2022": 0.3695,
       "margin_2024": 0.3173,
-      "in_index": 0.2909,
+      "in_index": 0.2907,
       "in_index_label": "+29.1R",
       "label_2020": "+18.5R",
       "label_2022": "+37R",
@@ -59,8 +59,8 @@
       "d_votes_2024": 107772,
       "race_margin": 0.3487,
       "race_label": "+34.9R",
-      "r_votes_2022": 131252,
-      "d_votes_2022": 60312
+      "r_votes_2022": 131579,
+      "d_votes_2022": 60577
     },
     {
       "district": 4,
@@ -68,7 +68,7 @@
       "party": "Republican",
       "url": "https://baird.house.gov/",
       "margin_2020": 0.2484,
-      "margin_2022": 0.3641,
+      "margin_2022": 0.3643,
       "margin_2024": 0.2988,
       "in_index": 0.3038,
       "in_index_label": "+30.4R",
@@ -77,10 +77,10 @@
       "label_2024": "+29.9R",
       "r_votes_2024": 212994,
       "d_votes_2024": 115001,
-      "race_margin": 0.3546,
-      "race_label": "+35.5R",
-      "r_votes_2022": 134442,
-      "d_votes_2022": 62668
+      "race_margin": 0.354,
+      "race_label": "+35.4R",
+      "r_votes_2022": 134864,
+      "d_votes_2022": 62834
     },
     {
       "district": 5,
@@ -88,7 +88,7 @@
       "party": "Republican",
       "url": "https://spartz.house.gov/",
       "margin_2020": 0.1347,
-      "margin_2022": 0.2215,
+      "margin_2022": 0.2214,
       "margin_2024": 0.1713,
       "in_index": 0.1758,
       "in_index_label": "+17.6R",
@@ -97,10 +97,10 @@
       "label_2024": "+17.1R",
       "r_votes_2024": 212150,
       "d_votes_2024": 150105,
-      "race_margin": 0.1959,
+      "race_margin": 0.1964,
       "race_label": "+19.6R",
-      "r_votes_2022": 146496,
-      "d_votes_2022": 93373
+      "r_votes_2022": 146575,
+      "d_votes_2022": 93434
     },
     {
       "district": 6,
@@ -117,10 +117,10 @@
       "label_2024": "+33.1R",
       "r_votes_2024": 212902,
       "d_votes_2024": 107010,
-      "race_margin": 0.3373,
+      "race_margin": 0.337,
       "race_label": "+33.7R",
-      "r_votes_2022": 130482,
-      "d_votes_2022": 62743
+      "r_votes_2022": 130686,
+      "d_votes_2022": 62838
     },
     {
       "district": 7,
@@ -128,19 +128,19 @@
       "party": "Democratic",
       "url": "https://carson.house.gov/",
       "margin_2020": -0.2974,
-      "margin_2022": -0.3721,
+      "margin_2022": -0.3725,
       "margin_2024": -0.4216,
-      "in_index": -0.3637,
+      "in_index": -0.3638,
       "in_index_label": "+36.4D",
       "label_2020": "+29.7D",
-      "label_2022": "+37.2D",
+      "label_2022": "+37.3D",
       "label_2024": "+42.2D",
       "r_votes_2024": 77134,
       "d_votes_2024": 189586,
-      "race_margin": -0.4047,
+      "race_margin": -0.4048,
       "race_label": "+40.5D",
-      "r_votes_2022": 53487,
-      "d_votes_2022": 116870
+      "r_votes_2022": 53631,
+      "d_votes_2022": 117309
     },
     {
       "district": 8,
@@ -148,7 +148,7 @@
       "party": "Republican",
       "url": "https://bucshon.house.gov/",
       "margin_2020": 0.2634,
-      "margin_2022": 0.3519,
+      "margin_2022": 0.3517,
       "margin_2024": 0.3649,
       "in_index": 0.3267,
       "in_index_label": "+32.7R",
@@ -157,10 +157,10 @@
       "label_2024": "+36.5R",
       "r_votes_2024": 223052,
       "d_votes_2024": 103783,
-      "race_margin": 0.3956,
-      "race_label": "+39.6R",
-      "r_votes_2022": 141746,
-      "d_votes_2022": 67947
+      "race_margin": 0.3953,
+      "race_label": "+39.5R",
+      "r_votes_2022": 141995,
+      "d_votes_2022": 68109
     },
     {
       "district": 9,
@@ -168,19 +168,19 @@
       "party": "Republican",
       "url": "https://houchin.house.gov/",
       "margin_2020": 0.205,
-      "margin_2022": null,
+      "margin_2022": 0.3083,
       "margin_2024": 0.3039,
-      "in_index": 0.2545,
-      "in_index_label": "+25.4R",
+      "in_index": 0.2724,
+      "in_index_label": "+27.2R",
       "label_2020": "+20.5R",
-      "label_2022": "Unop.",
+      "label_2022": "+30.8R",
       "label_2024": "+30.4R",
       "r_votes_2024": 226651,
       "d_votes_2024": 121011,
-      "race_margin": 0.3269,
-      "race_label": "+32.7R",
-      "r_votes_2022": null,
-      "d_votes_2022": null
+      "race_margin": 0.3256,
+      "race_label": "+32.6R",
+      "r_votes_2022": 143166,
+      "d_votes_2022": 75700
     }
   ],
   "senate": [
@@ -199,7 +199,7 @@
       "label_2024": "+7.3R",
       "r_votes_2024": 36270,
       "d_votes_2024": 31343,
-      "race_margin": 0.0469,
+      "race_margin": 0.0467,
       "race_label": "+4.7R"
     },
     {
@@ -217,7 +217,7 @@
       "label_2024": "+25.7D",
       "r_votes_2024": 16303,
       "d_votes_2024": 27592,
-      "race_margin": -0.3131,
+      "race_margin": -0.3132,
       "race_label": "+31.3D"
     },
     {
@@ -235,7 +235,7 @@
       "label_2024": "+41.3D",
       "r_votes_2024": 13732,
       "d_votes_2024": 33080,
-      "race_margin": -0.4623,
+      "race_margin": -0.4624,
       "race_label": "+46.2D"
     },
     {
@@ -253,7 +253,7 @@
       "label_2024": "+1.7R",
       "r_votes_2024": 29135,
       "d_votes_2024": 28141,
-      "race_margin": -0.0461,
+      "race_margin": -0.0463,
       "race_label": "+4.6D"
     },
     {
@@ -271,7 +271,7 @@
       "label_2024": "+27.5R",
       "r_votes_2024": 41804,
       "d_votes_2024": 23772,
-      "race_margin": 0.3199,
+      "race_margin": 0.3197,
       "race_label": "+32R"
     },
     {
@@ -290,7 +290,7 @@
       "r_votes_2024": 46625,
       "d_votes_2024": 21754,
       "race_margin": null,
-      "race_label": "N/A"
+      "race_label": "Unop."
     },
     {
       "district": 7,
@@ -325,8 +325,8 @@
       "label_2024": "+37.1R",
       "r_votes_2024": 41637,
       "d_votes_2024": 19097,
-      "race_margin": 0.4362,
-      "race_label": "+43.6R"
+      "race_margin": 0.4343,
+      "race_label": "+43.4R"
     },
     {
       "district": 9,
@@ -379,8 +379,8 @@
       "label_2024": "+14R",
       "r_votes_2024": 31584,
       "d_votes_2024": 23832,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.2331,
+      "race_label": "+23.3R"
     },
     {
       "district": 12,
@@ -433,8 +433,8 @@
       "label_2024": "+26.3R",
       "r_votes_2024": 30177,
       "d_votes_2024": 17617,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.3026,
+      "race_label": "+30.3R"
     },
     {
       "district": 15,
@@ -452,7 +452,7 @@
       "r_votes_2024": 37930,
       "d_votes_2024": 26834,
       "race_margin": null,
-      "race_label": "N/A"
+      "race_label": "Unop."
     },
     {
       "district": 16,
@@ -487,8 +487,8 @@
       "label_2024": "+46.9R",
       "r_votes_2024": 40995,
       "d_votes_2024": 14834,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.501,
+      "race_label": "+50.1R"
     },
     {
       "district": 18,
@@ -524,7 +524,7 @@
       "r_votes_2024": 38910,
       "d_votes_2024": 16886,
       "race_margin": null,
-      "race_label": "N/A"
+      "race_label": "Unop."
     },
     {
       "district": 20,
@@ -541,7 +541,7 @@
       "label_2024": "+10.6R",
       "r_votes_2024": 41363,
       "d_votes_2024": 33448,
-      "race_margin": 0.1979,
+      "race_margin": 0.198,
       "race_label": "+19.8R"
     },
     {
@@ -559,8 +559,8 @@
       "label_2024": "+24.3R",
       "r_votes_2024": 44728,
       "d_votes_2024": 27229,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.2795,
+      "race_label": "+27.9R"
     },
     {
       "district": 22,
@@ -578,7 +578,7 @@
       "r_votes_2024": 31184,
       "d_votes_2024": 23241,
       "race_margin": null,
-      "race_label": "N/A"
+      "race_label": "Unop."
     },
     {
       "district": 23,
@@ -595,8 +595,8 @@
       "label_2024": "+26.8R",
       "r_votes_2024": 30751,
       "d_votes_2024": 17739,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.2716,
+      "race_label": "+27.2R"
     },
     {
       "district": 24,
@@ -631,8 +631,8 @@
       "label_2024": "+28.8R",
       "r_votes_2024": 37014,
       "d_votes_2024": 20444,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.2812,
+      "race_label": "+28.1R"
     },
     {
       "district": 26,
@@ -649,8 +649,8 @@
       "label_2024": "+23.3R",
       "r_votes_2024": 34075,
       "d_votes_2024": 21197,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.2193,
+      "race_label": "+21.9R"
     },
     {
       "district": 27,
@@ -667,8 +667,8 @@
       "label_2024": "+44R",
       "r_votes_2024": 40606,
       "d_votes_2024": 15774,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.4232,
+      "race_label": "+42.3R"
     },
     {
       "district": 28,
@@ -703,8 +703,8 @@
       "label_2024": "+14.6D",
       "r_votes_2024": 26879,
       "d_votes_2024": 36086,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": -0.0335,
+      "race_label": "+3.4D"
     },
     {
       "district": 30,
@@ -739,8 +739,8 @@
       "label_2024": "+2.7D",
       "r_votes_2024": 35899,
       "d_votes_2024": 37870,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.1085,
+      "race_label": "+10.8R"
     },
     {
       "district": 32,
@@ -757,7 +757,7 @@
       "label_2024": "+16.9R",
       "r_votes_2024": 33435,
       "d_votes_2024": 23755,
-      "race_margin": 0.2099,
+      "race_margin": 0.2098,
       "race_label": "+21R"
     },
     {
@@ -811,7 +811,7 @@
       "label_2024": "+16.1R",
       "r_votes_2024": 25132,
       "d_votes_2024": 18165,
-      "race_margin": 0.1381,
+      "race_margin": 0.1378,
       "race_label": "+13.8R"
     },
     {
@@ -829,7 +829,7 @@
       "label_2024": "+20.8R",
       "r_votes_2024": 29369,
       "d_votes_2024": 19263,
-      "race_margin": 0.2491,
+      "race_margin": 0.249,
       "race_label": "+24.9R"
     },
     {
@@ -847,7 +847,7 @@
       "label_2024": "+49R",
       "r_votes_2024": 50720,
       "d_votes_2024": 17357,
-      "race_margin": 0.5182,
+      "race_margin": 0.518,
       "race_label": "+51.8R"
     },
     {
@@ -866,7 +866,7 @@
       "r_votes_2024": 34848,
       "d_votes_2024": 19348,
       "race_margin": null,
-      "race_label": "N/A"
+      "race_label": "Unop."
     },
     {
       "district": 39,
@@ -884,7 +884,7 @@
       "r_votes_2024": 43698,
       "d_votes_2024": 12263,
       "race_margin": null,
-      "race_label": "N/A"
+      "race_label": "Unop."
     },
     {
       "district": 40,
@@ -919,8 +919,8 @@
       "label_2024": "+33.2R",
       "r_votes_2024": 39944,
       "d_votes_2024": 20042,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.356,
+      "race_label": "+35.6R"
     },
     {
       "district": 42,
@@ -938,7 +938,7 @@
       "r_votes_2024": 49087,
       "d_votes_2024": 12659,
       "race_margin": null,
-      "race_label": "N/A"
+      "race_label": "Unop."
     },
     {
       "district": 43,
@@ -956,7 +956,7 @@
       "r_votes_2024": 47773,
       "d_votes_2024": 14623,
       "race_margin": null,
-      "race_label": "N/A"
+      "race_label": "Unop."
     },
     {
       "district": 44,
@@ -974,7 +974,7 @@
       "r_votes_2024": 44024,
       "d_votes_2024": 15947,
       "race_margin": null,
-      "race_label": "N/A"
+      "race_label": "Unop."
     },
     {
       "district": 45,
@@ -991,8 +991,8 @@
       "label_2024": "+19.7R",
       "r_votes_2024": 39214,
       "d_votes_2024": 26298,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.2414,
+      "race_label": "+24.1R"
     },
     {
       "district": 46,
@@ -1009,8 +1009,8 @@
       "label_2024": "+42.4D",
       "r_votes_2024": 12428,
       "d_votes_2024": 30691,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": -0.4587,
+      "race_label": "+45.9D"
     },
     {
       "district": 47,
@@ -1027,8 +1027,8 @@
       "label_2024": "+33.8R",
       "r_votes_2024": 43497,
       "d_votes_2024": 21534,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.3357,
+      "race_label": "+33.6R"
     },
     {
       "district": 48,
@@ -1045,8 +1045,8 @@
       "label_2024": "+45.4R",
       "r_votes_2024": 48071,
       "d_votes_2024": 18040,
-      "race_margin": null,
-      "race_label": "N/A"
+      "race_margin": 0.4466,
+      "race_label": "+44.7R"
     },
     {
       "district": 49,
@@ -1064,7 +1064,7 @@
       "r_votes_2024": 33921,
       "d_votes_2024": 21619,
       "race_margin": null,
-      "race_label": "N/A"
+      "race_label": "Unop."
     },
     {
       "district": 50,
@@ -1082,7 +1082,7 @@
       "r_votes_2024": 37621,
       "d_votes_2024": 24972,
       "race_margin": null,
-      "race_label": "N/A"
+      "race_label": "Unop."
     }
   ],
   "house": [
@@ -1127,7 +1127,7 @@
       "label_2024": "+58.7D",
       "r_votes_2024": 3865,
       "d_votes_2024": 14845,
-      "race_margin": -0.6401,
+      "race_margin": -0.6402,
       "race_label": "+64D",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
@@ -1153,7 +1153,7 @@
       "label_2024": "+22.4D",
       "r_votes_2024": 9294,
       "d_votes_2024": 14658,
-      "race_margin": -0.2628,
+      "race_margin": -0.2629,
       "race_label": "+26.3D",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
@@ -1179,7 +1179,7 @@
       "label_2024": "+10R",
       "r_votes_2024": 18838,
       "d_votes_2024": 15398,
-      "race_margin": 0.1523,
+      "race_margin": 0.1521,
       "race_label": "+15.2R",
       "margin_2020_race": 0.0916,
       "label_2020_race": "+9.2R",
@@ -1205,7 +1205,7 @@
       "label_2024": "+9.7R",
       "r_votes_2024": 16758,
       "d_votes_2024": 13789,
-      "race_margin": 0.0914,
+      "race_margin": 0.0915,
       "race_label": "+9.1R",
       "margin_2020_race": 0.0148,
       "label_2020_race": "+1.5R",
@@ -1214,7 +1214,7 @@
       "r_votes_2020": 14617,
       "d_votes_2020": 14190,
       "r_votes_2022": 11738,
-      "d_votes_2022": 8965
+      "d_votes_2022": 8966
     },
     {
       "district": 6,
@@ -1248,7 +1248,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/jake-teshka/?back=members",
       "margin_2020": -0.0451,
-      "margin_2022": 0.217,
+      "margin_2022": 0.2169,
       "margin_2024": 0.172,
       "in_index": 0.172,
       "in_index_label": "+17.2R",
@@ -1261,12 +1261,12 @@
       "race_label": "Unop.",
       "margin_2020_race": 0.0799,
       "label_2020_race": "+8R",
-      "margin_2022_race": 0.217,
+      "margin_2022_race": 0.2169,
       "label_2022_race": "+21.7R",
       "r_votes_2020": 14668,
       "d_votes_2020": 12498,
       "r_votes_2022": 11969,
-      "d_votes_2022": 7701
+      "d_votes_2022": 7702
     },
     {
       "district": 8,
@@ -1300,7 +1300,7 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/pat-boy",
       "margin_2020": 0.0695,
-      "margin_2022": -0.0974,
+      "margin_2022": -0.0975,
       "margin_2024": -0.0174,
       "in_index": -0.0174,
       "in_index_label": "+1.7D",
@@ -1309,16 +1309,16 @@
       "label_2024": "+1.7D",
       "r_votes_2024": 14777,
       "d_votes_2024": 15301,
-      "race_margin": -0.0168,
-      "race_label": "+1.7D",
+      "race_margin": -0.02,
+      "race_label": "+2D",
       "margin_2020_race": -0.1322,
       "label_2020_race": "+13.2D",
-      "margin_2022_race": -0.0974,
+      "margin_2022_race": -0.0975,
       "label_2022_race": "+9.7D",
       "r_votes_2020": 12096,
       "d_votes_2020": 15781,
       "r_votes_2022": 9576,
-      "d_votes_2022": 11642
+      "d_votes_2022": 11645
     },
     {
       "district": 10,
@@ -1326,7 +1326,7 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/chuck-moseley",
       "margin_2020": 0.0621,
-      "margin_2022": -0.0559,
+      "margin_2022": -0.056,
       "margin_2024": 0.054,
       "in_index": 0.054,
       "in_index_label": "+5.4R",
@@ -1335,16 +1335,16 @@
       "label_2024": "+5.4R",
       "r_votes_2024": 15284,
       "d_votes_2024": 13719,
-      "race_margin": -0.0424,
+      "race_margin": -0.0425,
       "race_label": "+4.2D",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
-      "margin_2022_race": -0.0559,
+      "margin_2022_race": -0.056,
       "label_2022_race": "+5.6D",
       "r_votes_2020": null,
       "d_votes_2020": null,
-      "r_votes_2022": 8976,
-      "d_votes_2022": 10039
+      "r_votes_2022": 8977,
+      "d_votes_2022": 10043
     },
     {
       "district": 11,
@@ -1378,7 +1378,7 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/mike-andrade",
       "margin_2020": -0.1528,
-      "margin_2022": -0.1115,
+      "margin_2022": -0.1118,
       "margin_2024": -0.0396,
       "in_index": -0.0396,
       "in_index_label": "+4D",
@@ -1387,16 +1387,16 @@
       "label_2024": "+4D",
       "r_votes_2024": 15779,
       "d_votes_2024": 17079,
-      "race_margin": -0.1012,
+      "race_margin": -0.1009,
       "race_label": "+10.1D",
       "margin_2020_race": -0.1541,
       "label_2020_race": "+15.4D",
-      "margin_2022_race": -0.1115,
+      "margin_2022_race": -0.1118,
       "label_2022_race": "+11.2D",
       "r_votes_2020": 13730,
       "d_votes_2020": 18733,
-      "r_votes_2022": 10026,
-      "d_votes_2022": 12543
+      "r_votes_2022": 10031,
+      "d_votes_2022": 12556
     },
     {
       "district": 13,
@@ -1413,8 +1413,8 @@
       "label_2024": "+40.7R",
       "r_votes_2024": 22616,
       "d_votes_2024": 9541,
-      "race_margin": 0.4733,
-      "race_label": "+47.3R",
+      "race_margin": 0.4744,
+      "race_label": "+47.4R",
       "margin_2020_race": 0.4557,
       "label_2020_race": "+45.6R",
       "margin_2022_race": null,
@@ -1439,7 +1439,7 @@
       "label_2024": "+40.4D",
       "r_votes_2024": 7415,
       "d_votes_2024": 17460,
-      "race_margin": -0.4426,
+      "race_margin": -0.4428,
       "race_label": "+44.3D",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
@@ -1456,7 +1456,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/hal-slager/?back=members",
       "margin_2020": -0.1528,
-      "margin_2022": 0.265,
+      "margin_2022": 0.2649,
       "margin_2024": 0.2046,
       "in_index": 0.2046,
       "in_index_label": "+20.5R",
@@ -1465,16 +1465,16 @@
       "label_2024": "+20.5R",
       "r_votes_2024": 22819,
       "d_votes_2024": 15067,
-      "race_margin": 0.2672,
+      "race_margin": 0.2667,
       "race_label": "+26.7R",
       "margin_2020_race": 0.0307,
       "label_2020_race": "+3.1R",
-      "margin_2022_race": 0.265,
+      "margin_2022_race": 0.2649,
       "label_2022_race": "+26.5R",
       "r_votes_2020": 17813,
       "d_votes_2020": 16751,
-      "r_votes_2022": 16279,
-      "d_votes_2022": 9459
+      "r_votes_2022": 16291,
+      "d_votes_2022": 9468
     },
     {
       "district": 16,
@@ -1577,8 +1577,8 @@
       "label_2022_race": "+17.4R",
       "r_votes_2020": 19496,
       "d_votes_2020": 18135,
-      "r_votes_2022": 13647,
-      "d_votes_2022": 9594
+      "r_votes_2022": 13662,
+      "d_votes_2022": 9605
     },
     {
       "district": 20,
@@ -1612,12 +1612,12 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/timothy-wesco/?back=members",
       "margin_2020": 0.2471,
-      "margin_2022": 0.476,
+      "margin_2022": 0.4753,
       "margin_2024": 0.3528,
       "in_index": 0.3528,
       "in_index_label": "+35.3R",
       "label_2020": "+24.7R",
-      "label_2022": "+47.6R",
+      "label_2022": "+47.5R",
       "label_2024": "+35.3R",
       "r_votes_2024": 14009,
       "d_votes_2024": 6702,
@@ -1625,12 +1625,12 @@
       "race_label": "Unop.",
       "margin_2020_race": 0.29,
       "label_2020_race": "+29R",
-      "margin_2022_race": 0.476,
-      "label_2022_race": "+47.6R",
+      "margin_2022_race": 0.4753,
+      "label_2022_race": "+47.5R",
       "r_votes_2020": 15346,
       "d_votes_2020": 8446,
-      "r_votes_2022": 9337,
-      "d_votes_2022": 3315
+      "r_votes_2022": 9466,
+      "d_votes_2022": 3367
     },
     {
       "district": 22,
@@ -1638,7 +1638,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/craig-snow/?back=members",
       "margin_2020": 0.5198,
-      "margin_2022": 0.6574,
+      "margin_2022": 0.6569,
       "margin_2024": 0.5412,
       "in_index": 0.5412,
       "in_index_label": "+54.1R",
@@ -1651,12 +1651,12 @@
       "race_label": "Unop.",
       "margin_2020_race": 0.4422,
       "label_2020_race": "+44.2R",
-      "margin_2022_race": 0.6574,
+      "margin_2022_race": 0.6569,
       "label_2022_race": "+65.7R",
       "r_votes_2020": 20694,
       "d_votes_2020": 8003,
-      "r_votes_2022": 14732,
-      "d_votes_2022": 3045
+      "r_votes_2022": 14745,
+      "d_votes_2022": 3053
     },
     {
       "district": 23,
@@ -1707,8 +1707,8 @@
       "label_2022_race": "+16.3R",
       "r_votes_2020": 30321,
       "d_votes_2020": 21853,
-      "r_votes_2022": 14672,
-      "d_votes_2022": 10570
+      "r_votes_2022": 14674,
+      "d_votes_2022": 10571
     },
     {
       "district": 25,
@@ -1716,7 +1716,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/becky-cash/?back=members",
       "margin_2020": 0.2106,
-      "margin_2022": 0.0545,
+      "margin_2022": 0.0542,
       "margin_2024": 0.0296,
       "in_index": 0.0296,
       "in_index_label": "+3R",
@@ -1725,16 +1725,16 @@
       "label_2024": "+3R",
       "r_votes_2024": 19366,
       "d_votes_2024": 18251,
-      "race_margin": 0.0018,
+      "race_margin": 0.0017,
       "race_label": "+0.2R",
       "margin_2020_race": 0.4058,
       "label_2020_race": "+40.6R",
-      "margin_2022_race": 0.0545,
+      "margin_2022_race": 0.0542,
       "label_2022_race": "+5.4R",
       "r_votes_2020": 22475,
       "d_votes_2020": 9500,
-      "r_votes_2022": 12361,
-      "d_votes_2022": 11084
+      "r_votes_2022": 12370,
+      "d_votes_2022": 11097
     },
     {
       "district": 26,
@@ -1742,7 +1742,7 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/chris-campbell",
       "margin_2020": -0.0063,
-      "margin_2022": -0.1975,
+      "margin_2022": -0.1973,
       "margin_2024": -0.2427,
       "in_index": -0.2427,
       "in_index_label": "+24.3D",
@@ -1751,16 +1751,16 @@
       "label_2024": "+24.3D",
       "r_votes_2024": 6908,
       "d_votes_2024": 11336,
-      "race_margin": -0.2819,
+      "race_margin": -0.2817,
       "race_label": "+28.2D",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
-      "margin_2022_race": -0.1975,
+      "margin_2022_race": -0.1973,
       "label_2022_race": "+19.7D",
       "r_votes_2020": null,
       "d_votes_2020": null,
-      "r_votes_2022": 4824,
-      "d_votes_2022": 7198
+      "r_votes_2022": 4828,
+      "d_votes_2022": 7201
     },
     {
       "district": 27,
@@ -1768,7 +1768,7 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/sheila-klinker",
       "margin_2020": -0.0063,
-      "margin_2022": -0.2021,
+      "margin_2022": -0.202,
       "margin_2024": -0.0721,
       "in_index": -0.0721,
       "in_index_label": "+7.2D",
@@ -1777,16 +1777,16 @@
       "label_2024": "+7.2D",
       "r_votes_2024": 10327,
       "d_votes_2024": 11933,
-      "race_margin": -0.2303,
+      "race_margin": -0.2302,
       "race_label": "+23D",
       "margin_2020_race": -0.2418,
       "label_2020_race": "+24.2D",
-      "margin_2022_race": -0.2021,
+      "margin_2022_race": -0.202,
       "label_2022_race": "+20.2D",
       "r_votes_2020": 8934,
       "d_votes_2020": 14631,
-      "r_votes_2022": 4943,
-      "d_votes_2022": 7447
+      "r_votes_2022": 4948,
+      "d_votes_2022": 7453
     },
     {
       "district": 28,
@@ -1803,7 +1803,7 @@
       "label_2024": "+40.5R",
       "r_votes_2024": 24202,
       "d_votes_2024": 10260,
-      "race_margin": 0.4352,
+      "race_margin": 0.4351,
       "race_label": "+43.5R",
       "margin_2020_race": 0.4306,
       "label_2020_race": "+43.1R",
@@ -1829,8 +1829,8 @@
       "label_2024": "+16.9R",
       "r_votes_2024": 21348,
       "d_votes_2024": 15165,
-      "race_margin": 0.2675,
-      "race_label": "+26.7R",
+      "race_margin": 0.2676,
+      "race_label": "+26.8R",
       "margin_2020_race": 0.32,
       "label_2020_race": "+32R",
       "margin_2022_race": null,
@@ -1855,16 +1855,16 @@
       "label_2024": "+32.6R",
       "r_votes_2024": 18940,
       "d_votes_2024": 9631,
-      "race_margin": 0.3466,
-      "race_label": "+34.7R",
+      "race_margin": 0.3493,
+      "race_label": "+34.9R",
       "margin_2020_race": 0.323,
       "label_2020_race": "+32.3R",
       "margin_2022_race": 0.3504,
       "label_2022_race": "+35R",
       "r_votes_2020": 19226,
       "d_votes_2020": 9839,
-      "r_votes_2022": 12218,
-      "d_votes_2022": 5878
+      "r_votes_2022": 12235,
+      "d_votes_2022": 5885
     },
     {
       "district": 31,
@@ -1898,7 +1898,7 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/victoria-garcia-wilburn",
       "margin_2020": 0.0316,
-      "margin_2022": -0.0098,
+      "margin_2022": -0.01,
       "margin_2024": -0.0895,
       "in_index": -0.0895,
       "in_index_label": "+8.9D",
@@ -1907,16 +1907,16 @@
       "label_2024": "+9D",
       "r_votes_2024": 15770,
       "d_votes_2024": 18872,
-      "race_margin": -0.0418,
+      "race_margin": -0.042,
       "race_label": "+4.2D",
       "margin_2020_race": 0.5083,
       "label_2020_race": "+50.8R",
-      "margin_2022_race": -0.0098,
+      "margin_2022_race": -0.01,
       "label_2022_race": "+1D",
       "r_votes_2020": 26430,
       "d_votes_2020": 8615,
-      "r_votes_2022": 12255,
-      "d_votes_2022": 12497
+      "r_votes_2022": 12260,
+      "d_votes_2022": 12508
     },
     {
       "district": 33,
@@ -1924,7 +1924,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/j.d.-prescott/?back=members",
       "margin_2020": 0.4241,
-      "margin_2022": 0.4078,
+      "margin_2022": 0.4077,
       "margin_2024": 0.5042,
       "in_index": 0.5042,
       "in_index_label": "+50.4R",
@@ -1937,12 +1937,12 @@
       "race_label": "+46R",
       "margin_2020_race": 0.4506,
       "label_2020_race": "+45.1R",
-      "margin_2022_race": 0.4078,
+      "margin_2022_race": 0.4077,
       "label_2022_race": "+40.8R",
       "r_votes_2020": 20198,
       "d_votes_2020": 7649,
-      "r_votes_2022": 13978,
-      "d_votes_2022": 5880
+      "r_votes_2022": 13979,
+      "d_votes_2022": 5882
     },
     {
       "district": 34,
@@ -1959,7 +1959,7 @@
       "label_2024": "+3.9D",
       "r_votes_2024": 10739,
       "d_votes_2024": 11609,
-      "race_margin": -0.1016,
+      "race_margin": -0.1018,
       "race_label": "+10.2D",
       "margin_2020_race": -0.1272,
       "label_2020_race": "+12.7D",
@@ -1967,8 +1967,8 @@
       "label_2022_race": "+5.6D",
       "r_votes_2020": 8744,
       "d_votes_2020": 11293,
-      "r_votes_2022": 6847,
-      "d_votes_2022": 7657
+      "r_votes_2022": 6849,
+      "d_votes_2022": 7659
     },
     {
       "district": 35,
@@ -1976,7 +1976,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/leadership/elizabeth-rowray/?back=members",
       "margin_2020": 0.1817,
-      "margin_2022": 0.401,
+      "margin_2022": 0.4009,
       "margin_2024": 0.3892,
       "in_index": 0.3892,
       "in_index_label": "+38.9R",
@@ -1985,16 +1985,16 @@
       "label_2024": "+38.9R",
       "r_votes_2024": 22277,
       "d_votes_2024": 9795,
-      "race_margin": 0.42,
+      "race_margin": 0.4199,
       "race_label": "+42R",
       "margin_2020_race": 0.1054,
       "label_2020_race": "+10.5R",
-      "margin_2022_race": 0.401,
+      "margin_2022_race": 0.4009,
       "label_2022_race": "+40.1R",
       "r_votes_2020": 16767,
       "d_votes_2020": 13570,
-      "r_votes_2022": 14937,
-      "d_votes_2022": 6386
+      "r_votes_2022": 14948,
+      "d_votes_2022": 6393
     },
     {
       "district": 36,
@@ -2002,25 +2002,25 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/kyle-pierce/?back=members",
       "margin_2020": 0.2304,
-      "margin_2022": 0.0191,
+      "margin_2022": 0.0185,
       "margin_2024": 0.1342,
       "in_index": 0.1342,
       "in_index_label": "+13.4R",
       "label_2020": "+23R",
-      "label_2022": "+1.9R",
+      "label_2022": "+1.8R",
       "label_2024": "+13.4R",
       "r_votes_2024": 14575,
       "d_votes_2024": 11126,
-      "race_margin": 0.1806,
+      "race_margin": 0.1807,
       "race_label": "+18.1R",
       "margin_2020_race": -0.06,
       "label_2020_race": "+6D",
-      "margin_2022_race": 0.0191,
-      "label_2022_race": "+1.9R",
+      "margin_2022_race": 0.0185,
+      "label_2022_race": "+1.8R",
       "r_votes_2020": 11485,
       "d_votes_2020": 12951,
-      "r_votes_2022": 8888,
-      "d_votes_2022": 8555
+      "r_votes_2022": 8904,
+      "d_votes_2022": 8581
     },
     {
       "district": 37,
@@ -2080,7 +2080,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/danny-lopez/?back=members",
       "margin_2020": 0.0695,
-      "margin_2022": 0.047,
+      "margin_2022": 0.0471,
       "margin_2024": 0.0038,
       "in_index": 0.0038,
       "in_index_label": "+0.4R",
@@ -2089,16 +2089,16 @@
       "label_2024": "+0.4R",
       "r_votes_2024": 19648,
       "d_votes_2024": 19501,
-      "race_margin": 0.0746,
+      "race_margin": 0.0747,
       "race_label": "+7.5R",
       "margin_2020_race": 0.0718,
       "label_2020_race": "+7.2R",
-      "margin_2022_race": 0.047,
+      "margin_2022_race": 0.0471,
       "label_2022_race": "+4.7R",
       "r_votes_2020": 23396,
       "d_votes_2020": 20262,
-      "r_votes_2022": 14753,
-      "d_votes_2022": 13428
+      "r_votes_2022": 14757,
+      "d_votes_2022": 13430
     },
     {
       "district": 40,
@@ -2115,7 +2115,7 @@
       "label_2024": "+12.4R",
       "r_votes_2024": 17270,
       "d_votes_2024": 13453,
-      "race_margin": 0.1673,
+      "race_margin": 0.1672,
       "race_label": "+16.7R",
       "margin_2020_race": 0.2009,
       "label_2020_race": "+20.1R",
@@ -2141,7 +2141,7 @@
       "label_2024": "+40.1R",
       "r_votes_2024": 20341,
       "d_votes_2024": 8706,
-      "race_margin": 0.4619,
+      "race_margin": 0.462,
       "race_label": "+46.2R",
       "margin_2020_race": 0.507,
       "label_2020_race": "+50.7R",
@@ -2149,7 +2149,7 @@
       "label_2022_race": "+50.5R",
       "r_votes_2020": 22639,
       "d_votes_2020": 7407,
-      "r_votes_2022": 12812,
+      "r_votes_2022": 12813,
       "d_votes_2022": 4212
     },
     {
@@ -2158,7 +2158,7 @@
       "party": "Republican",
       "url": "",
       "margin_2020": 0.4382,
-      "margin_2022": 0.3677,
+      "margin_2022": 0.3678,
       "margin_2024": 0.5068,
       "in_index": 0.5068,
       "in_index_label": "+50.7R",
@@ -2171,11 +2171,11 @@
       "race_label": "Unop.",
       "margin_2020_race": 0.3358,
       "label_2020_race": "+33.6R",
-      "margin_2022_race": 0.3677,
+      "margin_2022_race": 0.3678,
       "label_2022_race": "+36.8R",
       "r_votes_2020": 18945,
       "d_votes_2020": 9421,
-      "r_votes_2022": 13799,
+      "r_votes_2022": 13800,
       "d_votes_2022": 6379
     },
     {
@@ -2184,7 +2184,7 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/tonya-pfaff",
       "margin_2020": 0.1505,
-      "margin_2022": -0.1678,
+      "margin_2022": -0.1679,
       "margin_2024": 0.0746,
       "in_index": 0.0746,
       "in_index_label": "+7.5R",
@@ -2197,12 +2197,12 @@
       "race_label": "Unop.",
       "margin_2020_race": -0.1507,
       "label_2020_race": "+15.1D",
-      "margin_2022_race": -0.1678,
+      "margin_2022_race": -0.1679,
       "label_2022_race": "+16.8D",
       "r_votes_2020": 9722,
       "d_votes_2020": 13172,
       "r_votes_2022": 6336,
-      "d_votes_2022": 8891
+      "d_votes_2022": 8893
     },
     {
       "district": 44,
@@ -2272,15 +2272,15 @@
       "r_votes_2024": 20564,
       "d_votes_2024": 10558,
       "race_margin": 0.3585,
-      "race_label": "+35.9R",
+      "race_label": "+35.8R",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": 0.3349,
       "label_2022_race": "+33.5R",
       "r_votes_2020": null,
       "d_votes_2020": null,
-      "r_votes_2022": 13416,
-      "d_votes_2022": 6684
+      "r_votes_2022": 13420,
+      "d_votes_2022": 6686
     },
     {
       "district": 47,
@@ -2340,12 +2340,12 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/leadership/joanna-king/?back=members",
       "margin_2020": 0.2855,
-      "margin_2022": 0.3449,
+      "margin_2022": 0.3433,
       "margin_2024": 0.2972,
       "in_index": 0.2972,
       "in_index_label": "+29.7R",
       "label_2020": "+28.5R",
-      "label_2022": "+34.5R",
+      "label_2022": "+34.3R",
       "label_2024": "+29.7R",
       "r_votes_2024": 14717,
       "d_votes_2024": 7974,
@@ -2353,12 +2353,12 @@
       "race_label": "Unop.",
       "margin_2020_race": 0.3295,
       "label_2020_race": "+33R",
-      "margin_2022_race": 0.3449,
-      "label_2022_race": "+34.5R",
+      "margin_2022_race": 0.3433,
+      "label_2022_race": "+34.3R",
       "r_votes_2020": 16539,
       "d_votes_2020": 8341,
-      "r_votes_2022": 10348,
-      "d_votes_2022": 5040
+      "r_votes_2022": 10422,
+      "d_votes_2022": 5095
     },
     {
       "district": 50,
@@ -2366,7 +2366,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/lorissa-sweet/?back=members",
       "margin_2020": 0.5122,
-      "margin_2022": 0.5521,
+      "margin_2022": 0.552,
       "margin_2024": 0.5048,
       "in_index": 0.5048,
       "in_index_label": "+50.5R",
@@ -2375,16 +2375,16 @@
       "label_2024": "+50.5R",
       "r_votes_2024": 23613,
       "d_votes_2024": 7771,
-      "race_margin": 0.5385,
+      "race_margin": 0.5384,
       "race_label": "+53.8R",
       "margin_2020_race": 0.431,
       "label_2020_race": "+43.1R",
-      "margin_2022_race": 0.5521,
+      "margin_2022_race": 0.552,
       "label_2022_race": "+55.2R",
       "r_votes_2020": 21418,
       "d_votes_2020": 8517,
-      "r_votes_2022": 16416,
-      "d_votes_2022": 4737
+      "r_votes_2022": 16417,
+      "d_votes_2022": 4739
     },
     {
       "district": 51,
@@ -2392,7 +2392,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/tony-isa/?back=members",
       "margin_2020": 0.4842,
-      "margin_2022": 0.5122,
+      "margin_2022": 0.5123,
       "margin_2024": 0.4845,
       "in_index": 0.4845,
       "in_index_label": "+48.4R",
@@ -2405,11 +2405,11 @@
       "race_label": "+48.9R",
       "margin_2020_race": 0.5411,
       "label_2020_race": "+54.1R",
-      "margin_2022_race": 0.5122,
+      "margin_2022_race": 0.5123,
       "label_2022_race": "+51.2R",
       "r_votes_2020": 17633,
       "d_votes_2020": 5250,
-      "r_votes_2022": 10753,
+      "r_votes_2022": 10758,
       "d_votes_2022": 3469
     },
     {
@@ -2453,7 +2453,7 @@
       "label_2024": "+41R",
       "r_votes_2024": 24721,
       "d_votes_2024": 10343,
-      "race_margin": 0.4083,
+      "race_margin": 0.408,
       "race_label": "+40.8R",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
@@ -2470,7 +2470,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/cory-criswell/?back=members",
       "margin_2020": 0.4831,
-      "margin_2022": 0.4737,
+      "margin_2022": 0.474,
       "margin_2024": 0.5088,
       "in_index": 0.5088,
       "in_index_label": "+50.9R",
@@ -2483,12 +2483,12 @@
       "race_label": "Unop.",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
-      "margin_2022_race": 0.4737,
+      "margin_2022_race": 0.474,
       "label_2022_race": "+47.4R",
       "r_votes_2020": null,
       "d_votes_2020": null,
-      "r_votes_2022": 13857,
-      "d_votes_2022": 4949
+      "r_votes_2022": 13886,
+      "d_votes_2022": 4955
     },
     {
       "district": 55,
@@ -2505,7 +2505,7 @@
       "label_2024": "+60.2R",
       "r_votes_2024": 25773,
       "d_votes_2024": 6412,
-      "race_margin": 0.6099,
+      "race_margin": 0.6098,
       "race_label": "+61R",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
@@ -2583,8 +2583,8 @@
       "label_2024": "+32.8R",
       "r_votes_2024": 19027,
       "d_votes_2024": 9622,
-      "race_margin": 0.3486,
-      "race_label": "+34.9R",
+      "race_margin": 0.3484,
+      "race_label": "+34.8R",
       "margin_2020_race": 0.3526,
       "label_2020_race": "+35.3R",
       "margin_2022_race": null,
@@ -2600,25 +2600,25 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/ryan-lauer/?back=members",
       "margin_2020": 0.2681,
-      "margin_2022": 0.2264,
+      "margin_2022": 0.2265,
       "margin_2024": 0.2254,
       "in_index": 0.2254,
       "in_index_label": "+22.5R",
       "label_2020": "+26.8R",
-      "label_2022": "+22.6R",
+      "label_2022": "+22.7R",
       "label_2024": "+22.5R",
       "r_votes_2024": 17030,
       "d_votes_2024": 10766,
-      "race_margin": 0.2769,
+      "race_margin": 0.277,
       "race_label": "+27.7R",
       "margin_2020_race": 0.1978,
       "label_2020_race": "+19.8R",
-      "margin_2022_race": 0.2264,
-      "label_2022_race": "+22.6R",
+      "margin_2022_race": 0.2265,
+      "label_2022_race": "+22.7R",
       "r_votes_2020": 17729,
       "d_votes_2020": 11873,
-      "r_votes_2022": 11015,
-      "d_votes_2022": 6948
+      "r_votes_2022": 11019,
+      "d_votes_2022": 6949
     },
     {
       "district": 60,
@@ -2626,7 +2626,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/peggy-mayfield/?back=members",
       "margin_2020": 0.4585,
-      "margin_2022": 0.5086,
+      "margin_2022": 0.5088,
       "margin_2024": 0.5008,
       "in_index": 0.5008,
       "in_index_label": "+50.1R",
@@ -2635,16 +2635,16 @@
       "label_2024": "+50.1R",
       "r_votes_2024": 26260,
       "d_votes_2024": 8735,
-      "race_margin": 0.5139,
+      "race_margin": 0.5138,
       "race_label": "+51.4R",
       "margin_2020_race": 0.2699,
       "label_2020_race": "+27R",
-      "margin_2022_race": 0.5086,
+      "margin_2022_race": 0.5088,
       "label_2022_race": "+50.9R",
       "r_votes_2020": 21712,
       "d_votes_2020": 12484,
-      "r_votes_2022": 16617,
-      "d_votes_2022": 5412
+      "r_votes_2022": 16633,
+      "d_votes_2022": 5415
     },
     {
       "district": 61,
@@ -2678,25 +2678,25 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/dave-hall/?back=members",
       "margin_2020": -0.1123,
-      "margin_2022": 0.0014,
+      "margin_2022": 0.0015,
       "margin_2024": -0.0143,
       "in_index": -0.0143,
       "in_index_label": "+1.4D",
       "label_2020": "+11.2D",
-      "label_2022": "+0.1R",
+      "label_2022": "+0.2R",
       "label_2024": "+1.4D",
       "r_votes_2024": 17714,
       "d_votes_2024": 18228,
-      "race_margin": 0.0221,
+      "race_margin": 0.0225,
       "race_label": "+2.2R",
       "margin_2020_race": 0.2085,
       "label_2020_race": "+20.8R",
-      "margin_2022_race": 0.0014,
-      "label_2022_race": "+0.1R",
+      "margin_2022_race": 0.0015,
+      "label_2022_race": "+0.2R",
       "r_votes_2020": 19036,
       "d_votes_2020": 12468,
-      "r_votes_2022": 12975,
-      "d_votes_2022": 12938
+      "r_votes_2022": 12990,
+      "d_votes_2022": 12950
     },
     {
       "district": 63,
@@ -2721,8 +2721,8 @@
       "label_2022_race": "+53.9R",
       "r_votes_2020": 21494,
       "d_votes_2020": 7626,
-      "r_votes_2022": 14555,
-      "d_votes_2022": 4363
+      "r_votes_2022": 14558,
+      "d_votes_2022": 4364
     },
     {
       "district": 64,
@@ -2756,12 +2756,12 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/chris-may/?back=members",
       "margin_2020": 0.5106,
-      "margin_2022": 0.5549,
+      "margin_2022": 0.5545,
       "margin_2024": 0.5318,
       "in_index": 0.5318,
       "in_index_label": "+53.2R",
       "label_2020": "+51.1R",
-      "label_2022": "+55.5R",
+      "label_2022": "+55.4R",
       "label_2024": "+53.2R",
       "r_votes_2024": 23395,
       "d_votes_2024": 7151,
@@ -2769,12 +2769,12 @@
       "race_label": "Unop.",
       "margin_2020_race": 0.4587,
       "label_2020_race": "+45.9R",
-      "margin_2022_race": 0.5549,
-      "label_2022_race": "+55.5R",
+      "margin_2022_race": 0.5545,
+      "label_2022_race": "+55.4R",
       "r_votes_2020": 23721,
       "d_votes_2020": 8803,
-      "r_votes_2022": 14645,
-      "d_votes_2022": 4192
+      "r_votes_2022": 14648,
+      "d_votes_2022": 4198
     },
     {
       "district": 66,
@@ -2782,7 +2782,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/zach-payne/?back=members",
       "margin_2020": 0.2475,
-      "margin_2022": 0.3989,
+      "margin_2022": 0.3988,
       "margin_2024": 0.408,
       "in_index": 0.408,
       "in_index_label": "+40.8R",
@@ -2791,16 +2791,16 @@
       "label_2024": "+40.8R",
       "r_votes_2024": 23360,
       "d_votes_2024": 9821,
-      "race_margin": 0.3836,
-      "race_label": "+38.4R",
+      "race_margin": 0.3879,
+      "race_label": "+38.8R",
       "margin_2020_race": 0.1152,
       "label_2020_race": "+11.5R",
-      "margin_2022_race": 0.3989,
+      "margin_2022_race": 0.3988,
       "label_2022_race": "+39.9R",
       "r_votes_2020": 16588,
       "d_votes_2020": 13162,
-      "r_votes_2022": 14563,
-      "d_votes_2022": 6258
+      "r_votes_2022": 14565,
+      "d_votes_2022": 6260
     },
     {
       "district": 67,
@@ -2843,8 +2843,8 @@
       "label_2024": "+58.7R",
       "r_votes_2024": 26857,
       "d_votes_2024": 6996,
-      "race_margin": 0.5897,
-      "race_label": "+59R",
+      "race_margin": 0.5894,
+      "race_label": "+58.9R",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
@@ -2869,16 +2869,16 @@
       "label_2024": "+54.2R",
       "r_votes_2024": 21030,
       "d_votes_2024": 6238,
-      "race_margin": 0.3734,
-      "race_label": "+37.3R",
+      "race_margin": 0.3735,
+      "race_label": "+37.4R",
       "margin_2020_race": 0.5846,
       "label_2020_race": "+58.5R",
       "margin_2022_race": 0.4736,
       "label_2022_race": "+47.4R",
       "r_votes_2020": 18784,
       "d_votes_2020": 4924,
-      "r_votes_2022": 12523,
-      "d_votes_2022": 4474
+      "r_votes_2022": 12526,
+      "d_votes_2022": 4475
     },
     {
       "district": 70,
@@ -2886,7 +2886,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/karen-engleman/?back=members",
       "margin_2020": 0.3814,
-      "margin_2022": 0.4996,
+      "margin_2022": 0.4995,
       "margin_2024": 0.4711,
       "in_index": 0.4711,
       "in_index_label": "+47.1R",
@@ -2899,12 +2899,12 @@
       "race_label": "+46.9R",
       "margin_2020_race": 0.4137,
       "label_2020_race": "+41.4R",
-      "margin_2022_race": 0.4996,
+      "margin_2022_race": 0.4995,
       "label_2022_race": "+50R",
       "r_votes_2020": 25166,
       "d_votes_2020": 10437,
-      "r_votes_2022": 18003,
-      "d_votes_2022": 6007
+      "r_votes_2022": 18018,
+      "d_votes_2022": 6014
     },
     {
       "district": 71,
@@ -2912,7 +2912,7 @@
       "party": "Democratic",
       "url": "https://www.indianahousedemocrats.org/members/wendy-dant-chesser",
       "margin_2020": 0.1857,
-      "margin_2022": -0.0122,
+      "margin_2022": -0.0123,
       "margin_2024": 0.0032,
       "in_index": 0.0032,
       "in_index_label": "+0.3R",
@@ -2921,16 +2921,16 @@
       "label_2024": "+0.3R",
       "r_votes_2024": 14515,
       "d_votes_2024": 14422,
-      "race_margin": -0.0378,
-      "race_label": "+3.8D",
+      "race_margin": -0.0313,
+      "race_label": "+3.1D",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
-      "margin_2022_race": -0.0122,
+      "margin_2022_race": -0.0123,
       "label_2022_race": "+1.2D",
       "r_votes_2020": null,
       "d_votes_2020": null,
-      "r_votes_2022": 9074,
-      "d_votes_2022": 9299
+      "r_votes_2022": 9076,
+      "d_votes_2022": 9302
     },
     {
       "district": 72,
@@ -2938,7 +2938,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/ed-clere/?back=members",
       "margin_2020": 0.1439,
-      "margin_2022": 0.2085,
+      "margin_2022": 0.2082,
       "margin_2024": 0.1246,
       "in_index": 0.1246,
       "in_index_label": "+12.5R",
@@ -2951,12 +2951,12 @@
       "race_label": "+14.5R",
       "margin_2020_race": 0.1872,
       "label_2020_race": "+18.7R",
-      "margin_2022_race": 0.2085,
+      "margin_2022_race": 0.2082,
       "label_2022_race": "+20.8R",
       "r_votes_2020": 20850,
       "d_votes_2020": 14275,
-      "r_votes_2022": 13379,
-      "d_votes_2022": 8763
+      "r_votes_2022": 13386,
+      "d_votes_2022": 8773
     },
     {
       "district": 73,
@@ -2981,8 +2981,8 @@
       "label_2022_race": "+54.2R",
       "r_votes_2020": null,
       "d_votes_2020": null,
-      "r_votes_2022": 13435,
-      "d_votes_2022": 3987
+      "r_votes_2022": 13437,
+      "d_votes_2022": 3988
     },
     {
       "district": 74,
@@ -2999,7 +2999,7 @@
       "label_2024": "+41.4R",
       "r_votes_2024": 22897,
       "d_votes_2024": 9479,
-      "race_margin": 0.3712,
+      "race_margin": 0.3711,
       "race_label": "+37.1R",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
@@ -3016,12 +3016,12 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/leadership/cindy-ledbetter/?back=members",
       "margin_2020": 0.3308,
-      "margin_2022": 0.4104,
+      "margin_2022": 0.4106,
       "margin_2024": 0.3678,
       "in_index": 0.3678,
       "in_index_label": "+36.8R",
       "label_2020": "+33.1R",
-      "label_2022": "+41R",
+      "label_2022": "+41.1R",
       "label_2024": "+36.8R",
       "r_votes_2024": 23364,
       "d_votes_2024": 10800,
@@ -3029,11 +3029,11 @@
       "race_label": "Unop.",
       "margin_2020_race": 0.223,
       "label_2020_race": "+22.3R",
-      "margin_2022_race": 0.4104,
-      "label_2022_race": "+41R",
+      "margin_2022_race": 0.4106,
+      "label_2022_race": "+41.1R",
       "r_votes_2020": 20945,
       "d_votes_2020": 13306,
-      "r_votes_2022": 14835,
+      "r_votes_2022": 14841,
       "d_votes_2022": 6201
     },
     {
@@ -3042,12 +3042,12 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/wendy-mcnamara/?back=members",
       "margin_2020": 0.2249,
-      "margin_2022": 0.3218,
+      "margin_2022": 0.3213,
       "margin_2024": 0.33,
       "in_index": 0.33,
       "in_index_label": "+33R",
       "label_2020": "+22.5R",
-      "label_2022": "+32.2R",
+      "label_2022": "+32.1R",
       "label_2024": "+33R",
       "r_votes_2024": 20790,
       "d_votes_2024": 10473,
@@ -3055,12 +3055,12 @@
       "race_label": "Unop.",
       "margin_2020_race": 0.2808,
       "label_2020_race": "+28.1R",
-      "margin_2022_race": 0.3218,
-      "label_2022_race": "+32.2R",
+      "margin_2022_race": 0.3213,
+      "label_2022_race": "+32.1R",
       "r_votes_2020": 18507,
       "d_votes_2020": 10391,
-      "r_votes_2022": 12561,
-      "d_votes_2022": 6445
+      "r_votes_2022": 12577,
+      "d_votes_2022": 6460
     },
     {
       "district": 77,
@@ -3094,12 +3094,12 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/tim-o-brien/?back=members",
       "margin_2020": 0.1271,
-      "margin_2022": 0.2547,
+      "margin_2022": 0.254,
       "margin_2024": 0.172,
       "in_index": 0.172,
       "in_index_label": "+17.2R",
       "label_2020": "+12.7R",
-      "label_2022": "+25.5R",
+      "label_2022": "+25.4R",
       "label_2024": "+17.2R",
       "r_votes_2024": 18763,
       "d_votes_2024": 13255,
@@ -3107,12 +3107,12 @@
       "race_label": "Unop.",
       "margin_2020_race": 0.278,
       "label_2020_race": "+27.8R",
-      "margin_2022_race": 0.2547,
-      "label_2022_race": "+25.5R",
+      "margin_2022_race": 0.254,
+      "label_2022_race": "+25.4R",
       "r_votes_2020": 20273,
       "d_votes_2020": 11453,
-      "r_votes_2022": 13115,
-      "d_votes_2022": 7791
+      "r_votes_2022": 13143,
+      "d_votes_2022": 7818
     },
     {
       "district": 79,
@@ -3181,7 +3181,7 @@
       "label_2024": "+24.2R",
       "r_votes_2024": 20294,
       "d_votes_2024": 12387,
-      "race_margin": 0.2972,
+      "race_margin": 0.2971,
       "race_label": "+29.7R",
       "margin_2020_race": 0.0406,
       "label_2020_race": "+4.1R",
@@ -3215,8 +3215,8 @@
       "label_2022_race": "+12.8D",
       "r_votes_2020": null,
       "d_votes_2020": null,
-      "r_votes_2022": 5624,
-      "d_votes_2022": 7269
+      "r_votes_2022": 5625,
+      "d_votes_2022": 7270
     },
     {
       "district": 83,
@@ -3233,7 +3233,7 @@
       "label_2024": "+22.4R",
       "r_votes_2024": 21493,
       "d_votes_2024": 13638,
-      "race_margin": 0.2805,
+      "race_margin": 0.2804,
       "race_label": "+28R",
       "margin_2020_race": 0.3492,
       "label_2020_race": "+34.9R",
@@ -3302,7 +3302,7 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/ed-delaney",
       "margin_2020": -0.2974,
-      "margin_2022": -0.4265,
+      "margin_2022": -0.4268,
       "margin_2024": -0.4713,
       "in_index": -0.4713,
       "in_index_label": "+47.1D",
@@ -3315,12 +3315,12 @@
       "race_label": "Unop.",
       "margin_2020_race": -0.401,
       "label_2020_race": "+40.1D",
-      "margin_2022_race": -0.4265,
+      "margin_2022_race": -0.4268,
       "label_2022_race": "+42.7D",
       "r_votes_2020": 11930,
       "d_votes_2020": 27901,
-      "r_votes_2022": 7687,
-      "d_votes_2022": 19122
+      "r_votes_2022": 7709,
+      "d_votes_2022": 19191
     },
     {
       "district": 87,
@@ -3328,7 +3328,7 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/carey-hamilton",
       "margin_2020": -0.2974,
-      "margin_2022": -0.2578,
+      "margin_2022": -0.2582,
       "margin_2024": -0.3062,
       "in_index": -0.3062,
       "in_index_label": "+30.6D",
@@ -3341,12 +3341,12 @@
       "race_label": "Unop.",
       "margin_2020_race": -0.253,
       "label_2020_race": "+25.3D",
-      "margin_2022_race": -0.2578,
+      "margin_2022_race": -0.2582,
       "label_2022_race": "+25.8D",
       "r_votes_2020": 13549,
       "d_votes_2020": 22729,
-      "r_votes_2022": 9108,
-      "d_votes_2022": 15434
+      "r_votes_2022": 9124,
+      "d_votes_2022": 15477
     },
     {
       "district": 88,
@@ -3354,7 +3354,7 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/chris-jeter/?back=members",
       "margin_2020": 0.0929,
-      "margin_2022": 0.1974,
+      "margin_2022": 0.197,
       "margin_2024": 0.1016,
       "in_index": 0.1016,
       "in_index_label": "+10.2R",
@@ -3363,16 +3363,16 @@
       "label_2024": "+10.2R",
       "r_votes_2024": 22000,
       "d_votes_2024": 17942,
-      "race_margin": 0.1566,
-      "race_label": "+15.7R",
+      "race_margin": 0.1563,
+      "race_label": "+15.6R",
       "margin_2020_race": 0.1863,
       "label_2020_race": "+18.6R",
-      "margin_2022_race": 0.1974,
+      "margin_2022_race": 0.197,
       "label_2022_race": "+19.7R",
       "r_votes_2020": 26659,
       "d_votes_2020": 18285,
-      "r_votes_2022": 14690,
-      "d_votes_2022": 9847
+      "r_votes_2022": 14707,
+      "d_votes_2022": 9866
     },
     {
       "district": 89,
@@ -3380,7 +3380,7 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/mitch-gore",
       "margin_2020": -0.2974,
-      "margin_2022": -0.0189,
+      "margin_2022": -0.0194,
       "margin_2024": -0.0644,
       "in_index": -0.0644,
       "in_index_label": "+6.4D",
@@ -3389,16 +3389,16 @@
       "label_2024": "+6.4D",
       "r_votes_2024": 10721,
       "d_votes_2024": 12198,
-      "race_margin": -0.117,
+      "race_margin": -0.1168,
       "race_label": "+11.7D",
       "margin_2020_race": -0.0268,
       "label_2020_race": "+2.7D",
-      "margin_2022_race": -0.0189,
+      "margin_2022_race": -0.0194,
       "label_2022_race": "+1.9D",
       "r_votes_2020": 13173,
       "d_votes_2020": 13898,
-      "r_votes_2022": 6684,
-      "d_votes_2022": 6942
+      "r_votes_2022": 6695,
+      "d_votes_2022": 6960
     },
     {
       "district": 90,
@@ -3415,7 +3415,7 @@
       "label_2024": "+20.5R",
       "r_votes_2024": 18322,
       "d_votes_2024": 12081,
-      "race_margin": 0.2725,
+      "race_margin": 0.2723,
       "race_label": "+27.2R",
       "margin_2020_race": 0.2788,
       "label_2020_race": "+27.9R",
@@ -3441,7 +3441,7 @@
       "label_2024": "+20.8R",
       "r_votes_2024": 13700,
       "d_votes_2024": 8984,
-      "race_margin": 0.2027,
+      "race_margin": 0.2025,
       "race_label": "+20.3R",
       "margin_2020_race": 0.2681,
       "label_2020_race": "+26.8R",
@@ -3458,25 +3458,25 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/renee-pack",
       "margin_2020": -0.2974,
-      "margin_2022": -0.1216,
+      "margin_2022": -0.121,
       "margin_2024": -0.1638,
       "in_index": -0.1638,
       "in_index_label": "+16.4D",
       "label_2020": "+29.7D",
-      "label_2022": "+12.2D",
+      "label_2022": "+12.1D",
       "label_2024": "+16.4D",
       "r_votes_2024": 9203,
       "d_votes_2024": 12809,
-      "race_margin": -0.1768,
-      "race_label": "+17.7D",
+      "race_margin": -0.1805,
+      "race_label": "+18.1D",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
-      "margin_2022_race": -0.1216,
-      "label_2022_race": "+12.2D",
+      "margin_2022_race": -0.121,
+      "label_2022_race": "+12.1D",
       "r_votes_2020": null,
       "d_votes_2020": null,
-      "r_votes_2022": 6105,
-      "d_votes_2022": 7795
+      "r_votes_2022": 6135,
+      "d_votes_2022": 7824
     },
     {
       "district": 93,
@@ -3484,25 +3484,25 @@
       "party": "Republican",
       "url": "https://www.indianahouserepublicans.com/members/general/julie-mcguire/?back=members",
       "margin_2020": -0.2974,
-      "margin_2022": 0.2327,
+      "margin_2022": 0.2317,
       "margin_2024": 0.181,
       "in_index": 0.181,
       "in_index_label": "+18.1R",
       "label_2020": "+29.7D",
-      "label_2022": "+23.3R",
+      "label_2022": "+23.2R",
       "label_2024": "+18.1R",
       "r_votes_2024": 12775,
       "d_votes_2024": 8859,
-      "race_margin": 0.2428,
+      "race_margin": 0.2431,
       "race_label": "+24.3R",
       "margin_2020_race": 0.2205,
       "label_2020_race": "+22R",
-      "margin_2022_race": 0.2327,
-      "label_2022_race": "+23.3R",
+      "margin_2022_race": 0.2317,
+      "label_2022_race": "+23.2R",
       "r_votes_2020": 18485,
       "d_votes_2020": 11806,
-      "r_votes_2022": 7944,
-      "d_votes_2022": 4945
+      "r_votes_2022": 7959,
+      "d_votes_2022": 4965
     },
     {
       "district": 94,
@@ -3588,25 +3588,25 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/justin-moed",
       "margin_2020": -0.2974,
-      "margin_2022": -0.2094,
+      "margin_2022": -0.2098,
       "margin_2024": -0.1353,
       "in_index": -0.1353,
       "in_index_label": "+13.5D",
       "label_2020": "+29.7D",
-      "label_2022": "+20.9D",
+      "label_2022": "+21D",
       "label_2024": "+13.5D",
       "r_votes_2024": 6453,
       "d_votes_2024": 8472,
-      "race_margin": -0.1985,
+      "race_margin": -0.1984,
       "race_label": "+19.8D",
       "margin_2020_race": -0.1647,
       "label_2020_race": "+16.5D",
-      "margin_2022_race": -0.2094,
-      "label_2022_race": "+20.9D",
+      "margin_2022_race": -0.2098,
+      "label_2022_race": "+21D",
       "r_votes_2020": 6962,
       "d_votes_2020": 9707,
-      "r_votes_2022": 3322,
-      "d_votes_2022": 5082
+      "r_votes_2022": 3333,
+      "d_votes_2022": 5103
     },
     {
       "district": 98,
@@ -3640,12 +3640,12 @@
       "party": "Democratic",
       "url": "https://indianahousedemocrats.org/members/vanessa-summers",
       "margin_2020": -0.2974,
-      "margin_2022": -0.6511,
+      "margin_2022": -0.6518,
       "margin_2024": -0.6146,
       "in_index": -0.6146,
       "in_index_label": "+61.5D",
       "label_2020": "+29.7D",
-      "label_2022": "+65.1D",
+      "label_2022": "+65.2D",
       "label_2024": "+61.5D",
       "r_votes_2024": 3185,
       "d_votes_2024": 13345,
@@ -3653,12 +3653,12 @@
       "race_label": "+62.5D",
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
-      "margin_2022_race": -0.6511,
-      "label_2022_race": "+65.1D",
+      "margin_2022_race": -0.6518,
+      "label_2022_race": "+65.2D",
       "r_votes_2020": null,
       "d_votes_2020": null,
-      "r_votes_2022": 1797,
-      "d_votes_2022": 8503
+      "r_votes_2022": 1800,
+      "d_votes_2022": 8539
     },
     {
       "district": 100,
@@ -3675,14 +3675,14 @@
       "label_2024": "+43.8D",
       "r_votes_2024": 6583,
       "d_votes_2024": 16862,
-      "race_margin": -0.4337,
+      "race_margin": -0.4336,
       "race_label": "+43.4D",
-      "margin_2020_race": null,
-      "label_2020_race": "Unop.",
+      "margin_2020_race": -0.341,
+      "label_2020_race": "+34.1D",
       "margin_2022_race": null,
       "label_2022_race": "Unop.",
-      "r_votes_2020": null,
-      "d_votes_2020": null,
+      "r_votes_2020": 8037,
+      "d_votes_2020": 16353,
       "r_votes_2022": null,
       "d_votes_2022": null
     }
