@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+    <idinfo>
+        <descript>
+            <abstract>This dataset shows the boundaries of Indiana House Districts for the 116th General Assembly and provides the names and party affiliations of the legislators.District boundaries were provided to the Indiana Geological Survey (IGS) by the Indiana Election Division (IED). Personnel of the IGS added the names of legislators to the dataset, using information obtained from the official web site of the Indiana General Assembly (http://www.in.gov/legislative/ ).</abstract>
+            <purpose>This dataset was created to show the boundaries of Indiana House Districts for the 116th General Assembly. It also provides the names and party affiliations of the legislators. This data was downloaded from maps.indiana.edu and republished by IGIO staff on 12/15/2023.</purpose>
+        </descript>
+        <spdom>
+            <bounding>
+                <westbc>-88.1613990743323</westbc>
+                <eastbc>-84.6882536948333</eastbc>
+                <northbc>41.7811796425766</northbc>
+                <southbc>37.7554022511196</southbc>
+            </bounding>
+        </spdom>
+        <keywords>
+            <theme>
+                <themekt>None</themekt>
+                <themekey>116th General Assembly</themekey>
+                <themekey>House of Representatives</themekey>
+                <themekey>Indiana General Assembly</themekey>
+            </theme>
+        </keywords>
+        <accconst>None</accconst>
+        <useconst>LIMITATION OF WARRANTIES AND LIABILITY - This product is provided &amp;quot;AS IS&amp;quot;, without any other warranties or conditions, expressed or implied, including, but not limited to, warranties for product quality, or suitability to a particular purpose or use. The risk or liability resulting from the use of this product is assumed by the user. The Indiana Geographic Information Office shares no liability with product users indirect, incidental, special, or consequential damages whatsoever, including, but not limited to, loss of revenue or profit, lost or damaged data or other commercial or economic loss. The Indiana Geographic Information Office is not responsible for claims by a third party.</useconst>
+        <datacred>Indiana Geological &amp; Water Survey (IGWS), Indiana Elections Division (IED)</datacred>
+    </idinfo>
+    <metainfo>
+        <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+        <metstdv>FGDC-STD-001-1998</metstdv>
+        <mettc>local time</mettc>
+    </metainfo>
+</metadata>

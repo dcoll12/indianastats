@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><metadata>
+    <idinfo>
+        <citation>
+            <citeinfo>
+                <title>General Assembly Senate 117th Session Districts</title>
+                <geoform>vector digital data</geoform>
+            </citeinfo>
+        </citation>
+        <descript>
+            <abstract>This dataset shows the boundaries of Indiana Senate Districts for the 117th General Assembly and provides the names and party affiliations of the legislators.District boundaries were provided to the Indiana Geological Survey (IGS) by the Indiana Election Division (IED). Personnel of the IGS added the names of legislators to the dataset, using information obtained from the official web site of the Indiana General Assembly (http://www.in.gov/legislative/ ).</abstract>
+            <purpose>This shapefile was created to show the boundaries of Indiana Senate Districts for the 117th General Assembly.
+It also provides the names and party affiliations of the legislators. This data was downloaded from maps.indiana.edu and republished by IGIO staff on 1/25/2023.</purpose>
+        </descript>
+        <spdom>
+            <bounding>
+                <westbc>-88.161393</westbc>
+                <eastbc>-84.688249</eastbc>
+                <northbc>41.781172</northbc>
+                <southbc>37.755395</southbc>
+            </bounding>
+        </spdom>
+        <keywords>
+            <theme>
+                <themekt>None</themekt>
+                <themekey>boundaries
+Indiana Geological Survey (IGS)
+Indiana Election Division (IED)
+Indiana General Assembly
+Senate
+117th General Assembly
+Legislative district
+Legislator</themekey>
+            </theme>
+        </keywords>
+        <accconst>None</accconst>
+        <useconst>LIMITATION OF WARRANTIES AND LIABILITY - This product is provided &amp;quot;AS IS&amp;quot;, without any other warranties or conditions, expressed or implied, including, but not limited to, warranties for product quality, or suitability to a particular purpose or use. The risk or liability resulting from the use of this product is assumed by the user. The Indiana Geographic Information Office shares no liability with product users indirect, incidental, special, or consequential damages whatsoever, including, but not limited to, loss of revenue or profit, lost or damaged data or other commercial or economic loss. The Indiana Geographic Information Office is not responsible for claims by a third party.</useconst>
+        <datacred>Indiana Geological &amp; Water Survey (IGWS), Indiana Elections Division (IED)</datacred>
+        <native> Version 6.2 (Build 9200) ; Esri ArcGIS 10.8.1.14362</native>
+    </idinfo>
+    <spdoinfo>
+        <direct>Vector</direct>
+        <ptvctinf>
+            <sdtsterm>
+                <sdtstype>GT-polygon composed of chains</sdtstype>
+                <ptvctcnt>50</ptvctcnt>
+            </sdtsterm>
+        </ptvctinf>
+    </spdoinfo>
+    <eainfo>
+        <detailed>
+            <enttyp>
+                <enttypl>STATESENATE_117GA_IED_IN</enttypl>
+            </enttyp>
+            <attr>
+                <attrlabl>PARTY</attrlabl>
+                <attrdef>Party affiliation of legislator</attrdef>
+                <attrdefs>Indiana General Assembly</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Party affiliation of legislator</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>OBJECTID</attrlabl>
+                <attrdef>Internal feature number.</attrdef>
+                <attrdefs>ESRI</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Sequential unique whole numbers that are automatically generated.</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>NDISTRICT</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>SHAPE</attrlabl>
+                <attrdef>Feature geometry.</attrdef>
+                <attrdefs>ESRI</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Coordinates defining the features.</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>SENATE_117</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>Shape_Leng</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>SHAPE.AREA</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>SHAPE.LEN</attrlabl>
+            </attr>
+        </detailed>
+        <detailed>
+            <enttyp>
+                <enttypl>Indiana_Senate_115GA_IED</enttypl>
+                <enttypd>Shapefile Attribute Table</enttypd>
+                <enttypds>None</enttypds>
+            </enttyp>
+            <attr>
+                <attrlabl>Shape</attrlabl>
+                <attrdef>Polygon</attrdef>
+                <attrdefs>Software generated</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Software computed</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>FID</attrlabl>
+                <attrdef>Internal feature number.</attrdef>
+                <attrdefs>ESRI</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Sequential unique whole numbers that are automatically generated.</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>SENATE_115</attrlabl>
+            </attr>
+            <attr>
+                <attrlabl>NDISTRICT</attrlabl>
+                <attrdef>Indiana Senate District</attrdef>
+                <attrdefs>Indiana General Assembly</attrdefs>
+                <attrdomv>
+                                                                                
+          
+                    
+                    
+                    <udom>Numerical desgination of the Indiana Senate District</udom>
+                                                                              
+        
+                
+                
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Party</attrlabl>
+            </attr>
+            <attr/>
+            <attr/>
+        </detailed>
+    </eainfo>
+    <distinfo>
+        <distliab>See access and use constraints information.</distliab>
+        <stdorder>
+            <digform>
+                <digtinfo>
+                    <formname>Feature Class</formname>
+                    <transize>0.000</transize>
+                </digtinfo>
+                <digtopt>
+                    <onlinopt/>
+                </digtopt>
+            </digform>
+        </stdorder>
+    </distinfo>
+    <metainfo>
+        <metd>20221011</metd>
+        <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+        <metstdv>FGDC-STD-001-1998</metstdv>
+        <mettc>local time</mettc>
+    </metainfo>
+</metadata>
