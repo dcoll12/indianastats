@@ -210,6 +210,7 @@ footer {
 }
 .pp-pack-lean { font-size: 0.73rem; color: #64748b; }
 .pp-pack-counties { font-size: 0.7rem; color: #64748b; margin-top: 1px; }
+.pp-pack-mission { font-size: 0.72rem; color: #475569; margin-top: 4px; font-style: italic; max-width: 560px; line-height: 1.45; }
 .pp-pack-count { font-size: 0.73rem; color: #64748b; white-space: nowrap; padding-top: 2px; flex-shrink: 0; margin-left: 12px; }
 .pp-holder-badge { font-size: 0.64rem; font-weight: 700; padding: 2px 5px; border-radius: 3px; }
 .pp-holder-r { background: #fee2e2; color: #991b1b; }
@@ -797,11 +798,15 @@ var PP = (function() {
   // packNum is optional — shown in focus mode to give a priority ranking
   function renderPackCard(pack, packNum) {
     var tc = {
-      0: { border:'#0891b2', bg:'#f0f9ff', badgeClass:'pp-tier-0', label:'🏠 HOLD' },
-      1: { border:'#dc2626', bg:'#fff5f5', badgeClass:'pp-tier-1', label:'🎯 TARGET' },
-      2: { border:'#7c3aed', bg:'#faf5ff', badgeClass:'pp-tier-2', label:'📈 OPPORTUNITY' },
-      3: { border:'#16a34a', bg:'#f0fdf4', badgeClass:'pp-tier-3', label:'🌱 TURNOUT' }
-    }[pack.tier] || { border:'#94a3b8', bg:'white', badgeClass:'', label:'PACK' };
+      0: { border:'#0891b2', bg:'#f0f9ff', badgeClass:'pp-tier-0', label:'🏠 HOLD',
+           mission:'Your incumbency is the anchor. Your organizational strength lifts every House race in this pack.' },
+      1: { border:'#dc2626', bg:'#fff5f5', badgeClass:'pp-tier-1', label:'🎯 TARGET',
+           mission:'This seat is winnable. Your Senate campaign is the centerpiece of the regional wave — flip it and flip the House races around it.' },
+      2: { border:'#7c3aed', bg:'#faf5ff', badgeClass:'pp-tier-2', label:'📈 OPPORTUNITY',
+           mission:'Contest hard. Narrow the margin, force Republicans to spend here, and lift the House candidates in your pack. Close races become wins in a wave.' },
+      3: { border:'#16a34a', bg:'#f0fdf4', badgeClass:'pp-tier-3', label:'🌱 TURNOUT',
+           mission:'Every competitive district was once a long-shot. Your race is the anchor that builds the voter file, trains volunteers, and moves the margin — the House candidates in this pack are counting on that infrastructure, and future cycles are counting on you showing up now.' }
+    }[pack.tier] || { border:'#94a3b8', bg:'white', badgeClass:'', label:'PACK', mission:'' };
 
     var sdLean = pack.sdLean;
     var indexLabel = sdLean ? (sdLean.in_index_label || '—') : '—';
@@ -833,6 +838,7 @@ var PP = (function() {
     parts.push(cdHint);
     parts.push('</div>');
     if (pack.counties.length) parts.push('<div class="pp-pack-counties">'+esc(pack.counties.join(' · '))+'</div>');
+    if (tc.mission) parts.push('<div class="pp-pack-mission">'+tc.mission+'</div>');
     parts.push('</div>');
     parts.push('<div class="pp-pack-count">'+totalCands+' candidate'+(totalCands!==1?'s':'')+'</div>');
     parts.push('</div>');
@@ -899,12 +905,12 @@ var PP = (function() {
     parts.push('<span style="font-size:0.77rem;line-height:2.2">');
     parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> Competitive flip or critical D defense &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
-    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Long-shot Senate; House races are the prize &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district — contest the Senate seat to build infrastructure &amp; move the margin; House races are the near-term prize &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat; incumbent drives House turnout wave &nbsp;&nbsp;');
     parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span>');
+    parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future');
     parts.push('</span></div>');
 
     // Congressional candidates (IRS focuses on state races, so these appear last)
@@ -992,18 +998,18 @@ var PP = (function() {
     parts.push('<span style="font-size:0.77rem;line-height:2.2">');
     parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> Competitive flip or critical D defense &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
-    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Long-shot Senate; House races are the prize &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district — contest the Senate seat to build infrastructure &amp; move the margin; House races are the near-term prize &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat; incumbent drives House turnout wave &nbsp;&nbsp;');
     parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span>');
+    parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future');
     parts.push('</span></div>');
 
     var tierInfo = {
       1: { label: '🎯 TARGET PACKS', desc: 'Competitive flips or critical D defenses (≤ R+15%) — maximum volunteer energy' },
       2: { label: '📈 OPPORTUNITY PACKS', desc: 'R-leaning Senate (R+15–30%) — contest hard, raise turnout across the pack' },
-      3: { label: '🌱 TURNOUT PACKS', desc: 'Long-shot Senate (R+30%+) — contest for presence; House races are the prize' },
+      3: { label: '🌱 TURNOUT PACKS', desc: 'Pioneer districts (R+30%+) — contest the Senate seat to build infrastructure, move the margin, and anchor the House races' },
       0: { label: '🏠 HOLD PACKS', desc: 'Safe Democratic seats — incumbent organizes and drives wave turnout for surrounding House races' }
     };
 
@@ -1127,12 +1133,12 @@ var PP = (function() {
     parts.push('<span style="font-size:0.77rem;line-height:2.2">');
     parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> Competitive flip or critical D defense &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
-    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Long-shot Senate; House races are the prize &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district — contest the Senate seat to build infrastructure &amp; move the margin; House races are the near-term prize &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat; incumbent drives House turnout wave &nbsp;&nbsp;');
     parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span>');
+    parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future');
     parts.push('</span></div>');
 
     parts.push('<div class="pp-cd-section">');
