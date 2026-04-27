@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Indiana Partisan Lean Index (IN-Index)</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -261,6 +263,57 @@ footer .sources {
   table { font-size: 13px; }
   thead th, tbody td { padding: 8px 10px; }
 }
+
+/* ── District map panel ─────────────────────────────────────────────── */
+.idx-layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.idx-main { flex: 1; min-width: 0; }
+.idx-map-panel {
+  width: 300px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 12px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+.idx-map-header {
+  background: #1e293b;
+  color: white;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.idx-map-hint {
+  font-size: 0.7rem;
+  opacity: 0.8;
+  font-weight: 400;
+  font-style: italic;
+}
+#idx-map { height: 360px; width: 100%; }
+.idx-map-label {
+  padding: 7px 10px;
+  font-size: 0.72rem;
+  color: #475569;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  min-height: 30px;
+  text-align: center;
+}
+@media (max-width: 960px) {
+  .idx-layout { flex-direction: column-reverse; }
+  .idx-map-panel { width: 100%; position: static; }
+  #idx-map { height: 240px; }
+}
 </style>
 </head>
 <body>
@@ -276,6 +329,8 @@ footer .sources {
     </nav>
   </header>
 
+  <div class="idx-layout">
+  <div class="idx-main">
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('congressional')">
       Congressional
@@ -1946,6 +2001,16 @@ footer .sources {
       </table>
     </div>
   </div>
+  </div><!-- idx-main -->
+  <div class="idx-map-panel" id="idx-map-panel">
+    <div class="idx-map-header">
+      🗺 District Map
+      <span class="idx-map-hint">hover a row to highlight</span>
+    </div>
+    <div id="idx-map"></div>
+    <div class="idx-map-label" id="idx-map-label">Hover over a district row</div>
+  </div>
+  </div><!-- idx-layout -->
 
   <footer>
     <h3>Methodology</h3>
@@ -1990,7 +2055,91 @@ function switchTab(tab) {
   const tabs = ['congressional', 'senate', 'house'];
   const idx = tabs.indexOf(tab);
   document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  MAP.reset();
 }
+
+/* ── District map ────────────────────────────────────────────────────── */
+var MAP = (function() {
+  var map = null;
+  var geoPromise = null;
+  var geoData = null;
+  var activeLayer = null;
+  var INDIANA_BOUNDS = [[37.77, -88.10], [41.77, -84.78]];
+
+  function init() {
+    var el = document.getElementById('idx-map');
+    if (!el || map) return;
+    map = L.map('idx-map', { zoomControl: true, attributionControl: false, scrollWheelZoom: false });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 14
+    }).addTo(map);
+    map.fitBounds(INDIANA_BOUNDS);
+    loadGeo();
+    wireRows();
+  }
+
+  function loadGeo() {
+    if (geoPromise) return geoPromise;
+    geoPromise = fetch('districts_simplified.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) { geoData = data; return data; })
+      .catch(function() { geoData = {}; return {}; });
+    return geoPromise;
+  }
+
+  function setLabel(text) {
+    var el = document.getElementById('idx-map-label');
+    if (el) el.textContent = text || 'Hover over a district row';
+  }
+
+  function clearHighlight() {
+    if (!map) return;
+    if (activeLayer) { map.removeLayer(activeLayer); activeLayer = null; }
+  }
+
+  function highlight(dtype, dnum) {
+    if (!map) return;
+    loadGeo().then(function(data) {
+      clearHighlight();
+      var feature = (data[dtype] || {})[String(dnum)];
+      if (!feature) return;
+      activeLayer = L.geoJSON(feature, {
+        style: { color: '#1e293b', weight: 2.5, fillColor: '#3b82f6', fillOpacity: 0.45 }
+      }).addTo(map);
+      map.fitBounds(activeLayer.getBounds(), { padding: [18, 18], maxZoom: 10 });
+    });
+  }
+
+  function reset() {
+    clearHighlight();
+    setLabel('');
+    if (map) map.fitBounds(INDIANA_BOUNDS);
+  }
+
+  function wireRows() {
+    var DTYPE_MAP = { 'CD': 'congressional', 'SD': 'senate', 'HD': 'house' };
+    document.querySelectorAll('#table-congressional tbody tr, #table-senate tbody tr, #table-house tbody tr').forEach(function(row) {
+      row.addEventListener('mouseenter', function() {
+        var distCell = row.querySelector('.col-dist');
+        if (!distCell) return;
+        var text = distCell.textContent.trim(); // e.g. "CD-1", "SD-15", "HD-47"
+        var m = text.match(/^(CD|SD|HD)-(\d+)$/);
+        if (!m) return;
+        var dtype = DTYPE_MAP[m[1]];
+        var dnum = parseInt(m[2], 10);
+        if (!dtype || !dnum) return;
+        var prefix = m[1];
+        highlight(dtype, dnum);
+        setLabel(prefix + '-' + dnum);
+      });
+      row.addEventListener('mouseleave', reset);
+    });
+  }
+
+  return { init: init, reset: reset };
+})();
+
+window.addEventListener('load', function() { MAP.init(); });
 
 const sortState = {};
 
