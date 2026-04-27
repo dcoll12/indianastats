@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Power Packs — Indiana Rural Summit</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -289,6 +291,57 @@ footer {
 .gr-footer-links a:hover { text-decoration: underline; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── District map panel ─────────────────────────────────────────────── */
+.pp-layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.pp-main { flex: 1; min-width: 0; }
+.pp-map-panel {
+  width: 320px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 12px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  overflow: hidden;
+}
+.pp-map-header {
+  background: #1e3a5f;
+  color: white;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pp-map-hint {
+  font-size: 0.7rem;
+  opacity: 0.8;
+  font-weight: 400;
+  font-style: italic;
+}
+#pp-map { height: 380px; width: 100%; }
+.pp-map-label {
+  padding: 7px 10px;
+  font-size: 0.72rem;
+  color: #475569;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  min-height: 30px;
+  text-align: center;
+}
+@media (max-width: 900px) {
+  .pp-layout { flex-direction: column-reverse; }
+  .pp-map-panel { width: 100%; position: static; }
+  #pp-map { height: 260px; }
+}
 </style>
 </head>
 <body>
@@ -322,7 +375,19 @@ footer {
     <button class="gr-reset-btn" style="background:#1e3a8a" onclick="PP.export()">&#11015; Download Excel</button>
   </div>
   <div class="pp-stats" id="pp-stats"></div>
-  <div id="pp-output"><div class="pp-status"><div class="pp-spinner"></div><p>Loading power packs…</p></div></div>
+  <div class="pp-layout">
+    <div class="pp-main">
+      <div id="pp-output"><div class="pp-status"><div class="pp-spinner"></div><p>Loading power packs…</p></div></div>
+    </div>
+    <div class="pp-map-panel" id="pp-map-panel">
+      <div class="pp-map-header">
+        🗺 District Map
+        <span class="pp-map-hint">hover a pack or row to highlight</span>
+      </div>
+      <div id="pp-map"></div>
+      <div class="pp-map-label" id="pp-map-label">Hover over a pack or candidate row</div>
+    </div>
+  </div>
   <div class="gr-footer-links">
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdB3WPT2o6AZ9gqiio0OPMzbyUiSAv6qm7Q2l1W3wVlOLK9zw/viewform?usp=header" target="_blank" rel="noopener">📝 Submit Your Info</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSfU8KkjPEUUT_AF-DERaV5lfP1leZsIoFOWyp5E2uPZcp7M4Q/viewform?usp=header" target="_blank" rel="noopener">✏️ Update/Correct Info</a>
@@ -828,7 +893,8 @@ var PP = (function() {
     var totalCands = pack.senateCandidates.length + pack.houseMembers.length;
     var parts = [];
 
-    parts.push('<div class="pp-pack-card" style="border-left:4px solid '+tc.border+';background:'+tc.bg+'">');
+    var hdNums = pack.houseMembers.map(function(m) { return m.dnum; }).join(',');
+    parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums+'" style="border-left:4px solid '+tc.border+';background:'+tc.bg+'">');
 
     // Pack header
     parts.push('<div class="pp-pack-head">');
@@ -1386,7 +1452,123 @@ var PP = (function() {
   return { init: init, render: render, reset: reset, setMode: setMode, selectCD: selectCD, selectCounty: selectCounty, export: exportData, _reload: function(){state.loaded=false;init();} };
 })();
 
-window.addEventListener('load', function() { PP.init(); });
+/* ── District map ────────────────────────────────────────────────────── */
+var MAP = (function() {
+  var map = null;
+  var geoPromise = null;
+  var geoData = null;
+  var activeLayer = null;
+  var secondaryLayers = [];
+  var INDIANA_BOUNDS = [[37.77, -88.10], [41.77, -84.78]];
+
+  function init() {
+    var el = document.getElementById('pp-map');
+    if (!el || map) return;
+    map = L.map('pp-map', { zoomControl: true, attributionControl: false, scrollWheelZoom: false });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 14
+    }).addTo(map);
+    map.fitBounds(INDIANA_BOUNDS);
+    loadGeo();
+  }
+
+  function loadGeo() {
+    if (geoPromise) return geoPromise;
+    geoPromise = fetch('../districts_simplified.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) { geoData = data; return data; })
+      .catch(function() { geoData = {}; return {}; });
+    return geoPromise;
+  }
+
+  function setLabel(text) {
+    var el = document.getElementById('pp-map-label');
+    if (el) el.textContent = text || 'Hover over a pack or candidate row';
+  }
+
+  function clearHighlight() {
+    if (!map) return;
+    if (activeLayer) { map.removeLayer(activeLayer); activeLayer = null; }
+    secondaryLayers.forEach(function(l) { map.removeLayer(l); });
+    secondaryLayers = [];
+  }
+
+  function highlight(dtype, dnum, secondary, label) {
+    if (!map) return;
+    loadGeo().then(function(data) {
+      clearHighlight();
+      var feature = (data[dtype] || {})[String(dnum)];
+      if (!feature) return;
+
+      activeLayer = L.geoJSON(feature, {
+        style: { color: '#1e3a5f', weight: 2.5, fillColor: '#3b82f6', fillOpacity: 0.45 }
+      }).addTo(map);
+      map.fitBounds(activeLayer.getBounds(), { padding: [18, 18], maxZoom: 10 });
+
+      secondaryLayers = (secondary || []).map(function(d) {
+        var f = (data[d.dtype] || {})[String(d.dnum)];
+        if (!f) return null;
+        return L.geoJSON(f, {
+          style: { color: '#64748b', weight: 1, fillColor: '#94a3b8', fillOpacity: 0.2 }
+        }).addTo(map);
+      }).filter(Boolean);
+
+      setLabel(label || '');
+    });
+  }
+
+  function reset() {
+    clearHighlight();
+    setLabel('');
+    if (map) map.fitBounds(INDIANA_BOUNDS);
+  }
+
+  function wireDynamic() {
+    if (!map) return;
+
+    // Pack cards: highlight SD + all HDs in the pack
+    document.querySelectorAll('.pp-pack-card[data-sdnum]').forEach(function(card) {
+      var sdNum = parseInt(card.getAttribute('data-sdnum'), 10);
+      var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
+      card.addEventListener('mouseenter', function() {
+        var secondary = hdNums.map(function(hd) { return { dtype: 'house', dnum: hd }; });
+        var label = 'SD-' + sdNum + (hdNums.length ? ' + ' + hdNums.length + ' HD' + (hdNums.length !== 1 ? 's' : '') : '');
+        highlight('senate', sdNum, secondary, label);
+      });
+      card.addEventListener('mouseleave', function(e) {
+        if (!card.contains(e.relatedTarget)) reset();
+      });
+    });
+
+    // Candidate rows: highlight the individual district
+    document.querySelectorAll('.pp-row[data-dtype][data-dnum]').forEach(function(row) {
+      var dtype = row.getAttribute('data-dtype');
+      var dnum = parseInt(row.getAttribute('data-dnum'), 10);
+      var prefix = { house: 'HD', senate: 'SD', congressional: 'CD' }[dtype] || dtype.toUpperCase();
+      row.addEventListener('mouseenter', function() {
+        highlight(dtype, dnum, [], prefix + '-' + dnum);
+      });
+      row.addEventListener('mouseleave', function(e) {
+        // When leaving a row but staying inside the pack card, revert to pack highlight
+        var card = row.closest('.pp-pack-card[data-sdnum]');
+        if (card && card.contains(e.relatedTarget)) {
+          var sdNum = parseInt(card.getAttribute('data-sdnum'), 10);
+          var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
+          var secondary = hdNums.map(function(hd) { return { dtype: 'house', dnum: hd }; });
+          highlight('senate', sdNum, secondary, 'SD-' + sdNum + (hdNums.length ? ' + ' + hdNums.length + ' HD' + (hdNums.length !== 1 ? 's' : '') : ''));
+        } else if (!card || !card.contains(e.relatedTarget)) {
+          reset();
+        }
+      });
+    });
+  }
+
+  return { init: init, wireDynamic: wireDynamic };
+})();
+
+window.MAP_wireDynamic = function() { MAP.wireDynamic(); };
+
+window.addEventListener('load', function() { PP.init(); MAP.init(); });
 </script>
 </body>
 </html>
