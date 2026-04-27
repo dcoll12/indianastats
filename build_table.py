@@ -206,15 +206,19 @@ def compute_house_margins_from_county(zip_path, pres_results, senate_2022_county
             hd_r_2022[hd] += weight * r22
             hd_d_2022[hd] += weight * d22
 
-    def to_margins(r_dict, d_dict):
+    def to_margins_and_votes(r_dict, d_dict):
         margins = {}
+        votes = {}
         for dist in set(r_dict) | set(d_dict):
             r, d = r_dict.get(dist, 0.0), d_dict.get(dist, 0.0)
             tp = r + d
             margins[dist] = (r - d) / tp if tp > 0 else 0.0
-        return margins
+            votes[dist] = (int(round(r)), int(round(d)))
+        return margins, votes
 
-    return to_margins(hd_r_2020, hd_d_2020), to_margins(hd_r_2022, hd_d_2022)
+    m20, v20 = to_margins_and_votes(hd_r_2020, hd_d_2020)
+    m22, v22 = to_margins_and_votes(hd_r_2022, hd_d_2022)
+    return m20, v20, m22, v22
 
 
 def build_weight_matrix(block_csv_path):
@@ -248,9 +252,11 @@ def build_weight_matrix(block_csv_path):
 def compute_district_margins(weight_matrix, pres_results, year):
     """
     Apportion county votes to districts using weights.
-    Returns {district: margin_float} where positive = R-leaning.
+    Returns ({district: margin_float}, {district: (r_votes, d_votes)}) where positive = R-leaning.
+    Vote totals are rounded integers of the block-weight-apportioned county values.
     """
     margins = {}
+    vote_totals = {}
     for district, county_weights in weight_matrix.items():
         r_total = 0.0
         d_total = 0.0
@@ -265,8 +271,9 @@ def compute_district_margins(weight_matrix, pres_results, year):
             margins[district] = (r_total - d_total) / two_party
         else:
             margins[district] = 0.0
+        vote_totals[district] = (int(round(r_total)), int(round(d_total)))
 
-    return margins
+    return margins, vote_totals
 
 
 def compute_in_index(margins_2020, margins_2022, margins_2024):
@@ -394,9 +401,12 @@ def load_representatives(geojson_path, chamber):
     return reps
 
 
-def merge_data(in_index, margins_2020, margins_2022, margins_2024, reps, votes_2024=None, race_margins=None):
-    """Combine index, margins, rep info, 2024 vote totals, and actual race results into district dicts."""
+def merge_data(in_index, margins_2020, margins_2022, margins_2024, reps,
+               votes_2024=None, race_margins=None, votes_2020=None, votes_2022=None):
+    """Combine index, margins, rep info, vote totals for all years, and race results into district dicts."""
     votes_2024 = votes_2024 or {}
+    votes_2020 = votes_2020 or {}
+    votes_2022 = votes_2022 or {}
     race_margins = race_margins or {}
     districts = []
     for dist_str in sorted(reps.keys(), key=lambda x: int(x)):
@@ -405,7 +415,9 @@ def merge_data(in_index, margins_2020, margins_2022, margins_2024, reps, votes_2
         m22 = margins_2022.get(dist_str, None)
         m24 = margins_2024.get(dist_str, None)
         idx_val, idx_label = in_index.get(dist_str, (None, 'N/A'))
-        r_votes, d_votes = votes_2024.get(dist_str, (None, None))
+        r24, d24 = votes_2024.get(dist_str, (None, None))
+        r20, d20 = votes_2020.get(dist_str, (None, None))
+        r22, d22 = votes_2022.get(dist_str, (None, None))
         race_m, race_label = race_margins.get(dist_str, (None, 'N/A'))
 
         districts.append({
@@ -421,8 +433,12 @@ def merge_data(in_index, margins_2020, margins_2022, margins_2024, reps, votes_2
             'label_2020': format_index(m20) if m20 is not None else 'N/A',
             'label_2022': format_index(m22) if m22 is not None else 'N/A',
             'label_2024': format_index(m24) if m24 is not None else 'N/A',
-            'r_votes_2024': r_votes,
-            'd_votes_2024': d_votes,
+            'r_votes_2020': r20,
+            'd_votes_2020': d20,
+            'r_votes_2022': r22,
+            'd_votes_2022': d22,
+            'r_votes_2024': r24,
+            'd_votes_2024': d24,
             'race_margin': round(race_m, 4) if race_m is not None else None,
             'race_label': race_label,
         })
@@ -453,8 +469,8 @@ def load_race_margins_from_json(json_path):
         if r_votes is not None and d_votes is not None:
             total = r_votes + d_votes
             if total > 0:
-                return (r_votes - d_votes) / total
-        return None
+                return (r_votes - d_votes) / total, r_votes, d_votes
+        return None, None, None
 
     def extract_margins(race_data, years):
         all_districts = set()
@@ -463,13 +479,14 @@ def load_race_margins_from_json(json_path):
                 all_districts.update(race_data[year].keys())
 
         margins = {}
+        votes = {}
         for dist_key in all_districts:
             dist_num = dist_key.replace('district_', '')
             for year in sorted(years, reverse=True):
                 if year not in race_data or dist_key not in race_data[year]:
                     continue
                 candidates = race_data[year][dist_key]
-                margin = parse_margin(candidates)
+                margin, r_v, d_v = parse_margin(candidates)
                 if margin is not None:
                     label = format_index(margin)
                 else:
@@ -477,18 +494,36 @@ def load_race_margins_from_json(json_path):
                     has_d = any(c['party'] == 'D' for c in candidates)
                     label = 'Unop.' if not has_r or not has_d else 'N/A'
                 margins[dist_num] = (margin, label)
+                votes[dist_num] = (r_v, d_v)
                 break
 
-        return margins
+        return margins, votes
 
-    return {
-        'congressional': extract_margins(data.get('us_house', {}), ['2024', '2022', '2020']),
-        'congressional_2022': extract_margins(data.get('us_house', {}), ['2022']),
-        'state_senate': extract_margins(data.get('indiana_state_senate', {}), ['2024', '2022']),
-        'state_house': extract_margins(data.get('indiana_state_house', {}), ['2024', '2022', '2020']),
-        'state_house_2022': extract_margins(data.get('indiana_state_house', {}), ['2022']),
-        'state_house_2020': extract_margins(data.get('indiana_state_house', {}), ['2020']),
-    }
+    cd_m, cd_v = extract_margins(data.get('us_house', {}), ['2024', '2022', '2020'])
+    cd22_m, cd22_v = extract_margins(data.get('us_house', {}), ['2022'])
+    sd_m, sd_v = extract_margins(data.get('indiana_state_senate', {}), ['2024', '2022'])
+    hd_m, hd_v = extract_margins(data.get('indiana_state_house', {}), ['2024', '2022', '2020'])
+    hd22_m, hd22_v = extract_margins(data.get('indiana_state_house', {}), ['2022'])
+    hd20_m, hd20_v = extract_margins(data.get('indiana_state_house', {}), ['2020'])
+
+    return (
+        {
+            'congressional': cd_m,
+            'congressional_2022': cd22_m,
+            'state_senate': sd_m,
+            'state_house': hd_m,
+            'state_house_2022': hd22_m,
+            'state_house_2020': hd20_m,
+        },
+        {
+            'congressional': cd_v,
+            'congressional_2022': cd22_v,
+            'state_senate': sd_v,
+            'state_house': hd_v,
+            'state_house_2022': hd22_v,
+            'state_house_2020': hd20_v,
+        },
+    )
 
 
 def write_data_json(filepath, congressional, senate, house):
@@ -1057,7 +1092,7 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
     with open(data_json_path) as f:
         data = json.load(f)
 
-    race_margins = load_race_margins_from_json(race_json_path)
+    race_margins, race_vote_totals = load_race_margins_from_json(race_json_path)
 
     chamber_map = {
         'congressional': 'congressional',
@@ -1084,6 +1119,10 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
         idx = sum(avail) / len(avail) if avail else None
         district['in_index'] = round(idx, 4) if idx is not None else None
         district['in_index_label'] = format_index(idx) if idx is not None else 'N/A'
+        # Patch 2022 vote totals from actual 2022 US House race results
+        r22, d22 = race_vote_totals['congressional_2022'].get(dist_str, (None, None))
+        district['r_votes_2022'] = r22
+        district['d_votes_2022'] = d22
 
     for district in data['house']:
         dist_str = str(district['district'])
@@ -1092,11 +1131,17 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
         m20, l20 = race_margins['state_house_2020'].get(dist_str, (None, 'N/A'))
         district['margin_2020_race'] = round(m20, 4) if m20 is not None else None
         district['label_2020_race'] = l20
+        r20, d20 = race_vote_totals['state_house_2020'].get(dist_str, (None, None))
+        district['r_votes_2020'] = r20
+        district['d_votes_2020'] = d20
         m22, l22 = race_margins['state_house_2022'].get(dist_str, (None, 'N/A'))
         district['margin_2022'] = round(m22, 4) if m22 is not None else None
         district['label_2022'] = l22
         district['margin_2022_race'] = round(m22, 4) if m22 is not None else None
         district['label_2022_race'] = l22
+        r22, d22 = race_vote_totals['state_house_2022'].get(dist_str, (None, None))
+        district['r_votes_2022'] = r22
+        district['d_votes_2022'] = d22
 
     with open(out_json, 'w') as f:
         json.dump(data, f, indent=2)
@@ -1139,7 +1184,7 @@ def main():
 
     # Load actual district race results from election results JSON
     race_json = os.path.join(SCRIPT_DIR, 'Indiana_Election_Results_2020-2024.json')
-    race_margins = load_race_margins_from_json(race_json)
+    race_margins, race_vote_totals = load_race_margins_from_json(race_json)
     print(f"Loaded race margins: "
           f"{len(race_margins['congressional'])} CD, "
           f"{len(race_margins['state_senate'])} SD, "
@@ -1149,7 +1194,7 @@ def main():
     # display and IN-Index; 2020 uses county-level presidential apportioned by block weights.
     cong_block_csv = os.path.join(SCRIPT_DIR, 'Congressionalblockassignments(1).csv')
     cong_weights = build_weight_matrix(cong_block_csv)
-    cong_2020 = compute_district_margins(cong_weights, results, '2020')
+    cong_2020, cong_votes_2020 = compute_district_margins(cong_weights, results, '2020')
     cong_2022 = {d: m for d, (m, _) in race_margins['congressional_2022'].items() if m is not None}
     cong_2024 = precinct_2024['congressional']
     cong_index = compute_in_index(cong_2020, cong_2022, cong_2024)
@@ -1157,12 +1202,11 @@ def main():
         os.path.join(SCRIPT_DIR, 'Congressional_District_Boundaries_Current.geojson'),
         'congressional'
     )
-    # Pass cong_2022 as margin_2022 so label_2022 reflects the actual US House race
-    cong_2022_with_unop = {d: m if m is not None else None
-                           for d, (m, _) in race_margins['congressional_2022'].items()}
-    cong_2022_labels = {d: (m, l) for d, (m, l) in race_margins['congressional_2022'].items()}
+    # votes_2022 for congressional = actual 2022 US House race vote totals
+    cong_votes_2022 = race_vote_totals['congressional_2022']
     congressional = merge_data(cong_index, cong_2020, cong_2022, cong_2024, cong_reps,
-                               votes_2024['congressional'], race_margins['congressional'])
+                               votes_2024['congressional'], race_margins['congressional'],
+                               votes_2020=cong_votes_2020, votes_2022=cong_votes_2022)
     # Patch label_2022 to use actual 2022 US House labels (including Unop.)
     for d in congressional:
         dist = str(d['district'])
@@ -1173,8 +1217,8 @@ def main():
     # Senate
     sen_block_csv = os.path.join(SCRIPT_DIR, 'Senateblockassignments(1).csv')
     sen_weights = build_weight_matrix(sen_block_csv)
-    sen_2020 = compute_district_margins(sen_weights, results, '2020')
-    sen_2022 = compute_district_margins(sen_weights, results_2022, '2022')
+    sen_2020, sen_votes_2020 = compute_district_margins(sen_weights, results, '2020')
+    sen_2022, sen_votes_2022 = compute_district_margins(sen_weights, results_2022, '2022')
     sen_2024 = precinct_2024['senate']
     sen_index = compute_in_index(sen_2020, sen_2022, sen_2024)
     sen_reps = load_representatives(
@@ -1182,7 +1226,8 @@ def main():
         'senate'
     )
     senate = merge_data(sen_index, sen_2020, sen_2022, sen_2024, sen_reps,
-                        votes_2024['senate'], race_margins['state_senate'])
+                        votes_2024['senate'], race_margins['state_senate'],
+                        votes_2020=sen_votes_2020, votes_2022=sen_votes_2022)
     print(f"Senate: {len(senate)} districts processed")
 
     # House — 2020/2022 apportioned via precinct-level county weights (display only);
@@ -1193,12 +1238,13 @@ def main():
         os.path.join(SCRIPT_DIR, 'General_Assembly_House_Districts_Current(1).geojson'),
     )
     house_2024 = precinct_2024['house']
-    house_2020, house_2022 = compute_house_margins_from_county(
+    house_2020, house_votes_2020, house_2022, house_votes_2022 = compute_house_margins_from_county(
         precinct_zip, results, senate_2022_county
     )
     house_index = compute_in_index({}, {}, house_2024)
     house = merge_data(house_index, house_2020, house_2022, house_2024, house_reps,
-                       votes_2024['house'], race_margins['state_house'])
+                       votes_2024['house'], race_margins['state_house'],
+                       votes_2020=house_votes_2020, votes_2022=house_votes_2022)
     print(f"House: {len(house)} districts processed (2020/2022 county-level for display; IN-Index uses 2024 Pres only)")
 
     # Print summary
