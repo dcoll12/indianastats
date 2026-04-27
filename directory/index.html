@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Indiana Rural Summit Directory</title>
+<title>Candidate Directory</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌻</text></svg>">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -476,13 +476,13 @@ body {
 <div class="container">
   <header class="header">
     <nav class="site-nav">
-      <a class="active" href="./">Indiana Rural Summit Directory</a>
+      <a class="active" href="./">Candidate Directory</a>
       <a href="../power-packs/">Power Packs</a>
       <a href="../">Indiana Partisan Lean Index</a>
       <a href="../district-match/">District Match</a>
     </nav>
-    <h1>🌻 Indiana Rural Summit Directory</h1>
-    <p>Candidates, volunteers, and committee members across Indiana</p>
+    <h1>🌻 Indiana Candidate Directory</h1>
+    <p>Candidates running for office across Indiana</p>
     <div class="header-buttons">
       <a class="header-btn"
          href="https://docs.google.com/forms/d/e/1FAIpQLSdB3WPT2o6AZ9gqiio0OPMzbyUiSAv6qm7Q2l1W3wVlOLK9zw/viewform?usp=header"
@@ -647,7 +647,10 @@ async function loadDirectory() {
     for (const r of records) {
       if (r.Phone) r.Phone = r.Phone.replace(/\.0$/, '');
     }
-    state.rows = records;
+    state.rows = records.filter((r) => {
+      const roleLower = (r.Role || '').toLowerCase();
+      return roleLower.includes('candidate') && !roleLower.includes('former');
+    });
     populateFilters();
     render();
   } catch (err) {
