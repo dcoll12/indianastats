@@ -217,12 +217,13 @@ def compute_house_margins_from_county(zip_path, pres_results, senate_2022_county
     return m20, v20, m22, v22
 
 
-def build_weight_matrix(block_csv_path):
+def build_weight_matrix(block_csv_path, geoid_col='geoid20'):
     """
     Read block assignments CSV -> {district_str: {county_fips: weight}}
 
-    The geoid20 encodes: 18 + county_fips(3) + tract + block
+    The geoid encodes: 18 + county_fips(3) + tract + block
     So chars [2:5] give the county FIPS code.
+    Use geoid_col='geoid10' for 2010 Census block files.
     """
     block_counts = defaultdict(lambda: defaultdict(int))
 
@@ -230,7 +231,7 @@ def build_weight_matrix(block_csv_path):
         reader = csv.DictReader(f)
         for row in reader:
             district = row['district'].strip()
-            geoid = row['geoid20'].strip()
+            geoid = row[geoid_col].strip()
             county_fips = geoid[2:5]
             block_counts[district][county_fips] += 1
 
@@ -1309,5 +1310,101 @@ def main():
     print("\nDone! Open index.html in a browser to view the table.")
 
 
+def main_2010():
+    """
+    Compute IN-Index using pre-2021 redistricting (2010) district boundaries
+    and write results to data_2010.json.
+
+    Required input files (place in the same directory as this script):
+      Congressional_2010_blockassignments.csv  — columns: district, geoid10
+      Senate_2010_blockassignments.csv         — columns: district, geoid10
+
+    These can be downloaded from the Census Bureau's block assignment files:
+      https://www.census.gov/geographies/reference-files/time-series/geo/block-assignment-files.html
+    Select Indiana (18), then the appropriate geography (congressional/state legislative).
+
+    House districts are omitted here because mapping 2024 precinct data back to
+    2010 house boundaries requires a separate precinct-to-2010-district crosswalk.
+    """
+    pres_csv = os.path.join(SCRIPT_DIR, 'presidential_results.csv')
+    cong_block_2010 = os.path.join(SCRIPT_DIR, 'Congressional_2010_blockassignments.csv')
+    sen_block_2010 = os.path.join(SCRIPT_DIR, 'Senate_2010_blockassignments.csv')
+
+    for path, label in [
+        (pres_csv, 'presidential_results.csv'),
+        (cong_block_2010, 'Congressional_2010_blockassignments.csv'),
+        (sen_block_2010, 'Senate_2010_blockassignments.csv'),
+    ]:
+        if not os.path.exists(path):
+            print(f"ERROR: Missing required file: {path}")
+            print("See the docstring in main_2010() for download instructions.")
+            return
+
+    results = load_presidential_results(pres_csv)
+    print(f"Loaded presidential results: {len(results)} counties")
+
+    senate_2022_csv = os.path.join(SCRIPT_DIR, 'senate_2022.csv')
+    senate_2022_county = load_senate_2022(senate_2022_csv)
+    results_2022 = {fips: {'2022': v} for fips, v in senate_2022_county.items()}
+    print(f"Loaded 2022 Senate results: {len(results_2022)} counties")
+
+    precinct_zip = os.path.join(SCRIPT_DIR, 'in_2024.zip')
+    precinct_2024, _ = compute_2024_from_precincts(precinct_zip)
+    print(f"Loaded 2024 precinct data: {len(precinct_2024['congressional'])} CD, {len(precinct_2024['senate'])} SD")
+
+    race_json = os.path.join(SCRIPT_DIR, 'Indiana_Election_Results_2020-2024.json')
+    race_margins, _ = load_race_margins_from_json(race_json)
+
+    # Congressional with 2010 boundaries
+    cong_weights = build_weight_matrix(cong_block_2010, geoid_col='geoid10')
+    cong_2020, _ = compute_district_margins(cong_weights, results, '2020')
+    cong_2022 = {d: m for d, (m, _) in race_margins['congressional_2022'].items() if m is not None}
+    cong_2024 = precinct_2024['congressional']
+    cong_index = compute_in_index(cong_2020, cong_2022, cong_2024)
+    cong_reps = load_representatives(
+        os.path.join(SCRIPT_DIR, 'Congressional_District_Boundaries_Current.geojson'),
+        'congressional',
+    )
+    congressional = merge_data(cong_index, cong_2020, cong_2022, cong_2024, cong_reps)
+    print(f"Congressional (2010): {len(congressional)} districts processed")
+
+    # Senate with 2010 boundaries
+    sen_weights = build_weight_matrix(sen_block_2010, geoid_col='geoid10')
+    sen_2020, _ = compute_district_margins(sen_weights, results, '2020')
+    sen_2022, _ = compute_district_margins(sen_weights, results_2022, '2022')
+    sen_2024 = precinct_2024['senate']
+    sen_index = compute_in_index(sen_2020, sen_2022, sen_2024)
+    sen_reps = load_representatives(
+        os.path.join(SCRIPT_DIR, 'General_Assembly_Senate_Districts_Current.geojson'),
+        'senate',
+    )
+    senate = merge_data(sen_index, sen_2020, sen_2022, sen_2024, sen_reps)
+    print(f"Senate (2010): {len(senate)} districts processed")
+
+    output = {
+        'generated': __import__('datetime').datetime.now().isoformat(),
+        'methodology': (
+            'IN-Index computed using pre-2021 redistricting (2010) district boundaries. '
+            'Same election data as data.json (2020/2022/2024) but apportioned through 2010 Census block assignments. '
+            'House districts omitted — requires a 2010 precinct-to-district crosswalk not yet available.'
+        ),
+        'congressional': congressional,
+        'senate': senate,
+        'house': [],
+    }
+    out_path = os.path.join(SCRIPT_DIR, 'data_2010.json')
+    with open(out_path, 'w') as f:
+        json.dump(output, f, indent=2)
+    print(f"\nWrote {out_path}")
+
+    print("\n--- Congressional IN-Index (2010 boundaries) ---")
+    for d in congressional:
+        print(f"  CD-{d['district']:>2}: {d['in_index_label']:>7}  {d['representative']} ({d['party'][0]})")
+
+
 if __name__ == '__main__':
-    main()
+    import sys
+    if '--mode=2010' in sys.argv or '--2010' in sys.argv:
+        main_2010()
+    else:
+        main()
