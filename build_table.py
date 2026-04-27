@@ -2,12 +2,8 @@
 """
 Build Indiana Election Partisan Lean Table (IN-Index)
 
-2020: County-level presidential results apportioned to districts using census
-      block assignment weights (PlanScore).
-2022: County-level US Senate results (senate_2022.csv) apportioned to districts
-      using the same block assignment weights.
-2024: Precinct-level presidential results from in_2024.zip (VEST), aggregated
-      directly by district — more accurate and enables House district margins.
+Election results sourced from the Indiana Secretary of State historical results portal:
+https://indianavoters.in.gov/ENRHistorical/ElectionResults
 
 Outputs: data.json and index.html
 """
@@ -531,12 +527,13 @@ def write_data_json(filepath, congressional, senate, house):
     output = {
         'generated': '2026-04-24',
         'methodology': (
-            '2024: precinct-level presidential results (VEST in_2024) aggregated directly by district. '
-            '2022: county-level US Senate results (senate_2022.csv) apportioned to Congressional/Senate districts '
-            'using census block assignment weights (PlanScore); House districts apportioned using precinct-level '
-            '2024 turnout as county weights. '
-            '2020: county-level presidential results apportioned using the same methods. '
-            'IN-Index = average of 2020, 2022, and 2024 margins for all district types.'
+            'Election results from Indiana Secretary of State: https://indianavoters.in.gov/ENRHistorical/ElectionResults. '
+            '2024: precinct-level presidential results aggregated directly by district. '
+            '2022: county-level US Senate results apportioned to Congressional/Senate districts '
+            'using census block assignment weights; House districts show actual State House race results. '
+            '2020: county-level presidential results apportioned using the same methods; '
+            'House districts show actual State House race results. '
+            'IN-Index = average of 2020, 2022, and 2024 margins for Congressional/Senate; 2024 only for House.'
         ),
         'congressional': congressional,
         'senate': senate,
@@ -1003,8 +1000,7 @@ footer .sources {{
       district-specific presidential measure available for all 100 seats.
     </p>
     <p>
-      <strong>2024 data</strong> uses precinct-level results from the VEST (Voting and Election Science Team)
-      Indiana 2024 general election dataset. Precinct votes are aggregated directly by district using
+      <strong>2024 data</strong> uses precinct-level results aggregated directly by district using
       the district assignments in the shapefile attribute table — the most accurate method available.
     </p>
     <p>
@@ -1021,10 +1017,9 @@ footer .sources {{
     </p>
     <div class="sources">
       <strong>Data Sources:</strong>
-      2024 precinct results: VEST Indiana 2024 (Harvard Dataverse).
-      2022 US Senate county results: MIT Election Data and Science Lab / MEDSL (senate_2022.csv).
-      2020 county results: tonmcg/US_County_Level_Election_Results_08-24.
-      Block assignments: PlanScore.org.
+      Election results: Indiana Secretary of State —
+      <a href="https://indianavoters.in.gov/ENRHistorical/ElectionResults" target="_blank" rel="noopener">
+        indianavoters.in.gov/ENRHistorical/ElectionResults</a>.
       District boundaries and representatives: Indiana Map (maps.indiana.edu).
     </div>
   </footer>
@@ -1142,6 +1137,16 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
         r22, d22 = race_vote_totals['state_house_2022'].get(dist_str, (None, None))
         district['r_votes_2022'] = r22
         district['d_votes_2022'] = d22
+
+    data['methodology'] = (
+        'Election results from Indiana Secretary of State: https://indianavoters.in.gov/ENRHistorical/ElectionResults. '
+        '2024: precinct-level presidential results aggregated directly by district. '
+        '2022: county-level US Senate results apportioned to Congressional/Senate districts '
+        'using census block assignment weights; House districts show actual State House race results. '
+        '2020: county-level presidential results apportioned using the same methods; '
+        'House districts show actual State House race results. '
+        'IN-Index = average of 2020, 2022, and 2024 margins for Congressional/Senate; 2024 only for House.'
+    )
 
     with open(out_json, 'w') as f:
         json.dump(data, f, indent=2)
