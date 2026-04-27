@@ -18,7 +18,9 @@
       "r_votes_2024": 160330,
       "d_votes_2024": 161625,
       "race_margin": -0.0859,
-      "race_label": "+8.6D"
+      "race_label": "+8.6D",
+      "r_votes_2022": 100486,
+      "d_votes_2022": 112539
     },
     {
       "district": 2,
@@ -36,7 +38,9 @@
       "r_votes_2024": 187184,
       "d_votes_2024": 107779,
       "race_margin": 0.29,
-      "race_label": "+29R"
+      "race_label": "+29R",
+      "r_votes_2022": 125222,
+      "d_votes_2022": 62726
     },
     {
       "district": 3,
@@ -54,7 +58,9 @@
       "r_votes_2024": 207943,
       "d_votes_2024": 107772,
       "race_margin": 0.3487,
-      "race_label": "+34.9R"
+      "race_label": "+34.9R",
+      "r_votes_2022": 131252,
+      "d_votes_2022": 60312
     },
     {
       "district": 4,
@@ -72,7 +78,9 @@
       "r_votes_2024": 212994,
       "d_votes_2024": 115001,
       "race_margin": 0.3546,
-      "race_label": "+35.5R"
+      "race_label": "+35.5R",
+      "r_votes_2022": 134442,
+      "d_votes_2022": 62668
     },
     {
       "district": 5,
@@ -90,7 +98,9 @@
       "r_votes_2024": 212150,
       "d_votes_2024": 150105,
       "race_margin": 0.1959,
-      "race_label": "+19.6R"
+      "race_label": "+19.6R",
+      "r_votes_2022": 146496,
+      "d_votes_2022": 93373
     },
     {
       "district": 6,
@@ -108,7 +118,9 @@
       "r_votes_2024": 212902,
       "d_votes_2024": 107010,
       "race_margin": 0.3373,
-      "race_label": "+33.7R"
+      "race_label": "+33.7R",
+      "r_votes_2022": 130482,
+      "d_votes_2022": 62743
     },
     {
       "district": 7,
@@ -126,7 +138,9 @@
       "r_votes_2024": 77134,
       "d_votes_2024": 189586,
       "race_margin": -0.4047,
-      "race_label": "+40.5D"
+      "race_label": "+40.5D",
+      "r_votes_2022": 53487,
+      "d_votes_2022": 116870
     },
     {
       "district": 8,
@@ -144,7 +158,9 @@
       "r_votes_2024": 223052,
       "d_votes_2024": 103783,
       "race_margin": 0.3956,
-      "race_label": "+39.6R"
+      "race_label": "+39.6R",
+      "r_votes_2022": 141746,
+      "d_votes_2022": 67947
     },
     {
       "district": 9,
@@ -162,7 +178,9 @@
       "r_votes_2024": 226651,
       "d_votes_2024": 121011,
       "race_margin": 0.3269,
-      "race_label": "+32.7R"
+      "race_label": "+32.7R",
+      "r_votes_2022": null,
+      "d_votes_2022": null
     }
   ],
   "senate": [
@@ -1088,7 +1106,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 2,
@@ -1110,7 +1132,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 3,
@@ -1132,7 +1158,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 4,
@@ -1154,7 +1184,11 @@
       "margin_2020_race": 0.0916,
       "label_2020_race": "+9.2R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 20072,
+      "d_votes_2020": 16704,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 5,
@@ -1176,7 +1210,11 @@
       "margin_2020_race": 0.0148,
       "label_2020_race": "+1.5R",
       "margin_2022_race": 0.1339,
-      "label_2022_race": "+13.4R"
+      "label_2022_race": "+13.4R",
+      "r_votes_2020": 14617,
+      "d_votes_2020": 14190,
+      "r_votes_2022": 11738,
+      "d_votes_2022": 8965
     },
     {
       "district": 6,
@@ -1198,7 +1236,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 7,
@@ -1220,7 +1262,11 @@
       "margin_2020_race": 0.0799,
       "label_2020_race": "+8R",
       "margin_2022_race": 0.217,
-      "label_2022_race": "+21.7R"
+      "label_2022_race": "+21.7R",
+      "r_votes_2020": 14668,
+      "d_votes_2020": 12498,
+      "r_votes_2022": 11969,
+      "d_votes_2022": 7701
     },
     {
       "district": 8,
@@ -1242,7 +1288,11 @@
       "margin_2020_race": -0.1369,
       "label_2020_race": "+13.7D",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 12568,
+      "d_votes_2020": 16554,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 9,
@@ -1264,7 +1314,11 @@
       "margin_2020_race": -0.1322,
       "label_2020_race": "+13.2D",
       "margin_2022_race": -0.0974,
-      "label_2022_race": "+9.7D"
+      "label_2022_race": "+9.7D",
+      "r_votes_2020": 12096,
+      "d_votes_2020": 15781,
+      "r_votes_2022": 9576,
+      "d_votes_2022": 11642
     },
     {
       "district": 10,
@@ -1286,7 +1340,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": -0.0559,
-      "label_2022_race": "+5.6D"
+      "label_2022_race": "+5.6D",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": 8976,
+      "d_votes_2022": 10039
     },
     {
       "district": 11,
@@ -1308,7 +1366,11 @@
       "margin_2020_race": 0.3751,
       "label_2020_race": "+37.5R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 25742,
+      "d_votes_2020": 11697,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 12,
@@ -1330,7 +1392,11 @@
       "margin_2020_race": -0.1541,
       "label_2020_race": "+15.4D",
       "margin_2022_race": -0.1115,
-      "label_2022_race": "+11.2D"
+      "label_2022_race": "+11.2D",
+      "r_votes_2020": 13730,
+      "d_votes_2020": 18733,
+      "r_votes_2022": 10026,
+      "d_votes_2022": 12543
     },
     {
       "district": 13,
@@ -1352,7 +1418,11 @@
       "margin_2020_race": 0.4557,
       "label_2020_race": "+45.6R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 22080,
+      "d_votes_2020": 8256,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 14,
@@ -1374,7 +1444,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 15,
@@ -1396,7 +1470,11 @@
       "margin_2020_race": 0.0307,
       "label_2020_race": "+3.1R",
       "margin_2022_race": 0.265,
-      "label_2022_race": "+26.5R"
+      "label_2022_race": "+26.5R",
+      "r_votes_2020": 17813,
+      "d_votes_2020": 16751,
+      "r_votes_2022": 16279,
+      "d_votes_2022": 9459
     },
     {
       "district": 16,
@@ -1418,7 +1496,11 @@
       "margin_2020_race": 0.4823,
       "label_2020_race": "+48.2R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 21686,
+      "d_votes_2020": 7573,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 17,
@@ -1440,7 +1522,11 @@
       "margin_2020_race": 0.4946,
       "label_2020_race": "+49.5R",
       "margin_2022_race": 0.4958,
-      "label_2022_race": "+49.6R"
+      "label_2022_race": "+49.6R",
+      "r_votes_2020": 19955,
+      "d_votes_2020": 6748,
+      "r_votes_2022": 13863,
+      "d_votes_2022": 4673
     },
     {
       "district": 18,
@@ -1462,7 +1548,11 @@
       "margin_2020_race": 0.5617,
       "label_2020_race": "+56.2R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 22637,
+      "d_votes_2020": 6353,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 19,
@@ -1484,7 +1574,11 @@
       "margin_2020_race": 0.0362,
       "label_2020_race": "+3.6R",
       "margin_2022_race": 0.1744,
-      "label_2022_race": "+17.4R"
+      "label_2022_race": "+17.4R",
+      "r_votes_2020": 19496,
+      "d_votes_2020": 18135,
+      "r_votes_2022": 13647,
+      "d_votes_2022": 9594
     },
     {
       "district": 20,
@@ -1506,7 +1600,11 @@
       "margin_2020_race": 0.3648,
       "label_2020_race": "+36.5R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 20028,
+      "d_votes_2020": 9322,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 21,
@@ -1528,7 +1626,11 @@
       "margin_2020_race": 0.29,
       "label_2020_race": "+29R",
       "margin_2022_race": 0.476,
-      "label_2022_race": "+47.6R"
+      "label_2022_race": "+47.6R",
+      "r_votes_2020": 15346,
+      "d_votes_2020": 8446,
+      "r_votes_2022": 9337,
+      "d_votes_2022": 3315
     },
     {
       "district": 22,
@@ -1550,7 +1652,11 @@
       "margin_2020_race": 0.4422,
       "label_2020_race": "+44.2R",
       "margin_2022_race": 0.6574,
-      "label_2022_race": "+65.7R"
+      "label_2022_race": "+65.7R",
+      "r_votes_2020": 20694,
+      "d_votes_2020": 8003,
+      "r_votes_2022": 14732,
+      "d_votes_2022": 3045
     },
     {
       "district": 23,
@@ -1572,7 +1678,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 24,
@@ -1594,7 +1704,11 @@
       "margin_2020_race": 0.1623,
       "label_2020_race": "+16.2R",
       "margin_2022_race": 0.1625,
-      "label_2022_race": "+16.3R"
+      "label_2022_race": "+16.3R",
+      "r_votes_2020": 30321,
+      "d_votes_2020": 21853,
+      "r_votes_2022": 14672,
+      "d_votes_2022": 10570
     },
     {
       "district": 25,
@@ -1616,7 +1730,11 @@
       "margin_2020_race": 0.4058,
       "label_2020_race": "+40.6R",
       "margin_2022_race": 0.0545,
-      "label_2022_race": "+5.4R"
+      "label_2022_race": "+5.4R",
+      "r_votes_2020": 22475,
+      "d_votes_2020": 9500,
+      "r_votes_2022": 12361,
+      "d_votes_2022": 11084
     },
     {
       "district": 26,
@@ -1638,7 +1756,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": -0.1975,
-      "label_2022_race": "+19.7D"
+      "label_2022_race": "+19.7D",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": 4824,
+      "d_votes_2022": 7198
     },
     {
       "district": 27,
@@ -1660,7 +1782,11 @@
       "margin_2020_race": -0.2418,
       "label_2020_race": "+24.2D",
       "margin_2022_race": -0.2021,
-      "label_2022_race": "+20.2D"
+      "label_2022_race": "+20.2D",
+      "r_votes_2020": 8934,
+      "d_votes_2020": 14631,
+      "r_votes_2022": 4943,
+      "d_votes_2022": 7447
     },
     {
       "district": 28,
@@ -1682,7 +1808,11 @@
       "margin_2020_race": 0.4306,
       "label_2020_race": "+43.1R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 27826,
+      "d_votes_2020": 11075,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 29,
@@ -1704,7 +1834,11 @@
       "margin_2020_race": 0.32,
       "label_2020_race": "+32R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 27618,
+      "d_votes_2020": 14228,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 30,
@@ -1726,7 +1860,11 @@
       "margin_2020_race": 0.323,
       "label_2020_race": "+32.3R",
       "margin_2022_race": 0.3504,
-      "label_2022_race": "+35R"
+      "label_2022_race": "+35R",
+      "r_votes_2020": 19226,
+      "d_votes_2020": 9839,
+      "r_votes_2022": 12218,
+      "d_votes_2022": 5878
     },
     {
       "district": 31,
@@ -1748,7 +1886,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 32,
@@ -1770,7 +1912,11 @@
       "margin_2020_race": 0.5083,
       "label_2020_race": "+50.8R",
       "margin_2022_race": -0.0098,
-      "label_2022_race": "+1D"
+      "label_2022_race": "+1D",
+      "r_votes_2020": 26430,
+      "d_votes_2020": 8615,
+      "r_votes_2022": 12255,
+      "d_votes_2022": 12497
     },
     {
       "district": 33,
@@ -1792,7 +1938,11 @@
       "margin_2020_race": 0.4506,
       "label_2020_race": "+45.1R",
       "margin_2022_race": 0.4078,
-      "label_2022_race": "+40.8R"
+      "label_2022_race": "+40.8R",
+      "r_votes_2020": 20198,
+      "d_votes_2020": 7649,
+      "r_votes_2022": 13978,
+      "d_votes_2022": 5880
     },
     {
       "district": 34,
@@ -1814,7 +1964,11 @@
       "margin_2020_race": -0.1272,
       "label_2020_race": "+12.7D",
       "margin_2022_race": -0.0558,
-      "label_2022_race": "+5.6D"
+      "label_2022_race": "+5.6D",
+      "r_votes_2020": 8744,
+      "d_votes_2020": 11293,
+      "r_votes_2022": 6847,
+      "d_votes_2022": 7657
     },
     {
       "district": 35,
@@ -1836,7 +1990,11 @@
       "margin_2020_race": 0.1054,
       "label_2020_race": "+10.5R",
       "margin_2022_race": 0.401,
-      "label_2022_race": "+40.1R"
+      "label_2022_race": "+40.1R",
+      "r_votes_2020": 16767,
+      "d_votes_2020": 13570,
+      "r_votes_2022": 14937,
+      "d_votes_2022": 6386
     },
     {
       "district": 36,
@@ -1858,7 +2016,11 @@
       "margin_2020_race": -0.06,
       "label_2020_race": "+6D",
       "margin_2022_race": 0.0191,
-      "label_2022_race": "+1.9R"
+      "label_2022_race": "+1.9R",
+      "r_votes_2020": 11485,
+      "d_votes_2020": 12951,
+      "r_votes_2022": 8888,
+      "d_votes_2022": 8555
     },
     {
       "district": 37,
@@ -1880,7 +2042,11 @@
       "margin_2020_race": 0.1242,
       "label_2020_race": "+12.4R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 24591,
+      "d_votes_2020": 19159,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 38,
@@ -1902,7 +2068,11 @@
       "margin_2020_race": 0.4299,
       "label_2020_race": "+43R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 20746,
+      "d_votes_2020": 8272,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 39,
@@ -1924,7 +2094,11 @@
       "margin_2020_race": 0.0718,
       "label_2020_race": "+7.2R",
       "margin_2022_race": 0.047,
-      "label_2022_race": "+4.7R"
+      "label_2022_race": "+4.7R",
+      "r_votes_2020": 23396,
+      "d_votes_2020": 20262,
+      "r_votes_2022": 14753,
+      "d_votes_2022": 13428
     },
     {
       "district": 40,
@@ -1946,7 +2120,11 @@
       "margin_2020_race": 0.2009,
       "label_2020_race": "+20.1R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 24004,
+      "d_votes_2020": 15974,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 41,
@@ -1968,7 +2146,11 @@
       "margin_2020_race": 0.507,
       "label_2020_race": "+50.7R",
       "margin_2022_race": 0.5052,
-      "label_2022_race": "+50.5R"
+      "label_2022_race": "+50.5R",
+      "r_votes_2020": 22639,
+      "d_votes_2020": 7407,
+      "r_votes_2022": 12812,
+      "d_votes_2022": 4212
     },
     {
       "district": 42,
@@ -1990,7 +2172,11 @@
       "margin_2020_race": 0.3358,
       "label_2020_race": "+33.6R",
       "margin_2022_race": 0.3677,
-      "label_2022_race": "+36.8R"
+      "label_2022_race": "+36.8R",
+      "r_votes_2020": 18945,
+      "d_votes_2020": 9421,
+      "r_votes_2022": 13799,
+      "d_votes_2022": 6379
     },
     {
       "district": 43,
@@ -2012,7 +2198,11 @@
       "margin_2020_race": -0.1507,
       "label_2020_race": "+15.1D",
       "margin_2022_race": -0.1678,
-      "label_2022_race": "+16.8D"
+      "label_2022_race": "+16.8D",
+      "r_votes_2020": 9722,
+      "d_votes_2020": 13172,
+      "r_votes_2022": 6336,
+      "d_votes_2022": 8891
     },
     {
       "district": 44,
@@ -2034,7 +2224,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 45,
@@ -2056,7 +2250,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 46,
@@ -2078,7 +2276,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": 0.3349,
-      "label_2022_race": "+33.5R"
+      "label_2022_race": "+33.5R",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": 13416,
+      "d_votes_2022": 6684
     },
     {
       "district": 47,
@@ -2100,7 +2302,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 48,
@@ -2122,7 +2328,11 @@
       "margin_2020_race": 0.2869,
       "label_2020_race": "+28.7R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 16430,
+      "d_votes_2020": 9105,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 49,
@@ -2144,7 +2354,11 @@
       "margin_2020_race": 0.3295,
       "label_2020_race": "+33R",
       "margin_2022_race": 0.3449,
-      "label_2022_race": "+34.5R"
+      "label_2022_race": "+34.5R",
+      "r_votes_2020": 16539,
+      "d_votes_2020": 8341,
+      "r_votes_2022": 10348,
+      "d_votes_2022": 5040
     },
     {
       "district": 50,
@@ -2166,7 +2380,11 @@
       "margin_2020_race": 0.431,
       "label_2020_race": "+43.1R",
       "margin_2022_race": 0.5521,
-      "label_2022_race": "+55.2R"
+      "label_2022_race": "+55.2R",
+      "r_votes_2020": 21418,
+      "d_votes_2020": 8517,
+      "r_votes_2022": 16416,
+      "d_votes_2022": 4737
     },
     {
       "district": 51,
@@ -2188,7 +2406,11 @@
       "margin_2020_race": 0.5411,
       "label_2020_race": "+54.1R",
       "margin_2022_race": 0.5122,
-      "label_2022_race": "+51.2R"
+      "label_2022_race": "+51.2R",
+      "r_votes_2020": 17633,
+      "d_votes_2020": 5250,
+      "r_votes_2022": 10753,
+      "d_votes_2022": 3469
     },
     {
       "district": 52,
@@ -2210,7 +2432,11 @@
       "margin_2020_race": 0.4962,
       "label_2020_race": "+49.6R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 24713,
+      "d_votes_2020": 8322,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 53,
@@ -2232,7 +2458,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 54,
@@ -2254,7 +2484,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": 0.4737,
-      "label_2022_race": "+47.4R"
+      "label_2022_race": "+47.4R",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": 13857,
+      "d_votes_2022": 4949
     },
     {
       "district": 55,
@@ -2276,7 +2510,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 56,
@@ -2298,7 +2536,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": 0.3987,
-      "label_2022_race": "+39.9R"
+      "label_2022_race": "+39.9R",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": 11764,
+      "d_votes_2022": 5057
     },
     {
       "district": 57,
@@ -2320,7 +2562,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 58,
@@ -2342,7 +2588,11 @@
       "margin_2020_race": 0.3526,
       "label_2020_race": "+35.3R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 22282,
+      "d_votes_2020": 10664,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 59,
@@ -2364,7 +2614,11 @@
       "margin_2020_race": 0.1978,
       "label_2020_race": "+19.8R",
       "margin_2022_race": 0.2264,
-      "label_2022_race": "+22.6R"
+      "label_2022_race": "+22.6R",
+      "r_votes_2020": 17729,
+      "d_votes_2020": 11873,
+      "r_votes_2022": 11015,
+      "d_votes_2022": 6948
     },
     {
       "district": 60,
@@ -2386,7 +2640,11 @@
       "margin_2020_race": 0.2699,
       "label_2020_race": "+27R",
       "margin_2022_race": 0.5086,
-      "label_2022_race": "+50.9R"
+      "label_2022_race": "+50.9R",
+      "r_votes_2020": 21712,
+      "d_votes_2020": 12484,
+      "r_votes_2022": 16617,
+      "d_votes_2022": 5412
     },
     {
       "district": 61,
@@ -2408,7 +2666,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 62,
@@ -2430,7 +2692,11 @@
       "margin_2020_race": 0.2085,
       "label_2020_race": "+20.8R",
       "margin_2022_race": 0.0014,
-      "label_2022_race": "+0.1R"
+      "label_2022_race": "+0.1R",
+      "r_votes_2020": 19036,
+      "d_votes_2020": 12468,
+      "r_votes_2022": 12975,
+      "d_votes_2022": 12938
     },
     {
       "district": 63,
@@ -2452,7 +2718,11 @@
       "margin_2020_race": 0.4762,
       "label_2020_race": "+47.6R",
       "margin_2022_race": 0.5387,
-      "label_2022_race": "+53.9R"
+      "label_2022_race": "+53.9R",
+      "r_votes_2020": 21494,
+      "d_votes_2020": 7626,
+      "r_votes_2022": 14555,
+      "d_votes_2022": 4363
     },
     {
       "district": 64,
@@ -2474,7 +2744,11 @@
       "margin_2020_race": 0.5186,
       "label_2020_race": "+51.9R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 25191,
+      "d_votes_2020": 7986,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 65,
@@ -2496,7 +2770,11 @@
       "margin_2020_race": 0.4587,
       "label_2020_race": "+45.9R",
       "margin_2022_race": 0.5549,
-      "label_2022_race": "+55.5R"
+      "label_2022_race": "+55.5R",
+      "r_votes_2020": 23721,
+      "d_votes_2020": 8803,
+      "r_votes_2022": 14645,
+      "d_votes_2022": 4192
     },
     {
       "district": 66,
@@ -2518,7 +2796,11 @@
       "margin_2020_race": 0.1152,
       "label_2020_race": "+11.5R",
       "margin_2022_race": 0.3989,
-      "label_2022_race": "+39.9R"
+      "label_2022_race": "+39.9R",
+      "r_votes_2020": 16588,
+      "d_votes_2020": 13162,
+      "r_votes_2022": 14563,
+      "d_votes_2022": 6258
     },
     {
       "district": 67,
@@ -2540,7 +2822,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 68,
@@ -2562,7 +2848,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 69,
@@ -2584,7 +2874,11 @@
       "margin_2020_race": 0.5846,
       "label_2020_race": "+58.5R",
       "margin_2022_race": 0.4736,
-      "label_2022_race": "+47.4R"
+      "label_2022_race": "+47.4R",
+      "r_votes_2020": 18784,
+      "d_votes_2020": 4924,
+      "r_votes_2022": 12523,
+      "d_votes_2022": 4474
     },
     {
       "district": 70,
@@ -2606,7 +2900,11 @@
       "margin_2020_race": 0.4137,
       "label_2020_race": "+41.4R",
       "margin_2022_race": 0.4996,
-      "label_2022_race": "+50R"
+      "label_2022_race": "+50R",
+      "r_votes_2020": 25166,
+      "d_votes_2020": 10437,
+      "r_votes_2022": 18003,
+      "d_votes_2022": 6007
     },
     {
       "district": 71,
@@ -2628,7 +2926,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": -0.0122,
-      "label_2022_race": "+1.2D"
+      "label_2022_race": "+1.2D",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": 9074,
+      "d_votes_2022": 9299
     },
     {
       "district": 72,
@@ -2650,7 +2952,11 @@
       "margin_2020_race": 0.1872,
       "label_2020_race": "+18.7R",
       "margin_2022_race": 0.2085,
-      "label_2022_race": "+20.8R"
+      "label_2022_race": "+20.8R",
+      "r_votes_2020": 20850,
+      "d_votes_2020": 14275,
+      "r_votes_2022": 13379,
+      "d_votes_2022": 8763
     },
     {
       "district": 73,
@@ -2672,7 +2978,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": 0.5423,
-      "label_2022_race": "+54.2R"
+      "label_2022_race": "+54.2R",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": 13435,
+      "d_votes_2022": 3987
     },
     {
       "district": 74,
@@ -2694,7 +3004,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 75,
@@ -2716,7 +3030,11 @@
       "margin_2020_race": 0.223,
       "label_2020_race": "+22.3R",
       "margin_2022_race": 0.4104,
-      "label_2022_race": "+41R"
+      "label_2022_race": "+41R",
+      "r_votes_2020": 20945,
+      "d_votes_2020": 13306,
+      "r_votes_2022": 14835,
+      "d_votes_2022": 6201
     },
     {
       "district": 76,
@@ -2738,7 +3056,11 @@
       "margin_2020_race": 0.2808,
       "label_2020_race": "+28.1R",
       "margin_2022_race": 0.3218,
-      "label_2022_race": "+32.2R"
+      "label_2022_race": "+32.2R",
+      "r_votes_2020": 18507,
+      "d_votes_2020": 10391,
+      "r_votes_2022": 12561,
+      "d_votes_2022": 6445
     },
     {
       "district": 77,
@@ -2760,7 +3082,11 @@
       "margin_2020_race": -0.264,
       "label_2020_race": "+26.4D",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 7975,
+      "d_votes_2020": 13695,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 78,
@@ -2782,7 +3108,11 @@
       "margin_2020_race": 0.278,
       "label_2020_race": "+27.8R",
       "margin_2022_race": 0.2547,
-      "label_2022_race": "+25.5R"
+      "label_2022_race": "+25.5R",
+      "r_votes_2020": 20273,
+      "d_votes_2020": 11453,
+      "r_votes_2022": 13115,
+      "d_votes_2022": 7791
     },
     {
       "district": 79,
@@ -2804,7 +3134,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 80,
@@ -2826,7 +3160,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 81,
@@ -2848,7 +3186,11 @@
       "margin_2020_race": 0.0406,
       "label_2020_race": "+4.1R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 13725,
+      "d_votes_2020": 12653,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 82,
@@ -2870,7 +3212,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": -0.1276,
-      "label_2022_race": "+12.8D"
+      "label_2022_race": "+12.8D",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": 5624,
+      "d_votes_2022": 7269
     },
     {
       "district": 83,
@@ -2892,7 +3238,11 @@
       "margin_2020_race": 0.3492,
       "label_2020_race": "+34.9R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 24783,
+      "d_votes_2020": 11953,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 84,
@@ -2914,7 +3264,11 @@
       "margin_2020_race": 0.2222,
       "label_2020_race": "+22.2R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 21482,
+      "d_votes_2020": 13670,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 85,
@@ -2936,7 +3290,11 @@
       "margin_2020_race": 0.4365,
       "label_2020_race": "+43.6R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 21238,
+      "d_votes_2020": 8332,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 86,
@@ -2958,7 +3316,11 @@
       "margin_2020_race": -0.401,
       "label_2020_race": "+40.1D",
       "margin_2022_race": -0.4265,
-      "label_2022_race": "+42.7D"
+      "label_2022_race": "+42.7D",
+      "r_votes_2020": 11930,
+      "d_votes_2020": 27901,
+      "r_votes_2022": 7687,
+      "d_votes_2022": 19122
     },
     {
       "district": 87,
@@ -2980,7 +3342,11 @@
       "margin_2020_race": -0.253,
       "label_2020_race": "+25.3D",
       "margin_2022_race": -0.2578,
-      "label_2022_race": "+25.8D"
+      "label_2022_race": "+25.8D",
+      "r_votes_2020": 13549,
+      "d_votes_2020": 22729,
+      "r_votes_2022": 9108,
+      "d_votes_2022": 15434
     },
     {
       "district": 88,
@@ -3002,7 +3368,11 @@
       "margin_2020_race": 0.1863,
       "label_2020_race": "+18.6R",
       "margin_2022_race": 0.1974,
-      "label_2022_race": "+19.7R"
+      "label_2022_race": "+19.7R",
+      "r_votes_2020": 26659,
+      "d_votes_2020": 18285,
+      "r_votes_2022": 14690,
+      "d_votes_2022": 9847
     },
     {
       "district": 89,
@@ -3024,7 +3394,11 @@
       "margin_2020_race": -0.0268,
       "label_2020_race": "+2.7D",
       "margin_2022_race": -0.0189,
-      "label_2022_race": "+1.9D"
+      "label_2022_race": "+1.9D",
+      "r_votes_2020": 13173,
+      "d_votes_2020": 13898,
+      "r_votes_2022": 6684,
+      "d_votes_2022": 6942
     },
     {
       "district": 90,
@@ -3046,7 +3420,11 @@
       "margin_2020_race": 0.2788,
       "label_2020_race": "+27.9R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 22311,
+      "d_votes_2020": 12584,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 91,
@@ -3068,7 +3446,11 @@
       "margin_2020_race": 0.2681,
       "label_2020_race": "+26.8R",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 16113,
+      "d_votes_2020": 9300,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 92,
@@ -3090,7 +3472,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": -0.1216,
-      "label_2022_race": "+12.2D"
+      "label_2022_race": "+12.2D",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": 6105,
+      "d_votes_2022": 7795
     },
     {
       "district": 93,
@@ -3112,7 +3498,11 @@
       "margin_2020_race": 0.2205,
       "label_2020_race": "+22R",
       "margin_2022_race": 0.2327,
-      "label_2022_race": "+23.3R"
+      "label_2022_race": "+23.3R",
+      "r_votes_2020": 18485,
+      "d_votes_2020": 11806,
+      "r_votes_2022": 7944,
+      "d_votes_2022": 4945
     },
     {
       "district": 94,
@@ -3134,7 +3524,11 @@
       "margin_2020_race": -0.7104,
       "label_2020_race": "+71D",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": 3629,
+      "d_votes_2020": 21430,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 95,
@@ -3156,7 +3550,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 96,
@@ -3178,7 +3576,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 97,
@@ -3200,7 +3602,11 @@
       "margin_2020_race": -0.1647,
       "label_2020_race": "+16.5D",
       "margin_2022_race": -0.2094,
-      "label_2022_race": "+20.9D"
+      "label_2022_race": "+20.9D",
+      "r_votes_2020": 6962,
+      "d_votes_2020": 9707,
+      "r_votes_2022": 3322,
+      "d_votes_2022": 5082
     },
     {
       "district": 98,
@@ -3222,7 +3628,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     },
     {
       "district": 99,
@@ -3244,7 +3654,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": -0.6511,
-      "label_2022_race": "+65.1D"
+      "label_2022_race": "+65.1D",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": 1797,
+      "d_votes_2022": 8503
     },
     {
       "district": 100,
@@ -3266,7 +3680,11 @@
       "margin_2020_race": null,
       "label_2020_race": "Unop.",
       "margin_2022_race": null,
-      "label_2022_race": "Unop."
+      "label_2022_race": "Unop.",
+      "r_votes_2020": null,
+      "d_votes_2020": null,
+      "r_votes_2022": null,
+      "d_votes_2022": null
     }
   ]
 }
