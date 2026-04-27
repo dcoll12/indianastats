@@ -621,11 +621,11 @@ var PP = (function() {
       return !search || getSearchText(entry.row).includes(search);
     }
 
-    // Build CD-organized sections.
-    // Each CD section contains one pack per overlapping SD (from cd_to_sds).
-    // Within each pack, house members = all candidates in sd_to_hds (no CD intersection
-    // filter — the geographic overlap data isn't fine-grained enough and multi-CD SDs
-    // should show all their house districts in every CD section they appear in).
+    // Build CD-organized sections. Each pack is anchored by one SD.
+    // House candidates are deduplicated within each CD: each HD appears in exactly
+    // one pack — the most competitive SD it overlaps (TARGET > OPPORTUNITY > TURNOUT > HOLD,
+    // then tightest in_index). Packs are sorted before deduplication so the first
+    // pack that claims an HD is always the right one.
     var cdSections = {};
 
     PACK_CDS.forEach(function(cdNum) {
@@ -644,13 +644,6 @@ var PP = (function() {
 
         if (!senateCandidates.length && !houseMembers.length) return;
 
-        // Search: keep pack if any member matches
-        if (search) {
-          var all = senateCandidates.concat(houseMembers);
-          if (!all.some(matches)) return;
-        }
-
-        // Sort house members: most D-favorable / competitive first
         houseMembers.sort(function(a, b) {
           var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
           var mb = (b.lean && b.lean.in_index !== null) ? b.lean.in_index : 0.5;
@@ -668,7 +661,7 @@ var PP = (function() {
         });
       });
 
-      // Within each CD: TARGET → OPPORTUNITY → TURNOUT → HOLD; then by in_index (most D-favorable first)
+      // Sort: TARGET → OPPORTUNITY → TURNOUT → HOLD; tightest in_index first within tier
       var CD_TIER_SORT = { 1: 1, 2: 2, 3: 3, 0: 4 };
       packs.sort(function(a, b) {
         var ta = CD_TIER_SORT[a.tier] !== undefined ? CD_TIER_SORT[a.tier] : 99;
@@ -679,6 +672,22 @@ var PP = (function() {
         return ma - mb;
       });
 
+      // Deduplicate: each HD candidate appears in the most competitive pack only
+      var assignedHDs = new Set();
+      packs.forEach(function(pack) {
+        pack.houseMembers = pack.houseMembers.filter(function(m) {
+          if (assignedHDs.has(m.dnum)) return false;
+          assignedHDs.add(m.dnum);
+          return true;
+        });
+      });
+
+      // Apply search filter after deduplication, then drop empty packs
+      packs = packs.filter(function(p) {
+        if (!p.senateCandidates.length && !p.houseMembers.length) return false;
+        if (!search) return true;
+        return p.senateCandidates.concat(p.houseMembers).some(matches);
+      });
       if (packs.length) cdSections[cdNum] = packs;
     });
 
@@ -1076,10 +1085,6 @@ var PP = (function() {
         .reduce(function(arr, hd) { return arr.concat(houseByHD[hd]); }, []);
 
       if (!senateCandidates.length && !houseMembers.length) return;
-      if (search) {
-        var all = senateCandidates.concat(houseMembers);
-        if (!all.some(function(e) { return getSearchText(e.row).includes(search); })) return;
-      }
 
       houseMembers.sort(function(a, b) {
         var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
@@ -1106,6 +1111,25 @@ var PP = (function() {
       var ma = (a.sdLean && a.sdLean.in_index !== null) ? a.sdLean.in_index : 0.5;
       var mb = (b.sdLean && b.sdLean.in_index !== null) ? b.sdLean.in_index : 0.5;
       return ma - mb;
+    });
+
+    // Deduplicate: each HD candidate appears in the most competitive pack only
+    var assignedHDs = new Set();
+    packs.forEach(function(pack) {
+      pack.houseMembers = pack.houseMembers.filter(function(m) {
+        if (assignedHDs.has(m.dnum)) return false;
+        assignedHDs.add(m.dnum);
+        return true;
+      });
+    });
+
+    // Apply search filter after deduplication, then drop empty packs
+    packs = packs.filter(function(p) {
+      if (!p.senateCandidates.length && !p.houseMembers.length) return false;
+      if (!search) return true;
+      return p.senateCandidates.concat(p.houseMembers).some(function(e) {
+        return getSearchText(e.row).includes(search);
+      });
     });
 
     return { packs: packs, countyCDs: countyCDs, countySDs: countySDs };
