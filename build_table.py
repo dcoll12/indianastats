@@ -582,6 +582,14 @@ def generate_table_rows(districts, prefix):
         l2020 = d.get('label_2020_race', 'N/A') if is_house else d['label_2020']
         l2022 = d.get('label_2022_race', 'N/A') if is_house else d['label_2022']
 
+        # For house unopposed races, show the lean index instead of "Unop."
+        if is_house and l2020 == 'Unop.':
+            l2020 = d['in_index_label']
+            m2020 = d['in_index']
+        if is_house and l2022 == 'Unop.':
+            l2022 = d['in_index_label']
+            m2022 = d['in_index']
+
         cls_2020 = get_color_class(m2020)
         cls_2022 = get_color_class(m2022)
         cls_2024 = get_color_class(d['margin_2024'])
@@ -592,7 +600,7 @@ def generate_table_rows(districts, prefix):
         sort_2024 = d['margin_2024'] if d['margin_2024'] is not None else 999
         sort_avg = d['in_index'] if d['in_index'] is not None else 999
 
-        # For house unopposed races, show the lean index in the race column instead of "Unop."
+        # For house unopposed 2024 races, show the lean index in the race column instead of "Unop."
         if is_house and d['race_label'] == 'Unop.':
             race_display = d['in_index_label']
             cls_race = get_color_class(d['in_index'])
@@ -977,7 +985,7 @@ footer .sources {{
 
   <div class="tab-content" id="tab-house">
     <div class="house-note">
-      <strong>Note:</strong> 2020 and 2022 columns show actual State House race results (not presidential). The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed seats. For <strong>unopposed</strong> 2024 seats, it averages the 2024 presidential margin with available 2020/2022 race results.
+      <strong>Note:</strong> 2020, 2022, and 2024 columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
     </div>
     <div class="table-wrap">
       <table id="table-house">
