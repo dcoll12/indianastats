@@ -223,11 +223,11 @@ footer {
 .pp-tier-2 { background: #7c3aed; }
 .pp-tier-3 { background: #16a34a; }
 .pp-section-label {
-  font-size: 0.66rem; font-weight: 800; text-transform: uppercase;
-  letter-spacing: 0.8px; padding: 5px 14px; border-top: 1px solid #f1f5f9;
+  font-size: 0.76rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.8px; padding: 9px 14px; border-top: 1px solid #f1f5f9;
 }
-.pp-section-senate { background: #faf5ff; color: #6d28d9; border-left: 3px solid #7c3aed; }
-.pp-section-house  { background: #f0fdf4; color: #15803d; border-left: 3px solid #16a34a; }
+.pp-section-senate { background: #ede9fe; color: #5b21b6; border-left: 5px solid #7c3aed; }
+.pp-section-house  { background: #dcfce7; color: #14532d; border-left: 5px solid #16a34a; }
 .pp-no-senate {
   padding: 8px 16px; font-size: 0.78rem; color: #92400e;
   background: #fffbeb; border-left: 3px solid #d97706; border-top: 1px solid #f1f5f9;
@@ -243,9 +243,17 @@ footer {
 .pp-primary-badge { display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 900; width: 18px; height: 18px; border-radius: 4px; background: #7c3aed; color: white; flex-shrink: 0; letter-spacing: 0; }
 .pp-senate-row { background: #faf5ff !important; }
 .pp-senate-row:hover { background: #f3e8ff !important; }
+.pp-house-row { background: #f0fdf9 !important; }
+.pp-house-row:hover { background: #dcfce7 !important; }
 .pp-pack-card .pp-table thead th,
 .pp-pack-card-standalone .pp-table thead th { position: static; }
 
+.pp-cd-select {
+  padding: 9px 14px; font-size: 0.9rem; font-weight: 600;
+  border: 2px solid #cbd5e1; border-radius: 8px;
+  background: white; cursor: pointer; min-width: 250px;
+}
+.pp-cd-select:focus { outline: none; border-color: #3b82f6; }
 .pp-mode-toggle {
   display: flex; border: 2px solid #e2e8f0; border-radius: 8px; overflow: hidden; flex-shrink: 0;
 }
@@ -299,6 +307,9 @@ footer {
       <button class="pp-mode-btn active" id="pp-btn-all"   onclick="PP.setMode('all')">All Packs</button>
       <button class="pp-mode-btn"        id="pp-btn-focus" onclick="PP.setMode('focus')">⚡ Focus</button>
     </div>
+    <div id="pp-cd-select-wrap">
+      <select id="pp-cd-select" class="pp-cd-select" onchange="PP.selectCD(this.value)" title="Select Congressional District"></select>
+    </div>
     <div class="pp-search-box">
       <input type="text" id="pp-search" placeholder="🔍 Search candidates by name or location…" oninput="PP.render()">
     </div>
@@ -316,7 +327,7 @@ footer {
 <script>
 /* ── Power Packs module ─────────────────────────────────────────────── */
 var PP = (function() {
-  var state = { rows: [], leanLookup: {}, districtData: {}, loaded: false, focusMode: false };
+  var state = { rows: [], leanLookup: {}, districtData: {}, loaded: false, focusMode: false, selectedCD: 1 };
   var CSV_URL = 'https://docs.google.com/spreadsheets/d/1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw/export?format=csv&gid=918237840';
   var SEARCH_FIELDS = ['First Name', 'Last Name', 'Home City', 'Counties'];
 
@@ -385,9 +396,13 @@ var PP = (function() {
     return { bg: '#1E3A8A', fg: 'white' };
   }
 
-  function leanCell(margin, label) {
+  function leanCell(margin, label, subLabel) {
     var c = getLeanColor(margin);
-    return '<td class="pp-lean" style="background:' + c.bg + ';color:' + c.fg + ';">' + esc(label || '—') + '</td>';
+    var content = esc(label || '—');
+    if (subLabel && subLabel !== '—') {
+      content += '<br><span style="font-size:0.7em;opacity:0.8;font-weight:600">' + esc(subLabel) + '</span>';
+    }
+    return '<td class="pp-lean" style="background:' + c.bg + ';color:' + c.fg + ';">' + content + '</td>';
   }
 
   function determinePrimaryRace(row) {
@@ -751,13 +766,16 @@ var PP = (function() {
 
     var city = clean(row, 'Home City') || '—';
     var rowAttrs = (dtype && dnum) ? ' data-dtype="'+dtype+'" data-dnum="'+dnum+'"' : '';
-    var rowCls = 'pp-row' + (opts.isSenate ? ' pp-senate-row' : '');
+    var rowCls = 'pp-row' + (opts.isSenate ? ' pp-senate-row' : '') + (opts.isHouse ? ' pp-house-row' : '');
+    var sub2020 = (l2020 && l2020.includes('Unop')) ? lidx : '';
+    var sub2022 = (l2022 && l2022.includes('Unop')) ? lidx : '';
+    var sub2024 = (l2024 && l2024.includes('Unop')) ? lidx : '';
 
     return '<tr class="'+rowCls+'"'+rowAttrs+'>'
       + '<td class="pp-candidate"><div class="pp-cand-inner">'+photoHtml+'<div class="pp-cand-name">'+esc(name)+'</div>'+(opts.isPrimary?'<span class="pp-primary-badge">P</span>':'')+'</div></td>'
-      + leanCell(m2020, l2020)
-      + leanCell(m2022, l2022)
-      + leanCell(m2024, l2024)
+      + leanCell(m2020, l2020, sub2020)
+      + leanCell(m2022, l2022, sub2022)
+      + leanCell(m2024, l2024, sub2024)
       + leanCell(midx,  lidx)
       + '<td class="pp-dist"><div class="pp-badge '+badgeCls+'">'+esc(distBadge)+'</div>'+overlapsHtml+roleHtml+'</td>'
       + '<td class="pp-loc">'+esc(city)+'</td>'
@@ -840,7 +858,7 @@ var PP = (function() {
         if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
         else if (hdm <= 0.25) { roleLabel = '📊 Challenge';   roleCls = 'challenge'; }
         else                   { roleLabel = '🗳️ Turnout';     roleCls = 'turnout'; }
-        parts.push(renderEntry(member, { roleLabel: roleLabel, roleCls: roleCls, isPrimary: hdCounts[member.dnum] > 1 }));
+        parts.push(renderEntry(member, { isHouse: true, roleLabel: roleLabel, roleCls: roleCls, isPrimary: hdCounts[member.dnum] > 1 }));
       });
       parts.push('</tbody></table></div>');
     }
@@ -887,23 +905,25 @@ var PP = (function() {
     // Congressional candidates (IRS focuses on state races, so these appear last)
     // Rendered after CD sections — see bottom of this function.
 
-    // ── CD sections ──────────────────────────────────────────────────────
-    PACK_CDS.forEach(function(cdNum) {
-      var packs = cdSections[cdNum];
-      if (!packs || !packs.length) return;
+    // ── Single CD section ────────────────────────────────────────────────
+    var cdNum = state.selectedCD;
+    var packs = cdSections[cdNum] || [];
 
-      var cdLean = (state.leanLookup.congressional || {})[cdNum] || null;
-      var cdIndexLabel = cdLean ? (cdLean.in_index_label || '—') : '—';
-      var cdRep    = cdLean ? (cdLean.representative || '') : '';
-      var cdParty  = cdLean ? (cdLean.party || '') : '';
-      var cdName   = PACK_CD_NAMES[cdNum] || '';
-      var cdCands  = packs.reduce(function(n,p){ return n+p.senateCandidates.length+p.houseMembers.length; }, 0);
-      var repBadge = cdParty === 'Republican'
-        ? '<span class="pp-holder-badge pp-holder-r" style="font-size:0.7rem">R</span>'
-        : cdParty === 'Democratic'
-          ? '<span class="pp-holder-badge pp-holder-d" style="font-size:0.7rem">D</span>'
-          : '';
+    var cdLean = (state.leanLookup.congressional || {})[cdNum] || null;
+    var cdIndexLabel = cdLean ? (cdLean.in_index_label || '—') : '—';
+    var cdRep    = cdLean ? (cdLean.representative || '') : '';
+    var cdParty  = cdLean ? (cdLean.party || '') : '';
+    var cdName   = PACK_CD_NAMES[cdNum] || '';
+    var cdCands  = packs.reduce(function(n,p){ return n+p.senateCandidates.length+p.houseMembers.length; }, 0);
+    var repBadge = cdParty === 'Republican'
+      ? '<span class="pp-holder-badge pp-holder-r" style="font-size:0.7rem">R</span>'
+      : cdParty === 'Democratic'
+        ? '<span class="pp-holder-badge pp-holder-d" style="font-size:0.7rem">D</span>'
+        : '';
 
+    if (!packs.length) {
+      parts.push('<div class="pp-status"><p>No packs in CD-'+cdNum+' match your search — try another district or clear the search.</p></div>');
+    } else {
       parts.push('<div class="pp-cd-section">');
       parts.push('<div class="pp-cd-header">');
       parts.push('<div class="pp-cd-header-left">');
@@ -916,7 +936,7 @@ var PP = (function() {
 
       packs.forEach(function(pack) { parts.push(renderPackCard(pack)); });
       parts.push('</div>'); // close pp-cd-section
-    });
+    }
 
     // Congressional candidates (federal races — IRS note: not our primary focus)
     if (congressional.length) {
@@ -1015,6 +1035,23 @@ var PP = (function() {
     return parts.join('');
   }
 
+  function updateCDDropdown(cdSections) {
+    var sel = $$('pp-cd-select');
+    if (!sel) return;
+    sel.innerHTML = PACK_CDS.map(function(cd) {
+      var packs = cdSections[cd] || [];
+      var cands = packs.reduce(function(n,p){ return n+p.senateCandidates.length+p.houseMembers.length; }, 0);
+      var label = 'CD-'+cd+' · '+(PACK_CD_NAMES[cd] || '');
+      if (packs.length) label += ' ('+cands+' candidate'+(cands!==1?'s':'')+')';
+      return '<option value="'+cd+'"'+(cd===state.selectedCD?' selected':'')+'>'+label+'</option>';
+    }).join('');
+  }
+
+  function selectCD(cdVal) {
+    state.selectedCD = Number(cdVal) || PACK_CDS[0];
+    render();
+  }
+
   function setMode(mode) {
     state.focusMode = (mode === 'focus');
     var btnAll   = $$(  'pp-btn-all');
@@ -1031,7 +1068,9 @@ var PP = (function() {
     out.className = '';
     var statsEl = $$(  'pp-stats');
 
+    var cdWrap = $$('pp-cd-select-wrap');
     if (state.focusMode) {
+      if (cdWrap) cdWrap.style.display = 'none';
       var result = buildFocusPacks();
       var totalCands = result.packs.reduce(function(n, p){ return n + 1 + p.houseMembers.length; }, 0)
         + result.unassigned.length;
@@ -1040,21 +1079,20 @@ var PP = (function() {
         + ' — each candidate appears once';
       out.innerHTML = renderFocusPacks(result);
     } else {
+      if (cdWrap) cdWrap.style.display = '';
       var result = buildPacks();
-      var totalPacks = 0;
+      updateCDDropdown(result.cdSections);
+      var cdPacks = result.cdSections[state.selectedCD] || [];
       var seenSDs = new Set(), seenHDs = new Set();
-      PACK_CDS.forEach(function(cd) {
-        var packs = result.cdSections[cd] || [];
-        totalPacks += packs.length;
-        packs.forEach(function(p) {
-          if (p.senateCandidates && p.senateCandidates.length) seenSDs.add(p.sdNum);
-          p.houseMembers.forEach(function(m) { seenHDs.add(m.dnum); });
-        });
+      cdPacks.forEach(function(p) {
+        if (p.senateCandidates && p.senateCandidates.length) seenSDs.add(p.sdNum);
+        p.houseMembers.forEach(function(m) { seenHDs.add(m.dnum); });
       });
-      var totalCands = seenSDs.size + seenHDs.size + result.congressional.length + result.unassigned.length;
-      if (statsEl) statsEl.textContent = totalCands + ' candidate' + (totalCands !== 1 ? 's' : '')
-        + ' in ' + totalPacks + ' pack' + (totalPacks !== 1 ? 's' : '')
-        + ' across ' + Object.keys(result.cdSections).length + ' Congressional Districts';
+      var cdCands = seenSDs.size + seenHDs.size;
+      var cdName = PACK_CD_NAMES[state.selectedCD] || '';
+      if (statsEl) statsEl.textContent = 'CD-'+state.selectedCD+' · '+cdName
+        + ' — ' + cdCands + ' candidate' + (cdCands !== 1 ? 's' : '')
+        + ' in ' + cdPacks.length + ' pack' + (cdPacks.length !== 1 ? 's' : '');
       out.innerHTML = renderPacksTable(result);
     }
     if (window.MAP_wireDynamic) window.MAP_wireDynamic();
@@ -1162,7 +1200,7 @@ var PP = (function() {
     XLSX.writeFile(wb, 'Indiana_Power_Packs.xlsx');
   }
 
-  return { init: init, render: render, reset: reset, setMode: setMode, export: exportData, _reload: function(){state.loaded=false;init();} };
+  return { init: init, render: render, reset: reset, setMode: setMode, selectCD: selectCD, export: exportData, _reload: function(){state.loaded=false;init();} };
 })();
 
 window.addEventListener('load', function() { PP.init(); });
