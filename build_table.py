@@ -533,7 +533,8 @@ def write_data_json(filepath, congressional, senate, house):
             'using census block assignment weights; House districts show actual State House race results. '
             '2020: county-level presidential results apportioned using the same methods; '
             'House districts show actual State House race results. '
-            'IN-Index = average of 2020, 2022, and 2024 margins for Congressional/Senate; 2024 only for House.'
+            'IN-Index = average of 2020, 2022, and 2024 margins for Congressional/Senate; '
+            'House = 2024 presidential margin, averaged with available 2020/2022 race results for unopposed 2024 seats.'
         ),
         'congressional': congressional,
         'senate': senate,
@@ -968,7 +969,7 @@ footer .sources {{
 
   <div class="tab-content" id="tab-house">
     <div class="house-note">
-      <strong>Note:</strong> 2020 and 2022 columns show actual State House race results (not presidential). The <strong>IN-Index equals the 2024 presidential margin</strong> — the only district-specific presidential measure available for all 100 house seats.
+      <strong>Note:</strong> 2020 and 2022 columns show actual State House race results (not presidential). The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed seats. For <strong>unopposed</strong> 2024 seats, it averages the 2024 presidential margin with available 2020/2022 race results.
     </div>
     <div class="table-wrap">
       <table id="table-house">
@@ -996,8 +997,8 @@ footer .sources {{
     <p>
       The <strong>IN-Index</strong> measures partisan lean for each Indiana legislative and congressional
       district. For Congressional and Senate districts it is the average of 2020 presidential, 2022 US Senate,
-      and 2024 presidential margins. For House districts it equals the 2024 presidential margin — the only
-      district-specific presidential measure available for all 100 seats.
+      and 2024 presidential margins. For House districts it equals the 2024 presidential margin; for
+      unopposed 2024 seats, available 2020/2022 actual race results are also averaged in.
     </p>
     <p>
       <strong>2024 data</strong> uses precinct-level results aggregated directly by district using
@@ -1139,6 +1140,15 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
         district['r_votes_2022'] = r22
         district['d_votes_2022'] = d22
 
+        # For unopposed 2024 races, incorporate 2020/2022 actual race results into IN-Index.
+        if district.get('race_label') == 'Unop.':
+            m24 = district.get('margin_2024')
+            available = [m for m in (m20, m22, m24) if m is not None]
+            if len(available) > 1:
+                idx = sum(available) / len(available)
+                district['in_index'] = round(idx, 4)
+                district['in_index_label'] = format_index(idx)
+
     data['methodology'] = (
         'Election results from Indiana Secretary of State: https://indianavoters.in.gov/ENRHistorical/ElectionResults. '
         '2024: precinct-level presidential results aggregated directly by district. '
@@ -1146,7 +1156,8 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
         'using census block assignment weights; House districts show actual State House race results. '
         '2020: county-level presidential results apportioned using the same methods; '
         'House districts show actual State House race results. '
-        'IN-Index = average of 2020, 2022, and 2024 margins for Congressional/Senate; 2024 only for House.'
+        'IN-Index = average of 2020, 2022, and 2024 margins for Congressional/Senate; '
+        'House = 2024 presidential margin, averaged with available 2020/2022 race results for unopposed 2024 seats.'
     )
 
     with open(out_json, 'w') as f:
@@ -1237,8 +1248,8 @@ def main():
     print(f"Senate: {len(senate)} districts processed")
 
     # House — 2020/2022 apportioned via precinct-level county weights (display only);
-    # IN-Index uses 2024 Pres only since county-level apportionment yields identical
-    # values for all districts within the same county, masking within-county variation.
+    # IN-Index uses 2024 Pres; for unopposed 2024 seats it also averages in available
+    # 2020/2022 actual race results (district-specific, unlike county apportionment).
     house_reps = load_house_representatives_from_csv(
         os.path.join(SCRIPT_DIR, 'indiana_election_results_2020_2024.csv'),
         os.path.join(SCRIPT_DIR, 'General_Assembly_House_Districts_Current(1).geojson'),
@@ -1247,11 +1258,23 @@ def main():
     house_2020, house_votes_2020, house_2022, house_votes_2022 = compute_house_margins_from_county(
         precinct_zip, results, senate_2022_county
     )
-    house_index = compute_in_index({}, {}, house_2024)
+    house_2020_race = {d: m for d, (m, _) in race_margins['state_house_2020'].items() if m is not None}
+    house_2022_race = {d: m for d, (m, _) in race_margins['state_house_2022'].items() if m is not None}
+    house_opposed_2024 = {d for d, (m, _) in race_margins['state_house'].items() if m is not None}
+    house_index = {}
+    for dist_str, m24 in house_2024.items():
+        if dist_str in house_opposed_2024:
+            avg = m24
+        else:
+            m20r = house_2020_race.get(dist_str)
+            m22r = house_2022_race.get(dist_str)
+            avail = [m for m in (m20r, m22r, m24) if m is not None]
+            avg = sum(avail) / len(avail) if avail else None
+        house_index[dist_str] = (avg, format_index(avg) if avg is not None else 'N/A')
     house = merge_data(house_index, house_2020, house_2022, house_2024, house_reps,
                        votes_2024['house'], race_margins['state_house'],
                        votes_2020=house_votes_2020, votes_2022=house_votes_2022)
-    print(f"House: {len(house)} districts processed (2020/2022 county-level for display; IN-Index uses 2024 Pres only)")
+    print(f"House: {len(house)} districts processed (unopposed 2024 seats average 2024 Pres + available 2020/2022 race results)")
 
     # Print summary
     print("\n--- Congressional IN-Index Summary ---")

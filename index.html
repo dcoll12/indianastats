@@ -271,6 +271,7 @@ footer .sources {
     <p>How far each district leans Republican or Democratic, based on the average of 2020 and 2024 presidential results and the 2022 race result, apportioned to districts using census block assignments.</p>
     <nav class="site-nav">
       <a class="active" href="./">Indiana Partisan Lean Index</a>
+      <a href="directory/">Candidate Directory</a>
       <a href="power-packs/">Power Packs</a>
       <a href="district-match/">District Match</a>
     </nav>
@@ -297,9 +298,9 @@ footer .sources {
         <thead>
           <tr>
             <th onclick="sortTable('table-congressional', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 1, 'num')">2022 Cong. <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 1, 'num')">2022 US House <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 3, 'num')">2024 Cong. <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 3, 'num')">2024 US House <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
@@ -924,14 +925,17 @@ footer .sources {
   </div>
 
   <div class="tab-content" id="tab-house">
+    <div class="house-note">
+      <strong>Note:</strong> 2020 and 2022 columns show actual State House race results (not presidential). The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed seats. For <strong>unopposed</strong> 2024 seats, it averages the 2024 presidential margin with available 2020/2022 race results.
+    </div>
     <div class="table-wrap">
       <table id="table-house">
         <thead>
           <tr>
-            <th onclick="sortTable('table-house', 0, 'num')">2020 HD Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 1, 'num')">2022 HD Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 0, 'num')">2020 House Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 1, 'num')">2022 House Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 3, 'num')">2024 HD Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 3, 'num')">State House Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
@@ -1004,7 +1008,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.2169">+21.7R</td>
           <td class="lean-r-moderate" data-sort-value="0.172">+17.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-moderate col-avg" data-sort-value="0.172">+17.2R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1563">+15.6R</td>
           <td class="col-dist" data-sort-value="7">HD-7</td>
           <td class="col-rep" data-sort-value="Jake Teshka"><a href="https://www.indianahouserepublicans.com/members/general/jake-teshka/?back=members" target="_blank" rel="noopener">Jake Teshka</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1014,7 +1018,7 @@ footer .sources {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-moderate" data-sort-value="-0.1249">+12.5D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-d-moderate col-avg" data-sort-value="-0.1249">+12.5D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1309">+13.1D</td>
           <td class="col-dist" data-sort-value="8">HD-8</td>
           <td class="col-rep" data-sort-value="Ryan Dvorak"><a href="https://indianahousedemocrats.org/members/ryan-dvorak" target="_blank" rel="noopener">Ryan Dvorak</a></td>
           <td class="party-d" data-sort-value="D">D</td>
@@ -1044,7 +1048,7 @@ footer .sources {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4819">+48.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.4819">+48.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4285">+42.9R</td>
           <td class="col-dist" data-sort-value="11">HD-11</td>
           <td class="col-rep" data-sort-value="Michael Aylesworth"><a href="https://www.indianahouserepublicans.com/members/general/michael-aylesworth/?back=members" target="_blank" rel="noopener">Michael Aylesworth</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1104,7 +1108,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.4958">+49.6R</td>
           <td class="lean-r-strong" data-sort-value="0.4691">+46.9R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.4691">+46.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4865">+48.6R</td>
           <td class="col-dist" data-sort-value="17">HD-17</td>
           <td class="col-rep" data-sort-value="Jack Jordan"><a href="https://www.indianahouserepublicans.com/members/general/jack-jordan/?back=members" target="_blank" rel="noopener">Jack Jordan</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1114,7 +1118,7 @@ footer .sources {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5483">+54.8R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.5483">+54.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.555">+55.5R</td>
           <td class="col-dist" data-sort-value="18">HD-18</td>
           <td class="col-rep" data-sort-value="David Abbott"><a href="https://www.indianahouserepublicans.com/members/leadership/david-abbott/?back=members" target="_blank" rel="noopener">David Abbott</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1124,7 +1128,7 @@ footer .sources {
           <td class="lean-r-moderate" data-sort-value="0.1744">+17.4R</td>
           <td class="lean-r-strong" data-sort-value="0.2007">+20.1R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.2007">+20.1R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1371">+13.7R</td>
           <td class="col-dist" data-sort-value="19">HD-19</td>
           <td class="col-rep" data-sort-value="Julie Olthoff"><a href="https://www.indianahouserepublicans.com/members/leadership/julie-olthoff/?back=members" target="_blank" rel="noopener">Julie Olthoff</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1134,7 +1138,7 @@ footer .sources {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.3082">+30.8R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.3082">+30.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3365">+33.6R</td>
           <td class="col-dist" data-sort-value="20">HD-20</td>
           <td class="col-rep" data-sort-value="Jim Pressel"><a href="https://www.indianahouserepublicans.com/members/general/jim-pressel/?back=members" target="_blank" rel="noopener">Jim Pressel</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1144,7 +1148,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.4753">+47.5R</td>
           <td class="lean-r-strong" data-sort-value="0.3528">+35.3R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.3528">+35.3R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3727">+37.3R</td>
           <td class="col-dist" data-sort-value="21">HD-21</td>
           <td class="col-rep" data-sort-value="Timothy Wesco"><a href="https://www.indianahouserepublicans.com/members/general/timothy-wesco/?back=members" target="_blank" rel="noopener">Timothy Wesco</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1154,7 +1158,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.6569">+65.7R</td>
           <td class="lean-r-strong" data-sort-value="0.5412">+54.1R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.5412">+54.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5468">+54.7R</td>
           <td class="col-dist" data-sort-value="22">HD-22</td>
           <td class="col-rep" data-sort-value="Craig Snow"><a href="https://www.indianahouserepublicans.com/members/general/craig-snow/?back=members" target="_blank" rel="noopener">Craig Snow</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1304,7 +1308,7 @@ footer .sources {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-moderate" data-sort-value="0.1191">+11.9R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-moderate col-avg" data-sort-value="0.1191">+11.9R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1216">+12.2R</td>
           <td class="col-dist" data-sort-value="37">HD-37</td>
           <td class="col-rep" data-sort-value="Todd Huston"><a href="https://www.indianahouserepublicans.com/members/leadership/todd-huston/?back=members" target="_blank" rel="noopener">Todd Huston</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1354,7 +1358,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.3678">+36.8R</td>
           <td class="lean-r-strong" data-sort-value="0.5068">+50.7R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.5068">+50.7R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4034">+40.3R</td>
           <td class="col-dist" data-sort-value="42">HD-42</td>
           <td class="col-rep" data-sort-value="Alan Morrison">Alan Morrison</td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1364,7 +1368,7 @@ footer .sources {
           <td class="lean-d-moderate" data-sort-value="-0.1679">+16.8D</td>
           <td class="lean-r-lean" data-sort-value="0.0746">+7.5R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-lean col-avg" data-sort-value="0.0746">+7.5R</td>
+          <td class="lean-d-lean col-avg" data-sort-value="-0.0813">+8.1D</td>
           <td class="col-dist" data-sort-value="43">HD-43</td>
           <td class="col-rep" data-sort-value="Tonya Pfaff"><a href="https://indianahousedemocrats.org/members/tonya-pfaff" target="_blank" rel="noopener">Tonya Pfaff</a></td>
           <td class="party-d" data-sort-value="D">D</td>
@@ -1414,7 +1418,7 @@ footer .sources {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.2866">+28.7R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.2866">+28.7R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2867">+28.7R</td>
           <td class="col-dist" data-sort-value="48">HD-48</td>
           <td class="col-rep" data-sort-value="Doug Miller"><a href="https://www.indianahouserepublicans.com/members/general/doug-miller/?back=members" target="_blank" rel="noopener">Doug Miller</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1424,7 +1428,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.3433">+34.3R</td>
           <td class="lean-r-strong" data-sort-value="0.2972">+29.7R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.2972">+29.7R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3233">+32.3R</td>
           <td class="col-dist" data-sort-value="49">HD-49</td>
           <td class="col-rep" data-sort-value="Joanna King"><a href="https://www.indianahouserepublicans.com/members/leadership/joanna-king/?back=members" target="_blank" rel="noopener">Joanna King</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1474,7 +1478,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.474">+47.4R</td>
           <td class="lean-r-strong" data-sort-value="0.5088">+50.9R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.5088">+50.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4914">+49.1R</td>
           <td class="col-dist" data-sort-value="54">HD-54</td>
           <td class="col-rep" data-sort-value="Cory Criswell"><a href="https://www.indianahouserepublicans.com/members/general/cory-criswell/?back=members" target="_blank" rel="noopener">Cory Criswell</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1494,7 +1498,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.3987">+39.9R</td>
           <td class="lean-r-strong" data-sort-value="0.3333">+33.3R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.3333">+33.3R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.366">+36.6R</td>
           <td class="col-dist" data-sort-value="56">HD-56</td>
           <td class="col-rep" data-sort-value="Brad Barrett"><a href="https://www.indianahouserepublicans.com/members/general/brad-barrett/?back=members" target="_blank" rel="noopener">Brad Barrett</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1574,7 +1578,7 @@ footer .sources {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.4813">+48.1R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.4813">+48.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4999">+50R</td>
           <td class="col-dist" data-sort-value="64">HD-64</td>
           <td class="col-rep" data-sort-value="Matt Hostettler"><a href="https://www.indianahouserepublicans.com/members/general/matt-hostettler/?back=members" target="_blank" rel="noopener">Matt Hostettler</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1584,7 +1588,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.5545">+55.4R</td>
           <td class="lean-r-strong" data-sort-value="0.5318">+53.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.5318">+53.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.515">+51.5R</td>
           <td class="col-dist" data-sort-value="65">HD-65</td>
           <td class="col-rep" data-sort-value="Chris May"><a href="https://www.indianahouserepublicans.com/members/general/chris-may/?back=members" target="_blank" rel="noopener">Chris May</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1684,7 +1688,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.4106">+41.1R</td>
           <td class="lean-r-strong" data-sort-value="0.3678">+36.8R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.3678">+36.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3338">+33.4R</td>
           <td class="col-dist" data-sort-value="75">HD-75</td>
           <td class="col-rep" data-sort-value="Cindy Ledbetter"><a href="https://www.indianahouserepublicans.com/members/leadership/cindy-ledbetter/?back=members" target="_blank" rel="noopener">Cindy Ledbetter</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1694,7 +1698,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.3213">+32.1R</td>
           <td class="lean-r-strong" data-sort-value="0.33">+33R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.33">+33R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3107">+31.1R</td>
           <td class="col-dist" data-sort-value="76">HD-76</td>
           <td class="col-rep" data-sort-value="Wendy McNamara"><a href="https://www.indianahouserepublicans.com/members/general/wendy-mcnamara/?back=members" target="_blank" rel="noopener">Wendy McNamara</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1704,7 +1708,7 @@ footer .sources {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-moderate" data-sort-value="-0.125">+12.5D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-d-moderate col-avg" data-sort-value="-0.125">+12.5D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1945">+19.4D</td>
           <td class="col-dist" data-sort-value="77">HD-77</td>
           <td class="col-rep" data-sort-value="Ryan Hatfield">Ryan Hatfield</td>
           <td class="party-d" data-sort-value="D">D</td>
@@ -1714,7 +1718,7 @@ footer .sources {
           <td class="lean-r-strong" data-sort-value="0.254">+25.4R</td>
           <td class="lean-r-moderate" data-sort-value="0.172">+17.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-moderate col-avg" data-sort-value="0.172">+17.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2347">+23.5R</td>
           <td class="col-dist" data-sort-value="78">HD-78</td>
           <td class="col-rep" data-sort-value="Tim O'Brien"><a href="https://www.indianahouserepublicans.com/members/general/tim-o-brien/?back=members" target="_blank" rel="noopener">Tim O'Brien</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1754,7 +1758,7 @@ footer .sources {
           <td class="lean-d-moderate" data-sort-value="-0.1276">+12.8D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1519">+15.2D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-d-moderate col-avg" data-sort-value="-0.1519">+15.2D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1397">+14D</td>
           <td class="col-dist" data-sort-value="82">HD-82</td>
           <td class="col-rep" data-sort-value="Kyle Miller"><a href="https://indianahousedemocrats.org/members/kyle-miller" target="_blank" rel="noopener">Kyle Miller</a></td>
           <td class="party-d" data-sort-value="D">D</td>
@@ -1774,7 +1778,7 @@ footer .sources {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-moderate" data-sort-value="0.1723">+17.2R</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-r-moderate col-avg" data-sort-value="0.1723">+17.2R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1973">+19.7R</td>
           <td class="col-dist" data-sort-value="84">HD-84</td>
           <td class="col-rep" data-sort-value="Bob Morris"><a href="https://www.indianahouserepublicans.com/members/general/bob-morris/?back=members" target="_blank" rel="noopener">Bob Morris</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1794,7 +1798,7 @@ footer .sources {
           <td class="lean-d-strong" data-sort-value="-0.4268">+42.7D</td>
           <td class="lean-d-strong" data-sort-value="-0.4713">+47.1D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-d-strong col-avg" data-sort-value="-0.4713">+47.1D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.433">+43.3D</td>
           <td class="col-dist" data-sort-value="86">HD-86</td>
           <td class="col-rep" data-sort-value="Edward DeLaney"><a href="https://indianahousedemocrats.org/members/ed-delaney" target="_blank" rel="noopener">Edward DeLaney</a></td>
           <td class="party-d" data-sort-value="D">D</td>
@@ -1804,7 +1808,7 @@ footer .sources {
           <td class="lean-d-strong" data-sort-value="-0.2582">+25.8D</td>
           <td class="lean-d-strong" data-sort-value="-0.3062">+30.6D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-d-strong col-avg" data-sort-value="-0.3062">+30.6D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2725">+27.2D</td>
           <td class="col-dist" data-sort-value="87">HD-87</td>
           <td class="col-rep" data-sort-value="Carey Hamilton"><a href="https://indianahousedemocrats.org/members/carey-hamilton" target="_blank" rel="noopener">Carey Hamilton</a></td>
           <td class="party-d" data-sort-value="D">D</td>
@@ -1874,7 +1878,7 @@ footer .sources {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-d-strong" data-sort-value="-0.6716">+67.2D</td>
           <td class="lean-na" data-sort-value="999">Unop.</td>
-          <td class="lean-d-strong col-avg" data-sort-value="-0.6716">+67.2D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.691">+69.1D</td>
           <td class="col-dist" data-sort-value="94">HD-94</td>
           <td class="col-rep" data-sort-value="Cherrish Pryor"><a href="https://indianahousedemocrats.org/members/cherrish-pryor" target="_blank" rel="noopener">Cherrish Pryor</a></td>
           <td class="party-d" data-sort-value="D">D</td>
@@ -1949,8 +1953,8 @@ footer .sources {
     <p>
       The <strong>IN-Index</strong> measures partisan lean for each Indiana legislative and congressional
       district. For Congressional and Senate districts it is the average of 2020 presidential, 2022 US Senate,
-      and 2024 presidential margins. For House districts it equals the 2024 presidential margin — the only
-      district-specific presidential measure available for all 100 seats.
+      and 2024 presidential margins. For House districts it equals the 2024 presidential margin; for
+      unopposed 2024 seats, available 2020/2022 actual race results are also averaged in.
     </p>
     <p>
       <strong>2024 data</strong> uses precinct-level results aggregated directly by district using
