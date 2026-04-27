@@ -1,6 +1,6 @@
 {
   "generated": "2026-04-24",
-  "methodology": "2024: precinct-level presidential results (VEST in_2024) aggregated directly by district. 2022: county-level US Senate results (senate_2022.csv) apportioned to Congressional/Senate districts using census block assignment weights (PlanScore); House districts apportioned using precinct-level 2024 turnout as county weights. 2020: county-level presidential results apportioned using the same methods. IN-Index = average of 2020, 2022, and 2024 margins for all district types.",
+  "methodology": "Election results from Indiana Secretary of State: https://indianavoters.in.gov/ENRHistorical/ElectionResults. 2024: precinct-level presidential results aggregated directly by district. 2022: county-level US Senate results apportioned to Congressional/Senate districts using census block assignment weights; House districts show actual State House race results. 2020: county-level presidential results apportioned using the same methods; House districts show actual State House race results. IN-Index = average of 2020, 2022, and 2024 margins for Congressional/Senate; 2024 only for House.",
   "congressional": [
     {
       "district": 1,
