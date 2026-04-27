@@ -666,6 +666,13 @@ header p {{
   border-color: white;
 }}
 
+.site-nav a.active {{
+  background: rgba(255, 255, 255, 0.95);
+  color: #1e3a5f;
+  border-color: white;
+  font-weight: 700;
+}}
+
 .tabs {{
   display: flex;
   gap: 4px;
@@ -720,6 +727,8 @@ header p {{
 
 .table-wrap {{
   overflow-x: auto;
+  overflow-y: auto;
+  max-height: calc(100vh - 320px);
 }}
 
 table {{
@@ -859,7 +868,8 @@ footer .sources {{
     <h1>Indiana Partisan Lean Index (IN-Index)</h1>
     <p>How far each district leans Republican or Democratic, based on the average of 2020 and 2024 presidential results and the 2022 race result, apportioned to districts using census block assignments.</p>
     <nav class="site-nav">
-      <a href="directory/">Indiana Rural Summit Directory</a>
+      <a class="active" href="./">Indiana Partisan Lean Index</a>
+      <a href="directory/">Candidate Directory</a>
       <a href="power-packs/">Power Packs</a>
       <a href="district-match/">District Match</a>
     </nav>
