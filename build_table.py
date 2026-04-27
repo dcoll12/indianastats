@@ -585,14 +585,22 @@ def generate_table_rows(districts, prefix):
         cls_2020 = get_color_class(m2020)
         cls_2022 = get_color_class(m2022)
         cls_2024 = get_color_class(d['margin_2024'])
-        cls_race = get_color_class(d['race_margin'])
         cls_avg = get_color_class(d['in_index'])
 
         sort_2020 = m2020 if m2020 is not None else 999
         sort_2022 = m2022 if m2022 is not None else 999
         sort_2024 = d['margin_2024'] if d['margin_2024'] is not None else 999
-        sort_race = d['race_margin'] if d['race_margin'] is not None else 999
         sort_avg = d['in_index'] if d['in_index'] is not None else 999
+
+        # For house unopposed races, show the lean index in the race column instead of "Unop."
+        if is_house and d['race_label'] == 'Unop.':
+            race_display = d['in_index_label']
+            cls_race = get_color_class(d['in_index'])
+            sort_race = d['in_index'] if d['in_index'] is not None else 999
+        else:
+            race_display = d['race_label']
+            cls_race = get_color_class(d['race_margin'])
+            sort_race = d['race_margin'] if d['race_margin'] is not None else 999
 
         name_html = d['representative']
         if d['url']:
@@ -602,7 +610,7 @@ def generate_table_rows(districts, prefix):
           <td class="{cls_2020}" data-sort-value="{sort_2020}">{l2020}</td>
           <td class="{cls_2022}" data-sort-value="{sort_2022}">{l2022}</td>
           <td class="{cls_2024}" data-sort-value="{sort_2024}">{d['label_2024']}</td>
-          <td class="{cls_race}" data-sort-value="{sort_race}">{d['race_label']}</td>
+          <td class="{cls_race}" data-sort-value="{sort_race}">{race_display}</td>
           <td class="{cls_avg} col-avg" data-sort-value="{sort_avg}">{d['in_index_label']}</td>
           <td class="col-dist" data-sort-value="{d['district']}">{prefix}-{d['district']}</td>
           <td class="col-rep" data-sort-value="{d['representative']}">{name_html}</td>
@@ -978,7 +986,7 @@ footer .sources {{
             <th onclick="sortTable('table-house', 0, 'num')">2020 House Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 1, 'num')">2022 House Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 3, 'num')">State House Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 3, 'num')">2024 House Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
