@@ -601,8 +601,8 @@ def generate_table_rows(districts, prefix):
         sort_2024 = d['margin_2024'] if d['margin_2024'] is not None else 999
         sort_avg = d['in_index'] if d['in_index'] is not None else 999
 
-        # For house unopposed 2024 races, show the lean index in the race column instead of "Unop."
-        if is_house and d['race_label'] == 'Unop.':
+        # For unopposed races, show the lean index in the race column instead of "Unop."
+        if d['race_label'] == 'Unop.':
             race_display = d['in_index_label']
             cls_race = get_color_class(d['in_index'])
             sort_race = d['in_index'] if d['in_index'] is not None else 999
@@ -1199,22 +1199,21 @@ tbody tr.map-locked {{
   </div>
 
   <div class="tab-content" id="tab-senate">
-    <div class="boundary-view boundary-view-current" id="bview-current-senate">
-      <div class="table-wrap">
-        <table id="table-senate">
-          <thead>
-            <tr>
-              <th onclick="sortTable('table-senate', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 1, 'num')">2022 Senate <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 3, 'num')">Senate Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
-            </tr>
-          </thead>
-          <tbody>
+    <div class="table-wrap">
+      <table id="table-senate">
+        <thead>
+          <tr>
+            <th onclick="sortTable('table-senate', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 1, 'num')">2022 Senate <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 3, 'num')">2024 Senate <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+          </tr>
+        </thead>
+        <tbody>
 {sen_rows}
           </tbody>
         </table>
