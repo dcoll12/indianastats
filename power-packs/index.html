@@ -357,6 +357,7 @@ footer {
 /* ── Neighboring senate + multi-pack ──────────────────────────────── */
 .pp-section-neighbor { background: #fefce8; color: #854d0e; border-left: 5px solid #d97706; }
 .pp-neighbor-group-sep td { border-top: 3px solid #d97706; padding: 0; height: 3px; background: #fef9c3; }
+.pp-house-group-sep td { border-top: 3px solid #16a34a; padding: 0; height: 3px; background: #dcfce7; }
 .pp-role-multipak { background: #7c3aed; }
 .pp-role-anchor   { background: #dc2626; }
 
@@ -1152,9 +1153,13 @@ var PP = (function() {
     if (pack.houseMembers.length) {
       parts.push('<div class="pp-section-label pp-section-house">House Districts ('+pack.houseMembers.length+')</div>');
       parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
-      var hdCounts = {};
+      var hdCounts = {}, prevHD = null;
       pack.houseMembers.forEach(function(m) { hdCounts[m.dnum] = (hdCounts[m.dnum] || 0) + 1; });
       pack.houseMembers.forEach(function(member) {
+        if (prevHD !== null && member.dnum !== prevHD) {
+          parts.push('<tr class="pp-house-group-sep"><td colspan="20"></td></tr>');
+        }
+        prevHD = member.dnum;
         var hdm = (member.lean && member.lean.in_index !== null) ? member.lean.in_index : 0.5;
         var roleLabel, roleCls;
         if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
@@ -1169,12 +1174,7 @@ var PP = (function() {
     if (pack.neighboringSenate && pack.neighboringSenate.length) {
       parts.push('<div class="pp-section-label pp-section-neighbor">🤝 Neighboring Senate Districts</div>');
       parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
-      var prevNeighborSD = null;
       pack.neighboringSenate.forEach(function(cand) {
-        if (prevNeighborSD !== null && cand.dnum !== prevNeighborSD) {
-          parts.push('<tr class="pp-neighbor-group-sep"><td colspan="20"></td></tr>');
-        }
-        prevNeighborSD = cand.dnum;
         parts.push(renderEntry(cand, { isSenate: true }));
       });
       parts.push('</tbody></table></div>');
@@ -2039,7 +2039,12 @@ var PP = (function() {
     if (result.houseMembers.length) {
       parts.push('<div class="pp-section-label pp-section-house">House Candidates in Your Pack ('+result.houseMembers.length+')</div>');
       parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+      var prevMyPackHD = null;
       result.houseMembers.forEach(function(member) {
+        if (prevMyPackHD !== null && member.dnum !== prevMyPackHD) {
+          parts.push('<tr class="pp-house-group-sep"><td colspan="20"></td></tr>');
+        }
+        prevMyPackHD = member.dnum;
         var hdm = (member.lean && member.lean.in_index !== null) ? member.lean.in_index : 0.5;
         var roleLabel, roleCls;
         if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
