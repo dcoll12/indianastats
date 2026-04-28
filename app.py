@@ -250,6 +250,23 @@ def load_partisan_data():
         return {"congressional": {}, "senate": {}, "house": {}}
 
 
+def load_partisan_data_2010():
+    """Load pre-2021-redistricting (2010 boundaries) lean data from data_2010.json."""
+    try:
+        data_path = Path(__file__).parent / "data_2010.json"
+        with open(data_path) as f:
+            data = json.load(f)
+        lookup = {"congressional": {}, "senate": {}, "house": {}}
+        for dtype in ("congressional", "senate", "house"):
+            for item in data.get(dtype, []):
+                lookup[dtype][item["district"]] = item
+        return lookup
+    except FileNotFoundError:
+        return None
+    except Exception:
+        return {"congressional": {}, "senate": {}, "house": {}}
+
+
 @st.cache_data(ttl=3600)
 def load_district_data():
     """Load Indiana district-match lookup tables (counties <-> HD/SD/CD)."""
@@ -677,6 +694,12 @@ GRASSROOTS_CSS = """
 .gt-legend-row { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 4px; }
 .gt-legend-item { display: flex; align-items: center; gap: 5px; }
 .gt-legend-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 2px; flex-shrink: 0; }
+th.gt-2010-col {
+    border-left: 3px solid #64748b !important;
+    background: #d1d5db !important;
+    font-style: italic;
+}
+td.gt-lean-2010 { border-left: 3px solid #94a3b8 !important; }
 </style>
 """
 
@@ -721,7 +744,7 @@ TW_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" fill="#1DA1F2"><path d
 BLU_SVG = '<svg width="18" height="18" viewBox="0 0 568 501" fill="#0085FF"><path d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.21C491.866-1.611 568-28.906 568 57.947c0 17.346-9.945 145.713-15.778 166.555-20.275 72.453-94.155 90.933-159.875 79.748C507.222 323.8 536.444 388.56 473.333 453.32c-119.86 122.992-172.272-30.859-185.702-70.281-2.462-7.227-3.614-10.608-3.631-7.733-.017-2.875-1.169.506-3.631 7.733-13.43 39.422-65.842 193.273-185.702 70.281-63.111-64.76-33.89-129.52 30.986-149.071C60.005 315.434-13.876 296.954-34.151 224.502-39.984 203.66-49.929 75.293-49.929 57.947c0-86.853 76.134-59.558 123.121-24.283z"/></svg>'
 
 
-def render_grassroots_table(df, partisan_data, race_results=None, senate_2022=None, district_geojson=None):
+def render_grassroots_table(df, partisan_data, race_results=None, senate_2022=None, district_geojson=None, partisan_data_2010=None):
     """Generate HTML for the Virginia Grassroots-style election table (candidates only)."""
     race_results = race_results or {}
     rows_data = []
@@ -732,6 +755,7 @@ def render_grassroots_table(df, partisan_data, race_results=None, senate_2022=No
             continue
         dtype, dnum = determine_race(c)
         pdata = partisan_data.get(dtype, {}).get(dnum, {}) if dtype else {}
+        pdata_2010 = partisan_data_2010.get(dtype, {}).get(dnum, {}) if (partisan_data_2010 and dtype) else {}
         rdata = race_results.get(dtype, {}).get(dnum, {}) if dtype else {}
         race_year = None
         if dtype == 'senate' and not rdata and senate_2022:
@@ -760,6 +784,8 @@ def render_grassroots_table(df, partisan_data, race_results=None, senate_2022=No
             'l2020': pdata.get('label_2020', '—'),
             'l2024': pdata.get('label_2024', '—'),
             'lidx': pdata.get('in_index_label', '—'),
+            'midx_2010': pdata_2010.get('in_index'),
+            'lidx_2010': pdata_2010.get('in_index_label', '—'),
             'party': pdata.get('party', ''),
             'representative': pdata.get('representative', ''),
             'race_r': rdata.get('r'),
@@ -804,9 +830,11 @@ def render_grassroots_table(df, partisan_data, race_results=None, senate_2022=No
         '</div>'
     )
 
+    col_2010_header = '<th class="gt-2010-col">2010 Bound.</th>' if partisan_data_2010 else ''
+    colspan = 10 if partisan_data_2010 else 9
     parts = [GRASSROOTS_CSS, legend_html, '<div class="gt-wrapper"><table class="gt-table">',
              '<thead><tr>',
-             '<th>2020 Pres</th><th>2024 Pres</th><th>IN-Index</th>',
+             f'<th>2020 Pres</th><th>2024 Pres</th><th>IN-Index</th>{col_2010_header}',
              '<th>Dist</th><th>Location</th><th>Holds Seat</th><th>Prev Race Results</th><th>Dem Candidate/s</th>',
              '<th>Website</th><th>Social Media</th>',
              '</tr></thead><tbody>']
@@ -815,10 +843,14 @@ def render_grassroots_table(df, partisan_data, race_results=None, senate_2022=No
         bg, tc = get_lean_color(m)
         return f'<td class="gt-lean" style="background:{bg};color:{tc};">{label}</td>'
 
+    def lean_cell_2010(m, label):
+        bg, tc = get_lean_color(m)
+        return f'<td class="gt-lean gt-lean-2010" style="background:{bg};color:{tc};">{label}</td>'
+
     for seat, group in groupby(rows_data, key=lambda x: x['county']):
         seat_rows = list(group)
         header_label = seat.upper() if seat in ('Statewide', 'Unassigned') else seat
-        parts.append(f'<tr class="gt-group-header"><td colspan="9">{header_label}</td></tr>')
+        parts.append(f'<tr class="gt-group-header"><td colspan="{colspan}">{header_label}</td></tr>')
 
         for rd in seat_rows:
             c = rd['contact']
@@ -944,11 +976,13 @@ def render_grassroots_table(df, partisan_data, race_results=None, senate_2022=No
                 race_cell = '<td class="gt-votes">—</td>'
 
             row_attrs = f'data-dtype="{dtype or ""}" data-dnum="{dnum or ""}"'
+            cell_2010 = lean_cell_2010(rd['midx_2010'], rd['lidx_2010']) if partisan_data_2010 else ''
             parts.append(
                 f'<tr class="gt-row" {row_attrs}>'
                 f'{lean_cell(rd["m2020"], rd["l2020"])}'
                 f'{lean_cell(rd["m2024"], rd["l2024"])}'
                 f'{lean_cell(rd["midx"], rd["lidx"])}'
+                f'{cell_2010}'
                 f'{dist_cell}'
                 f'<td class="gt-loc">{loc}</td>'
                 f'{party_cell}{race_cell}{cand_cell}{btns_cell}{social_cell}'
@@ -2043,7 +2077,22 @@ elif view_mode == "🗺 Grassroots Table":
     partisan_data = load_partisan_data()
     race_results = load_race_results()
     senate_2022 = load_senate_2022_results()
-    st.markdown(render_grassroots_table(filtered, partisan_data, race_results, senate_2022), unsafe_allow_html=True)
+    with st.expander("⚙ Advanced Settings"):
+        show_2010 = st.toggle(
+            "Show 2010 boundary IN-Index",
+            value=False,
+            key="show_2010_boundaries",
+            help="Compare current IN-Index with what it would be under pre-2021 redistricting boundaries.",
+        )
+    partisan_data_2010 = None
+    if st.session_state.get("show_2010_boundaries"):
+        partisan_data_2010 = load_partisan_data_2010()
+        if partisan_data_2010 is None:
+            st.info("2010 boundary data not yet generated. Run: `python build_table.py --mode=2010`")
+    st.markdown(
+        render_grassroots_table(filtered, partisan_data, race_results, senate_2022, partisan_data_2010=partisan_data_2010),
+        unsafe_allow_html=True,
+    )
 elif view_mode == "📊 Grid":
     cards_html = '<div class="contact-grid">' + \
         "".join(build_card(row.to_dict()) for _, row in filtered.iterrows()) + \
