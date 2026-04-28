@@ -225,6 +225,7 @@ header p {
         <button class="dmt-layer-btn dmt-active" id="dmt-btn-house" onclick="DMT.switchLayer('house')">House Districts (HD)</button>
         <button class="dmt-layer-btn" id="dmt-btn-senate" onclick="DMT.switchLayer('senate')">Senate Districts (SD)</button>
         <button class="dmt-layer-btn" id="dmt-btn-congressional" onclick="DMT.switchLayer('congressional')">Congressional (CD)</button>
+        <button class="dmt-layer-btn" id="dmt-btn-county" onclick="DMT.switchLayer('county')">County View</button>
       </div>
       <div id="dmt-map"></div>
       <div id="dmt-map-status" class="dmt-map-status">Click a district on the map to look it up</div>
@@ -242,6 +243,8 @@ var DMT = (function() {
   var dmtMap = null;
   var dmtLayers = {};
   var dmtActiveLayer = 'house';
+  var countyLayer = null;
+  var selectedCounty = null;
 
   var CSV_URL = 'https://docs.google.com/spreadsheets/d/1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw/export?format=csv&gid=918237840';
   var candidatesData = null;
@@ -375,14 +378,76 @@ var DMT = (function() {
 
   function switchLayer(type) {
     dmtActiveLayer = type;
+    ['house', 'senate', 'congressional', 'county'].forEach(function(t) {
+      var btn = document.getElementById('dmt-btn-' + t);
+      if (btn) btn.classList.toggle('dmt-active', t === type);
+    });
     ['house', 'senate', 'congressional'].forEach(function(t) {
       if (!dmtLayers[t]) return;
       if (t === type) dmtLayers[t].addTo(dmtMap);
       else dmtMap.removeLayer(dmtLayers[t]);
-      var btn = document.getElementById('dmt-btn-' + t);
-      if (btn) btn.classList.toggle('dmt-active', t === type);
     });
-    if (dmtLayers[type]) dmtMap.fitBounds(dmtLayers[type].getBounds(), { padding: [10, 10] });
+    if (type === 'county') {
+      loadCountyLayer();
+    } else {
+      if (countyLayer && dmtMap.hasLayer(countyLayer)) dmtMap.removeLayer(countyLayer);
+      if (dmtLayers[type]) dmtMap.fitBounds(dmtLayers[type].getBounds(), { padding: [10, 10] });
+    }
+  }
+
+  function loadCountyLayer() {
+    var statusEl = document.getElementById('dmt-map-status');
+    if (countyLayer) {
+      countyLayer.addTo(dmtMap);
+      dmtMap.fitBounds(countyLayer.getBounds(), { padding: [10, 10] });
+      if (statusEl) statusEl.textContent = 'Click a county to see its districts and 2026 candidates';
+      return;
+    }
+    if (statusEl) statusEl.textContent = 'Loading county boundaries…';
+
+    var countyDefaultStyle  = { color: '#0891b2', weight: 1,   fillColor: '#e0f2fe', fillOpacity: 0.4 };
+    var countyHoverStyle    = { color: '#0e7490', weight: 2.5, fillColor: '#7dd3fc', fillOpacity: 0.6 };
+    var countySelectedStyle = { color: '#0369a1', weight: 2.5, fillColor: '#38bdf8', fillOpacity: 0.75 };
+
+    fetch('../County_Boundaries_of_Indiana_Current.geojson')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        countyLayer = L.geoJSON(data, {
+          style: countyDefaultStyle,
+          onEachFeature: function(feat, layer) {
+            var countyName = (feat.properties && (feat.properties.name || feat.properties.NAME)) || '';
+            layer.bindTooltip(countyName + ' County', { sticky: true, opacity: 0.9 });
+            layer.on('mouseover', function() {
+              if (layer !== selectedCounty) layer.setStyle(countyHoverStyle);
+              layer.bringToFront();
+            });
+            layer.on('mouseout', function() {
+              if (layer !== selectedCounty) layer.setStyle(countyDefaultStyle);
+            });
+            layer.on('click', function() {
+              if (selectedCounty) selectedCounty.setStyle(countyDefaultStyle);
+              selectedCounty = layer;
+              layer.setStyle(countySelectedStyle);
+              onCountyMapClick(countyName);
+            });
+          }
+        });
+        countyLayer.addTo(dmtMap);
+        dmtMap.fitBounds(countyLayer.getBounds(), { padding: [10, 10] });
+        if (statusEl) statusEl.textContent = 'Click a county to see its districts and 2026 candidates';
+      })
+      .catch(function() {
+        if (statusEl) statusEl.textContent = 'County map unavailable — boundary file could not be loaded.';
+      });
+  }
+
+  function onCountyMapClick(countyName) {
+    if (!countyName) return;
+    var countyInput = document.getElementById('dmt-county');
+    var statusEl = document.getElementById('dmt-map-status');
+    if (countyInput) countyInput.value = countyName;
+    if (statusEl) statusEl.textContent = countyName + ' County selected — results shown in left panel';
+    lookupByCounty();
   }
 
   function onMapClick(dtype, dnum) {
