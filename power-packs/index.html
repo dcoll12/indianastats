@@ -424,11 +424,11 @@ footer {
   </header>
 
   <div class="pp-controls">
-    <div class="pp-mode-toggle" title="All Packs: organized by CD with candidates shown in every pack they appear in. Focus Packs: each candidate appears exactly once, grouped by priority tier.">
-      <button class="pp-mode-btn active" id="pp-btn-all"    onclick="PP.setMode('all')">By CD</button>
-      <button class="pp-mode-btn"        id="pp-btn-county" onclick="PP.setMode('county')">📍 By County</button>
-      <button class="pp-mode-btn"        id="pp-btn-focus"  onclick="PP.setMode('focus')">⚡ Focus</button>
+    <div class="pp-mode-toggle" title="Focus: each candidate once, grouped by priority tier. By Senate: CD-organized packs anchored by Senate races. By House: house-district-first view. By County: filter by county. My Pack: build your candidate's personal coalition.">
+      <button class="pp-mode-btn active" id="pp-btn-focus"  onclick="PP.setMode('focus')">⚡ Focus</button>
+      <button class="pp-mode-btn"        id="pp-btn-all"    onclick="PP.setMode('all')">By Senate</button>
       <button class="pp-mode-btn"        id="pp-btn-house"  onclick="PP.setMode('house')">🏠 By House</button>
+      <button class="pp-mode-btn"        id="pp-btn-county" onclick="PP.setMode('county')">📍 By County</button>
       <button class="pp-mode-btn"        id="pp-btn-mypack" onclick="PP.setMode('mypack')">🎯 My Pack</button>
     </div>
     <div id="pp-cd-select-wrap">
@@ -469,7 +469,7 @@ footer {
 <script>
 /* ── Power Packs module ─────────────────────────────────────────────── */
 var PP = (function() {
-  var state = { rows: [], leanLookup: {}, districtData: {}, loaded: false, mode: 'all', selectedCD: 1, selectedCounty: '', selectedCandidate: '' };
+  var state = { rows: [], leanLookup: {}, districtData: {}, loaded: false, mode: 'focus', selectedCD: 1, selectedCounty: '', selectedCandidate: '' };
   var CSV_URL = 'https://docs.google.com/spreadsheets/d/1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw/export?format=csv&gid=918237840';
   var SEARCH_FIELDS = ['First Name', 'Last Name', 'Home City', 'Counties'];
 
@@ -808,6 +808,50 @@ var PP = (function() {
       });
     });
 
+    // Add neighboring SD senate candidates and competitive neighboring HD candidates to each pack
+    Object.values(packBySD).forEach(function(pack) {
+      var allSDHDs = ((dd.sd_to_hds || {})[String(pack.sdNum)] || []).map(Number);
+      var sharedHDSDs = new Set();
+      allSDHDs.forEach(function(hd) {
+        ((dd.hd_to_sds || {})[String(hd)] || []).map(Number).forEach(function(s) {
+          if (s !== pack.sdNum) sharedHDSDs.add(s);
+        });
+      });
+
+      var neighboringSenate = [];
+      sharedHDSDs.forEach(function(s) {
+        (senateBySD[s] || []).forEach(function(e) { neighboringSenate.push(e); });
+      });
+      neighboringSenate.sort(function(a, b) {
+        var ma = (a.lean && a.lean.in_index !== null) ? Math.abs(a.lean.in_index) : 1;
+        var mb = (b.lean && b.lean.in_index !== null) ? Math.abs(b.lean.in_index) : 1;
+        return ma - mb;
+      });
+      pack.neighboringSenate = neighboringSenate;
+
+      var packHDSet = new Set(allSDHDs);
+      var neighboringHouseByHD = {};
+      sharedHDSDs.forEach(function(s) {
+        ((dd.sd_to_hds || {})[String(s)] || []).map(Number).forEach(function(hd) {
+          if (!packHDSet.has(hd) && houseByHD[hd] && !neighboringHouseByHD[hd]) {
+            var lean = (ll.house || {})[hd] || null;
+            var idx = (lean && lean.in_index !== null) ? lean.in_index : 1;
+            if (idx <= 0.25) neighboringHouseByHD[hd] = houseByHD[hd];
+          }
+        });
+      });
+      var neighboringHouse = [];
+      Object.keys(neighboringHouseByHD).forEach(function(hd) {
+        neighboringHouseByHD[hd].forEach(function(e) { neighboringHouse.push(e); });
+      });
+      neighboringHouse.sort(function(a, b) {
+        var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
+        var mb = (b.lean && b.lean.in_index !== null) ? b.lean.in_index : 0.5;
+        return ma - mb;
+      });
+      pack.neighboringHouse = neighboringHouse;
+    });
+
     // Expand packs with multiple senate candidates into separate pack containers
     var focusPackList = [];
     Object.values(packBySD).forEach(function(pack) {
@@ -922,6 +966,29 @@ var PP = (function() {
           return ma - mb;
         });
 
+        // Find house candidates in competitive neighboring HDs — HDs that belong to a
+        // neighboring SD but aren't part of this pack's HD set (in_index ≤ 0.25)
+        var packHDSet = new Set(allSDHDs);
+        var neighboringHouseByHD = {};
+        sharedHDSDs.forEach(function(s) {
+          ((dd.sd_to_hds || {})[String(s)] || []).map(Number).forEach(function(hd) {
+            if (!packHDSet.has(hd) && houseByHD[hd] && !neighboringHouseByHD[hd]) {
+              var lean = (ll.house || {})[hd] || null;
+              var idx = (lean && lean.in_index !== null) ? lean.in_index : 1;
+              if (idx <= 0.25) neighboringHouseByHD[hd] = houseByHD[hd];
+            }
+          });
+        });
+        var neighboringHouse = [];
+        Object.keys(neighboringHouseByHD).forEach(function(hd) {
+          neighboringHouseByHD[hd].forEach(function(e) { neighboringHouse.push(e); });
+        });
+        neighboringHouse.sort(function(a, b) {
+          var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
+          var mb = (b.lean && b.lean.in_index !== null) ? b.lean.in_index : 0.5;
+          return ma - mb;
+        });
+
         packs.push({
           sdNum: sdNum,
           cdNum: cdNum,
@@ -930,7 +997,8 @@ var PP = (function() {
           counties: (dd.sd_to_counties || {})[String(sdNum)] || [],
           senateCandidates: senateCandidates,
           houseMembers: houseMembers,
-          neighboringSenate: neighboringSenate
+          neighboringSenate: neighboringSenate,
+          neighboringHouse: neighboringHouse
         });
       });
 
@@ -1183,6 +1251,24 @@ var PP = (function() {
       parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
       pack.neighboringSenate.forEach(function(cand) {
         parts.push(renderEntry(cand, { isSenate: true }));
+      });
+      parts.push('</tbody></table></div>');
+    }
+
+    // Neighboring HD candidates — competitive house races (≤ R+25%) in adjacent HDs that share
+    // a Senate district with this pack but aren't already assigned here
+    if (pack.neighboringHouse && pack.neighboringHouse.length) {
+      parts.push('<div class="pp-section-label pp-section-neighbor" style="border-left-color:#b45309">🏘 Neighboring House Districts</div>');
+      parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+      var nhHDCounts = {};
+      pack.neighboringHouse.forEach(function(m) { nhHDCounts[m.dnum] = (nhHDCounts[m.dnum] || 0) + 1; });
+      pack.neighboringHouse.forEach(function(member) {
+        var hdm = (member.lean && member.lean.in_index !== null) ? member.lean.in_index : 0.5;
+        var roleLabel, roleCls;
+        if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
+        else if (hdm <= 0.25) { roleLabel = '📊 Challenge';   roleCls = 'challenge'; }
+        else                   { roleLabel = '🗳️ Turnout';     roleCls = 'turnout'; }
+        parts.push(renderEntry(member, { isHouse: true, roleLabel: roleLabel, roleCls: roleCls, isPrimary: nhHDCounts[member.dnum] > 1 }));
       });
       parts.push('</tbody></table></div>');
     }
@@ -1688,7 +1774,7 @@ var PP = (function() {
       var btn = $$('pp-btn-' + m);
       if (btn) btn.classList.toggle('active', m === mode);
     });
-    var url = mode === 'focus' ? '?mode=focus' : mode === 'county' ? '?mode=county' : mode === 'house' ? '?mode=house' : mode === 'mypack' ? '?mode=mypack' : location.pathname;
+    var url = mode === 'all' ? '?mode=senate' : mode === 'county' ? '?mode=county' : mode === 'house' ? '?mode=house' : mode === 'mypack' ? '?mode=mypack' : location.pathname;
     history.replaceState(null, '', url);
     render();
   }
@@ -1799,8 +1885,8 @@ var PP = (function() {
     state.loaded = true;
     var urlParams = new URLSearchParams(location.search);
     var urlMode = urlParams.get('mode');
-    if (urlMode === 'focus' || urlMode === 'county' || urlMode === 'house' || urlMode === 'mypack') {
-      state.mode = urlMode;
+    if (urlMode === 'senate' || urlMode === 'county' || urlMode === 'house' || urlMode === 'mypack') {
+      state.mode = urlMode === 'senate' ? 'all' : urlMode;
       ['all', 'focus', 'county', 'house', 'mypack'].forEach(function(m) {
         var btn = $$('pp-btn-' + m);
         if (btn) btn.classList.toggle('active', m === state.mode);
