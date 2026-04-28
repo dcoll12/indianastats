@@ -353,6 +353,49 @@ footer {
   .pp-map-panel { width: 100%; position: static; }
   #pp-map { height: 260px; }
 }
+
+/* ── Neighboring senate + multi-pack ──────────────────────────────── */
+.pp-section-neighbor { background: #fefce8; color: #854d0e; border-left: 5px solid #d97706; }
+.pp-role-multipak { background: #7c3aed; }
+.pp-role-anchor   { background: #dc2626; }
+
+/* ── My Pack mode ─────────────────────────────────────────────────── */
+#pp-btn-mypack.active { background: #dc2626; color: white; }
+.pp-candidate-select {
+  padding: 9px 14px; font-size: 0.9rem; font-weight: 600;
+  border: 2px solid #cbd5e1; border-radius: 8px;
+  background: white; cursor: pointer; min-width: 280px;
+}
+.pp-candidate-select:focus { outline: none; border-color: #dc2626; }
+.pp-mypack-hero {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
+  color: white; border-radius: 10px; padding: 18px 22px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+}
+.pp-mypack-hero-photo {
+  width: 72px; height: 72px; border-radius: 10px; object-fit: cover;
+  border: 3px solid rgba(255,255,255,0.5); flex-shrink: 0;
+}
+.pp-mypack-hero-initials {
+  width: 72px; height: 72px; border-radius: 10px; flex-shrink: 0;
+  background: rgba(255,255,255,0.2); display: flex; align-items: center;
+  justify-content: center; font-size: 1.5rem; font-weight: 700; color: white;
+}
+.pp-mypack-hero-info { flex: 1; min-width: 200px; }
+.pp-mypack-hero-name { font-size: 1.3rem; font-weight: 800; margin-bottom: 4px; }
+.pp-mypack-hero-dist { font-size: 0.82rem; opacity: 0.8; margin-bottom: 6px; }
+.pp-mypack-hero-stats { font-size: 0.78rem; opacity: 0.7; }
+.pp-mypack-coalition {
+  background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px;
+  padding: 10px 16px; margin-bottom: 12px; font-size: 0.82rem; color: #1e40af;
+}
+.pp-mypack-coalition strong { font-weight: 800; }
+.pp-mypack-district-chip {
+  display: inline-block; font-size: 0.72rem; font-weight: 600;
+  padding: 2px 8px; border-radius: 4px; margin: 2px;
+  background: #dbeafe; color: #1e40af;
+}
+.pp-mypack-district-chip.anchor { background: #fee2e2; color: #991b1b; }
 </style>
 </head>
 <body>
@@ -373,12 +416,16 @@ footer {
       <button class="pp-mode-btn"        id="pp-btn-county" onclick="PP.setMode('county')">📍 By County</button>
       <button class="pp-mode-btn"        id="pp-btn-focus"  onclick="PP.setMode('focus')">⚡ Focus</button>
       <button class="pp-mode-btn"        id="pp-btn-house"  onclick="PP.setMode('house')">🏠 By House</button>
+      <button class="pp-mode-btn"        id="pp-btn-mypack" onclick="PP.setMode('mypack')">🎯 My Pack</button>
     </div>
     <div id="pp-cd-select-wrap">
       <select id="pp-cd-select" class="pp-cd-select" onchange="PP.selectCD(this.value)" title="Select Congressional District"></select>
     </div>
     <div id="pp-county-select-wrap" style="display:none">
       <select id="pp-county-select" class="pp-cd-select" onchange="PP.selectCounty(this.value)" title="Select County"></select>
+    </div>
+    <div id="pp-candidate-select-wrap" style="display:none">
+      <select id="pp-candidate-select" class="pp-candidate-select" onchange="PP.selectCandidate(this.value)" title="Select Candidate"></select>
     </div>
     <div class="pp-search-box">
       <input type="text" id="pp-search" placeholder="🔍 Search candidates by name or location…" oninput="PP.render()">
@@ -409,7 +456,7 @@ footer {
 <script>
 /* ── Power Packs module ─────────────────────────────────────────────── */
 var PP = (function() {
-  var state = { rows: [], leanLookup: {}, districtData: {}, loaded: false, mode: 'all', selectedCD: 1, selectedCounty: '' };
+  var state = { rows: [], leanLookup: {}, districtData: {}, loaded: false, mode: 'all', selectedCD: 1, selectedCounty: '', selectedCandidate: '' };
   var CSV_URL = 'https://docs.google.com/spreadsheets/d/1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw/export?format=csv&gid=918237840';
   var SEARCH_FIELDS = ['First Name', 'Last Name', 'Home City', 'Counties'];
 
@@ -820,6 +867,23 @@ var PP = (function() {
           return ma - mb;
         });
 
+        // Find senate candidates from neighboring SDs that share at least one HD with this SD
+        var sharedHDSDs = new Set();
+        allSDHDs.forEach(function(hd) {
+          ((dd.hd_to_sds || {})[String(hd)] || []).map(Number).forEach(function(s) {
+            if (s !== sdNum) sharedHDSDs.add(s);
+          });
+        });
+        var neighboringSenate = [];
+        sharedHDSDs.forEach(function(s) {
+          (senateBySD[s] || []).forEach(function(e) { neighboringSenate.push(e); });
+        });
+        neighboringSenate.sort(function(a, b) {
+          var ma = (a.lean && a.lean.in_index !== null) ? Math.abs(a.lean.in_index) : 1;
+          var mb = (b.lean && b.lean.in_index !== null) ? Math.abs(b.lean.in_index) : 1;
+          return ma - mb;
+        });
+
         packs.push({
           sdNum: sdNum,
           cdNum: cdNum,
@@ -827,7 +891,8 @@ var PP = (function() {
           tier: sdTier(sdNum),
           counties: (dd.sd_to_counties || {})[String(sdNum)] || [],
           senateCandidates: senateCandidates,
-          houseMembers: houseMembers
+          houseMembers: houseMembers,
+          neighboringSenate: neighboringSenate
         });
       });
 
@@ -842,17 +907,17 @@ var PP = (function() {
         return ma - mb;
       });
 
-      // Deduplicate: each HD candidate appears in the most competitive pack only
-      var assignedHDs = new Set();
+      // House candidates intentionally appear in every overlapping SD pack — no deduplication.
+      // Mark entries that appear in more than one pack within this CD for visual context.
+      var hdPackCount = {};
       packs.forEach(function(pack) {
-        pack.houseMembers = pack.houseMembers.filter(function(m) {
-          if (assignedHDs.has(m.dnum)) return false;
-          assignedHDs.add(m.dnum);
-          return true;
-        });
+        pack.houseMembers.forEach(function(m) { hdPackCount[m.dnum] = (hdPackCount[m.dnum] || 0) + 1; });
+      });
+      packs.forEach(function(pack) {
+        pack.houseMembers.forEach(function(m) { m.appearsInMultiplePacks = (hdPackCount[m.dnum] || 0) > 1; });
       });
 
-      // Apply search filter after deduplication, then drop empty packs
+      // Apply search filter, then drop empty packs
       packs = packs.filter(function(p) {
         if (!p.senateCandidates.length && !p.houseMembers.length) return false;
         if (!search) return true;
@@ -909,6 +974,12 @@ var PP = (function() {
       : '';
     if (dtype === 'house' && isHouseCaucus(row)) {
       roleHtml = '<div class="pp-role-tag pp-role-caucus">🏛 House Caucus</div>' + roleHtml;
+    }
+    if (opts.multiPackNote) {
+      roleHtml += '<div class="pp-role-tag pp-role-multipak" title="This district overlaps multiple senate packs">↔ Multi-pack</div>';
+    }
+    if (opts.isAnchor) {
+      roleHtml = '<div class="pp-role-tag pp-role-anchor">⭐ Selected</div>' + roleHtml;
     }
 
     var first = clean(row, 'First Name'), last = clean(row, 'Last Name');
@@ -1028,7 +1099,7 @@ var PP = (function() {
       parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
       var senatePrimary = pack.senateCandidates.length > 1;
       pack.senateCandidates.forEach(function(cand) {
-        parts.push(renderEntry(cand, { isSenate: true, noOverlaps: true, isPrimary: senatePrimary }));
+        parts.push(renderEntry(cand, { isSenate: true, noOverlaps: true, isPrimary: senatePrimary, isAnchor: !!cand.isMyAnchor }));
       });
       parts.push('</tbody></table></div>');
     } else {
@@ -1048,7 +1119,17 @@ var PP = (function() {
         if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
         else if (hdm <= 0.25) { roleLabel = '📊 Challenge';   roleCls = 'challenge'; }
         else                   { roleLabel = '🗳️ Turnout';     roleCls = 'turnout'; }
-        parts.push(renderEntry(member, { isHouse: true, roleLabel: roleLabel, roleCls: roleCls, isPrimary: hdCounts[member.dnum] > 1 }));
+        parts.push(renderEntry(member, { isHouse: true, roleLabel: roleLabel, roleCls: roleCls, isPrimary: hdCounts[member.dnum] > 1, multiPackNote: !!member.appearsInMultiplePacks, isAnchor: !!member.isMyAnchor }));
+      });
+      parts.push('</tbody></table></div>');
+    }
+
+    // Neighboring senate candidates — from adjacent SDs that share at least one HD with this pack
+    if (pack.neighboringSenate && pack.neighboringSenate.length) {
+      parts.push('<div class="pp-section-label pp-section-neighbor">🤝 Neighboring Senate Districts</div>');
+      parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+      pack.neighboringSenate.forEach(function(cand) {
+        parts.push(renderEntry(cand, { isSenate: true }));
       });
       parts.push('</tbody></table></div>');
     }
@@ -1526,11 +1607,11 @@ var PP = (function() {
 
   function setMode(mode) {
     state.mode = mode;
-    ['all', 'focus', 'county', 'house'].forEach(function(m) {
+    ['all', 'focus', 'county', 'house', 'mypack'].forEach(function(m) {
       var btn = $$('pp-btn-' + m);
       if (btn) btn.classList.toggle('active', m === mode);
     });
-    var url = mode === 'focus' ? '?mode=focus' : mode === 'county' ? '?mode=county' : mode === 'house' ? '?mode=house' : location.pathname;
+    var url = mode === 'focus' ? '?mode=focus' : mode === 'county' ? '?mode=county' : mode === 'house' ? '?mode=house' : mode === 'mypack' ? '?mode=mypack' : location.pathname;
     history.replaceState(null, '', url);
     render();
   }
@@ -1540,8 +1621,45 @@ var PP = (function() {
     var out = $$('pp-output');
     out.className = '';
     var statsEl = $$('pp-stats');
-    var cdWrap     = $$('pp-cd-select-wrap');
-    var countyWrap = $$('pp-county-select-wrap');
+    var cdWrap        = $$('pp-cd-select-wrap');
+    var countyWrap    = $$('pp-county-select-wrap');
+    var candidateWrap = $$('pp-candidate-select-wrap');
+
+    if (state.mode === 'mypack') {
+      if (cdWrap)        cdWrap.style.display        = 'none';
+      if (countyWrap)    countyWrap.style.display    = 'none';
+      if (candidateWrap) candidateWrap.style.display = '';
+      updateCandidateDropdown();
+      if (!state.selectedCandidate) {
+        if (statsEl) statsEl.textContent = 'Select a candidate to generate their personal Power Pack';
+        out.innerHTML = '<div class="pp-status"><p>Select a candidate above to see their Power Pack — everyone whose district overlaps theirs.</p></div>';
+      } else {
+        var parts = state.selectedCandidate.split(':');
+        var cdtype = parts[0], cdnum = Number(parts[1]);
+        var result = buildMyPack(cdtype, cdnum);
+        var anchorRow = null;
+        if (result) {
+          state.rows.forEach(function(row) {
+            var race = determinePrimaryRace(row);
+            if (race.dtype === cdtype && race.dnum === cdnum && !anchorRow) anchorRow = row;
+          });
+        }
+        if (!result) {
+          out.innerHTML = '<div class="pp-status"><p>Could not build pack for this candidate.</p></div>';
+        } else {
+          out.innerHTML = renderMyPack(result, anchorRow);
+          var total = result.senateCandidates.length + result.houseMembers.length;
+          var prefix = cdtype === 'senate' ? 'SD' : 'HD';
+          if (statsEl) statsEl.textContent = prefix+'-'+cdnum+' · My Pack: '+total+' candidate'+(total!==1?'s':'')+' across '
+            +result.packSDs.length+' senate district'+(result.packSDs.length!==1?'s':'')+' &amp; '
+            +result.packHDs.length+' house district'+(result.packHDs.length!==1?'s':'');
+        }
+      }
+      if (window.MAP_wireDynamic) window.MAP_wireDynamic();
+      return;
+    }
+
+    if (candidateWrap) candidateWrap.style.display = 'none';
 
     if (state.mode === 'focus') {
       if (cdWrap)     cdWrap.style.display     = 'none';
@@ -1603,9 +1721,9 @@ var PP = (function() {
     state.loaded = true;
     var urlParams = new URLSearchParams(location.search);
     var urlMode = urlParams.get('mode');
-    if (urlMode === 'focus' || urlMode === 'county' || urlMode === 'house') {
+    if (urlMode === 'focus' || urlMode === 'county' || urlMode === 'house' || urlMode === 'mypack') {
       state.mode = urlMode;
-      ['all', 'focus', 'county', 'house'].forEach(function(m) {
+      ['all', 'focus', 'county', 'house', 'mypack'].forEach(function(m) {
         var btn = $$('pp-btn-' + m);
         if (btn) btn.classList.toggle('active', m === state.mode);
       });
@@ -1702,7 +1820,234 @@ var PP = (function() {
     XLSX.writeFile(wb, 'Indiana_Power_Packs.xlsx');
   }
 
-  return { init: init, render: render, reset: reset, setMode: setMode, selectCD: selectCD, selectCounty: selectCounty, export: exportData, _reload: function(){state.loaded=false;init();} };
+  // ── My Pack generator ────────────────────────────────────────────────
+  // Builds a candidate-centric pack: the anchor candidate's full geographic
+  // coalition — every SD and HD whose boundaries overlap theirs, plus all
+  // candidates running in those districts.
+  function buildMyPack(dtype, dnum) {
+    if (!dtype || !dnum) return null;
+    var dd = state.districtData;
+    var ll = state.leanLookup;
+
+    var senateBySD = {}, houseByHD = {};
+    state.rows.forEach(function(row) {
+      var role = clean(row, 'Role').toLowerCase();
+      if (!role.includes('candidate') || role.includes('former')) return;
+      var race = determinePrimaryRace(row);
+      var lean = (race.dtype && race.dnum) ? ((ll[race.dtype] || {})[race.dnum] || null) : null;
+      var entry = { row: row, dtype: race.dtype, dnum: race.dnum, lean: lean };
+      if (race.dtype === 'senate') {
+        if (!senateBySD[race.dnum]) senateBySD[race.dnum] = [];
+        senateBySD[race.dnum].push(entry);
+      } else if (race.dtype === 'house') {
+        if (!houseByHD[race.dnum]) houseByHD[race.dnum] = [];
+        houseByHD[race.dnum].push(entry);
+      }
+    });
+
+    var packSDs = [], packHDs = [];
+
+    if (dtype === 'senate') {
+      packSDs.push(dnum);
+      var myHDs = ((dd.sd_to_hds || {})[String(dnum)] || []).map(Number);
+      myHDs.forEach(function(hd) {
+        if (packHDs.indexOf(hd) < 0) packHDs.push(hd);
+        ((dd.hd_to_sds || {})[String(hd)] || []).map(Number).forEach(function(s) {
+          if (packSDs.indexOf(s) < 0) packSDs.push(s);
+        });
+      });
+    } else if (dtype === 'house') {
+      packHDs.push(dnum);
+      var mySDs = ((dd.hd_to_sds || {})[String(dnum)] || []).map(Number);
+      mySDs.forEach(function(sd) {
+        if (packSDs.indexOf(sd) < 0) packSDs.push(sd);
+        ((dd.sd_to_hds || {})[String(sd)] || []).map(Number).forEach(function(hd) {
+          if (packHDs.indexOf(hd) < 0) packHDs.push(hd);
+        });
+      });
+    }
+
+    var senateCandidates = [];
+    packSDs.forEach(function(sd) {
+      (senateBySD[sd] || []).forEach(function(e) {
+        senateCandidates.push(Object.assign({}, e, { isMyAnchor: sd === dnum && dtype === 'senate' }));
+      });
+    });
+
+    var houseMembers = [];
+    packHDs.forEach(function(hd) {
+      (houseByHD[hd] || []).forEach(function(e) {
+        houseMembers.push(Object.assign({}, e, { isMyAnchor: hd === dnum && dtype === 'house' }));
+      });
+    });
+
+    senateCandidates.sort(function(a, b) {
+      var ta = sdTier(a.dnum), tb = sdTier(b.dnum);
+      if (ta !== tb) return { 1:1, 2:2, 3:3, 0:4 }[ta] - { 1:1, 2:2, 3:3, 0:4 }[tb];
+      var ma = (a.lean && a.lean.in_index !== null) ? Math.abs(a.lean.in_index) : 1;
+      var mb = (b.lean && b.lean.in_index !== null) ? Math.abs(b.lean.in_index) : 1;
+      return ma - mb;
+    });
+
+    houseMembers.sort(function(a, b) {
+      var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
+      var mb = (b.lean && b.lean.in_index !== null) ? b.lean.in_index : 0.5;
+      return ma - mb;
+    });
+
+    var allCounties = {};
+    packSDs.forEach(function(sd) {
+      ((dd.sd_to_counties || {})[String(sd)] || []).forEach(function(c) { allCounties[c] = true; });
+    });
+
+    var anchorLean = dtype === 'senate'
+      ? (ll.senate || {})[dnum] || null
+      : (ll.house || {})[dnum] || null;
+
+    return {
+      dtype: dtype, dnum: dnum,
+      anchorLean: anchorLean,
+      tier: dtype === 'senate' ? sdTier(dnum) : hdTier(dnum),
+      packSDs: packSDs, packHDs: packHDs,
+      senateCandidates: senateCandidates,
+      houseMembers: houseMembers,
+      counties: Object.keys(allCounties).sort()
+    };
+  }
+
+  function renderMyPack(result, anchorRow) {
+    if (!result) return '<div class="pp-status"><p>No pack data available.</p></div>';
+    var parts = [];
+    var dtype = result.dtype, dnum = result.dnum;
+    var prefix = dtype === 'senate' ? 'SD' : 'HD';
+
+    // Hero card for the selected candidate
+    var first = anchorRow ? clean(anchorRow, 'First Name') : '';
+    var last  = anchorRow ? clean(anchorRow, 'Last Name')  : '';
+    var name  = (first + ' ' + last).trim() || (prefix + '-' + dnum);
+    var initials = ((first[0]||'')+(last[0]||'')).toUpperCase() || '?';
+    var rawPhoto = anchorRow ? (clean(anchorRow, 'Photo URL') || clean(anchorRow, 'Photo')) : '';
+    var photo = rawPhoto ? driveThumbnail(rawPhoto) : '';
+    var photoHtml = photo
+      ? '<img class="pp-mypack-hero-photo" src="'+esc(photo)+'" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><div class="pp-mypack-hero-initials" style="display:none">'+esc(initials)+'</div>'
+      : '<div class="pp-mypack-hero-initials">'+esc(initials)+'</div>';
+    var anchorLean = result.anchorLean;
+    var distLabel = prefix + '-' + dnum;
+    var indexLabel = anchorLean ? (anchorLean.in_index_label || '—') : '—';
+    var city = anchorRow ? (clean(anchorRow, 'Home City') || '') : '';
+    var totalCands = result.senateCandidates.length + result.houseMembers.length;
+
+    parts.push('<div class="pp-mypack-hero">');
+    parts.push(photoHtml);
+    parts.push('<div class="pp-mypack-hero-info">');
+    parts.push('<div class="pp-mypack-hero-name">'+esc(name)+'</div>');
+    parts.push('<div class="pp-mypack-hero-dist">'+esc(distLabel)+(city ? ' · '+esc(city) : '')+(indexLabel !== '—' ? ' · IN-Index: '+esc(indexLabel) : '')+'</div>');
+    parts.push('<div class="pp-mypack-hero-stats">Power Pack: '+totalCands+' candidate'+(totalCands!==1?'s':'')+' across '
+      +result.packSDs.length+' senate district'+(result.packSDs.length!==1?'s':'')+' &amp; '
+      +result.packHDs.length+' house district'+(result.packHDs.length!==1?'s':'')+'</div>');
+    parts.push('</div></div>');
+
+    // Coalition map: show which districts are in this pack
+    parts.push('<div class="pp-mypack-coalition">');
+    parts.push('<strong>Your coalition</strong> — districts whose boundaries overlap yours:<br style="margin-bottom:4px">');
+    parts.push('<span style="font-size:0.77rem;opacity:0.75">Senate:&nbsp;</span>');
+    result.packSDs.slice().sort(function(a,b){return a-b;}).forEach(function(sd) {
+      var isAnchor = sd === dnum && dtype === 'senate';
+      parts.push('<span class="pp-mypack-district-chip'+(isAnchor?' anchor':'')+'" title="'+(isAnchor?'Your district':'Overlapping SD')+'">SD-'+sd+(isAnchor?' ★':'')+'</span>');
+    });
+    parts.push('&nbsp;&nbsp;<span style="font-size:0.77rem;opacity:0.75">House:&nbsp;</span>');
+    result.packHDs.slice().sort(function(a,b){return a-b;}).forEach(function(hd) {
+      var isAnchor = hd === dnum && dtype === 'house';
+      parts.push('<span class="pp-mypack-district-chip'+(isAnchor?' anchor':'')+'" title="'+(isAnchor?'Your district':'Overlapping HD')+'">HD-'+hd+(isAnchor?' ★':'')+'</span>');
+    });
+    if (result.counties.length) {
+      parts.push('<br><span style="font-size:0.74rem;opacity:0.65;margin-top:4px;display:inline-block">Counties: '+esc(result.counties.join(' · '))+'</span>');
+    }
+    parts.push('</div>');
+
+    // Senate candidates section
+    if (result.senateCandidates.length) {
+      parts.push('<div class="pp-section-label pp-section-senate">⚡ Senate Candidates in Your Pack</div>');
+      parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+      result.senateCandidates.forEach(function(cand) {
+        parts.push(renderEntry(cand, { isSenate: true, isAnchor: !!cand.isMyAnchor }));
+      });
+      parts.push('</tbody></table></div>');
+    }
+
+    // House candidates section
+    if (result.houseMembers.length) {
+      parts.push('<div class="pp-section-label pp-section-house">House Candidates in Your Pack ('+result.houseMembers.length+')</div>');
+      parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+      result.houseMembers.forEach(function(member) {
+        var hdm = (member.lean && member.lean.in_index !== null) ? member.lean.in_index : 0.5;
+        var roleLabel, roleCls;
+        if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
+        else if (hdm <= 0.25) { roleLabel = '📊 Challenge';   roleCls = 'challenge'; }
+        else                   { roleLabel = '🗳️ Turnout';     roleCls = 'turnout'; }
+        parts.push(renderEntry(member, { isHouse: true, roleLabel: roleLabel, roleCls: roleCls, isAnchor: !!member.isMyAnchor }));
+      });
+      parts.push('</tbody></table></div>');
+    }
+
+    if (!result.senateCandidates.length && !result.houseMembers.length) {
+      parts.push('<div class="pp-status"><p>No other candidates found in overlapping districts.</p></div>');
+    }
+
+    return '<div class="pp-pack-card-standalone">'+parts.join('')+'</div>';
+  }
+
+  function updateCandidateDropdown() {
+    var sel = $$('pp-candidate-select');
+    if (!sel) return;
+    var options = [];
+    state.rows.forEach(function(row) {
+      var role = clean(row, 'Role').toLowerCase();
+      if (!role.includes('candidate') || role.includes('former')) return;
+      var race = determinePrimaryRace(row);
+      if (!race.dtype || !race.dnum) return;
+      if (race.dtype !== 'senate' && race.dtype !== 'house') return;
+      var first = clean(row, 'First Name'), last = clean(row, 'Last Name');
+      var name = (first + ' ' + last).trim() || '—';
+      var prefix = race.dtype === 'senate' ? 'SD' : 'HD';
+      var lean = (state.leanLookup[race.dtype] || {})[race.dnum] || null;
+      var indexLabel = lean ? (lean.in_index_label || '') : '';
+      options.push({
+        value: race.dtype + ':' + race.dnum,
+        label: name + ' (' + prefix + '-' + race.dnum + (indexLabel ? ', ' + indexLabel : '') + ')',
+        dtype: race.dtype, dnum: race.dnum, name: name,
+        sortKey: last.toLowerCase() + ' ' + first.toLowerCase()
+      });
+    });
+    options.sort(function(a, b) { return a.sortKey.localeCompare(b.sortKey); });
+
+    var groups = { senate: [], house: [] };
+    options.forEach(function(opt) { (groups[opt.dtype] || []).push(opt); });
+
+    var html = '<option value="">— Select a candidate to generate their Power Pack —</option>';
+    if (groups.senate.length) {
+      html += '<optgroup label="Senate Candidates">';
+      groups.senate.forEach(function(opt) {
+        html += '<option value="'+esc(opt.value)+'"'+(opt.value === state.selectedCandidate ? ' selected' : '')+'>'+esc(opt.label)+'</option>';
+      });
+      html += '</optgroup>';
+    }
+    if (groups.house.length) {
+      html += '<optgroup label="House Candidates">';
+      groups.house.forEach(function(opt) {
+        html += '<option value="'+esc(opt.value)+'"'+(opt.value === state.selectedCandidate ? ' selected' : '')+'>'+esc(opt.label)+'</option>';
+      });
+      html += '</optgroup>';
+    }
+    sel.innerHTML = html;
+  }
+
+  function selectCandidate(val) {
+    state.selectedCandidate = val;
+    render();
+  }
+
+  return { init: init, render: render, reset: reset, setMode: setMode, selectCD: selectCD, selectCounty: selectCounty, selectCandidate: selectCandidate, export: exportData, _reload: function(){state.loaded=false;init();} };
 })();
 
 /* ── District map ────────────────────────────────────────────────────── */
