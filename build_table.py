@@ -615,7 +615,7 @@ def generate_table_rows(districts, prefix):
         if d.get('url'):
             name_html = f'<a href="{d["url"]}" target="_blank" rel="noopener">{d["representative"]}</a>'
 
-        rows.append(f'''        <tr>
+        rows.append(f'''        <tr data-district="{d['district']}">
           <td class="{cls_2020}" data-sort-value="{sort_2020}">{l2020}</td>
           <td class="{cls_2022}" data-sort-value="{sort_2022}">{l2022}</td>
           <td class="{cls_2024}" data-sort-value="{sort_2024}">{d['label_2024']}</td>
@@ -644,7 +644,7 @@ def generate_table_rows_2010(districts, prefix):
         sort_2024 = d['margin_2024'] if d.get('margin_2024') is not None else 999
         sort_avg = d['in_index'] if d.get('in_index') is not None else 999
 
-        rows.append(f'''        <tr>
+        rows.append(f'''        <tr data-district="{d['district']}">
           <td class="{cls_2020}" data-sort-value="{sort_2020}">{d.get('label_2020', 'N/A')}</td>
           <td class="{cls_2024}" data-sort-value="{sort_2024}">{d.get('label_2024', 'N/A')}</td>
           <td class="{cls_avg} col-avg" data-sort-value="{sort_avg}">{d.get('in_index_label', 'N/A')}</td>
@@ -766,6 +766,7 @@ function setBoundaryView(view) {{
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Indiana Partisan Lean Index (IN-Index)</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
 
@@ -777,7 +778,7 @@ body {{
 }}
 
 .container {{
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 20px;
 }}
@@ -932,11 +933,7 @@ thead th.sorted .sort-arrow {{
 
 tbody tr {{
   border-bottom: 1px solid #f1f5f9;
-  transition: background 0.15s;
-}}
-
-tbody tr:hover {{
-  background: #f8fafc;
+  transition: background 0.1s;
 }}
 
 tbody td {{
@@ -1015,6 +1012,75 @@ footer .sources {{
   border-top: 1px solid #e2e8f0;
 }}
 
+/* Main layout — map + content side by side */
+.main-layout {{
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}}
+
+.map-panel {{
+  width: 320px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  overflow: hidden;
+  position: sticky;
+  top: 20px;
+}}
+
+.map-label {{
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #475569;
+  background: #e2e8f0;
+  border-bottom: 1px solid #cbd5e1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+}}
+
+#indiana-map {{
+  height: 540px;
+}}
+
+.content-side {{
+  flex: 1;
+  min-width: 0;
+}}
+
+.tab-content {{
+  display: none;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  overflow: hidden;
+  max-height: calc(100vh - 260px);
+  overflow-y: auto;
+}}
+
+.tab-content.active {{
+  display: block;
+}}
+
+tbody tr {{
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.1s;
+  cursor: pointer;
+}}
+
+tbody tr:hover, tbody tr.map-highlighted {{
+  background: #fef9c3 !important;
+}}
+
+tbody tr.map-locked {{
+  background: #fde68a !important;
+}}
+
 /* Boundary toggle */
 .boundary-toggle {{
   display: flex;
@@ -1056,6 +1122,12 @@ footer .sources {{
 .banner-2010 p {{ line-height: 1.6; }}
 
 /* Responsive */
+@media (max-width: 900px) {{
+  .main-layout {{ flex-direction: column; }}
+  .map-panel {{ width: 100%; position: static; }}
+  #indiana-map {{ height: 300px; }}
+  .tab-content {{ max-height: none; }}
+}}
 @media (max-width: 768px) {{
   header h1 {{ font-size: 22px; }}
   .tabs {{ flex-direction: column; }}
@@ -1075,12 +1147,17 @@ footer .sources {{
     <p>How far each district leans Republican or Democratic, based on the average of 2020 and 2024 presidential results and the 2022 race result, apportioned to districts using census block assignments.</p>
     <nav class="site-nav">
       <a class="active" href="./">Indiana Partisan Lean Index</a>
-      <a href="directory/">Candidate Directory</a>
       <a href="power-packs/">Power Packs</a>
       <a href="district-match/">District Match</a>
     </nav>
   </header>
 {boundary_toggle}
+  <div class="main-layout">
+    <div class="map-panel">
+      <div class="map-label" id="map-label">Hover or click a district</div>
+      <div id="indiana-map"></div>
+    </div>
+    <div class="content-side">
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('congressional')">
       Congressional
@@ -1174,6 +1251,9 @@ footer .sources {{
 {house_2010_section}
   </div>
 
+    </div><!-- /.content-side -->
+  </div><!-- /.main-layout -->
+
   <footer>
     <h3>Methodology</h3>
     <p>
@@ -1209,52 +1289,206 @@ footer .sources {{
   </footer>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 {js_2010}
 
+// ── Map setup ──────────────────────────────────────────────────────────────
+const GEO_SOURCES = {{
+  current: {{
+    congressional: 'Congressional_District_Boundaries_Current.geojson',
+    senate:        'General_Assembly_Senate_Districts_Current.geojson',
+    house:         'General_Assembly_House_Districts_Current(1).geojson',
+  }},
+  '2010': {{
+    congressional: 'Congressional_District_Boundaries_2009-2011(1).geojson',
+    senate:        'Indiana_General_Assembly_Senate_Districts_2009-2011.geojson',
+    house:         'Indiana_General_Assembly_House_Districts_2009-2011.geojson',
+  }},
+}};
+
+const DIST_PROP = {{
+  current: {{ congressional: 'district', senate: 'districtn', house: 'districtn_2021' }},
+  '2010':  {{ congressional: 'cd',       senate: 'ndistrict',  house: 'ndistrict'   }},
+}};
+
+const INDIANA_BOUNDS = [[37.7, -88.1], [41.8, -84.8]];
+const defaultStyle = {{ color: '#94a3b8', weight: 0.8, fillColor: '#e2e8f0', fillOpacity: 0.4 }};
+const hoverStyle   = {{ color: '#f59e0b', weight: 2.5, fillColor: '#fef08a', fillOpacity: 0.65 }};
+const lockedStyle  = {{ color: '#d97706', weight: 2.5, fillColor: '#fde68a', fillOpacity: 0.8 }};
+
+const indyMap = L.map('indiana-map', {{
+  zoomControl: true, attributionControl: false, scrollWheelZoom: false
+}});
+L.tileLayer('https://{{s}}.basemaps.cartocdn.com/light_nolabels/{{z}}/{{x}}/{{y}}{{r}}.png', {{
+  subdomains: 'abcd', maxZoom: 19
+}}).addTo(indyMap);
+indyMap.fitBounds(INDIANA_BOUNDS);
+
+const geoCache = {{}};
+let mapLayers = {{}};
+let lockedDist = null;
+let activeTab = 'congressional';
+
+async function fetchGeoJSON(view, chamber) {{
+  const key = view + '-' + chamber;
+  if (geoCache[key]) return geoCache[key];
+  try {{
+    const r = await fetch(GEO_SOURCES[view][chamber]);
+    const d = await r.json();
+    geoCache[key] = d;
+    return d;
+  }} catch(e) {{ return null; }}
+}}
+
+async function loadMap(tab, view) {{
+  Object.values(mapLayers).forEach(l => indyMap.removeLayer(l));
+  mapLayers = {{}};
+  lockedDist = null;
+  document.getElementById('map-label').textContent = 'Loading…';
+
+  const data = await fetchGeoJSON(view, tab);
+  if (!data) {{ document.getElementById('map-label').textContent = 'Map unavailable'; return; }}
+
+  const propKey = DIST_PROP[view][tab];
+  data.features.forEach(feat => {{
+    const raw = feat.properties[propKey];
+    const distNum = parseInt(String(raw).replace(/\\D/g, ''), 10);
+    if (!distNum) return;
+
+    const layer = L.geoJSON(feat, {{ style: Object.assign({{}}, defaultStyle) }});
+    layer.on('mouseover', () => {{
+      if (distNum !== lockedDist) layer.setStyle(hoverStyle);
+      setHighlight(distNum, tab, view, true);
+      document.getElementById('map-label').textContent =
+        ({{congressional:'CD',senate:'SD',house:'HD'}}[tab] || '') + '-' + distNum;
+    }});
+    layer.on('mouseout', () => {{
+      if (distNum !== lockedDist) layer.setStyle(defaultStyle);
+      setHighlight(distNum, tab, view, false);
+      document.getElementById('map-label').textContent =
+        lockedDist ? ({{congressional:'CD',senate:'SD',house:'HD'}}[tab]||'') + '-' + lockedDist
+                   : 'Hover or click a district';
+    }});
+    layer.on('click', () => {{
+      if (lockedDist === distNum) {{
+        layer.setStyle(defaultStyle);
+        setLocked(lockedDist, tab, view, false);
+        lockedDist = null;
+        document.getElementById('map-label').textContent = 'Hover or click a district';
+      }} else {{
+        if (lockedDist && mapLayers[lockedDist]) {{
+          mapLayers[lockedDist].setStyle(defaultStyle);
+          setLocked(lockedDist, tab, view, false);
+        }}
+        layer.setStyle(lockedStyle);
+        lockedDist = distNum;
+        setLocked(distNum, tab, view, true);
+        indyMap.fitBounds(layer.getBounds(), {{ padding: [30, 30], maxZoom: 11 }});
+        document.getElementById('map-label').textContent =
+          ({{congressional:'CD',senate:'SD',house:'HD'}}[tab]||'') + '-' + distNum + ' (locked)';
+      }}
+    }});
+    mapLayers[distNum] = layer;
+    layer.addTo(indyMap);
+  }});
+  indyMap.fitBounds(INDIANA_BOUNDS);
+  document.getElementById('map-label').textContent = 'Hover or click a district';
+}}
+
+function setHighlight(distNum, tab, view, on) {{
+  const suffix = view === '2010' ? '-2010' : '';
+  const t = document.getElementById('table-' + tab + suffix);
+  if (!t) return;
+  t.querySelectorAll('tr[data-district]').forEach(row => {{
+    if (parseInt(row.dataset.district) === distNum) {{
+      row.classList.toggle('map-highlighted', on);
+      if (on) row.scrollIntoView({{ block: 'nearest' }});
+    }}
+  }});
+}}
+
+function setLocked(distNum, tab, view, on) {{
+  const suffix = view === '2010' ? '-2010' : '';
+  const t = document.getElementById('table-' + tab + suffix);
+  if (!t) return;
+  t.querySelectorAll('tr[data-district]').forEach(row => {{
+    if (parseInt(row.dataset.district) === distNum)
+      row.classList.toggle('map-locked', on);
+  }});
+}}
+
+// Table row → map highlight
+document.addEventListener('mouseover', e => {{
+  const row = e.target.closest('tr[data-district]');
+  if (!row) return;
+  const distNum = parseInt(row.dataset.district);
+  if (mapLayers[distNum] && distNum !== lockedDist)
+    mapLayers[distNum].setStyle(hoverStyle);
+}});
+document.addEventListener('mouseout', e => {{
+  const row = e.target.closest('tr[data-district]');
+  if (!row) return;
+  const distNum = parseInt(row.dataset.district);
+  if (mapLayers[distNum] && distNum !== lockedDist)
+    mapLayers[distNum].setStyle(defaultStyle);
+}});
+
+// ── Tab switching ──────────────────────────────────────────────────────────
 function switchTab(tab) {{
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
   document.getElementById('tab-' + tab).classList.add('active');
   const tabs = ['congressional', 'senate', 'house'];
-  const idx = tabs.indexOf(tab);
-  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+  document.querySelectorAll('.tab-btn')[tabs.indexOf(tab)].classList.add('active');
+  activeTab = tab;
+  loadMap(tab, boundaryView);
 }}
 
-const sortState = {{}};
+// Patch setBoundaryView to also reload map
+const _origSetBoundary = typeof setBoundaryView !== 'undefined' ? setBoundaryView : null;
+function setBoundaryView(view) {{
+  boundaryView = view;
+  const chambers = ['congressional', 'senate', 'house'];
+  document.querySelectorAll('.boundary-view').forEach(el => {{ el.style.display = 'none'; }});
+  document.querySelectorAll('.boundary-view-' + view).forEach(el => {{ el.style.display = 'block'; }});
+  document.querySelectorAll('.boundary-btn').forEach(btn => {{
+    btn.classList.toggle('active', btn.dataset.view === view);
+  }});
+  if (typeof BADGE_DATA !== 'undefined') {{
+    chambers.forEach((ch, i) => {{
+      document.querySelectorAll('.tab-btn')[i].querySelector('.badge').textContent = BADGE_DATA[ch][view];
+    }});
+  }}
+  const banner = document.getElementById('banner-2010');
+  if (banner) banner.style.display = view === '2010' ? 'block' : 'none';
+  loadMap(activeTab, view);
+}}
 
+// ── Sort ───────────────────────────────────────────────────────────────────
+const sortState = {{}};
 function sortTable(tableId, colIdx, type) {{
   const table = document.getElementById(tableId);
   const tbody = table.querySelector('tbody');
   const rows = Array.from(tbody.querySelectorAll('tr'));
   const key = tableId + '-' + colIdx;
-
-  const ascending = sortState[key] === 'asc' ? false : true;
+  const ascending = sortState[key] !== 'asc';
   sortState[key] = ascending ? 'asc' : 'desc';
-
-  // Reset all sort arrows in this table
   table.querySelectorAll('th').forEach(th => th.classList.remove('sorted'));
   table.querySelectorAll('th')[colIdx].classList.add('sorted');
-
-  // Update arrow direction
-  const arrow = table.querySelectorAll('th')[colIdx].querySelector('.sort-arrow');
-  arrow.textContent = ascending ? '\\u25B2' : '\\u25BC';
-
+  table.querySelectorAll('th')[colIdx].querySelector('.sort-arrow').textContent =
+    ascending ? '\\u25B2' : '\\u25BC';
   rows.sort((a, b) => {{
     const aVal = a.cells[colIdx].getAttribute('data-sort-value');
     const bVal = b.cells[colIdx].getAttribute('data-sort-value');
-
-    let cmp;
-    if (type === 'num') {{
-      cmp = parseFloat(aVal) - parseFloat(bVal);
-    }} else {{
-      cmp = aVal.localeCompare(bVal);
-    }}
+    const cmp = type === 'num' ? parseFloat(aVal) - parseFloat(bVal) : aVal.localeCompare(bVal);
     return ascending ? cmp : -cmp;
   }});
-
   rows.forEach(row => tbody.appendChild(row));
 }}
+
+// Initial map load
+loadMap('congressional', boundaryView);
 </script>
 
 </body>
