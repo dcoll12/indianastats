@@ -356,6 +356,7 @@ footer {
 
 /* ── Neighboring senate + multi-pack ──────────────────────────────── */
 .pp-section-neighbor { background: #fefce8; color: #854d0e; border-left: 5px solid #d97706; }
+.pp-neighbor-group-sep td { border-top: 3px solid #d97706; padding: 0; height: 3px; background: #fef9c3; }
 .pp-role-multipak { background: #7c3aed; }
 .pp-role-anchor   { background: #dc2626; }
 
@@ -1143,7 +1144,7 @@ var PP = (function() {
       });
       parts.push('</tbody></table></div>');
     } else {
-      parts.push('<div class="pp-no-senate">⚠ Recruiting a Senate candidate for SD-'+pack.sdNum
+      parts.push('<div class="pp-no-senate">⚠ Recruiting for 2028 — Senate candidate needed for SD-'+pack.sdNum
         +' — <em>contact Indiana Rural Summit to get involved</em></div>');
     }
 
@@ -1168,7 +1169,12 @@ var PP = (function() {
     if (pack.neighboringSenate && pack.neighboringSenate.length) {
       parts.push('<div class="pp-section-label pp-section-neighbor">🤝 Neighboring Senate Districts</div>');
       parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+      var prevNeighborSD = null;
       pack.neighboringSenate.forEach(function(cand) {
+        if (prevNeighborSD !== null && cand.dnum !== prevNeighborSD) {
+          parts.push('<tr class="pp-neighbor-group-sep"><td colspan="20"></td></tr>');
+        }
+        prevNeighborSD = cand.dnum;
         parts.push(renderEntry(cand, { isSenate: true }));
       });
       parts.push('</tbody></table></div>');
@@ -1417,7 +1423,7 @@ var PP = (function() {
         parts.push('<span class="pp-sd-chip" style="background:' + chipColor + '">SD-' + cand.dnum + ' ' + esc(name) + ' · ' + esc(lbl) + '</span>');
       });
     } else {
-      parts.push('<span style="color:#92400e;font-size:0.72rem">⚠ No Senate candidates in overlapping districts</span>');
+      parts.push('<span style="color:#92400e;font-size:0.72rem">⚠ Recruiting for 2028 — no Senate candidates in overlapping districts</span>');
     }
     parts.push('</div>');
 
