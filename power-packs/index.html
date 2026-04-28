@@ -692,6 +692,19 @@ var PP = (function() {
       return ma - mb;
     });
 
+    // Expand packs with multiple house candidates into separate pack containers
+    var houseExpandedPacks = [];
+    packs.forEach(function(pack) {
+      if (pack.houseCandidates.length <= 1) {
+        houseExpandedPacks.push(pack);
+      } else {
+        pack.houseCandidates.forEach(function(cand) {
+          houseExpandedPacks.push(Object.assign({}, pack, { houseCandidates: [cand] }));
+        });
+      }
+    });
+    packs = houseExpandedPacks;
+
     function matches(entry) {
       return !search || getSearchText(entry.row).includes(search);
     }
@@ -782,10 +795,22 @@ var PP = (function() {
       });
     });
 
+    // Expand packs with multiple senate candidates into separate pack containers
+    var focusPackList = [];
+    Object.values(packBySD).forEach(function(pack) {
+      if (pack.senateCandidates.length <= 1) {
+        focusPackList.push(pack);
+      } else {
+        pack.senateCandidates.forEach(function(cand) {
+          focusPackList.push(Object.assign({}, pack, { senateCandidates: [cand] }));
+        });
+      }
+    });
+
     // Collect, sort: TARGET → OPPORTUNITY → TURNOUT → HOLD (Tier 1→2→3→0)
     // HOLD packs (safe D incumbents) sort last — they don't need heavy volunteer focus
     var FOCUS_TIER_ORDER = { 1: 1, 2: 2, 3: 3, 0: 4 };
-    var packs = Object.values(packBySD).sort(function(a, b) {
+    var packs = focusPackList.sort(function(a, b) {
       var oa = FOCUS_TIER_ORDER[a.tier] !== undefined ? FOCUS_TIER_ORDER[a.tier] : 99;
       var ob = FOCUS_TIER_ORDER[b.tier] !== undefined ? FOCUS_TIER_ORDER[b.tier] : 99;
       if (oa !== ob) return oa - ob;
@@ -918,6 +943,19 @@ var PP = (function() {
           return true;
         });
       });
+
+      // Expand packs with multiple senate candidates into separate pack containers
+      var expandedPacks = [];
+      packs.forEach(function(pack) {
+        if (pack.senateCandidates.length <= 1) {
+          expandedPacks.push(pack);
+        } else {
+          pack.senateCandidates.forEach(function(cand) {
+            expandedPacks.push(Object.assign({}, pack, { senateCandidates: [cand] }));
+          });
+        }
+      });
+      packs = expandedPacks;
 
       // Apply search filter, then drop empty packs
       packs = packs.filter(function(p) {
@@ -1516,6 +1554,19 @@ var PP = (function() {
       });
     });
 
+    // Expand packs with multiple senate candidates into separate pack containers
+    var countyExpandedPacks = [];
+    packs.forEach(function(pack) {
+      if (pack.senateCandidates.length <= 1) {
+        countyExpandedPacks.push(pack);
+      } else {
+        pack.senateCandidates.forEach(function(cand) {
+          countyExpandedPacks.push(Object.assign({}, pack, { senateCandidates: [cand] }));
+        });
+      }
+    });
+    packs = countyExpandedPacks;
+
     // Apply search filter after deduplication, then drop empty packs
     packs = packs.filter(function(p) {
       if (!p.senateCandidates.length && !p.houseMembers.length) return false;
@@ -1638,14 +1689,15 @@ var PP = (function() {
       } else {
         var parts = state.selectedCandidate.split(':');
         var cdtype = parts[0], cdnum = Number(parts[1]);
-        var result = buildMyPack(cdtype, cdnum);
-        var anchorRow = null;
-        if (result) {
-          state.rows.forEach(function(row) {
+        var rowIdx = parts.length > 2 ? Number(parts[2]) : -1;
+        var anchorRow = (rowIdx >= 0 && state.rows[rowIdx]) ? state.rows[rowIdx] : null;
+        if (!anchorRow) {
+          state.rows.some(function(row) {
             var race = determinePrimaryRace(row);
-            if (race.dtype === cdtype && race.dnum === cdnum && !anchorRow) anchorRow = row;
+            if (race.dtype === cdtype && race.dnum === cdnum) { anchorRow = row; return true; }
           });
         }
+        var result = buildMyPack(cdtype, cdnum, anchorRow);
         if (!result) {
           out.innerHTML = '<div class="pp-status"><p>Could not build pack for this candidate.</p></div>';
         } else {
@@ -1826,7 +1878,7 @@ var PP = (function() {
   // Builds a candidate-centric pack: the anchor candidate's full geographic
   // coalition — every SD and HD whose boundaries overlap theirs, plus all
   // candidates running in those districts.
-  function buildMyPack(dtype, dnum) {
+  function buildMyPack(dtype, dnum, anchorRow) {
     if (!dtype || !dnum) return null;
     var dd = state.districtData;
     var ll = state.leanLookup;
@@ -1872,14 +1924,14 @@ var PP = (function() {
     var senateCandidates = [];
     packSDs.forEach(function(sd) {
       (senateBySD[sd] || []).forEach(function(e) {
-        senateCandidates.push(Object.assign({}, e, { isMyAnchor: sd === dnum && dtype === 'senate' }));
+        senateCandidates.push(Object.assign({}, e, { isMyAnchor: sd === dnum && dtype === 'senate' && (!anchorRow || e.row === anchorRow) }));
       });
     });
 
     var houseMembers = [];
     packHDs.forEach(function(hd) {
       (houseByHD[hd] || []).forEach(function(e) {
-        houseMembers.push(Object.assign({}, e, { isMyAnchor: hd === dnum && dtype === 'house' }));
+        houseMembers.push(Object.assign({}, e, { isMyAnchor: hd === dnum && dtype === 'house' && (!anchorRow || e.row === anchorRow) }));
       });
     });
 
@@ -2015,7 +2067,7 @@ var PP = (function() {
       var lean = (state.leanLookup[race.dtype] || {})[race.dnum] || null;
       var indexLabel = lean ? (lean.in_index_label || '') : '';
       options.push({
-        value: race.dtype + ':' + race.dnum,
+        value: race.dtype + ':' + race.dnum + ':' + state.rows.indexOf(row),
         label: name + ' (' + prefix + '-' + race.dnum + (indexLabel ? ', ' + indexLabel : '') + ')',
         dtype: race.dtype, dnum: race.dnum, name: name,
         sortKey: last.toLowerCase() + ' ' + first.toLowerCase()
