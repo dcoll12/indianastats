@@ -195,6 +195,10 @@ footer {
   background: white; border: 1px solid #e2e8f0; border-top: none;
   margin-bottom: 0; overflow: hidden;
 }
+.pp-pack-divider {
+  height: 12px; background: #f1f5f9;
+  border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0;
+}
 .pp-cd-section .pp-pack-card:last-of-type { border-radius: 0 0 10px 10px; margin-bottom: 0; }
 .pp-tier-section .pp-pack-card:last-of-type { border-radius: 0 0 10px 10px; margin-bottom: 0; }
 .pp-pack-card-standalone {
@@ -1251,7 +1255,10 @@ var PP = (function() {
       parts.push('<span class="pp-cd-count">'+packs.length+' pack'+(packs.length!==1?'s':'')+' · '+cdCands+' candidates</span>');
       parts.push('</div>');
 
-      packs.forEach(function(pack) { parts.push(renderPackCard(pack)); });
+      packs.forEach(function(pack, i) {
+        if (i > 0) parts.push('<div class="pp-pack-divider"></div>');
+        parts.push(renderPackCard(pack));
+      });
       parts.push('</div>'); // close pp-cd-section
     }
 
@@ -1319,11 +1326,12 @@ var PP = (function() {
       0: { label: '🏠 HOLD PACKS', desc: 'Safe Democratic seats — incumbent organizes and drives wave turnout for surrounding House races' }
     };
 
-    var packNum = 0, currentTier = -1;
+    var packNum = 0, currentTier = -1, packInTier = 0;
     packs.forEach(function(pack) {
       if (pack.tier !== currentTier) {
         if (currentTier !== -1) parts.push('</div>');
         currentTier = pack.tier;
+        packInTier = 0;
         var ti = tierInfo[currentTier] || { label: 'PACKS', desc: '' };
         var tierPacks = packs.filter(function(p) { return p.tier === currentTier; });
         var tierCands = tierPacks.reduce(function(n, p) { return n + p.senateCandidates.length + p.houseMembers.length; }, 0);
@@ -1334,8 +1342,9 @@ var PP = (function() {
         parts.push('<div class="pp-tier-desc">'+ti.desc+'</div>');
         parts.push('</div>');
       }
+      if (packInTier > 0) parts.push('<div class="pp-pack-divider"></div>');
+      packInTier++;
       packNum++;
-      // Render pack card with pack number injected into the header
       parts.push(renderPackCard(pack, packNum));
     });
     if (currentTier !== -1) parts.push('</div>');
@@ -1463,11 +1472,12 @@ var PP = (function() {
       0: { label: '🏠 HOLD DISTRICTS', desc: 'Safe Democratic seats — incumbents organize and drive wave turnout across the region' }
     };
 
-    var packNum = 0, currentTier = -1;
+    var packNum = 0, currentTier = -1, packInHouseTier = 0;
     packs.forEach(function(pack) {
       if (pack.tier !== currentTier) {
         if (currentTier !== -1) parts.push('</div>');
         currentTier = pack.tier;
+        packInHouseTier = 0;
         var ti = tierInfo[currentTier] || { label: 'DISTRICTS', desc: '' };
         var tierPacks = packs.filter(function(p) { return p.tier === currentTier; });
         var tierCands = tierPacks.reduce(function(n, p) { return n + p.houseCandidates.length; }, 0);
@@ -1478,6 +1488,8 @@ var PP = (function() {
         parts.push('<div class="pp-tier-desc">' + ti.desc + '</div>');
         parts.push('</div>');
       }
+      if (packInHouseTier > 0) parts.push('<div class="pp-pack-divider"></div>');
+      packInHouseTier++;
       packNum++;
       parts.push(renderHousePackCard(pack, packNum));
     });
@@ -1625,7 +1637,10 @@ var PP = (function() {
       parts.push('<div class="pp-pack-card"><div class="pp-no-senate" style="padding:16px">No candidates registered in districts covering '
         + esc(county) + ' County yet.</div></div>');
     } else {
-      packs.forEach(function(pack) { parts.push(renderPackCard(pack)); });
+      packs.forEach(function(pack, i) {
+        if (i > 0) parts.push('<div class="pp-pack-divider"></div>');
+        parts.push(renderPackCard(pack));
+      });
     }
     parts.push('</div>');
 
