@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Candidate Network — Indiana 2026</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #0d1117;
+  color: #e6edf3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+#header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  background: rgba(13,17,23,0.92); backdrop-filter: blur(10px);
+  border-bottom: 1px solid #21262d;
+  padding: 10px 16px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.back-link {
+  color: #388bfd; font-size: 12px; text-decoration: none;
+  white-space: nowrap; flex-shrink: 0;
+}
+.back-link:hover { color: #79c0ff; }
+#header-titles { flex: 1; min-width: 0; }
+#header-title { font-size: 15px; font-weight: 700; color: #f0f6fc; }
+#header-sub { font-size: 11px; color: #656d76; margin-top: 1px; }
+.ctrl-group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.ctrl-btn {
+  background: #161b22; border: 1px solid #30363d;
+  border-radius: 5px; padding: 5px 11px;
+  font-size: 11px; font-weight: 600; color: #8b949e;
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.ctrl-btn:hover:not(.active) { border-color: #8b949e; color: #e6edf3; }
+.ctrl-btn.active { background: #1f6feb; border-color: #388bfd; color: #fff; }
+.ctrl-btn.active-hd { background: #1a7f37; border-color: #3fb950; color: #fff; }
+.ctrl-btn.active-sd { background: #6639ba; border-color: #a371f7; color: #fff; }
+.ctrl-btn.active-cd { background: #0d4a8f; border-color: #388bfd; color: #fff; }
+#search-input {
+  background: #161b22; border: 1px solid #30363d; border-radius: 5px;
+  padding: 5px 10px; font-size: 11px; color: #e6edf3;
+  outline: none; width: 160px;
+}
+#search-input:focus { border-color: #388bfd; }
+#search-input::placeholder { color: #656d76; }
+#node-count { font-size: 11px; color: #656d76; white-space: nowrap; }
+
+/* ── SVG canvas ─────────────────────────────────────────────────────── */
+#graph-svg { display: block; }
+
+/* ── Tooltip ────────────────────────────────────────────────────────── */
+#tooltip {
+  position: fixed; z-index: 300; pointer-events: none;
+  background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+  padding: 10px 13px; font-size: 12px; max-width: 230px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  opacity: 0; transform: translateY(4px);
+  transition: opacity 0.12s, transform 0.12s;
+}
+#tooltip.show { opacity: 1; transform: translateY(0); }
+#tt-name { font-size: 13px; font-weight: 700; color: #f0f6fc; margin-bottom: 3px; }
+#tt-dist { color: #8b949e; font-size: 11px; }
+#tt-party { font-weight: 600; font-size: 12px; margin-top: 4px; }
+#tt-lean { color: #656d76; font-size: 11px; margin-top: 2px; }
+#tt-comp { font-size: 10px; margin-top: 4px; }
+
+/* ── Legend ─────────────────────────────────────────────────────────── */
+#legend {
+  position: fixed; bottom: 16px; left: 16px; z-index: 200;
+  background: rgba(22,27,34,0.92); backdrop-filter: blur(8px);
+  border: 1px solid #21262d; border-radius: 8px;
+  padding: 11px 14px; font-size: 11px;
+}
+#legend h4 { color: #656d76; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 7px; }
+.leg-row { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; color: #8b949e; }
+.leg-dot { border-radius: 50%; flex-shrink: 0; }
+.leg-line { height: 2px; flex-shrink: 0; border-radius: 1px; }
+.leg-section { border-top: 1px solid #21262d; margin-top: 7px; padding-top: 7px; }
+
+/* ── Zoom hint ──────────────────────────────────────────────────────── */
+#zoom-hint {
+  position: fixed; bottom: 16px; right: 16px; z-index: 200;
+  background: rgba(22,27,34,0.85); border: 1px solid #21262d;
+  border-radius: 6px; padding: 7px 11px; font-size: 10px; color: #656d76;
+}
+
+/* ── Loading overlay ────────────────────────────────────────────────── */
+#loading {
+  position: fixed; inset: 0; z-index: 400;
+  background: #0d1117;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 14px;
+}
+#loading-spinner {
+  width: 36px; height: 36px;
+  border: 3px solid #21262d; border-top-color: #388bfd;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+#loading-text { font-size: 13px; color: #8b949e; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div id="loading-spinner"></div>
+  <div id="loading-text">Loading candidate data…</div>
+</div>
+
+<div id="header">
+  <a href="../" class="back-link">← Power Packs</a>
+  <div id="header-titles">
+    <div id="header-title">Indiana 2026 Candidate Network</div>
+    <div id="header-sub">Node size = district competitiveness · Drag nodes · Scroll to zoom</div>
+  </div>
+  <div class="ctrl-group">
+    <button class="ctrl-btn active" id="btn-all"  onclick="setFilter('all')">All</button>
+    <button class="ctrl-btn" id="btn-cd"  onclick="setFilter('cd')">Congressional</button>
+    <button class="ctrl-btn" id="btn-sd"  onclick="setFilter('sd')">State Senate</button>
+    <button class="ctrl-btn" id="btn-hd"  onclick="setFilter('hd')">State House</button>
+  </div>
+  <input id="search-input" type="text" placeholder="Search candidate…" oninput="searchNodes(this.value)">
+  <div id="node-count"></div>
+</div>
+
+<svg id="graph-svg"></svg>
+
+<div id="tooltip">
+  <div id="tt-name"></div>
+  <div id="tt-dist"></div>
+  <div id="tt-party"></div>
+  <div id="tt-lean"></div>
+  <div id="tt-comp"></div>
+</div>
+
+<div id="legend">
+  <h4>Legend</h4>
+  <div class="leg-row">
+    <div class="leg-dot" style="width:11px;height:11px;background:#3b82f6;box-shadow:0 0 5px #3b82f680;"></div>
+    Democrat
+  </div>
+  <div class="leg-row">
+    <div class="leg-dot" style="width:11px;height:11px;background:#ef4444;box-shadow:0 0 5px #ef444480;"></div>
+    Republican
+  </div>
+  <div class="leg-row leg-section">
+    <div class="leg-line" style="width:20px;background:#8b949e;opacity:0.5;"></div>
+    Same-race link
+  </div>
+  <div class="leg-row">
+    <div style="width:10px;height:10px;border-radius:50%;border:2px solid #f0c040;background:transparent;flex-shrink:0;"></div>
+    Toss-up district
+  </div>
+  <div class="leg-row leg-section" style="gap:4px;">
+    <div class="leg-dot" style="width:7px;height:7px;background:#8b949e;"></div>
+    <div class="leg-dot" style="width:11px;height:11px;background:#8b949e;"></div>
+    <div class="leg-dot" style="width:15px;height:15px;background:#8b949e;"></div>
+    Competitiveness →
+  </div>
+</div>
+
+<div id="zoom-hint">Scroll = zoom · Drag = pan</div>
+
+<script>
+// ── Constants ─────────────────────────────────────────────────────────────
+const PARTY_COLOR  = { D: '#3b82f6', R: '#ef4444', default: '#6b7280' };
+const CHAMBER_COLOR = { cd: '#388bfd', sd: '#a371f7', hd: '#3fb950' };
+const CHAMBER_LABEL = { cd: 'Congressional', sd: 'State Senate', hd: 'State House' };
+const TOSSUP_THRESHOLD = 0.08; // |in_index| below this = toss-up
+
+// ── State ─────────────────────────────────────────────────────────────────
+let simulation, gMain, svgEl, zoomBehavior;
+let allNodes = [], allLinks = [];
+let candNodes = [], raceLinks = [];
+let currentFilter = 'all';
+let searchTerm = '';
+
+// ── Load data ─────────────────────────────────────────────────────────────
+Promise.all([
+  fetch('../../data.json').then(r => r.json()),
+  fetch('../../candidates_2026.json').then(r => r.json())
+]).then(([leanData, candidateData]) => {
+  document.getElementById('loading').style.display = 'none';
+  buildGraph(leanData, candidateData);
+}).catch(err => {
+  document.getElementById('loading-text').textContent = 'Error loading data: ' + err.message;
+});
+
+// ── Build competitiveness lookup ──────────────────────────────────────────
+function buildLeanLookup(leanData) {
+  const m = {};
+  const add = (chamber, arr) => arr.forEach(d => {
+    m[`${chamber}-${d.district}`] = { in_index: d.in_index || 0, label: d.in_index_label || '' };
+  });
+  add('cd', leanData.congressional || []);
+  add('sd', leanData.senate || []);
+  add('hd', leanData.house || []);
+  return m;
+}
+
+function competitiveness(in_index) {
+  // 1 = perfectly competitive, 0 = deeply partisan
+  return Math.max(0, 1 - Math.abs(in_index) / 0.45);
+}
+
+function nodeRadius(d) {
+  if (d.type === 'district') return 2;
+  const base  = { cd: 14, sd: 9,  hd: 7  }[d.chamber] || 7;
+  const bonus = { cd: 14, sd: 11, hd: 8  }[d.chamber] || 8;
+  return base + bonus * d.competitiveness;
+}
+
+function initials(name) {
+  const parts = name.split(/[\s,]+/).filter(p => p.length > 1 && !/^[A-Z]\.$/.test(p));
+  if (parts.length === 0) return '?';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+// ── Build nodes and links ─────────────────────────────────────────────────
+function buildGraph(leanData, candidateData) {
+  const lean = buildLeanLookup(leanData);
+  const W = window.innerWidth, H = window.innerHeight - 46;
+
+  // Chamber X bands (center of each band)
+  const zoneW = W / 3;
+  const chamberX = { cd: zoneW * 0.5, sd: zoneW * 1.5, hd: zoneW * 2.5 };
+
+  // Precompute a stable Y offset per district (deterministic, not random per tick)
+  const districtYOffset = {};
+
+  for (const [ch, districts] of Object.entries(candidateData)) {
+    for (const [distNum, candidates] of Object.entries(districts)) {
+      const distId = `${ch}-${distNum}`;
+      const leanInfo = lean[distId] || { in_index: 0, label: '' };
+      const comp = competitiveness(leanInfo.in_index);
+
+      // Stable seed-based jitter per district
+      let seed = 0;
+      for (let i = 0; i < distId.length; i++) seed = (seed * 31 + distId.charCodeAt(i)) & 0xffff;
+      const jitter = ((seed / 0xffff) - 0.5) * H * 0.55;
+      districtYOffset[distId] = jitter * (1 - comp * 0.6);
+
+      // District anchor node
+      const dNode = {
+        id: distId, type: 'district',
+        chamber: ch, district: +distNum,
+        competitiveness: comp, in_index: leanInfo.in_index, lean_label: leanInfo.label,
+        x: chamberX[ch] + (((seed >> 4) / 0xfff) - 0.5) * 80,
+        y: H * 0.5 + districtYOffset[distId],
+      };
+      allNodes.push(dNode);
+
+      // Candidate nodes
+      const distCands = [];
+      candidates.forEach((cand, ci) => {
+        const nodeId = `c-${ch}-${distNum}-${ci}`;
+        const cn = {
+          id: nodeId, type: 'candidate',
+          name: cand.name, party: cand.party,
+          chamber: ch, district: +distNum,
+          districtId: distId,
+          competitiveness: comp, in_index: leanInfo.in_index, lean_label: leanInfo.label,
+          x: chamberX[ch] + (Math.random() - 0.5) * 140,
+          y: H * 0.5 + districtYOffset[distId] + (Math.random() - 0.5) * 60,
+        };
+        allNodes.push(cn);
+        distCands.push(cn);
+        allLinks.push({ source: nodeId, target: distId, type: 'member' });
+      });
+
+      // Race links between all candidates in same district
+      for (let i = 0; i < distCands.length; i++) {
+        for (let j = i + 1; j < distCands.length; j++) {
+          const rl = { source: distCands[i].id, target: distCands[j].id, type: 'race',
+            hasContest: distCands[i].party !== distCands[j].party };
+          allLinks.push(rl);
+          raceLinks.push(rl);
+        }
+      }
+    }
+  }
+
+  candNodes = allNodes.filter(n => n.type === 'candidate');
+  document.getElementById('node-count').textContent = `${candNodes.length} candidates`;
+
+  render(W, H, chamberX, zoneW);
+}
+
+// ── Render ────────────────────────────────────────────────────────────────
+function render(W, H, chamberX, zoneW) {
+  svgEl = d3.select('#graph-svg')
+    .attr('width', W).attr('height', H)
+    .style('position', 'fixed').style('top', '46px').style('left', 0);
+
+  // Defs: glow filters
+  const defs = svgEl.append('defs');
+  const glowDef = (id, color, std) => {
+    const f = defs.append('filter').attr('id', id).attr('x', '-60%').attr('y', '-60%').attr('width', '220%').attr('height', '220%');
+    f.append('feGaussianBlur').attr('in', 'SourceGraphic').attr('stdDeviation', std).attr('result', 'blur');
+    const m = f.append('feMerge');
+    m.append('feMergeNode').attr('in', 'blur');
+    m.append('feMergeNode').attr('in', 'SourceGraphic');
+  };
+  glowDef('glow-d', '#3b82f6', 4);
+  glowDef('glow-r', '#ef4444', 4);
+  glowDef('glow-tossup', '#f0c040', 6);
+
+  // Zoom / pan
+  zoomBehavior = d3.zoom().scaleExtent([0.07, 10])
+    .on('zoom', e => gMain.attr('transform', e.transform));
+  svgEl.call(zoomBehavior);
+
+  gMain = svgEl.append('g');
+
+  // Zone background fills
+  const zoneFills = [
+    { ch: 'cd', x: 0 },
+    { ch: 'sd', x: zoneW },
+    { ch: 'hd', x: zoneW * 2 },
+  ];
+  gMain.append('g').attr('class', 'zones').selectAll('rect').data(zoneFills).join('rect')
+    .attr('x', d => d.x).attr('y', -5000).attr('width', zoneW).attr('height', 20000)
+    .attr('fill', d => CHAMBER_COLOR[d.ch]).attr('opacity', 0.025)
+    .attr('pointer-events', 'none');
+
+  // Zone dividers
+  [1, 2].forEach(i => {
+    gMain.append('line')
+      .attr('x1', zoneW * i).attr('y1', -5000)
+      .attr('x2', zoneW * i).attr('y2', 20000)
+      .attr('stroke', '#21262d').attr('stroke-width', 1)
+      .attr('stroke-dasharray', '6,12').attr('pointer-events', 'none');
+  });
+
+  // Zone labels
+  zoneFills.forEach(({ ch, x }) => {
+    gMain.append('text')
+      .attr('x', x + zoneW / 2).attr('y', 28)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', 13).attr('font-weight', 800)
+      .attr('text-transform', 'uppercase').attr('letter-spacing', 1.2)
+      .attr('fill', CHAMBER_COLOR[ch]).attr('opacity', 0.45)
+      .attr('pointer-events', 'none')
+      .text(CHAMBER_LABEL[ch].toUpperCase());
+  });
+
+  // Links layer
+  const linkLayer = gMain.append('g').attr('class', 'link-layer');
+
+  const linkSel = linkLayer.selectAll('line')
+    .data(allLinks.filter(l => l.type === 'race'))
+    .join('line')
+    .attr('class', 'race-link')
+    .attr('stroke', l => {
+      const sp = typeof l.source === 'object' ? l.source.party : '';
+      const tp = typeof l.target === 'object' ? l.target.party : '';
+      if (sp === 'D' && tp === 'D') return '#3b82f640';
+      if (sp === 'R' && tp === 'R') return '#ef444440';
+      return '#8b949e60'; // contested race
+    })
+    .attr('stroke-width', 1.2);
+
+  // Nodes layer
+  const nodeLayer = gMain.append('g').attr('class', 'node-layer');
+
+  const nodeSel = nodeLayer.selectAll('.cnode')
+    .data(allNodes.filter(n => n.type === 'candidate'))
+    .join('g')
+    .attr('class', 'cnode')
+    .style('cursor', 'pointer')
+    .call(d3.drag()
+      .on('start', (ev, d) => { if (!ev.active) simulation.alphaTarget(0.2).restart(); d.fx = d.x; d.fy = d.y; })
+      .on('drag',  (ev, d) => { d.fx = ev.x; d.fy = ev.y; })
+      .on('end',   (ev, d) => { if (!ev.active) simulation.alphaTarget(0); d.fx = null; d.fy = null; })
+    )
+    .on('mouseover', showTip)
+    .on('mousemove', moveTip)
+    .on('mouseout',  hideTip);
+
+  // Outer glow ring for toss-up districts
+  nodeSel.append('circle')
+    .attr('class', 'tossup-ring')
+    .attr('r', d => nodeRadius(d) + 4)
+    .attr('fill', 'none')
+    .attr('stroke', '#f0c04080')
+    .attr('stroke-width', 2)
+    .attr('filter', 'url(#glow-tossup)')
+    .attr('opacity', d => Math.abs(d.in_index) < TOSSUP_THRESHOLD ? 1 : 0);
+
+  // Main circle
+  nodeSel.append('circle')
+    .attr('class', 'main-circle')
+    .attr('r', nodeRadius)
+    .attr('fill', d => PARTY_COLOR[d.party] || PARTY_COLOR.default)
+    .attr('fill-opacity', d => 0.75 + d.competitiveness * 0.2)
+    .attr('stroke', d => CHAMBER_COLOR[d.chamber])
+    .attr('stroke-width', d => d.competitiveness > 0.55 ? 2 : 1)
+    .attr('filter', d => d.party === 'D' ? 'url(#glow-d)' : 'url(#glow-r)');
+
+  // Initials
+  nodeSel.append('text')
+    .attr('text-anchor', 'middle').attr('dominant-baseline', 'central')
+    .attr('font-size', d => Math.max(7, Math.floor(nodeRadius(d) * 0.52)))
+    .attr('font-weight', 700).attr('fill', '#ffffffcc')
+    .attr('pointer-events', 'none')
+    .text(d => initials(d.name));
+
+  // Last-name label (only for competitive nodes)
+  nodeSel.append('text')
+    .attr('class', 'cand-label')
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'hanging')
+    .attr('font-size', d => d.competitiveness > 0.45 ? Math.max(8, nodeRadius(d) * 0.45) : 0)
+    .attr('fill', '#8b949e').attr('pointer-events', 'none')
+    .attr('dy', d => nodeRadius(d) + 3)
+    .text(d => {
+      // Last non-suffix word
+      const parts = d.name.replace(/,.*$/, '').split(/\s+/);
+      return parts[parts.length - 1];
+    });
+
+  // ── Force simulation ──────────────────────────────────────────────────
+  simulation = d3.forceSimulation(allNodes)
+    .force('link', d3.forceLink(allLinks).id(d => d.id)
+      .distance(d => {
+        if (d.type === 'member') return 6 + (1 - (d.source.competitiveness || 0)) * 18;
+        if (d.type === 'race')   return 4;
+        return 30;
+      })
+      .strength(d => d.type === 'member' ? 0.9 : d.type === 'race' ? 0.25 : 0.05)
+    )
+    .force('charge', d3.forceManyBody()
+      .strength(d => d.type === 'district' ? -10 : -55)
+      .distanceMax(260)
+    )
+    .force('collide', d3.forceCollide(d => nodeRadius(d) + 2.5).strength(0.85))
+    .force('x', d3.forceX(d => chamberX[d.chamber]).strength(0.1))
+    .force('y', d3.forceY(d => {
+      // Competitive districts pulled toward vertical center; others spread out
+      const comp = d.competitiveness || 0;
+      if (d.type === 'district') {
+        return H * 0.5 + (1 - comp) * (d.district % 2 === 0 ? 1 : -1) * H * 0.28;
+      }
+      return H * 0.5;
+    }).strength(0.035))
+    .alphaDecay(0.012)
+    .velocityDecay(0.35);
+
+  // Tick
+  simulation.on('tick', () => {
+    linkSel
+      .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+    nodeSel.attr('transform', d => `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`);
+  });
+
+  // Store refs for filter/search
+  window._ns = nodeSel;
+  window._ls = linkSel;
+  applyVisibility();
+}
+
+// ── Filter & search ───────────────────────────────────────────────────────
+function setFilter(ch) {
+  currentFilter = ch;
+  document.querySelectorAll('.ctrl-btn').forEach(b => {
+    b.classList.remove('active', 'active-cd', 'active-sd', 'active-hd');
+  });
+  const btn = document.getElementById(`btn-${ch}`);
+  if (ch === 'all') btn.classList.add('active');
+  else btn.classList.add(`active-${ch}`);
+  applyVisibility();
+}
+
+function searchNodes(val) {
+  searchTerm = val.trim().toLowerCase();
+  applyVisibility();
+}
+
+function applyVisibility() {
+  if (!window._ns) return;
+  const ns = window._ns, ls = window._ls;
+
+  ns.each(function(d) {
+    const chamberMatch = currentFilter === 'all' || d.chamber === currentFilter;
+    const searchMatch  = !searchTerm || d.name.toLowerCase().includes(searchTerm);
+    const visible = chamberMatch && searchMatch;
+    d3.select(this)
+      .attr('opacity', visible ? 1 : 0.05)
+      .attr('pointer-events', visible ? 'auto' : 'none');
+  });
+
+  ls.attr('opacity', d => {
+    const sc = typeof d.source === 'object' ? d.source.chamber : '';
+    const tc = typeof d.target === 'object' ? d.target.chamber : '';
+    if (currentFilter !== 'all' && (sc !== currentFilter || tc !== currentFilter)) return 0.03;
+    return 0.5;
+  });
+
+  // Update count
+  const vis = candNodes.filter(d => {
+    return (currentFilter === 'all' || d.chamber === currentFilter) &&
+           (!searchTerm || d.name.toLowerCase().includes(searchTerm));
+  }).length;
+  document.getElementById('node-count').textContent = `${vis} candidates`;
+}
+
+// ── Tooltip ───────────────────────────────────────────────────────────────
+function showTip(event, d) {
+  const t = document.getElementById('tooltip');
+  document.getElementById('tt-name').textContent = d.name;
+  document.getElementById('tt-dist').textContent =
+    `${CHAMBER_LABEL[d.chamber]} — District ${d.district}`;
+  const pEl = document.getElementById('tt-party');
+  pEl.textContent = d.party === 'D' ? 'Democrat' : d.party === 'R' ? 'Republican' : d.party;
+  pEl.style.color = PARTY_COLOR[d.party] || '#8b949e';
+  document.getElementById('tt-lean').textContent = d.lean_label ? `IN-Index: ${d.lean_label}` : '';
+  const pct = Math.round(d.competitiveness * 100);
+  document.getElementById('tt-comp').innerHTML =
+    `<span style="color:#656d76">Competitiveness: </span>` +
+    `<span style="color:${pct > 60 ? '#f0c040' : '#8b949e'}">${pct}%</span>` +
+    (Math.abs(d.in_index) < TOSSUP_THRESHOLD ? ' 🔥 Toss-up' : '');
+  t.classList.add('show');
+  moveTip(event);
+}
+
+function moveTip(event) {
+  const t = document.getElementById('tooltip');
+  const x = event.clientX + 16, y = event.clientY - 12;
+  t.style.left = Math.min(x, window.innerWidth - 240) + 'px';
+  t.style.top  = Math.max(y, 56) + 'px';
+}
+
+function hideTip() {
+  document.getElementById('tooltip').classList.remove('show');
+}
+
+// ── Resize ────────────────────────────────────────────────────────────────
+window.addEventListener('resize', () => location.reload());
+</script>
+</body>
+</html>
