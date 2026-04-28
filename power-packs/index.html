@@ -235,6 +235,15 @@ footer {
   padding: 8px 16px; font-size: 0.78rem; color: #92400e;
   background: #fffbeb; border-left: 3px solid #d97706; border-top: 1px solid #f1f5f9;
 }
+.pp-sd-overlap-line {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 5px;
+  padding: 6px 14px 8px; border-top: 1px solid #f1f5f9; background: inherit;
+}
+.pp-sd-overlap-label { font-size: 0.7rem; font-weight: 700; color: #5b21b6; white-space: nowrap; }
+.pp-sd-chip {
+  display: inline-block; font-size: 0.68rem; font-weight: 600;
+  padding: 2px 7px; border-radius: 4px; white-space: nowrap;
+}
 .pp-role-tag {
   display: inline-block; font-size: 0.57rem; font-weight: 700;
   padding: 1px 5px; border-radius: 3px; margin-top: 3px; color: white; white-space: nowrap;
@@ -1219,15 +1228,11 @@ var PP = (function() {
   // ── House District Packs ─────────────────────────────────────────────
   function renderHousePackCard(pack, packNum) {
     var tc = {
-      0: { border: '#0891b2', bg: '#f0f9ff', badgeClass: 'pp-tier-0', label: '🏠 HOLD',
-           mission: 'Your incumbency is the anchor. Organize your district and drive turnout for every race in your region.' },
-      1: { border: '#dc2626', bg: '#fff5f5', badgeClass: 'pp-tier-1', label: '🎯 TARGET',
-           mission: 'This House seat is winnable. Your race is the centerpiece — flip it and you shift the balance of power in the Indiana House.' },
-      2: { border: '#7c3aed', bg: '#faf5ff', badgeClass: 'pp-tier-2', label: '📊 CHALLENGE',
-           mission: 'Contest hard. Narrow the margin, force Republican spending, and build the infrastructure for future flips. Your campaign lifts every D candidate in the region.' },
-      3: { border: '#16a34a', bg: '#f0fdf4', badgeClass: 'pp-tier-3', label: '🗳️ TURNOUT',
-           mission: 'Every competitive district was once a long-shot. Build the voter file, train volunteers, and move the margin — you are laying the groundwork for the next wave.' }
-    }[pack.tier] || { border: '#94a3b8', bg: 'white', badgeClass: '', label: 'PACK', mission: '' };
+      0: { border: '#0891b2', bg: '#f0f9ff', badgeClass: 'pp-tier-0', label: '🏠 HOLD' },
+      1: { border: '#dc2626', bg: '#fff5f5', badgeClass: 'pp-tier-1', label: '🎯 TARGET' },
+      2: { border: '#7c3aed', bg: '#faf5ff', badgeClass: 'pp-tier-2', label: '📊 CHALLENGE' },
+      3: { border: '#16a34a', bg: '#f0fdf4', badgeClass: 'pp-tier-3', label: '🗳️ TURNOUT' }
+    }[pack.tier] || { border: '#94a3b8', bg: 'white', badgeClass: '', label: 'PACK' };
 
     var hdLean = pack.hdLean;
     var indexLabel = hdLean ? (hdLean.in_index_label || '—') : '—';
@@ -1241,12 +1246,13 @@ var PP = (function() {
     var cdHint = pack.cdNum ? '<span class="pp-pack-lean" style="margin-left:6px;opacity:0.6">CD-' + pack.cdNum + '</span>' : '';
     var numBadge = packNum ? '<span class="pp-focus-badge">' + packNum + '</span>' : '';
 
-    var totalCands = pack.houseCandidates.length + pack.senateSupporters.length;
+    var hdCount = pack.houseCandidates.length;
     var sdNums = pack.senateSupporters.map(function(m) { return m.dnum; }).join(',');
     var parts = [];
 
     parts.push('<div class="pp-pack-card" data-hdnum="' + pack.hdNum + '" data-sdnums="' + sdNums + '" style="border-left:4px solid ' + tc.border + ';background:' + tc.bg + '">');
 
+    // Pack header (no per-card mission — tier header already explains it)
     parts.push('<div class="pp-pack-head">');
     parts.push('<div class="pp-pack-head-left">');
     parts.push('<div class="pp-pack-title">');
@@ -1258,13 +1264,11 @@ var PP = (function() {
     parts.push(cdHint);
     parts.push('</div>');
     if (pack.counties.length) parts.push('<div class="pp-pack-counties">' + esc(pack.counties.join(' · ')) + '</div>');
-    if (tc.mission) parts.push('<div class="pp-pack-mission">' + tc.mission + '</div>');
     parts.push('</div>');
-    parts.push('<div class="pp-pack-count">' + totalCands + ' candidate' + (totalCands !== 1 ? 's' : '') + '</div>');
+    parts.push('<div class="pp-pack-count">' + hdCount + ' candidate' + (hdCount !== 1 ? 's' : '') + '</div>');
     parts.push('</div>');
 
-    // House anchor section
-    parts.push('<div class="pp-section-label pp-section-house">🏠 House Anchor — HD-' + pack.hdNum + '</div>');
+    // House candidate(s)
     parts.push('<div class="pp-wrapper"><table class="pp-table">' + PP_THEAD + '<tbody>');
     var housePrimary = pack.houseCandidates.length > 1;
     pack.houseCandidates.forEach(function(cand) {
@@ -1277,17 +1281,24 @@ var PP = (function() {
     });
     parts.push('</tbody></table></div>');
 
-    // Overlapping Senate candidates
+    // Compact senate overlap line — no full table, just chips
+    parts.push('<div class="pp-sd-overlap-line">');
     if (pack.senateSupporters.length) {
-      parts.push('<div class="pp-section-label pp-section-senate">⚡ Overlapping Senate Races (' + pack.senateSupporters.length + ')</div>');
-      parts.push('<div class="pp-wrapper"><table class="pp-table">' + PP_THEAD + '<tbody>');
+      parts.push('<span class="pp-sd-overlap-label">⚡ Senate overlap:</span>');
       pack.senateSupporters.forEach(function(cand) {
-        parts.push(renderEntry(cand, { isSenate: true, noOverlaps: true }));
+        var first = clean(cand.row, 'First Name'), last = clean(cand.row, 'Last Name');
+        var name = (first + ' ' + last).trim() || '—';
+        var lbl = cand.lean ? (cand.lean.in_index_label || '—') : '—';
+        var sdIdx = cand.lean ? cand.lean.in_index : null;
+        var chipColor = (sdIdx !== null && sdIdx > 0.15) ? '#fee2e2;color:#991b1b'
+          : (sdIdx !== null && sdIdx > 0) ? '#fef3c7;color:#92400e'
+          : '#dbeafe;color:#1e40af';
+        parts.push('<span class="pp-sd-chip" style="background:' + chipColor + '">SD-' + cand.dnum + ' ' + esc(name) + ' · ' + esc(lbl) + '</span>');
       });
-      parts.push('</tbody></table></div>');
     } else {
-      parts.push('<div class="pp-no-senate">⚠ No Senate candidates filed in overlapping SDs — <em>contact Indiana Rural Summit to get involved</em></div>');
+      parts.push('<span style="color:#92400e;font-size:0.72rem">⚠ No Senate candidates in overlapping districts</span>');
     }
+    parts.push('</div>');
 
     parts.push('</div>');
     return parts.join('');
@@ -1332,7 +1343,7 @@ var PP = (function() {
         currentTier = pack.tier;
         var ti = tierInfo[currentTier] || { label: 'DISTRICTS', desc: '' };
         var tierPacks = packs.filter(function(p) { return p.tier === currentTier; });
-        var tierCands = tierPacks.reduce(function(n, p) { return n + p.houseCandidates.length + p.senateSupporters.length; }, 0);
+        var tierCands = tierPacks.reduce(function(n, p) { return n + p.houseCandidates.length; }, 0);
         parts.push('<div class="pp-tier-section">');
         parts.push('<div class="pp-tier-group-header" style="background:#16a34a">');
         parts.push('<span class="pp-tier-label">' + ti.label + '</span>');
@@ -1556,9 +1567,9 @@ var PP = (function() {
       if (cdWrap)     cdWrap.style.display     = 'none';
       if (countyWrap) countyWrap.style.display = 'none';
       var result = buildHousePacks();
-      var totalCands = result.packs.reduce(function(n, p) { return n + p.houseCandidates.length + p.senateSupporters.length; }, 0);
-      if (statsEl) statsEl.textContent = totalCands + ' candidate' + (totalCands !== 1 ? 's' : '')
-        + ' across ' + result.packs.length + ' house district' + (result.packs.length !== 1 ? 's' : '')
+      var totalCands = result.packs.reduce(function(n, p) { return n + p.houseCandidates.length; }, 0);
+      if (statsEl) statsEl.textContent = totalCands + ' house candidate' + (totalCands !== 1 ? 's' : '')
+        + ' across ' + result.packs.length + ' district' + (result.packs.length !== 1 ? 's' : '')
         + ' — house-first view';
       out.innerHTML = renderHousePacks(result);
     } else {
