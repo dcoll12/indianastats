@@ -177,9 +177,15 @@ Promise.all([
   fetch('../../district_data.json').then(r => r.json()),
 ]).then(([lean, cands, countyGeo, cdGeo, sdGeo, hdGeo, distData]) => {
   status('Building race map…');
-  setTimeout(() => buildMap(lean, cands, countyGeo, cdGeo, sdGeo, hdGeo, distData), 30);
+  setTimeout(() => {
+    try {
+      buildMap(lean, cands, countyGeo, cdGeo, sdGeo, hdGeo, distData);
+    } catch(err) {
+      status('Error: ' + err.message + ' — ' + (err.stack || '').split('\n')[1]);
+    }
+  }, 30);
 }).catch(err => {
-  status('Error: ' + err.message);
+  status('Error loading data: ' + err.message);
 });
 
 // ── Build lean lookup ─────────────────────────────────────────────────────
@@ -217,14 +223,14 @@ function buildMap(lean, cands, countyGeo, cdGeo, sdGeo, hdGeo, distData) {
   const proj = d3.geoMercator().fitExtent([[32, 32], [W - 32, H - 32]], countyGeo);
   const path = d3.geoPath().projection(proj);
 
+  // ── Root group must exist before zoom handler fires ─────────────────────
+  const gRoot = svg.append('g');
+
   // ── Zoom / pan ──────────────────────────────────────────────────────────
   const zoom = d3.zoom()
     .scaleExtent([0.6, 40])
     .on('zoom', e => gRoot.attr('transform', e.transform));
   svg.call(zoom);
-  svg.call(zoom.transform, d3.zoomIdentity); // start at identity
-
-  const gRoot = svg.append('g');
 
   // ── Defs: glow filters ──────────────────────────────────────────────────
   const defs = svg.append('defs');
