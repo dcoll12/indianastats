@@ -612,7 +612,7 @@ def generate_table_rows(districts, prefix):
             sort_race = d['race_margin'] if d['race_margin'] is not None else 999
 
         name_html = d['representative']
-        if d['url']:
+        if d.get('url'):
             name_html = f'<a href="{d["url"]}" target="_blank" rel="noopener">{d["representative"]}</a>'
 
         rows.append(f'''        <tr>
@@ -629,7 +629,34 @@ def generate_table_rows(districts, prefix):
     return '\n'.join(rows)
 
 
-def generate_html(filepath, congressional, senate, house):
+def generate_table_rows_2010(districts, prefix):
+    """Generate 6-column HTML table rows for the 2010-boundary view (no race data)."""
+    rows = []
+    for d in districts:
+        party_class = 'party-r' if d['party'] == 'Republican' else 'party-d'
+        party_letter = 'R' if d['party'] == 'Republican' else 'D'
+
+        cls_2020 = get_color_class(d.get('margin_2020'))
+        cls_2024 = get_color_class(d.get('margin_2024'))
+        cls_avg = get_color_class(d.get('in_index'))
+
+        sort_2020 = d['margin_2020'] if d.get('margin_2020') is not None else 999
+        sort_2024 = d['margin_2024'] if d.get('margin_2024') is not None else 999
+        sort_avg = d['in_index'] if d.get('in_index') is not None else 999
+
+        rows.append(f'''        <tr>
+          <td class="{cls_2020}" data-sort-value="{sort_2020}">{d.get('label_2020', 'N/A')}</td>
+          <td class="{cls_2024}" data-sort-value="{sort_2024}">{d.get('label_2024', 'N/A')}</td>
+          <td class="{cls_avg} col-avg" data-sort-value="{sort_avg}">{d.get('in_index_label', 'N/A')}</td>
+          <td class="col-dist" data-sort-value="{d['district']}">{prefix}-{d['district']}</td>
+          <td class="col-rep" data-sort-value="{d.get('representative', '')}">{d.get('representative', '')}</td>
+          <td class="{party_class}" data-sort-value="{party_letter}">{party_letter}</td>
+        </tr>''')
+
+    return '\n'.join(rows)
+
+
+def generate_html(filepath, congressional, senate, house, data_2010=None):
     """Write self-contained HTML file."""
 
     cong_rows = generate_table_rows(congressional, 'CD')
@@ -639,12 +666,99 @@ def generate_html(filepath, congressional, senate, house):
     # Count party totals
     def count_parties(districts):
         r = sum(1 for d in districts if d['party'] == 'Republican')
-        d_count = sum(1 for d in districts if d['party'] == 'Democratic')
+        d_count = sum(1 for d in districts if d['party'] in ('Democratic', 'Democrat'))
         return r, d_count
 
     cr, cd = count_parties(congressional)
     sr, sd = count_parties(senate)
     hr, hd = count_parties(house)
+
+    # --- Build 2010 advanced view sections (conditionally) ---
+    has_2010 = data_2010 is not None
+    if has_2010:
+        cong_rows_2010 = generate_table_rows_2010(data_2010['congressional'], 'CD')
+        sen_rows_2010 = generate_table_rows_2010(data_2010['senate'], 'SD')
+        house_rows_2010 = generate_table_rows_2010(data_2010['house'], 'HD')
+        cr10, cd10 = count_parties(data_2010['congressional'])
+        sr10, sd10 = count_parties(data_2010['senate'])
+        hr10, hd10 = count_parties(data_2010['house'])
+
+        boundary_toggle = f'''
+  <div class="boundary-toggle">
+    <button class="boundary-btn active" data-view="current" onclick="setBoundaryView('current')">
+      Current Boundaries
+    </button>
+    <button class="boundary-btn" data-view="2010" onclick="setBoundaryView('2010')">
+      Pre-2012 Boundaries (2009&ndash;2011)
+    </button>
+  </div>
+  <div class="banner-2010" id="banner-2010">
+    <div class="banner-2010-title">Hypothetical Analysis: Pre-Redistricting Boundaries</div>
+    <p>
+      Shows what the IN-Index would look like if Indiana had kept its <strong>2009&ndash;2011 district
+      boundaries</strong>. Modern vote data (2020 and 2024 presidential results) has been remapped to
+      the old district shapes via precinct point-in-polygon spatial assignment.
+      Representatives listed held office in 2009&ndash;2011 and are shown for geographic context only.
+    </p>
+  </div>'''
+
+        def _2010_table_section(chamber, table_id, prefix, rows_2010, note_html=''):
+            return f'''
+  <div class="boundary-view boundary-view-2010" id="bview-2010-{chamber}" style="display:none">
+    {note_html}
+    <div class="table-wrap">
+      <table id="{table_id}">
+        <thead>
+          <tr>
+            <th onclick="sortTable('{table_id}', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('{table_id}', 1, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('{table_id}', 2, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('{table_id}', 3, 'num')">District <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('{table_id}', 4, 'alpha')">Rep. (2009&ndash;2011) <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('{table_id}', 5, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+          </tr>
+        </thead>
+        <tbody>
+{rows_2010}
+        </tbody>
+      </table>
+    </div>
+  </div>'''
+
+        cong_2010_section = _2010_table_section(
+            'congressional', 'table-congressional-2010', 'CD', cong_rows_2010)
+        sen_2010_section = _2010_table_section(
+            'senate', 'table-senate-2010', 'SD', sen_rows_2010)
+        house_2010_section = _2010_table_section(
+            'house', 'table-house-2010', 'HD', house_rows_2010,
+            note_html='''<div class="house-note">
+      <strong>Note:</strong> Under pre-2012 boundaries, 2020 presidential margins are available
+      for all chambers including House, computed via county-to-district weights from precinct spatial assignments.
+    </div>''')
+
+        js_2010 = f'''
+let boundaryView = 'current';
+const BADGE_DATA = {{
+  congressional: {{ current: '{cr}R / {cd}D — 9 districts', '2010': '{cr10}R / {cd10}D — 9 districts' }},
+  senate:        {{ current: '{sr}R / {sd}D — 50 districts', '2010': '{sr10}R / {sd10}D — 50 districts' }},
+  house:         {{ current: '{hr}R / {hd}D — 100 districts', '2010': '{hr10}R / {hd10}D — 100 districts' }},
+}};
+function setBoundaryView(view) {{
+  boundaryView = view;
+  document.querySelectorAll('.boundary-view').forEach(el => {{ el.style.display = 'none'; }});
+  document.querySelectorAll('.boundary-view-' + view).forEach(el => {{ el.style.display = 'block'; }});
+  document.querySelectorAll('.boundary-btn').forEach(btn => {{
+    btn.classList.toggle('active', btn.dataset.view === view);
+  }});
+  ['congressional', 'senate', 'house'].forEach((ch, i) => {{
+    document.querySelectorAll('.tab-btn')[i].querySelector('.badge').textContent = BADGE_DATA[ch][view];
+  }});
+  document.getElementById('banner-2010').style.display = view === '2010' ? 'block' : 'none';
+}}'''
+    else:
+        boundary_toggle = ''
+        cong_2010_section = sen_2010_section = house_2010_section = ''
+        js_2010 = 'let boundaryView = "current";'
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
@@ -901,11 +1015,53 @@ footer .sources {{
   border-top: 1px solid #e2e8f0;
 }}
 
+/* Boundary toggle */
+.boundary-toggle {{
+  display: flex;
+  gap: 0;
+  margin-bottom: 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+}}
+.boundary-btn {{
+  padding: 9px 18px;
+  border: none;
+  background: white;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-right: 1px solid #cbd5e1;
+}}
+.boundary-btn:last-child {{ border-right: none; }}
+.boundary-btn.active {{ background: #1e3a5f; color: white; }}
+.boundary-btn:hover:not(.active) {{ background: #f1f5f9; color: #334155; }}
+
+/* 2010 info banner */
+.banner-2010 {{
+  display: none;
+  background: #f0f9ff;
+  border: 1px solid #7dd3fc;
+  border-left: 4px solid #0ea5e9;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #0c4a6e;
+}}
+.banner-2010-title {{ font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #075985; }}
+.banner-2010 p {{ line-height: 1.6; }}
+
 /* Responsive */
 @media (max-width: 768px) {{
   header h1 {{ font-size: 22px; }}
   .tabs {{ flex-direction: column; }}
   .tab-btn {{ padding: 10px; }}
+  .boundary-toggle {{ width: 100%; }}
+  .boundary-btn {{ flex: 1; }}
   table {{ font-size: 13px; }}
   thead th, tbody td {{ padding: 8px 10px; }}
 }}
@@ -924,7 +1080,7 @@ footer .sources {{
       <a href="district-match/">District Match</a>
     </nav>
   </header>
-
+{boundary_toggle}
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('congressional')">
       Congressional
@@ -941,72 +1097,81 @@ footer .sources {{
   </div>
 
   <div class="tab-content active" id="tab-congressional">
-    <div class="table-wrap">
-      <table id="table-congressional">
-        <thead>
-          <tr>
-            <th onclick="sortTable('table-congressional', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 1, 'num')">2022 US House <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 3, 'num')">2024 US House <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
-          </tr>
-        </thead>
-        <tbody>
+    <div class="boundary-view boundary-view-current" id="bview-current-congressional">
+      <div class="table-wrap">
+        <table id="table-congressional">
+          <thead>
+            <tr>
+              <th onclick="sortTable('table-congressional', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 1, 'num')">2022 US House <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 3, 'num')">2024 US House <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+            </tr>
+          </thead>
+          <tbody>
 {cong_rows}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
+{cong_2010_section}
   </div>
 
   <div class="tab-content" id="tab-senate">
-    <div class="table-wrap">
-      <table id="table-senate">
-        <thead>
-          <tr>
-            <th onclick="sortTable('table-senate', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 1, 'num')">2022 Senate <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 3, 'num')">Senate Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
-          </tr>
-        </thead>
-        <tbody>
+    <div class="boundary-view boundary-view-current" id="bview-current-senate">
+      <div class="table-wrap">
+        <table id="table-senate">
+          <thead>
+            <tr>
+              <th onclick="sortTable('table-senate', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-senate', 1, 'num')">2022 Senate <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-senate', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-senate', 3, 'num')">Senate Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-senate', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-senate', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-senate', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-senate', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+            </tr>
+          </thead>
+          <tbody>
 {sen_rows}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
+{sen_2010_section}
   </div>
 
   <div class="tab-content" id="tab-house">
-    <div class="house-note">
-      <strong>Note:</strong> 2020, 2022, and 2024 columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
-    </div>
-    <div class="table-wrap">
-      <table id="table-house">
-        <thead>
-          <tr>
-            <th onclick="sortTable('table-house', 0, 'num')">2020 House Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 1, 'num')">2022 House Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 3, 'num')">2024 House Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
-          </tr>
-        </thead>
-        <tbody>
+    <div class="boundary-view boundary-view-current" id="bview-current-house">
+      <div class="house-note">
+        <strong>Note:</strong> 2020, 2022, and 2024 columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
+      </div>
+      <div class="table-wrap">
+        <table id="table-house">
+          <thead>
+            <tr>
+              <th onclick="sortTable('table-house', 0, 'num')">2020 House Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 1, 'num')">2022 House Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 3, 'num')">2024 House Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+            </tr>
+          </thead>
+          <tbody>
 {house_rows}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
+{house_2010_section}
   </div>
 
   <footer>
@@ -1045,6 +1210,8 @@ footer .sources {{
 </div>
 
 <script>
+{js_2010}
+
 function switchTab(tab) {{
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
@@ -1181,7 +1348,12 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
         json.dump(data, f, indent=2)
     print(f"Wrote {out_json}")
 
-    generate_html(out_html, data['congressional'], data['senate'], data['house'])
+    data_2010_path = os.path.join(SCRIPT_DIR, 'data_2010.json')
+    data_2010 = None
+    if os.path.exists(data_2010_path):
+        with open(data_2010_path) as f:
+            data_2010 = json.load(f)
+    generate_html(out_html, data['congressional'], data['senate'], data['house'], data_2010)
 
 
 def main():
@@ -1303,9 +1475,17 @@ def main():
     for d in competitive[:10]:
         print(f"  SD-{d['district']:>2}: {d['in_index_label']:>7}  {d['representative']} ({d['party'][0]})")
 
+    # Load 2010 boundary data if available (generated by build_2010_data.py)
+    data_2010_path = os.path.join(SCRIPT_DIR, 'data_2010.json')
+    data_2010 = None
+    if os.path.exists(data_2010_path):
+        with open(data_2010_path) as f:
+            data_2010 = json.load(f)
+        print("Loaded 2010 boundary data — advanced view will be included.")
+
     # Write outputs
     write_data_json(os.path.join(SCRIPT_DIR, 'data.json'), congressional, senate, house)
-    generate_html(os.path.join(SCRIPT_DIR, 'index.html'), congressional, senate, house)
+    generate_html(os.path.join(SCRIPT_DIR, 'index.html'), congressional, senate, house, data_2010)
 
     print("\nDone! Open index.html in a browser to view the table.")
 
