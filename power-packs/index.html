@@ -2141,7 +2141,10 @@ var PP = (function() {
 
     // House candidates section
     if (result.houseMembers.length) {
-      parts.push('<div class="pp-section-label pp-section-house">House Candidates in Your Pack ('+result.houseMembers.length+')</div>');
+      var houseSectionLabel = dtype === 'house'
+        ? 'Your Senate Coalition ('+result.houseMembers.length+' House Candidates)'
+        : 'House Candidates in Your Pack ('+result.houseMembers.length+')';
+      parts.push('<div class="pp-section-label pp-section-house">'+houseSectionLabel+'</div>');
       parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
       result.houseMembers.forEach(function(member) {
         var hdm = (member.lean && member.lean.in_index !== null) ? member.lean.in_index : 0.5;
