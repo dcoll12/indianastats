@@ -199,8 +199,16 @@ footer {
   height: 12px; background: #f1f5f9;
   border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0;
 }
+/* Pack card immediately after a divider gets its own rounded top and border */
+.pp-pack-divider + .pp-pack-card {
+  border-top: 1px solid #e2e8f0;
+  border-radius: 10px 10px 0 0;
+}
 .pp-cd-section .pp-pack-card:last-of-type { border-radius: 0 0 10px 10px; margin-bottom: 0; }
 .pp-tier-section .pp-pack-card:last-of-type { border-radius: 0 0 10px 10px; margin-bottom: 0; }
+/* If the separated card is also the last, fully round it */
+.pp-cd-section .pp-pack-divider + .pp-pack-card:last-of-type,
+.pp-tier-section .pp-pack-divider + .pp-pack-card:last-of-type { border-radius: 10px; }
 .pp-pack-card-standalone {
   background: white; border-radius: 10px; border: 1px solid #e2e8f0;
   margin-bottom: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
