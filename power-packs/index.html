@@ -907,14 +907,16 @@ var PP = (function() {
         return ma - mb;
       });
 
-      // House candidates intentionally appear in every overlapping SD pack — no deduplication.
-      // Mark entries that appear in more than one pack within this CD for visual context.
-      var hdPackCount = {};
+      // Deduplicate: each HD appears in exactly one pack — the most competitive SD pack
+      // it overlaps. Packs are already sorted TARGET → OPPORTUNITY → TURNOUT → HOLD,
+      // so the first pack that claims an HD is always the most competitive one.
+      var claimedHDs = new Set();
       packs.forEach(function(pack) {
-        pack.houseMembers.forEach(function(m) { hdPackCount[m.dnum] = (hdPackCount[m.dnum] || 0) + 1; });
-      });
-      packs.forEach(function(pack) {
-        pack.houseMembers.forEach(function(m) { m.appearsInMultiplePacks = (hdPackCount[m.dnum] || 0) > 1; });
+        pack.houseMembers = pack.houseMembers.filter(function(m) {
+          if (claimedHDs.has(m.dnum)) return false;
+          claimedHDs.add(m.dnum);
+          return true;
+        });
       });
 
       // Apply search filter, then drop empty packs
