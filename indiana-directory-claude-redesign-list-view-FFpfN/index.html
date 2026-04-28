@@ -1290,8 +1290,12 @@
             const countyFilter = document.getElementById('countyFilter').value;
 
             filteredData = directoryData.filter(contact => {
+                // Exclude local candidates
+                const filedType = (contact['Filed (candidate)'] || '').trim().toLowerCase();
+                if (filedType === 'local') return false;
+
                 // Search filter - now includes Elected Opponent
-                const searchMatch = !searchTerm || 
+                const searchMatch = !searchTerm ||
                     contact['First Name'].toLowerCase().includes(searchTerm) ||
                     contact['Last Name'].toLowerCase().includes(searchTerm) ||
                     (contact.Role && contact.Role.toLowerCase().includes(searchTerm)) ||
@@ -1667,7 +1671,6 @@ function closeModal(modalId) {
                         <div class="form-group">
                             <label>Type of Candidate <span style="color: #6b7280; font-weight: 400;">(if applicable)</span></label>
                             <div class="radio-group">
-                                <label><input type="radio" name="entry.1075511133" value="Local"> Local</label>
                                 <label><input type="radio" name="entry.1075511133" value="House"> House</label>
                                 <label><input type="radio" name="entry.1075511133" value="Senate"> Senate</label>
                                 <label><input type="radio" name="entry.1075511133" value="Congress"> Congress</label>
