@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Power Packs Network — Indiana 2026</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #07090f; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #e6edf3; }
+
+/* ── Header ─────────────────────────────────────────────────────────── */
+#hdr {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+  background: rgba(7,9,15,0.94); backdrop-filter: blur(12px);
+  border-bottom: 1px solid #1e2a3a;
+  padding: 8px 14px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  min-height: 46px;
+}
+.back-link { color: #388bfd; font-size: 12px; text-decoration: none; white-space: nowrap; }
+.back-link:hover { color: #79c0ff; }
+#hdr-title { font-size: 14px; font-weight: 800; color: #f0f6fc; }
+#hdr-sub   { font-size: 10px; color: #4a5a6a; margin-top: 1px; }
+.ctrl-row  { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; margin-left: auto; }
+.cbtn {
+  background: #111823; border: 1px solid #253040;
+  border-radius: 5px; padding: 4px 10px;
+  font-size: 11px; font-weight: 600; color: #7a8a9a;
+  cursor: pointer; white-space: nowrap; transition: all 0.15s;
+}
+.cbtn:hover:not(.on) { border-color: #7a8a9a; color: #d0dae6; }
+.cbtn.on-all  { background: #1a4580; border-color: #388bfd; color: #fff; }
+.cbtn.on-t1   { background: #7a1010; border-color: #dc2626; color: #fff; }
+.cbtn.on-t2   { background: #3d1f70; border-color: #a371f7; color: #fff; }
+.cbtn.on-t3   { background: #0e5020; border-color: #3fb950; color: #fff; }
+.cbtn.on-t0   { background: #083a50; border-color: #0891b2; color: #fff; }
+.cbtn.on-web  { background: #3a2800; border-color: #c08020; color: #fff; }
+#node-ct { font-size: 10px; color: #4a5a6a; white-space: nowrap; }
+
+/* ── Canvas ─────────────────────────────────────────────────────────── */
+#graph-svg {
+  position: fixed; top: 46px; left: 0; bottom: 0; right: 0;
+  width: 100%; height: calc(100vh - 46px);
+  cursor: grab;
+}
+#graph-svg:active { cursor: grabbing; }
+
+/* ── Tooltip ─────────────────────────────────────────────────────────── */
+#tip {
+  position: fixed; z-index: 500; pointer-events: none;
+  background: rgba(10,15,24,0.97); border: 1px solid #1e2a3a;
+  border-radius: 8px; padding: 11px 14px; max-width: 250px;
+  box-shadow: 0 6px 30px rgba(0,0,0,0.7);
+  opacity: 0; transition: opacity 0.1s;
+}
+#tip.show { opacity: 1; }
+#tt-name  { font-size: 13px; font-weight: 700; color: #f0f6fc; margin-bottom: 3px; }
+#tt-dist  { color: #6a7a8a; font-size: 11px; }
+#tt-party { font-weight: 600; font-size: 12px; margin-top: 4px; }
+#tt-lean  { color: #4a5a6a; font-size: 11px; margin-top: 2px; }
+#tt-tier  { font-size: 11px; margin-top: 5px; padding-top: 5px; border-top: 1px solid #1e2a3a; }
+#tt-pack  { font-size: 10px; color: #4a5a6a; margin-top: 3px; }
+
+/* ── Legend ─────────────────────────────────────────────────────────── */
+#legend {
+  position: fixed; bottom: 14px; left: 14px; z-index: 300;
+  background: rgba(10,15,24,0.94); backdrop-filter: blur(8px);
+  border: 1px solid #1e2a3a; border-radius: 8px;
+  padding: 11px 14px; font-size: 11px;
+}
+#legend h4 { color: #4a5a6a; font-size: 9px; text-transform: uppercase; letter-spacing: 0.9px; margin-bottom: 8px; }
+.lrow { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; color: #7a8a9a; }
+.ldot { border-radius: 50%; flex-shrink: 0; }
+.lsep { border-top: 1px solid #1e2a3a; margin: 6px 0; }
+.lsq { flex-shrink: 0; border-radius: 2px; }
+.lline { height: 2px; flex-shrink: 0; border-radius: 1px; }
+
+/* ── Loading ─────────────────────────────────────────────────────────── */
+#loading {
+  position: fixed; inset: 0; z-index: 999; background: #07090f;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+}
+#loading-spin {
+  width: 34px; height: 34px; border: 3px solid #1e2a3a; border-top-color: #388bfd;
+  border-radius: 50%; animation: spin 0.8s linear infinite;
+}
+#loading-msg { font-size: 13px; color: #7a8a9a; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div id="loading">
+  <div id="loading-spin"></div>
+  <div id="loading-msg">Loading pack data…</div>
+</div>
+
+<div id="hdr">
+  <a href="../" class="back-link">← Power Packs</a>
+  <div>
+    <div id="hdr-title">Indiana 2026 — Power Packs Network</div>
+    <div id="hdr-sub">Senate-anchored packs · node size = competitiveness · drag nodes · scroll to zoom</div>
+  </div>
+  <div class="ctrl-row">
+    <button class="cbtn on-all" id="btn-all" onclick="setTierFilter('all')">All Packs</button>
+    <button class="cbtn" id="btn-t1"  onclick="setTierFilter(1)">🎯 Target</button>
+    <button class="cbtn" id="btn-t2"  onclick="setTierFilter(2)">⚡ Opportunity</button>
+    <button class="cbtn" id="btn-t3"  onclick="setTierFilter(3)">🌱 Turnout</button>
+    <button class="cbtn" id="btn-t0"  onclick="setTierFilter(0)">🏠 Hold</button>
+    <button class="cbtn on-web" id="btn-web" onclick="toggleWeb()">Pack Links</button>
+    <span id="node-ct"></span>
+  </div>
+</div>
+
+<svg id="graph-svg"></svg>
+
+<div id="tip">
+  <div id="tt-name"></div>
+  <div id="tt-dist"></div>
+  <div id="tt-party"></div>
+  <div id="tt-lean"></div>
+  <div id="tt-tier"></div>
+  <div id="tt-pack"></div>
+</div>
+
+<div id="legend">
+  <h4>Candidate nodes</h4>
+  <div class="lrow"><div class="ldot" style="width:10px;height:10px;background:#3b82f6;box-shadow:0 0 5px #3b82f680;"></div>Democrat</div>
+  <div class="lrow"><div class="ldot" style="width:10px;height:10px;background:#ef4444;box-shadow:0 0 5px #ef444480;"></div>Republican</div>
+  <div class="lrow" style="gap:3px;">
+    <div class="ldot" style="width:7px;height:7px;background:#8b949e;"></div>
+    <div class="ldot" style="width:12px;height:12px;background:#8b949e;"></div>
+    <div class="ldot" style="width:17px;height:17px;background:#8b949e;"></div>
+    <span style="margin-left:2px;">Competitiveness →</span>
+  </div>
+  <div class="lsep"></div>
+  <h4 style="margin-top:2px;">Pack tiers (ring color)</h4>
+  <div class="lrow"><div class="lsq" style="width:10px;height:10px;background:#dc2626;"></div>🎯 Target — flip or hold</div>
+  <div class="lrow"><div class="lsq" style="width:10px;height:10px;background:#a371f7;"></div>⚡ Opportunity</div>
+  <div class="lrow"><div class="lsq" style="width:10px;height:10px;background:#3fb950;"></div>🌱 Turnout / pioneer</div>
+  <div class="lrow"><div class="lsq" style="width:10px;height:10px;background:#0891b2;"></div>🏠 Hold — safe D anchor</div>
+  <div class="lsep"></div>
+  <div class="lrow"><div class="lline" style="width:18px;background:#8b949e;opacity:0.6;"></div>Same-race link</div>
+  <div class="lrow"><div class="lline" style="width:18px;background:#c08020;opacity:0.5;stroke-dasharray:2,3;border-top: 2px dashed #c08020; height:0; border-radius:0;"></div>SD → HD pack link</div>
+</div>
+
+<script>
+// ── Tier config ───────────────────────────────────────────────────────────
+const TIER_COLOR = { 0: '#0891b2', 1: '#dc2626', 2: '#a371f7', 3: '#3fb950' };
+const TIER_LABEL = { 0: '🏠 HOLD', 1: '🎯 TARGET', 2: '⚡ OPPORTUNITY', 3: '🌱 TURNOUT' };
+const TIER_DESC  = {
+  0: 'Safe D seat — anchor turnout wave',
+  1: 'Competitive flip or D defense',
+  2: 'Hard-fought, move the margin',
+  3: 'Pioneer district — build infrastructure',
+};
+const PARTY_CLR  = { D: '#3b82f6', R: '#ef4444', '': '#6b7280' };
+
+// Indiana CD positions (normalized 0–1, rough geographic layout)
+const CD_POS = {
+  1: { rx: 0.10, ry: 0.13 },  // Gary / Lake County
+  2: { rx: 0.38, ry: 0.09 },  // South Bend / Michiana
+  3: { rx: 0.78, ry: 0.12 },  // Fort Wayne / NE Indiana
+  4: { rx: 0.14, ry: 0.46 },  // Terre Haute / W Indiana
+  5: { rx: 0.64, ry: 0.32 },  // N Indianapolis suburbs
+  6: { rx: 0.86, ry: 0.47 },  // Muncie / E Indiana
+  7: { rx: 0.50, ry: 0.58 },  // Indianapolis core
+  8: { rx: 0.20, ry: 0.84 },  // Evansville / SW Indiana
+  9: { rx: 0.70, ry: 0.84 },  // Bloomington / SE Indiana
+};
+
+// ── State ─────────────────────────────────────────────────────────────────
+let tierFilter = 'all';
+let showWeb = true;
+let gRoot, webSel, raceSel, nodeSel, simNodes;
+
+// ── Load data ─────────────────────────────────────────────────────────────
+const MSG = document.getElementById('loading-msg');
+Promise.all([
+  fetch('../../data.json').then(r => r.json()),
+  fetch('../../candidates_2026.json').then(r => r.json()),
+  fetch('../../district_data.json').then(r => r.json()),
+]).then(([lean, cands, distData]) => {
+  MSG.textContent = 'Building pack network…';
+  setTimeout(() => {
+    try { build(lean, cands, distData); }
+    catch(e) { MSG.textContent = 'Error: ' + e.message; console.error(e); }
+  }, 30);
+}).catch(e => { MSG.textContent = 'Load error: ' + e.message; });
+
+// ── Build lean lookups ────────────────────────────────────────────────────
+function buildLeanLookup(lean) {
+  const ll = { congressional: {}, senate: {}, house: {} };
+  (lean.congressional || []).forEach(d => { ll.congressional[d.district] = d; });
+  (lean.senate        || []).forEach(d => { ll.senate[d.district]        = d; });
+  (lean.house         || []).forEach(d => { ll.house[d.district]         = d; });
+  return ll;
+}
+
+function competitiveness(ii) { return Math.max(0, 1 - Math.abs(ii) / 0.45); }
+
+function sdTier(sdNum, ll) {
+  const d = ll.senate[+sdNum]; if (!d) return 3;
+  const m = d.in_index ?? 0.5;
+  if (d.party === 'Democratic' && m < -0.15) return 0;
+  if (m <= 0.15) return 1;
+  if (m <= 0.30) return 2;
+  return 3;
+}
+
+function hdTier(hdNum, ll) {
+  const d = ll.house[+hdNum]; if (!d) return 3;
+  const m = d.in_index ?? 0.5;
+  if (d.party === 'Democratic' && m < -0.15) return 0;
+  if (m <= 0.08) return 1;
+  if (m <= 0.25) return 2;
+  return 3;
+}
+
+// ── Node radius ───────────────────────────────────────────────────────────
+function nodeR(chamber, comp) {
+  const base  = { cd: 11, sd: 13, hd: 8 }[chamber] || 8;
+  const bonus = { cd: 16, sd: 15, hd: 10 }[chamber] || 10;
+  return base + bonus * comp;
+}
+
+// ── Main build ────────────────────────────────────────────────────────────
+function build(lean, cands, distData) {
+  const ll       = buildLeanLookup(lean);
+  const sdToHds  = distData.sd_to_hds  || {};
+  const sdToCd   = distData.sd_to_cd   || {};
+  const cdToSds  = distData.cd_to_sds  || {};
+
+  const W = window.innerWidth, H = window.innerHeight - 46;
+
+  // ── Nodes & links arrays ─────────────────────────────────────────────
+  const nodes = [], links = [];
+
+  // Helper: unique stable id → node map
+  const nodeMap = {};
+  function addNode(n) { nodeMap[n.id] = n; nodes.push(n); return n; }
+  function addLink(s, t, type, tier) { links.push({ source: s, target: t, type, tier: tier ?? -1 }); }
+
+  // CD zone coordinates (pixels)
+  function cdXY(cdNum) {
+    const pos = CD_POS[+cdNum] || { rx: 0.5, ry: 0.5 };
+    return { x: pos.rx * W, y: pos.ry * H };
+  }
+
+  // Collect contested SDs (those with filed candidates)
+  const contestedSDs = Object.keys(cands.sd || {}).map(Number);
+
+  // ── Build one pack per contested SD ────────────────────────────────
+  const packBySd = {};
+
+  contestedSDs.forEach(sdNum => {
+    const sdCandidates = cands.sd[sdNum] || [];
+    if (!sdCandidates.length) return;
+
+    const cdNum  = +(sdToCd[String(sdNum)] || 0);
+    const cdPos  = cdXY(cdNum);
+    const leanSD = ll.senate[sdNum] || {};
+    const compSD = competitiveness(leanSD.in_index ?? 0.5);
+    const tier   = sdTier(sdNum, ll);
+    const tcol   = TIER_COLOR[tier];
+
+    // SD anchor node (invisible force center for the pack)
+    const sdAnchorId = `anchor-sd-${sdNum}`;
+    addNode({
+      id: sdAnchorId, type: 'anchor', chamber: 'sd', distNum: sdNum, cdNum,
+      tier, comp: compSD,
+      x: cdPos.x + (Math.random() - 0.5) * 160,
+      y: cdPos.y + (Math.random() - 0.5) * 140,
+    });
+
+    // SD candidate nodes
+    const sdCandNodes = [];
+    sdCandidates.forEach((c, ci) => {
+      const id = `cand-sd-${sdNum}-${ci}`;
+      const n = addNode({
+        id, type: 'candidate', chamber: 'sd', distNum: sdNum, cdNum,
+        name: c.name, party: c.party || '',
+        comp: compSD, ii: leanSD.in_index ?? 0, lean_lbl: leanSD.in_index_label || '',
+        tier, tcol,
+        x: cdPos.x + (Math.random() - 0.5) * 180,
+        y: cdPos.y + (Math.random() - 0.5) * 150,
+      });
+      sdCandNodes.push(n);
+      addLink(id, sdAnchorId, 'member');
+    });
+    // Race links within SD
+    for (let a = 0; a < sdCandNodes.length; a++)
+      for (let b = a + 1; b < sdCandNodes.length; b++)
+        addLink(sdCandNodes[a].id, sdCandNodes[b].id, 'race');
+
+    // HDs in this pack
+    const packHDs = (sdToHds[String(sdNum)] || []).filter(hd => (cands.hd || {})[hd]?.length);
+    packBySd[sdNum] = { sdNum, cdNum, tier, hdNums: packHDs, sdAnchorId };
+
+    packHDs.forEach(hdNum => {
+      const hdCandidates = (cands.hd || {})[hdNum] || [];
+      const leanHD = ll.house[hdNum] || {};
+      const compHD = competitiveness(leanHD.in_index ?? 0.5);
+      const hdT    = hdTier(hdNum, ll);
+
+      // HD anchor node
+      const hdAnchorId = `anchor-hd-${hdNum}`;
+      if (!nodeMap[hdAnchorId]) {
+        addNode({
+          id: hdAnchorId, type: 'anchor', chamber: 'hd', distNum: hdNum, cdNum,
+          parentSd: sdNum, tier: hdT, comp: compHD,
+          x: cdPos.x + (Math.random() - 0.5) * 200,
+          y: cdPos.y + (Math.random() - 0.5) * 180,
+        });
+        // Pack link: SD anchor → HD anchor (the core "web")
+        addLink(sdAnchorId, hdAnchorId, 'pack', tier);
+      }
+
+      // HD candidate nodes (skip if already added for this HD)
+      if (nodeMap[`cand-hd-${hdNum}-0`]) return;
+      const hdCandNodes = [];
+      hdCandidates.forEach((c, ci) => {
+        const id = `cand-hd-${hdNum}-${ci}`;
+        const n = addNode({
+          id, type: 'candidate', chamber: 'hd', distNum: hdNum, cdNum,
+          name: c.name, party: c.party || '',
+          comp: compHD, ii: leanHD.in_index ?? 0, lean_lbl: leanHD.in_index_label || '',
+          tier: hdT, tcol: TIER_COLOR[hdT], parentSd: sdNum,
+          x: cdPos.x + (Math.random() - 0.5) * 220,
+          y: cdPos.y + (Math.random() - 0.5) * 200,
+        });
+        hdCandNodes.push(n);
+        addLink(id, hdAnchorId, 'member');
+      });
+      for (let a = 0; a < hdCandNodes.length; a++)
+        for (let b = a + 1; b < hdCandNodes.length; b++)
+          addLink(hdCandNodes[a].id, hdCandNodes[b].id, 'race');
+    });
+  });
+
+  // CD anchor nodes (fixed, invisible — just positioning magnets)
+  Object.entries(CD_POS).forEach(([cdNum, pos]) => {
+    const id = `anchor-cd-${cdNum}`;
+    const n = addNode({
+      id, type: 'cd-anchor', chamber: 'cd', distNum: +cdNum, cdNum: +cdNum,
+      x: pos.rx * W, y: pos.ry * H,
+    });
+    n.fx = pos.rx * W; n.fy = pos.ry * H;
+  });
+
+  // ── CD candidate nodes (separate from packs) ─────────────────────
+  Object.entries(cands.cd || {}).forEach(([cdNum, candidates]) => {
+    const leanCD = ll.congressional[+cdNum] || {};
+    const compCD = competitiveness(leanCD.in_index ?? 0.5);
+    const cdPos  = cdXY(+cdNum);
+    const cdAnchorId = `anchor-cd-${cdNum}`;
+
+    const cdCandNodes = [];
+    candidates.forEach((c, ci) => {
+      const id = `cand-cd-${cdNum}-${ci}`;
+      const n = addNode({
+        id, type: 'candidate', chamber: 'cd', distNum: +cdNum, cdNum: +cdNum,
+        name: c.name, party: c.party || '',
+        comp: compCD, ii: leanCD.in_index ?? 0, lean_lbl: leanCD.in_index_label || '',
+        tier: -1, tcol: '#388bfd',
+        x: cdPos.x + (Math.random() - 0.5) * 100,
+        y: cdPos.y + (Math.random() - 0.5) * 80,
+      });
+      cdCandNodes.push(n);
+      addLink(id, cdAnchorId, 'member');
+    });
+    for (let a = 0; a < cdCandNodes.length; a++)
+      for (let b = a + 1; b < cdCandNodes.length; b++)
+        addLink(cdCandNodes[a].id, cdCandNodes[b].id, 'race');
+  });
+
+  // ── Render ───────────────────────────────────────────────────────────
+  render(nodes, links, W, H);
+}
+
+// ── Render ────────────────────────────────────────────────────────────────
+function render(nodes, links, W, H) {
+  simNodes = nodes;
+  const svg = d3.select('#graph-svg').attr('width', W).attr('height', H);
+
+  // Defs: glow filters
+  const defs = svg.append('defs');
+  [['gd','#3b82f6',5],['gr','#ef4444',5],['gt','#f0c040',7]].forEach(([id,c,s]) => {
+    const f = defs.append('filter').attr('id', id)
+      .attr('x','-80%').attr('y','-80%').attr('width','260%').attr('height','260%');
+    f.append('feGaussianBlur').attr('in','SourceGraphic').attr('stdDeviation',s).attr('result','b');
+    const m = f.append('feMerge');
+    m.append('feMergeNode').attr('in','b');
+    m.append('feMergeNode').attr('in','SourceGraphic');
+  });
+
+  // Zoom / pan
+  gRoot = svg.append('g');
+  const zoom = d3.zoom().scaleExtent([0.08, 12])
+    .on('zoom', e => gRoot.attr('transform', e.transform));
+  svg.call(zoom);
+
+  // ── CD zone labels ───────────────────────────────────────────────────
+  const cdLabelData = Object.entries(CD_POS).map(([num, pos]) => ({
+    num: +num, x: pos.rx * W, y: pos.ry * H,
+  }));
+  gRoot.append('g').attr('class','cd-labels').selectAll('text')
+    .data(cdLabelData).join('text')
+    .attr('x', d => d.x).attr('y', d => d.y - 10)
+    .attr('text-anchor', 'middle')
+    .attr('font-size', 11).attr('font-weight', 800).attr('letter-spacing', 1)
+    .attr('fill', '#388bfd').attr('fill-opacity', 0.28)
+    .attr('pointer-events', 'none')
+    .text(d => `CD ${d.num}`);
+
+  // Subtle CD zone circles (just a faint halo)
+  gRoot.append('g').attr('class','cd-zones').selectAll('circle')
+    .data(cdLabelData).join('circle')
+    .attr('cx', d => d.x).attr('cy', d => d.y)
+    .attr('r', 90)
+    .attr('fill', '#388bfd').attr('fill-opacity', 0.018)
+    .attr('stroke', '#388bfd').attr('stroke-opacity', 0.07)
+    .attr('stroke-width', 1).attr('pointer-events', 'none');
+
+  // ── Pack (web) links — SD anchor → HD anchor ─────────────────────────
+  const packLinks = links.filter(l => l.type === 'pack');
+  const gWeb = gRoot.append('g').attr('id','g-web');
+  webSel = gWeb.selectAll('line').data(packLinks).join('line')
+    .attr('stroke', l => TIER_COLOR[l.tier] || '#c08020')
+    .attr('stroke-opacity', 0.28)
+    .attr('stroke-width', 1)
+    .attr('stroke-dasharray', '4,6')
+    .attr('pointer-events', 'none');
+
+  // ── Race links (within-district) ─────────────────────────────────────
+  const rLinks = links.filter(l => l.type === 'race');
+  const gRace = gRoot.append('g').attr('id','g-race');
+  raceSel = gRace.selectAll('line').data(rLinks).join('line')
+    .attr('stroke', l => {
+      const sp = typeof l.source === 'object' ? l.source.party : '';
+      const tp = typeof l.target === 'object' ? l.target.party : '';
+      if (sp === tp && sp) return PARTY_CLR[sp];
+      return '#6a7a8a';
+    })
+    .attr('stroke-opacity', 0.5)
+    .attr('stroke-width', 1.1)
+    .attr('pointer-events', 'none');
+
+  // ── Candidate nodes ───────────────────────────────────────────────────
+  const candNodes = nodes.filter(n => n.type === 'candidate');
+  document.getElementById('node-ct').textContent =
+    `${candNodes.length} candidates · ${nodes.filter(n=>n.type==='anchor'&&n.chamber==='sd').length} packs`;
+
+  const gNodes = gRoot.append('g').attr('id','g-nodes');
+  nodeSel = gNodes.selectAll('.cn').data(candNodes).join('g')
+    .attr('class', 'cn')
+    .style('cursor', 'pointer')
+    .call(d3.drag()
+      .on('start', (ev,d) => { if (!ev.active) sim.alphaTarget(0.2).restart(); d.fx=d.x; d.fy=d.y; })
+      .on('drag',  (ev,d) => { d.fx=ev.x; d.fy=ev.y; })
+      .on('end',   (ev,d) => { if (!ev.active) sim.alphaTarget(0); d.fx=null; d.fy=null; })
+    )
+    .on('mouseover', showTip)
+    .on('mousemove', moveTip)
+    .on('mouseout',  hideTip);
+
+  // Tier ring (outer glow showing this node's pack tier)
+  nodeSel.append('circle')
+    .attr('r', d => nodeR(d.chamber, d.comp) + 3.5)
+    .attr('fill', 'none')
+    .attr('stroke', d => d.tier >= 0 ? TIER_COLOR[d.tier] : '#388bfd')
+    .attr('stroke-width', d => d.comp > 0.55 ? 2 : 1)
+    .attr('stroke-opacity', d => 0.35 + d.comp * 0.35)
+    .attr('pointer-events', 'none');
+
+  // Main circle
+  nodeSel.append('circle')
+    .attr('r', d => nodeR(d.chamber, d.comp))
+    .attr('fill', d => PARTY_CLR[d.party] || PARTY_CLR[''])
+    .attr('fill-opacity', d => 0.72 + d.comp * 0.22)
+    .attr('filter', d => d.party === 'D' ? 'url(#gd)' : 'url(#gr)')
+    .attr('pointer-events', 'none');
+
+  // Initials
+  nodeSel.append('text')
+    .attr('text-anchor', 'middle').attr('dominant-baseline', 'central')
+    .attr('font-size', d => Math.max(7, nodeR(d.chamber, d.comp) * 0.52))
+    .attr('font-weight', 700).attr('fill', 'rgba(255,255,255,0.88)')
+    .attr('pointer-events', 'none')
+    .text(d => d.r >= 8 ? initials(d.name) : '');
+
+  // Name label below — only for SD nodes (the pack anchors) that are competitive
+  nodeSel.append('text')
+    .attr('text-anchor', 'middle').attr('dominant-baseline', 'hanging')
+    .attr('font-size', d => d.chamber === 'sd' && d.comp > 0.35 ? 8.5 : d.chamber === 'cd' ? 8 : 0)
+    .attr('fill', '#8b949e').attr('pointer-events', 'none')
+    .attr('dy', d => nodeR(d.chamber, d.comp) + 3)
+    .text(d => lastName(d.name));
+
+  // ── Simulation ────────────────────────────────────────────────────────
+  sim = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d => d.id)
+      .distance(l => {
+        if (l.type === 'member' && l.source.chamber === 'hd') return 5;
+        if (l.type === 'member' && l.source.chamber === 'sd') return 5;
+        if (l.type === 'member' && l.source.chamber === 'cd') return 5;
+        if (l.type === 'race')   return 4;
+        if (l.type === 'pack')   return 55 + (1 - (l.source.comp||0)) * 30;
+        return 40;
+      })
+      .strength(l => {
+        if (l.type === 'member') return 0.92;
+        if (l.type === 'race')   return 0.35;
+        if (l.type === 'pack')   return 0.22;
+        return 0.1;
+      })
+    )
+    .force('charge', d3.forceManyBody()
+      .strength(d => d.type === 'cd-anchor' ? 0 : d.type === 'anchor' ? -25 : -70)
+      .distanceMax(320)
+    )
+    .force('collide', d3.forceCollide(d => {
+      if (d.type === 'cd-anchor') return 0;
+      if (d.type === 'anchor')    return 6;
+      return nodeR(d.chamber, d.comp) + 2.5;
+    }).strength(0.8))
+    // Pull each node toward its CD zone center
+    .force('x', d3.forceX(d => {
+      const pos = CD_POS[d.cdNum]; return pos ? pos.rx * W : W/2;
+    }).strength(d => d.type === 'cd-anchor' ? 0 : d.type === 'anchor' ? 0.055 : 0.038))
+    .force('y', d3.forceY(d => {
+      const pos = CD_POS[d.cdNum]; return pos ? pos.ry * H : H/2;
+    }).strength(d => d.type === 'cd-anchor' ? 0 : d.type === 'anchor' ? 0.055 : 0.038))
+    .alphaDecay(0.010)
+    .velocityDecay(0.38);
+
+  sim.on('tick', () => {
+    // web links
+    webSel
+      .attr('x1', l => l.source.x).attr('y1', l => l.source.y)
+      .attr('x2', l => l.target.x).attr('y2', l => l.target.y);
+    // race links
+    raceSel
+      .attr('x1', l => l.source.x).attr('y1', l => l.source.y)
+      .attr('x2', l => l.target.x).attr('y2', l => l.target.y);
+    // nodes
+    nodeSel.attr('transform', d => `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`);
+  });
+
+  document.getElementById('loading').style.display = 'none';
+  applyFilter();
+}
+
+// ── Filter ────────────────────────────────────────────────────────────────
+let sim;
+function setTierFilter(t) {
+  tierFilter = t;
+  document.querySelectorAll('.cbtn[id^="btn-t"], #btn-all').forEach(b => {
+    b.classList.remove('on-all','on-t0','on-t1','on-t2','on-t3');
+  });
+  if (t === 'all') document.getElementById('btn-all').classList.add('on-all');
+  else document.getElementById(`btn-t${t}`).classList.add(`on-t${t}`);
+  applyFilter();
+}
+
+function toggleWeb() {
+  showWeb = !showWeb;
+  document.getElementById('btn-web').classList.toggle('on-web', showWeb);
+  applyFilter();
+}
+
+function applyFilter() {
+  if (!nodeSel) return;
+  nodeSel.attr('opacity', d => {
+    if (tierFilter === 'all') return 1;
+    // For SD nodes: match their own tier
+    // For HD nodes: match their parent SD's tier (stored as .tier on the HD)
+    // For CD nodes: always show if all
+    if (d.chamber === 'cd') return 1;
+    return d.tier === tierFilter ? 1 : 0.06;
+  }).attr('pointer-events', d => {
+    if (tierFilter === 'all' || d.chamber === 'cd') return 'auto';
+    return d.tier === tierFilter ? 'auto' : 'none';
+  });
+
+  raceSel?.attr('opacity', l => {
+    if (tierFilter === 'all') return 1;
+    const src = typeof l.source === 'object' ? l.source : null;
+    if (!src) return 0.1;
+    if (src.chamber === 'cd') return 1;
+    return src.tier === tierFilter ? 1 : 0.04;
+  });
+
+  webSel?.attr('display', showWeb ? null : 'none');
+  if (showWeb) {
+    webSel?.attr('opacity', l => {
+      if (tierFilter === 'all') return 1;
+      return l.tier === tierFilter ? 1 : 0.04;
+    });
+  }
+}
+
+// ── Tooltip ───────────────────────────────────────────────────────────────
+function showTip(event, d) {
+  const t = document.getElementById('tip');
+  document.getElementById('tt-name').textContent = d.name;
+  const chamberLbl = { cd: 'Congressional', sd: 'State Senate', hd: 'State House' }[d.chamber];
+  document.getElementById('tt-dist').textContent = `${chamberLbl} — District ${d.distNum}`;
+  const pEl = document.getElementById('tt-party');
+  pEl.textContent = d.party === 'D' ? 'Democrat' : d.party === 'R' ? 'Republican' : d.party || '—';
+  pEl.style.color = PARTY_CLR[d.party] || '#8b949e';
+  document.getElementById('tt-lean').textContent = d.lean_lbl ? `IN-Index: ${d.lean_lbl}` : '';
+  const tierEl = document.getElementById('tt-tier');
+  if (d.tier >= 0) {
+    tierEl.innerHTML = `<span style="color:${TIER_COLOR[d.tier]};font-weight:700">${TIER_LABEL[d.tier]}</span>`;
+    document.getElementById('tt-pack').textContent = TIER_DESC[d.tier];
+  } else {
+    tierEl.textContent = '';
+    document.getElementById('tt-pack').textContent = '';
+  }
+  t.classList.add('show');
+  moveTip(event);
+}
+function moveTip(event) {
+  const t = document.getElementById('tip');
+  t.style.left = Math.min(event.clientX + 16, window.innerWidth - 260) + 'px';
+  t.style.top  = Math.max(event.clientY - 14, 54) + 'px';
+}
+function hideTip() { document.getElementById('tip').classList.remove('show'); }
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function initials(name) {
+  const p = name.split(/[\s,]+/).filter(w => w.length > 1 && !/^[A-Z]\.$/.test(w));
+  return !p.length ? '?' : p.length === 1 ? p[0].slice(0,2).toUpperCase() : (p[0][0]+p[p.length-1][0]).toUpperCase();
+}
+function lastName(name) {
+  return name.replace(/,.*$/,'').split(/\s+/).filter(w => !/^(Jr|Sr|II|III|IV|[A-Z]\.)$/.test(w)).pop() || '';
+}
+
+window.addEventListener('resize', () => location.reload());
+</script>
+</body>
+</html>
