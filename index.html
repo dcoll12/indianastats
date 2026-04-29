@@ -320,6 +320,44 @@ tbody tr.map-locked {
 }
 
 /* Boundary toggle */
+.boundary-toggle {
+  display: flex;
+  gap: 0;
+  margin-bottom: 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  overflow: hidden;
+  width: fit-content;
+}
+.boundary-btn {
+  padding: 9px 18px;
+  border: none;
+  background: white;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s;
+  border-right: 1px solid #cbd5e1;
+}
+.boundary-btn:last-child { border-right: none; }
+.boundary-btn.active { background: #1e3a5f; color: white; }
+.boundary-btn:hover:not(.active) { background: #f1f5f9; color: #334155; }
+
+/* 2010 info banner */
+.banner-2010 {
+  display: none;
+  background: #f0f9ff;
+  border: 1px solid #7dd3fc;
+  border-left: 4px solid #0ea5e9;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: #0c4a6e;
+}
+.banner-2010-title { font-weight: 700; font-size: 14px; margin-bottom: 6px; color: #075985; }
+.banner-2010 p { line-height: 1.6; }
 
 /* Responsive */
 @media (max-width: 900px) {
@@ -332,7 +370,9 @@ tbody tr.map-locked {
   header h1 { font-size: 22px; }
   .tabs { flex-direction: column; }
   .tab-btn { padding: 10px; }
-table { font-size: 13px; }
+  .boundary-toggle { width: 100%; }
+  .boundary-btn { flex: 1; }
+  table { font-size: 13px; }
   thead th, tbody td { padding: 8px 10px; }
 }
 </style>
@@ -350,7 +390,24 @@ table { font-size: 13px; }
     </nav>
   </header>
 
-<div class="main-layout">
+  <div class="boundary-toggle">
+    <button class="boundary-btn active" data-view="current" onclick="setBoundaryView('current')">
+      Current Boundaries
+    </button>
+    <button class="boundary-btn" data-view="2010" onclick="setBoundaryView('2010')">
+      Pre-2012 Boundaries (2009&ndash;2011)
+    </button>
+  </div>
+  <div class="banner-2010" id="banner-2010">
+    <div class="banner-2010-title">Hypothetical Analysis: Pre-Redistricting Boundaries</div>
+    <p>
+      Shows what the IN-Index would look like if Indiana had kept its <strong>2009&ndash;2011 district
+      boundaries</strong>. Modern vote data (2020 and 2024 presidential results) has been remapped to
+      the old district shapes via precinct point-in-polygon spatial assignment.
+      Representatives listed held office in 2009&ndash;2011 and are shown for geographic context only.
+    </p>
+  </div>
+  <div class="main-layout">
     <div class="map-panel">
       <div class="map-label" id="map-label">Hover or click a district</div>
       <div id="indiana-map"></div>
@@ -377,14 +434,14 @@ table { font-size: 13px; }
         <table id="table-congressional">
           <thead>
             <tr>
-              <th onclick="sortTable('table-congressional', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 1, 'num')">2022 US House <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 3, 'num')">2024 US House <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 0, 'num')" title="2020 Presidential margin">'20 Pres <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 1, 'num')" title="2022 US House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 3, 'num')" title="2024 US House race result">Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 4, 'num')" title="IN-Index: average partisan lean">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 5, 'num')" title="Congressional District">Dist <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 6, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
             </tr>
           </thead>
           <tbody>
@@ -483,519 +540,611 @@ table { font-size: 13px; }
       </div>
     </div>
 
-  <div class="tab-content" id="tab-senate">
-    <div class="boundary-view boundary-view-current" id="bview-current-senate">
-      <div class="table-wrap">
-        <table id="table-senate">
-          <thead>
-            <tr>
-              <th onclick="sortTable('table-senate', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 1, 'num')">2022 Senate <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 3, 'num')">2024 Senate <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-senate', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
-            </tr>
-          </thead>
-          <tbody>
+  <div class="boundary-view boundary-view-2010" id="bview-2010-congressional" style="display:none">
+    
+    <div class="table-wrap">
+      <table id="table-congressional-2010">
+        <thead>
+          <tr>
+            <th onclick="sortTable('table-congressional-2010', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional-2010', 1, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional-2010', 2, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional-2010', 3, 'num')">District <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional-2010', 4, 'alpha')">Rep. (2009&ndash;2011) <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional-2010', 5, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+          </tr>
+        </thead>
+        <tbody>
         <tr data-district="1">
-          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
-          <td class="lean-d-moderate" data-sort-value="-0.1252">+12.5D</td>
+          <td class="lean-d-slight" data-sort-value="-0.0474">+4.7D</td>
+          <td class="lean-r-slight" data-sort-value="0.0375">+3.7R</td>
+          <td class="lean-d-slight col-avg" data-sort-value="-0.005">+0.5D</td>
+          <td class="col-dist" data-sort-value="1">CD-1</td>
+          <td class="col-rep" data-sort-value="Pete Visclosky">Pete Visclosky</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="2">
+          <td class="lean-r-moderate" data-sort-value="0.1554">+15.5R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1829">+18.3R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1691">+16.9R</td>
+          <td class="col-dist" data-sort-value="2">CD-2</td>
+          <td class="col-rep" data-sort-value="Joe Donnelly">Joe Donnelly</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="3">
+          <td class="lean-r-strong" data-sort-value="0.2777">+27.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.2991">+29.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2884">+28.8R</td>
+          <td class="col-dist" data-sort-value="3">CD-3</td>
+          <td class="col-rep" data-sort-value="Mark Souder">Mark Souder</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="4">
+          <td class="lean-r-strong" data-sort-value="0.2321">+23.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.2457">+24.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2389">+23.9R</td>
+          <td class="col-dist" data-sort-value="4">CD-4</td>
+          <td class="col-rep" data-sort-value="Steve Buyer">Steve Buyer</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="5">
+          <td class="lean-r-moderate" data-sort-value="0.1419">+14.2R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1871">+18.7R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1645">+16.5R</td>
+          <td class="col-dist" data-sort-value="5">CD-5</td>
+          <td class="col-rep" data-sort-value="Dan Burton">Dan Burton</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="6">
+          <td class="lean-r-strong" data-sort-value="0.3637">+36.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.401">+40.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3823">+38.2R</td>
+          <td class="col-dist" data-sort-value="6">CD-6</td>
+          <td class="col-rep" data-sort-value="Mike Pence">Mike Pence</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="7">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.4028">+40.3D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.3501">+35D</td>
+          <td class="col-dist" data-sort-value="7">CD-7</td>
+          <td class="col-rep" data-sort-value="Andre Carson">Andre Carson</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="8">
+          <td class="lean-r-strong" data-sort-value="0.3359">+33.6R</td>
+          <td class="lean-r-strong" data-sort-value="0.3642">+36.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3501">+35R</td>
+          <td class="col-dist" data-sort-value="8">CD-8</td>
+          <td class="col-rep" data-sort-value="Brad Ellsworth">Brad Ellsworth</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="9">
+          <td class="lean-r-strong" data-sort-value="0.2738">+27.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.2865">+28.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2801">+28R</td>
+          <td class="col-dist" data-sort-value="9">CD-9</td>
+          <td class="col-rep" data-sort-value="Baron Hill">Baron Hill</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+
+  <div class="tab-content" id="tab-senate">
+    <div class="table-wrap">
+      <table id="table-senate">
+        <thead>
+          <tr>
+            <th onclick="sortTable('table-senate', 0, 'num')" title="2020 State Senate race (2024-cycle SDs only; N/A for 2022-cycle)">'20 Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 1, 'num')" title="2022 State Senate race (2022-cycle SDs only; N/A for 2024-cycle)">'22 Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 2, 'num')" title="2024 Presidential margin for this district">'24 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 3, 'num')" title="Most recent State Senate race result (2022 or 2024 depending on cycle)">Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 4, 'num')" title="IN-Index: average of actual race margins + 2024 presidential">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 5, 'num')" title="Senate District">Dist <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 6, 'alpha')" title="Current Senator">Sen. <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr data-district="1">
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-slight" data-sort-value="0.0467">+4.7R</td>
           <td class="lean-r-lean" data-sort-value="0.0729">+7.3R</td>
           <td class="lean-r-slight" data-sort-value="0.0467">+4.7R</td>
-          <td class="lean-d-lean col-avg" data-sort-value="-0.0684">+6.8D</td>
+          <td class="lean-r-lean col-avg" data-sort-value="0.0598">+6R</td>
           <td class="col-dist" data-sort-value="1">SD-1</td>
           <td class="col-rep" data-sort-value="Dan Dernulc"><a href="https://www.indianasenaterepublicans.com/dernulc" target="_blank" rel="noopener">Dan Dernulc</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="2">
-          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
-          <td class="lean-d-moderate" data-sort-value="-0.1252">+12.5D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-d-strong" data-sort-value="-0.2572">+25.7D</td>
           <td class="lean-d-strong" data-sort-value="-0.3132">+31.3D</td>
-          <td class="lean-d-moderate col-avg" data-sort-value="-0.1784">+17.8D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2852">+28.5D</td>
           <td class="col-dist" data-sort-value="2">SD-2</td>
           <td class="col-rep" data-sort-value="Lonnie M. Randolph"><a href="https://indianasenatedemocrats.org/s2" target="_blank" rel="noopener">Lonnie M. Randolph</a></td>
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr data-district="3">
-          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
-          <td class="lean-d-moderate" data-sort-value="-0.1252">+12.5D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-d-strong" data-sort-value="-0.4133">+41.3D</td>
           <td class="lean-d-strong" data-sort-value="-0.4624">+46.2D</td>
-          <td class="lean-d-strong col-avg" data-sort-value="-0.2305">+23D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.4378">+43.8D</td>
           <td class="col-dist" data-sort-value="3">SD-3</td>
           <td class="col-rep" data-sort-value="Mark Spencer"><a href="https://indianasenatedemocrats.org/senator/s3/" target="_blank" rel="noopener">Mark Spencer</a></td>
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr data-district="4">
-          <td class="lean-r-lean" data-sort-value="0.0655">+6.6R</td>
-          <td class="lean-r-lean" data-sort-value="0.075">+7.5R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-d-slight" data-sort-value="-0.0463">+4.6D</td>
           <td class="lean-r-slight" data-sort-value="0.0174">+1.7R</td>
           <td class="lean-d-slight" data-sort-value="-0.0463">+4.6D</td>
-          <td class="lean-r-lean col-avg" data-sort-value="0.0526">+5.3R</td>
+          <td class="lean-d-slight col-avg" data-sort-value="-0.0144">+1.4D</td>
           <td class="col-dist" data-sort-value="4">SD-4</td>
           <td class="col-rep" data-sort-value="Rodney Pol"><a href="https://indianasenatedemocrats.org/s4" target="_blank" rel="noopener">Rodney Pol</a></td>
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr data-district="5">
-          <td class="lean-r-moderate" data-sort-value="0.1423">+14.2R</td>
-          <td class="lean-r-moderate" data-sort-value="0.1481">+14.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.3151">+31.5R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.275">+27.5R</td>
           <td class="lean-r-strong" data-sort-value="0.3197">+32R</td>
-          <td class="lean-r-moderate col-avg" data-sort-value="0.1884">+18.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3033">+30.3R</td>
           <td class="col-dist" data-sort-value="5">SD-5</td>
           <td class="col-rep" data-sort-value="Ed Charbonneau"><a href="https://www.indianasenaterepublicans.com/charbonneau" target="_blank" rel="noopener">Ed Charbonneau</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="6">
-          <td class="lean-d-moderate" data-sort-value="-0.1106">+11.1D</td>
-          <td class="lean-d-lean" data-sort-value="-0.0813">+8.1D</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.3637">+36.4R</td>
-          <td class="lean-r-lean" data-sort-value="0.0573">+5.7R</td>
-          <td class="lean-r-lean col-avg" data-sort-value="0.0573">+5.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.3637">+36.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3637">+36.4R</td>
           <td class="col-dist" data-sort-value="6">SD-6</td>
           <td class="col-rep" data-sort-value="Rick Niemeyer"><a href="https://www.indianasenaterepublicans.com/niemeyer" target="_blank" rel="noopener">Rick Niemeyer</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="7">
-          <td class="lean-r-strong" data-sort-value="0.2873">+28.7R</td>
-          <td class="lean-r-strong" data-sort-value="0.3151">+31.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.3895">+38.9R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.3644">+36.4R</td>
-          <td class="lean-r-strong" data-sort-value="0.3223">+32.2R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.3223">+32.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.3769">+37.7R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3769">+37.7R</td>
           <td class="col-dist" data-sort-value="7">SD-7</td>
           <td class="col-rep" data-sort-value="Brian Buchanan"><a href="https://www.indianasenaterepublicans.com/buchanan" target="_blank" rel="noopener">Brian Buchanan</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="8">
-          <td class="lean-r-moderate" data-sort-value="0.1202">+12R</td>
-          <td class="lean-r-moderate" data-sort-value="0.1861">+18.6R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1883">+18.8R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.3711">+37.1R</td>
           <td class="lean-r-strong" data-sort-value="0.4343">+43.4R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.2258">+22.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3312">+33.1R</td>
           <td class="col-dist" data-sort-value="8">SD-8</td>
           <td class="col-rep" data-sort-value="Mike Bohacek"><a href="https://www.indianasenaterepublicans.com/bohacek" target="_blank" rel="noopener">Mike Bohacek</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="9">
-          <td class="lean-r-moderate" data-sort-value="0.139">+13.9R</td>
-          <td class="lean-r-strong" data-sort-value="0.2597">+26R</td>
+          <td class="lean-r-strong" data-sort-value="0.4979">+49.8R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.3814">+38.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.26">+26R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.26">+26R</td>
+          <td class="lean-r-strong" data-sort-value="0.4397">+44R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4397">+44R</td>
           <td class="col-dist" data-sort-value="9">SD-9</td>
           <td class="col-rep" data-sort-value="Ryan Mishler"><a href="https://www.indianasenaterepublicans.com/mishler" target="_blank" rel="noopener">Ryan Mishler</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="10">
-          <td class="lean-d-lean" data-sort-value="-0.0595">+6D</td>
-          <td class="lean-r-lean" data-sort-value="0.0606">+6.1R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-d-moderate" data-sort-value="-0.1593">+15.9D</td>
-          <td class="lean-d-lean" data-sort-value="-0.0527">+5.3D</td>
-          <td class="lean-d-lean col-avg" data-sort-value="-0.0527">+5.3D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1593">+15.9D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1593">+15.9D</td>
           <td class="col-dist" data-sort-value="10">SD-10</td>
           <td class="col-rep" data-sort-value="David Niezgodski"><a href="https://indianasenatedemocrats.org/s10" target="_blank" rel="noopener">David Niezgodski</a></td>
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr data-district="11">
-          <td class="lean-r-lean" data-sort-value="0.0562">+5.6R</td>
-          <td class="lean-r-moderate" data-sort-value="0.1774">+17.7R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.2331">+23.3R</td>
           <td class="lean-r-moderate" data-sort-value="0.1399">+14R</td>
           <td class="lean-r-strong" data-sort-value="0.2331">+23.3R</td>
-          <td class="lean-r-moderate col-avg" data-sort-value="0.1245">+12.4R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1865">+18.7R</td>
           <td class="col-dist" data-sort-value="11">SD-11</td>
           <td class="col-rep" data-sort-value="Linda Rogers"><a href="https://www.indianasenaterepublicans.com/rogers" target="_blank" rel="noopener">Linda Rogers</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="12">
-          <td class="lean-r-strong" data-sort-value="0.2855">+28.5R</td>
-          <td class="lean-r-strong" data-sort-value="0.4189">+41.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.3709">+37.1R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.2685">+26.9R</td>
-          <td class="lean-r-strong" data-sort-value="0.3243">+32.4R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.3243">+32.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.3197">+32R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3197">+32R</td>
           <td class="col-dist" data-sort-value="12">SD-12</td>
           <td class="col-rep" data-sort-value="Blake Doriot"><a href="https://www.indianasenaterepublicans.com/doriot" target="_blank" rel="noopener">Blake Doriot</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="13">
-          <td class="lean-r-strong" data-sort-value="0.4869">+48.7R</td>
-          <td class="lean-r-strong" data-sort-value="0.5384">+53.8R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.4976">+49.8R</td>
-          <td class="lean-r-strong" data-sort-value="0.5077">+50.8R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.5077">+50.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.4976">+49.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4976">+49.8R</td>
           <td class="col-dist" data-sort-value="13">SD-13</td>
           <td class="col-rep" data-sort-value="Sue Glick"><a href="https://www.indianasenaterepublicans.com/glick" target="_blank" rel="noopener">Sue Glick</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="14">
-          <td class="lean-r-moderate" data-sort-value="0.1342">+13.4R</td>
-          <td class="lean-r-strong" data-sort-value="0.2109">+21.1R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.3026">+30.3R</td>
           <td class="lean-r-strong" data-sort-value="0.2628">+26.3R</td>
           <td class="lean-r-strong" data-sort-value="0.3026">+30.3R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.2026">+20.3R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2827">+28.3R</td>
           <td class="col-dist" data-sort-value="14">SD-14</td>
           <td class="col-rep" data-sort-value="Dr. Tyler Johnson"><a href="https://www.indianasenaterepublicans.com/johnson" target="_blank" rel="noopener">Dr. Tyler Johnson</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="15">
-          <td class="lean-r-moderate" data-sort-value="0.1143">+11.4R</td>
-          <td class="lean-r-moderate" data-sort-value="0.194">+19.4R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-moderate" data-sort-value="0.1713">+17.1R</td>
-          <td class="lean-r-moderate" data-sort-value="0.1599">+16R</td>
-          <td class="lean-r-moderate col-avg" data-sort-value="0.1599">+16R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1713">+17.1R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1713">+17.1R</td>
           <td class="col-dist" data-sort-value="15">SD-15</td>
           <td class="col-rep" data-sort-value="Liz Brown"><a href="https://www.indianasenaterepublicans.com/brown" target="_blank" rel="noopener">Liz Brown</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="16">
-          <td class="lean-r-moderate" data-sort-value="0.1394">+13.9R</td>
-          <td class="lean-r-strong" data-sort-value="0.219">+21.9R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1572">+15.7R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.2012">+20.1R</td>
-          <td class="lean-r-moderate" data-sort-value="0.1865">+18.7R</td>
-          <td class="lean-r-moderate col-avg" data-sort-value="0.1865">+18.7R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1792">+17.9R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1792">+17.9R</td>
           <td class="col-dist" data-sort-value="16">SD-16</td>
           <td class="col-rep" data-sort-value="Justin Busch"><a href="https://www.indianasenaterepublicans.com/busch" target="_blank" rel="noopener">Justin Busch</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="17">
-          <td class="lean-r-strong" data-sort-value="0.4431">+44.3R</td>
-          <td class="lean-r-strong" data-sort-value="0.5174">+51.7R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.501">+50.1R</td>
           <td class="lean-r-strong" data-sort-value="0.4686">+46.9R</td>
           <td class="lean-r-strong" data-sort-value="0.501">+50.1R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.4764">+47.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4848">+48.5R</td>
           <td class="col-dist" data-sort-value="17">SD-17</td>
           <td class="col-rep" data-sort-value="Andy Zay"><a href="https://www.indianasenaterepublicans.com/zay" target="_blank" rel="noopener">Andy Zay</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="18">
-          <td class="lean-r-strong" data-sort-value="0.459">+45.9R</td>
-          <td class="lean-r-strong" data-sort-value="0.541">+54.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.4649">+46.5R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.5372">+53.7R</td>
-          <td class="lean-r-strong" data-sort-value="0.5124">+51.2R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.5124">+51.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.5011">+50.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5011">+50.1R</td>
           <td class="col-dist" data-sort-value="18">SD-18</td>
           <td class="col-rep" data-sort-value="Stacey A. Donato"><a href="https://www.indianasenaterepublicans.com/donato" target="_blank" rel="noopener">Stacey A. Donato</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="19">
-          <td class="lean-r-strong" data-sort-value="0.2214">+22.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.298">+29.8R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.3947">+39.5R</td>
-          <td class="lean-r-strong" data-sort-value="0.3047">+30.5R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.3047">+30.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.3947">+39.5R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3947">+39.5R</td>
           <td class="col-dist" data-sort-value="19">SD-19</td>
           <td class="col-rep" data-sort-value="Travis Holdman"><a href="https://www.indianasenaterepublicans.com/holdman" target="_blank" rel="noopener">Travis Holdman</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="20">
-          <td class="lean-r-lean" data-sort-value="0.0695">+6.9R</td>
-          <td class="lean-r-moderate" data-sort-value="0.1423">+14.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.2496">+25R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-moderate" data-sort-value="0.1058">+10.6R</td>
           <td class="lean-r-moderate" data-sort-value="0.198">+19.8R</td>
-          <td class="lean-r-moderate col-avg" data-sort-value="0.1058">+10.6R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1845">+18.4R</td>
           <td class="col-dist" data-sort-value="20">SD-20</td>
           <td class="col-rep" data-sort-value="Scott Baldwin"><a href="https://www.indianasenaterepublicans.com/baldwin" target="_blank" rel="noopener">Scott Baldwin</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="21">
-          <td class="lean-r-moderate" data-sort-value="0.1611">+16.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.2251">+22.5R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.2795">+27.9R</td>
           <td class="lean-r-strong" data-sort-value="0.2432">+24.3R</td>
           <td class="lean-r-strong" data-sort-value="0.2795">+27.9R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.2098">+21R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2613">+26.1R</td>
           <td class="col-dist" data-sort-value="21">SD-21</td>
           <td class="col-rep" data-sort-value="Jim Buck"><a href="https://www.indianasenaterepublicans.com/buck" target="_blank" rel="noopener">Jim Buck</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="22">
-          <td class="lean-r-slight" data-sort-value="0.0325">+3.2R</td>
-          <td class="lean-r-lean" data-sort-value="0.0883">+8.8R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-moderate" data-sort-value="0.1459">+14.6R</td>
-          <td class="lean-r-lean" data-sort-value="0.0889">+8.9R</td>
-          <td class="lean-r-lean col-avg" data-sort-value="0.0889">+8.9R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1459">+14.6R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1459">+14.6R</td>
           <td class="col-dist" data-sort-value="22">SD-22</td>
           <td class="col-rep" data-sort-value="Ron Alting"><a href="https://www.indianasenaterepublicans.com/alting" target="_blank" rel="noopener">Ron Alting</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="23">
-          <td class="lean-r-moderate" data-sort-value="0.1715">+17.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.2231">+22.3R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.2716">+27.2R</td>
           <td class="lean-r-strong" data-sort-value="0.2683">+26.8R</td>
           <td class="lean-r-strong" data-sort-value="0.2716">+27.2R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.221">+22.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2699">+27R</td>
           <td class="col-dist" data-sort-value="23">SD-23</td>
           <td class="col-rep" data-sort-value="Spencer Deery"><a href="https://www.indianasenaterepublicans.com/deery" target="_blank" rel="noopener">Spencer Deery</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="24">
-          <td class="lean-r-strong" data-sort-value="0.2666">+26.7R</td>
-          <td class="lean-r-strong" data-sort-value="0.2967">+29.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.3109">+31.1R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.2323">+23.2R</td>
           <td class="lean-r-strong" data-sort-value="0.3113">+31.1R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.2652">+26.5R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2848">+28.5R</td>
           <td class="col-dist" data-sort-value="24">SD-24</td>
           <td class="col-rep" data-sort-value="Brett Clark"><a href="https://www.indianasenaterepublicans.com/clark" target="_blank" rel="noopener">Brett Clark</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="25">
-          <td class="lean-r-moderate" data-sort-value="0.1973">+19.7R</td>
-          <td class="lean-r-strong" data-sort-value="0.2417">+24.2R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.2812">+28.1R</td>
           <td class="lean-r-strong" data-sort-value="0.2884">+28.8R</td>
           <td class="lean-r-strong" data-sort-value="0.2812">+28.1R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.2425">+24.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2848">+28.5R</td>
           <td class="col-dist" data-sort-value="25">SD-25</td>
           <td class="col-rep" data-sort-value="Mike Gaskill"><a href="https://www.indianasenaterepublicans.com/gaskill" target="_blank" rel="noopener">Mike Gaskill</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="26">
-          <td class="lean-r-moderate" data-sort-value="0.1736">+17.4R</td>
-          <td class="lean-r-strong" data-sort-value="0.2206">+22.1R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.2193">+21.9R</td>
           <td class="lean-r-strong" data-sort-value="0.233">+23.3R</td>
           <td class="lean-r-strong" data-sort-value="0.2193">+21.9R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.209">+20.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2261">+22.6R</td>
           <td class="col-dist" data-sort-value="26">SD-26</td>
           <td class="col-rep" data-sort-value="Scott Alexander"><a href="https://www.indianasenaterepublicans.com/alexander" target="_blank" rel="noopener">Scott Alexander</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="27">
-          <td class="lean-r-strong" data-sort-value="0.3828">+38.3R</td>
-          <td class="lean-r-strong" data-sort-value="0.4228">+42.3R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.4232">+42.3R</td>
           <td class="lean-r-strong" data-sort-value="0.4404">+44R</td>
           <td class="lean-r-strong" data-sort-value="0.4232">+42.3R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.4154">+41.5R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4318">+43.2R</td>
           <td class="col-dist" data-sort-value="27">SD-27</td>
           <td class="col-rep" data-sort-value="Jeff Raatz"><a href="https://www.indianasenaterepublicans.com/raatz" target="_blank" rel="noopener">Jeff Raatz</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="28">
-          <td class="lean-r-lean" data-sort-value="0.058">+5.8R</td>
-          <td class="lean-r-lean" data-sort-value="0.067">+6.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.2521">+25.2R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.2818">+28.2R</td>
-          <td class="lean-r-moderate" data-sort-value="0.1356">+13.6R</td>
-          <td class="lean-r-moderate col-avg" data-sort-value="0.1356">+13.6R</td>
+          <td class="lean-r-strong" data-sort-value="0.267">+26.7R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.267">+26.7R</td>
           <td class="col-dist" data-sort-value="28">SD-28</td>
           <td class="col-rep" data-sort-value="Michael Crider"><a href="https://www.indianasenaterepublicans.com/crider" target="_blank" rel="noopener">Michael Crider</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="29">
-          <td class="lean-d-moderate" data-sort-value="-0.1734">+17.3D</td>
-          <td class="lean-d-moderate" data-sort-value="-0.1208">+12.1D</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-d-slight" data-sort-value="-0.0335">+3.4D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1462">+14.6D</td>
           <td class="lean-d-slight" data-sort-value="-0.0335">+3.4D</td>
-          <td class="lean-d-moderate col-avg" data-sort-value="-0.1468">+14.7D</td>
+          <td class="lean-d-lean col-avg" data-sort-value="-0.0899">+9D</td>
           <td class="col-dist" data-sort-value="29">SD-29</td>
           <td class="col-rep" data-sort-value="J.D. Ford"><a href="https://indianasenatedemocrats.org/s29" target="_blank" rel="noopener">J.D. Ford</a></td>
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr data-district="30">
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
-          <td class="lean-d-strong" data-sort-value="-0.2718">+27.2D</td>
+          <td class="lean-d-lean" data-sort-value="-0.0513">+5.1D</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-d-strong" data-sort-value="-0.4398">+44D</td>
-          <td class="lean-d-strong" data-sort-value="-0.3363">+33.6D</td>
-          <td class="lean-d-strong col-avg" data-sort-value="-0.3363">+33.6D</td>
+          <td class="lean-d-strong" data-sort-value="-0.2455">+24.6D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2455">+24.6D</td>
           <td class="col-dist" data-sort-value="30">SD-30</td>
           <td class="col-rep" data-sort-value="Fady Qaddoura"><a href="https://indianasenatedemocrats.org/s30" target="_blank" rel="noopener">Fady Qaddoura</a></td>
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr data-district="31">
-          <td class="lean-d-slight" data-sort-value="-0.0349">+3.5D</td>
-          <td class="lean-r-slight" data-sort-value="0.0363">+3.6R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-moderate" data-sort-value="0.1085">+10.8R</td>
           <td class="lean-d-slight" data-sort-value="-0.0267">+2.7D</td>
           <td class="lean-r-moderate" data-sort-value="0.1085">+10.8R</td>
-          <td class="lean-d-slight col-avg" data-sort-value="-0.0084">+0.8D</td>
+          <td class="lean-r-slight col-avg" data-sort-value="0.0409">+4.1R</td>
           <td class="col-dist" data-sort-value="31">SD-31</td>
           <td class="col-rep" data-sort-value="Kyle Walker"><a href="https://www.indianasenaterepublicans.com/kyle-walker" target="_blank" rel="noopener">Kyle Walker</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="32">
-          <td class="lean-d-strong" data-sort-value="-0.2415">+24.1D</td>
-          <td class="lean-d-strong" data-sort-value="-0.2159">+21.6D</td>
+          <td class="lean-r-moderate" data-sort-value="0.1799">+18R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-moderate" data-sort-value="0.1693">+16.9R</td>
           <td class="lean-r-strong" data-sort-value="0.2098">+21R</td>
-          <td class="lean-d-lean col-avg" data-sort-value="-0.0961">+9.6D</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1863">+18.6R</td>
           <td class="col-dist" data-sort-value="32">SD-32</td>
           <td class="col-rep" data-sort-value="Aaron Freeman"><a href="https://www.indianasenaterepublicans.com/freeman" target="_blank" rel="noopener">Aaron Freeman</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="33">
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
-          <td class="lean-d-strong" data-sort-value="-0.2718">+27.2D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-d-strong" data-sort-value="-0.66">+66D</td>
-          <td class="lean-d-strong" data-sort-value="-0.4097">+41D</td>
-          <td class="lean-d-strong col-avg" data-sort-value="-0.4097">+41D</td>
+          <td class="lean-d-strong" data-sort-value="-0.66">+66D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.66">+66D</td>
           <td class="col-dist" data-sort-value="33">SD-33</td>
           <td class="col-rep" data-sort-value="Greg Taylor"><a href="https://indianasenatedemocrats.org/s33" target="_blank" rel="noopener">Greg Taylor</a></td>
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr data-district="34">
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
-          <td class="lean-d-strong" data-sort-value="-0.2718">+27.2D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-d-strong" data-sort-value="-0.5997">+60D</td>
-          <td class="lean-d-strong" data-sort-value="-0.3896">+39D</td>
-          <td class="lean-d-strong col-avg" data-sort-value="-0.3896">+39D</td>
+          <td class="lean-d-strong" data-sort-value="-0.5997">+60D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.5997">+60D</td>
           <td class="col-dist" data-sort-value="34">SD-34</td>
           <td class="col-rep" data-sort-value="La Keisha Jackson"><a href="https://indianasenatedemocrats.org/senator/s34/" target="_blank" rel="noopener">La Keisha Jackson</a></td>
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr data-district="35">
-          <td class="lean-d-strong" data-sort-value="-0.2294">+22.9D</td>
-          <td class="lean-d-strong" data-sort-value="-0.207">+20.7D</td>
+          <td class="lean-r-moderate" data-sort-value="0.159">+15.9R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-moderate" data-sort-value="0.1609">+16.1R</td>
           <td class="lean-r-moderate" data-sort-value="0.1378">+13.8R</td>
-          <td class="lean-d-lean col-avg" data-sort-value="-0.0918">+9.2D</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1526">+15.3R</td>
           <td class="col-dist" data-sort-value="35">SD-35</td>
           <td class="col-rep" data-sort-value="R. Michael Young"><a href="https://www.indianasenaterepublicans.com/young" target="_blank" rel="noopener">R. Michael Young</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="36">
-          <td class="lean-d-strong" data-sort-value="-0.2616">+26.2D</td>
-          <td class="lean-d-strong" data-sort-value="-0.236">+23.6D</td>
+          <td class="lean-r-lean" data-sort-value="0.0774">+7.7R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.2078">+20.8R</td>
           <td class="lean-r-strong" data-sort-value="0.249">+24.9R</td>
-          <td class="lean-d-lean col-avg" data-sort-value="-0.0966">+9.7D</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1781">+17.8R</td>
           <td class="col-dist" data-sort-value="36">SD-36</td>
           <td class="col-rep" data-sort-value="Cyndi Carrasco"><a href="https://www.indianasenaterepublicans.com/carrasco" target="_blank" rel="noopener">Cyndi Carrasco</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="37">
-          <td class="lean-r-strong" data-sort-value="0.4807">+48.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.4845">+48.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.5428">+54.3R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.4901">+49R</td>
           <td class="lean-r-strong" data-sort-value="0.518">+51.8R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.4851">+48.5R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5169">+51.7R</td>
           <td class="col-dist" data-sort-value="37">SD-37</td>
           <td class="col-rep" data-sort-value="Rodric Bray"><a href="https://www.indianasenaterepublicans.com/bray" target="_blank" rel="noopener">Rodric Bray</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="38">
-          <td class="lean-r-moderate" data-sort-value="0.1904">+19R</td>
-          <td class="lean-r-strong" data-sort-value="0.2255">+22.5R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.286">+28.6R</td>
-          <td class="lean-r-strong" data-sort-value="0.234">+23.4R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.234">+23.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.286">+28.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.286">+28.6R</td>
           <td class="col-dist" data-sort-value="38">SD-38</td>
           <td class="col-rep" data-sort-value="Greg Goode"><a href="https://iga.in.gov/legislative/2023/legislators/legislator_greg_goode_1" target="_blank" rel="noopener">Greg Goode</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="39">
-          <td class="lean-r-strong" data-sort-value="0.5362">+53.6R</td>
-          <td class="lean-r-strong" data-sort-value="0.5579">+55.8R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5617">+56.2R</td>
-          <td class="lean-r-strong" data-sort-value="0.5519">+55.2R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.5519">+55.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.5617">+56.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5617">+56.2R</td>
           <td class="col-dist" data-sort-value="39">SD-39</td>
           <td class="col-rep" data-sort-value="Eric Bassler"><a href="https://www.indianasenaterepublicans.com/bassler" target="_blank" rel="noopener">Eric Bassler</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="40">
-          <td class="lean-d-strong" data-sort-value="-0.2873">+28.7D</td>
-          <td class="lean-d-strong" data-sort-value="-0.2686">+26.9D</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-d-strong" data-sort-value="-0.2918">+29.2D</td>
-          <td class="lean-d-strong" data-sort-value="-0.2826">+28.3D</td>
-          <td class="lean-d-strong col-avg" data-sort-value="-0.2826">+28.3D</td>
+          <td class="lean-d-strong" data-sort-value="-0.2918">+29.2D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2918">+29.2D</td>
           <td class="col-dist" data-sort-value="40">SD-40</td>
           <td class="col-rep" data-sort-value="Shelli Yoder"><a href="https://indianasenatedemocrats.org/s40" target="_blank" rel="noopener">Shelli Yoder</a></td>
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr data-district="41">
-          <td class="lean-r-strong" data-sort-value="0.3111">+31.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.3358">+33.6R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.356">+35.6R</td>
           <td class="lean-r-strong" data-sort-value="0.3318">+33.2R</td>
           <td class="lean-r-strong" data-sort-value="0.356">+35.6R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.3262">+32.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3439">+34.4R</td>
           <td class="col-dist" data-sort-value="41">SD-41</td>
           <td class="col-rep" data-sort-value="Greg Walker"><a href="https://www.indianasenaterepublicans.com/greg-walker" target="_blank" rel="noopener">Greg Walker</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="42">
-          <td class="lean-r-strong" data-sort-value="0.5709">+57.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.5967">+59.7R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.59">+59R</td>
-          <td class="lean-r-strong" data-sort-value="0.5858">+58.6R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.5858">+58.6R</td>
+          <td class="lean-r-strong" data-sort-value="0.59">+59R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.59">+59R</td>
           <td class="col-dist" data-sort-value="42">SD-42</td>
           <td class="col-rep" data-sort-value="Jean Leising"><a href="https://www.indianasenaterepublicans.com/leising" target="_blank" rel="noopener">Jean Leising</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="43">
-          <td class="lean-r-strong" data-sort-value="0.4907">+49.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.5138">+51.4R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5313">+53.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.5119">+51.2R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.5119">+51.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.5313">+53.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5313">+53.1R</td>
           <td class="col-dist" data-sort-value="43">SD-43</td>
           <td class="col-rep" data-sort-value="Randy Maxwell"><a href="https://www.indianasenaterepublicans.com/maxwell" target="_blank" rel="noopener">Randy Maxwell</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="44">
-          <td class="lean-r-strong" data-sort-value="0.4084">+40.8R</td>
-          <td class="lean-r-strong" data-sort-value="0.4467">+44.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.4593">+45.9R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.4682">+46.8R</td>
-          <td class="lean-r-strong" data-sort-value="0.4411">+44.1R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.4411">+44.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.4638">+46.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4638">+46.4R</td>
           <td class="col-dist" data-sort-value="44">SD-44</td>
           <td class="col-rep" data-sort-value="Eric Koch"><a href="https://www.indianasenaterepublicans.com/koch" target="_blank" rel="noopener">Eric Koch</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="45">
-          <td class="lean-r-moderate" data-sort-value="0.1847">+18.5R</td>
-          <td class="lean-r-strong" data-sort-value="0.2612">+26.1R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.2414">+24.1R</td>
           <td class="lean-r-moderate" data-sort-value="0.1972">+19.7R</td>
           <td class="lean-r-strong" data-sort-value="0.2414">+24.1R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.2143">+21.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2193">+21.9R</td>
           <td class="col-dist" data-sort-value="45">SD-45</td>
           <td class="col-rep" data-sort-value="Chris Garten"><a href="https://www.indianasenaterepublicans.com/garten" target="_blank" rel="noopener">Chris Garten</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="46">
-          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
-          <td class="lean-d-strong" data-sort-value="-0.2718">+27.2D</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-d-strong" data-sort-value="-0.4587">+45.9D</td>
           <td class="lean-d-strong" data-sort-value="-0.4235">+42.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.4587">+45.9D</td>
-          <td class="lean-d-strong col-avg" data-sort-value="-0.3309">+33.1D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.4411">+44.1D</td>
           <td class="col-dist" data-sort-value="46">SD-46</td>
           <td class="col-rep" data-sort-value="Andrea Hunley"><a href="https://indianasenatedemocrats.org/s46" target="_blank" rel="noopener">Andrea Hunley</a></td>
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
         <tr data-district="47">
-          <td class="lean-r-strong" data-sort-value="0.2936">+29.4R</td>
-          <td class="lean-r-strong" data-sort-value="0.3565">+35.6R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.3357">+33.6R</td>
           <td class="lean-r-strong" data-sort-value="0.3377">+33.8R</td>
           <td class="lean-r-strong" data-sort-value="0.3357">+33.6R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.3293">+32.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3367">+33.7R</td>
           <td class="col-dist" data-sort-value="47">SD-47</td>
           <td class="col-rep" data-sort-value="Gary Byrne"><a href="https://www.indianasenaterepublicans.com/byrne" target="_blank" rel="noopener">Gary Byrne</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="48">
-          <td class="lean-r-strong" data-sort-value="0.4309">+43.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.4792">+47.9R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-r-strong" data-sort-value="0.4466">+44.7R</td>
           <td class="lean-r-strong" data-sort-value="0.4543">+45.4R</td>
           <td class="lean-r-strong" data-sort-value="0.4466">+44.7R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.4548">+45.5R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4505">+45R</td>
           <td class="col-dist" data-sort-value="48">SD-48</td>
           <td class="col-rep" data-sort-value="Daryl Schmitt"><a href="https://www.indianasenaterepublicans.com/schmitt" target="_blank" rel="noopener">Daryl Schmitt</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="49">
-          <td class="lean-r-moderate" data-sort-value="0.1262">+12.6R</td>
-          <td class="lean-r-strong" data-sort-value="0.2104">+21R</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.2215">+22.1R</td>
-          <td class="lean-r-moderate" data-sort-value="0.186">+18.6R</td>
-          <td class="lean-r-moderate col-avg" data-sort-value="0.186">+18.6R</td>
+          <td class="lean-r-strong" data-sort-value="0.2215">+22.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2215">+22.1R</td>
           <td class="col-dist" data-sort-value="49">SD-49</td>
           <td class="col-rep" data-sort-value="Jim Tomes"><a href="https://www.indianasenaterepublicans.com/tomes" target="_blank" rel="noopener">Jim Tomes</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
         <tr data-district="50">
-          <td class="lean-r-moderate" data-sort-value="0.173">+17.3R</td>
-          <td class="lean-r-strong" data-sort-value="0.2555">+25.6R</td>
+          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-r-strong" data-sort-value="0.2021">+20.2R</td>
-          <td class="lean-r-strong" data-sort-value="0.2102">+21R</td>
-          <td class="lean-r-strong col-avg" data-sort-value="0.2102">+21R</td>
+          <td class="lean-r-strong" data-sort-value="0.2021">+20.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2021">+20.2R</td>
           <td class="col-dist" data-sort-value="50">SD-50</td>
           <td class="col-rep" data-sort-value="Vaneta Becker"><a href="https://www.indianasenaterepublicans.com/becker" target="_blank" rel="noopener">Vaneta Becker</a></td>
           <td class="party-r" data-sort-value="R">R</td>
@@ -1005,23 +1154,444 @@ table { font-size: 13px; }
       </div>
     </div>
 
+  <div class="boundary-view boundary-view-2010" id="bview-2010-senate" style="display:none">
+    
+    <div class="table-wrap">
+      <table id="table-senate-2010">
+        <thead>
+          <tr>
+            <th onclick="sortTable('table-senate-2010', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate-2010', 1, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate-2010', 2, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate-2010', 3, 'num')">District <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate-2010', 4, 'alpha')">Rep. (2009&ndash;2011) <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate-2010', 5, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr data-district="1">
+          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1051">+10.5D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.129">+12.9D</td>
+          <td class="col-dist" data-sort-value="1">SD-1</td>
+          <td class="col-rep" data-sort-value="Frank Mrvan">Frank Mrvan</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="2">
+          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-d-strong" data-sort-value="-0.3381">+33.8D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2454">+24.5D</td>
+          <td class="col-dist" data-sort-value="2">SD-2</td>
+          <td class="col-rep" data-sort-value="Lonnie Randolph">Lonnie Randolph</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="3">
+          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-d-strong" data-sort-value="-0.3825">+38.3D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2677">+26.8D</td>
+          <td class="col-dist" data-sort-value="3">SD-3</td>
+          <td class="col-rep" data-sort-value="Earline Rogers">Earline Rogers</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="4">
+          <td class="lean-r-slight" data-sort-value="0.0068">+0.7R</td>
+          <td class="lean-r-slight" data-sort-value="0.0096">+1R</td>
+          <td class="lean-r-slight col-avg" data-sort-value="0.0082">+0.8R</td>
+          <td class="col-dist" data-sort-value="4">SD-4</td>
+          <td class="col-rep" data-sort-value="Karen Tallian">Karen Tallian</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="5">
+          <td class="lean-r-strong" data-sort-value="0.2196">+22R</td>
+          <td class="lean-r-strong" data-sort-value="0.2863">+28.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2529">+25.3R</td>
+          <td class="col-dist" data-sort-value="5">SD-5</td>
+          <td class="col-rep" data-sort-value="Vic Heinold">Vic Heinold</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="6">
+          <td class="lean-d-slight" data-sort-value="-0.0486">+4.9D</td>
+          <td class="lean-r-strong" data-sort-value="0.3077">+30.8R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1296">+13R</td>
+          <td class="col-dist" data-sort-value="6">SD-6</td>
+          <td class="col-rep" data-sort-value="Sue Landske">Sue Landske</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="7">
+          <td class="lean-r-strong" data-sort-value="0.3538">+35.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.412">+41.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3829">+38.3R</td>
+          <td class="col-dist" data-sort-value="7">SD-7</td>
+          <td class="col-rep" data-sort-value="Brandt Hershman">Brandt Hershman</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="8">
+          <td class="lean-r-lean" data-sort-value="0.0511">+5.1R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1168">+11.7R</td>
+          <td class="lean-r-lean col-avg" data-sort-value="0.084">+8.4R</td>
+          <td class="col-dist" data-sort-value="8">SD-8</td>
+          <td class="col-rep" data-sort-value="Anita Bowser">Anita Bowser</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="9">
+          <td class="lean-r-strong" data-sort-value="0.2672">+26.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.3862">+38.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3267">+32.7R</td>
+          <td class="col-dist" data-sort-value="9">SD-9</td>
+          <td class="col-rep" data-sort-value="Ryan Mishler">Ryan Mishler</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="10">
+          <td class="lean-d-lean" data-sort-value="-0.0595">+6D</td>
+          <td class="lean-d-strong" data-sort-value="-0.2687">+26.9D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1641">+16.4D</td>
+          <td class="col-dist" data-sort-value="10">SD-10</td>
+          <td class="col-rep" data-sort-value="John Broden">John Broden</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="11">
+          <td class="lean-r-slight" data-sort-value="0.0489">+4.9R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1311">+13.1R</td>
+          <td class="lean-r-lean col-avg" data-sort-value="0.09">+9R</td>
+          <td class="col-dist" data-sort-value="11">SD-11</td>
+          <td class="col-rep" data-sort-value="Joseph Zakas">Joseph Zakas</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="12">
+          <td class="lean-r-strong" data-sort-value="0.2855">+28.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.3155">+31.5R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3005">+30R</td>
+          <td class="col-dist" data-sort-value="12">SD-12</td>
+          <td class="col-rep" data-sort-value="Carlin Yoder">Carlin Yoder</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="13">
+          <td class="lean-r-strong" data-sort-value="0.5036">+50.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.5032">+50.3R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5034">+50.3R</td>
+          <td class="col-dist" data-sort-value="13">SD-13</td>
+          <td class="col-rep" data-sort-value="Marlin Stutzman">Marlin Stutzman</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="14">
+          <td class="lean-r-strong" data-sort-value="0.2443">+24.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.3783">+37.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3113">+31.1R</td>
+          <td class="col-dist" data-sort-value="14">SD-14</td>
+          <td class="col-rep" data-sort-value="Dennis Kruse">Dennis Kruse</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="15">
+          <td class="lean-r-moderate" data-sort-value="0.1143">+11.4R</td>
+          <td class="lean-r-slight" data-sort-value="0.0247">+2.5R</td>
+          <td class="lean-r-lean col-avg" data-sort-value="0.0695">+6.9R</td>
+          <td class="col-dist" data-sort-value="15">SD-15</td>
+          <td class="col-rep" data-sort-value="Thomas Wyss">Thomas Wyss</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="16">
+          <td class="lean-r-moderate" data-sort-value="0.1143">+11.4R</td>
+          <td class="lean-d-slight" data-sort-value="-0.0001">EVEN</td>
+          <td class="lean-r-lean col-avg" data-sort-value="0.0571">+5.7R</td>
+          <td class="col-dist" data-sort-value="16">SD-16</td>
+          <td class="col-rep" data-sort-value="David Long">David Long</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="17">
+          <td class="lean-r-strong" data-sort-value="0.4782">+47.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.4998">+50R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.489">+48.9R</td>
+          <td class="col-dist" data-sort-value="17">SD-17</td>
+          <td class="col-rep" data-sort-value="M.D., Gary Dillon">M.D., Gary Dillon</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="18">
+          <td class="lean-r-strong" data-sort-value="0.4875">+48.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.5336">+53.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5105">+51.1R</td>
+          <td class="col-dist" data-sort-value="18">SD-18</td>
+          <td class="col-rep" data-sort-value="Randall Head">Randall Head</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="19">
+          <td class="lean-r-strong" data-sort-value="0.4685">+46.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.5212">+52.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4949">+49.5R</td>
+          <td class="col-dist" data-sort-value="19">SD-19</td>
+          <td class="col-rep" data-sort-value="David Ford">David Ford</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="20">
+          <td class="lean-r-moderate" data-sort-value="0.1155">+11.6R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1692">+16.9R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1424">+14.2R</td>
+          <td class="col-dist" data-sort-value="20">SD-20</td>
+          <td class="col-rep" data-sort-value="Luke Kenley">Luke Kenley</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="21">
+          <td class="lean-r-strong" data-sort-value="0.2233">+22.3R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1793">+17.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2013">+20.1R</td>
+          <td class="col-dist" data-sort-value="21">SD-21</td>
+          <td class="col-rep" data-sort-value="Jeffery Drozda">Jeffery Drozda</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="22">
+          <td class="lean-d-slight" data-sort-value="-0.0063">+0.6D</td>
+          <td class="lean-d-slight" data-sort-value="-0.0061">+0.6D</td>
+          <td class="lean-d-slight col-avg" data-sort-value="-0.0062">+0.6D</td>
+          <td class="col-dist" data-sort-value="22">SD-22</td>
+          <td class="col-rep" data-sort-value="Ron Alting">Ron Alting</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="23">
+          <td class="lean-r-strong" data-sort-value="0.3734">+37.3R</td>
+          <td class="lean-r-strong" data-sort-value="0.4667">+46.7R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.42">+42R</td>
+          <td class="col-dist" data-sort-value="23">SD-23</td>
+          <td class="col-rep" data-sort-value="Joseph Harrison">Joseph Harrison</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="24">
+          <td class="lean-r-strong" data-sort-value="0.2818">+28.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.2353">+23.5R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2585">+25.9R</td>
+          <td class="col-dist" data-sort-value="24">SD-24</td>
+          <td class="col-rep" data-sort-value="Connie Lawson">Connie Lawson</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="25">
+          <td class="lean-r-strong" data-sort-value="0.2304">+23R</td>
+          <td class="lean-r-strong" data-sort-value="0.2533">+25.3R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2419">+24.2R</td>
+          <td class="col-dist" data-sort-value="25">SD-25</td>
+          <td class="col-rep" data-sort-value="Timothy Lanane">Timothy Lanane</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="26">
+          <td class="lean-r-moderate" data-sort-value="0.1352">+13.5R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1654">+16.5R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1503">+15R</td>
+          <td class="col-dist" data-sort-value="26">SD-26</td>
+          <td class="col-rep" data-sort-value="Jr., Allie Craycraft">Jr., Allie Craycraft</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="27">
+          <td class="lean-r-strong" data-sort-value="0.3956">+39.6R</td>
+          <td class="lean-r-strong" data-sort-value="0.4214">+42.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4085">+40.9R</td>
+          <td class="col-dist" data-sort-value="27">SD-27</td>
+          <td class="col-rep" data-sort-value="Allen Paul">Allen Paul</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="28">
+          <td class="lean-r-strong" data-sort-value="0.285">+28.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.2512">+25.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2681">+26.8R</td>
+          <td class="col-dist" data-sort-value="28">SD-28</td>
+          <td class="col-rep" data-sort-value="Beverly Gard">Beverly Gard</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="29">
+          <td class="lean-d-moderate" data-sort-value="-0.1665">+16.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.2406">+24.1D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2036">+20.4D</td>
+          <td class="col-dist" data-sort-value="29">SD-29</td>
+          <td class="col-rep" data-sort-value="Mike Delph">Mike Delph</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="30">
+          <td class="lean-d-moderate" data-sort-value="-0.1847">+18.5D</td>
+          <td class="lean-d-strong" data-sort-value="-0.3169">+31.7D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2508">+25.1D</td>
+          <td class="col-dist" data-sort-value="30">SD-30</td>
+          <td class="col-rep" data-sort-value="Teresa Lubbers">Teresa Lubbers</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="31">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.2912">+29.1D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2943">+29.4D</td>
+          <td class="col-dist" data-sort-value="31">SD-31</td>
+          <td class="col-rep" data-sort-value="Jr., James Merritt">Jr., James Merritt</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="32">
+          <td class="lean-d-moderate" data-sort-value="-0.1859">+18.6D</td>
+          <td class="lean-r-lean" data-sort-value="0.0932">+9.3R</td>
+          <td class="lean-d-slight col-avg" data-sort-value="-0.0463">+4.6D</td>
+          <td class="col-dist" data-sort-value="32">SD-32</td>
+          <td class="col-rep" data-sort-value="Patricia Miller">Patricia Miller</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="33">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.684">+68.4D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.4907">+49.1D</td>
+          <td class="col-dist" data-sort-value="33">SD-33</td>
+          <td class="col-rep" data-sort-value="Greg Taylor">Greg Taylor</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="34">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.6898">+69D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.4936">+49.4D</td>
+          <td class="col-dist" data-sort-value="34">SD-34</td>
+          <td class="col-rep" data-sort-value="Billie Breaux">Billie Breaux</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="35">
+          <td class="lean-d-moderate" data-sort-value="-0.1135">+11.3D</td>
+          <td class="lean-r-moderate" data-sort-value="0.1132">+11.3R</td>
+          <td class="lean-d-slight col-avg" data-sort-value="-0.0001">EVEN</td>
+          <td class="col-dist" data-sort-value="35">SD-35</td>
+          <td class="col-rep" data-sort-value="R. Michael Young">R. Michael Young</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="36">
+          <td class="lean-d-moderate" data-sort-value="-0.1019">+10.2D</td>
+          <td class="lean-r-moderate" data-sort-value="0.1268">+12.7R</td>
+          <td class="lean-r-slight col-avg" data-sort-value="0.0124">+1.2R</td>
+          <td class="col-dist" data-sort-value="36">SD-36</td>
+          <td class="col-rep" data-sort-value="Brent Waltz">Brent Waltz</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="37">
+          <td class="lean-r-strong" data-sort-value="0.4876">+48.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.5345">+53.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.511">+51.1R</td>
+          <td class="col-dist" data-sort-value="37">SD-37</td>
+          <td class="col-rep" data-sort-value="Richard Bray">Richard Bray</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="38">
+          <td class="lean-r-strong" data-sort-value="0.2708">+27.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.2836">+28.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2772">+27.7R</td>
+          <td class="col-dist" data-sort-value="38">SD-38</td>
+          <td class="col-rep" data-sort-value="Timothy Skinner">Timothy Skinner</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="39">
+          <td class="lean-r-strong" data-sort-value="0.4556">+45.6R</td>
+          <td class="lean-r-strong" data-sort-value="0.499">+49.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4773">+47.7R</td>
+          <td class="col-dist" data-sort-value="39">SD-39</td>
+          <td class="col-rep" data-sort-value="John Waterman">John Waterman</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="40">
+          <td class="lean-d-strong" data-sort-value="-0.2039">+20.4D</td>
+          <td class="lean-d-strong" data-sort-value="-0.2445">+24.4D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2242">+22.4D</td>
+          <td class="col-dist" data-sort-value="40">SD-40</td>
+          <td class="col-rep" data-sort-value="Vi Simpson">Vi Simpson</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="41">
+          <td class="lean-r-strong" data-sort-value="0.3042">+30.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.3281">+32.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3162">+31.6R</td>
+          <td class="col-dist" data-sort-value="41">SD-41</td>
+          <td class="col-rep" data-sort-value="Robert Garton">Robert Garton</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="42">
+          <td class="lean-r-strong" data-sort-value="0.545">+54.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.5458">+54.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5454">+54.5R</td>
+          <td class="col-dist" data-sort-value="42">SD-42</td>
+          <td class="col-rep" data-sort-value="Jean Leising">Jean Leising</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="43">
+          <td class="lean-r-strong" data-sort-value="0.5824">+58.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.6077">+60.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5951">+59.5R</td>
+          <td class="col-dist" data-sort-value="43">SD-43</td>
+          <td class="col-rep" data-sort-value="Johnny Nugent">Johnny Nugent</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="44">
+          <td class="lean-r-strong" data-sort-value="0.4594">+45.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.4952">+49.5R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4773">+47.7R</td>
+          <td class="col-dist" data-sort-value="44">SD-44</td>
+          <td class="col-rep" data-sort-value="Brent Steele">Brent Steele</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="45">
+          <td class="lean-r-strong" data-sort-value="0.3217">+32.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.4146">+41.5R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3681">+36.8R</td>
+          <td class="col-dist" data-sort-value="45">SD-45</td>
+          <td class="col-rep" data-sort-value="James Lewis">James Lewis</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="46">
+          <td class="lean-r-moderate" data-sort-value="0.1607">+16.1R</td>
+          <td class="lean-r-lean" data-sort-value="0.0994">+9.9R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1301">+13R</td>
+          <td class="col-dist" data-sort-value="46">SD-46</td>
+          <td class="col-rep" data-sort-value="Connie Sipes">Connie Sipes</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="47">
+          <td class="lean-r-strong" data-sort-value="0.3877">+38.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.438">+43.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4128">+41.3R</td>
+          <td class="col-dist" data-sort-value="47">SD-47</td>
+          <td class="col-rep" data-sort-value="Jr., Richard Young">Jr., Richard Young</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="48">
+          <td class="lean-r-strong" data-sort-value="0.5077">+50.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.5233">+52.3R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5155">+51.5R</td>
+          <td class="col-dist" data-sort-value="48">SD-48</td>
+          <td class="col-rep" data-sort-value="Lindel Hume">Lindel Hume</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="49">
+          <td class="lean-r-moderate" data-sort-value="0.1906">+19.1R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1688">+16.9R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1797">+18R</td>
+          <td class="col-dist" data-sort-value="49">SD-49</td>
+          <td class="col-rep" data-sort-value="Larry Lutz">Larry Lutz</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="50">
+          <td class="lean-r-moderate" data-sort-value="0.1666">+16.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.2276">+22.8R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1971">+19.7R</td>
+          <td class="col-dist" data-sort-value="50">SD-50</td>
+          <td class="col-rep" data-sort-value="Vaneta Becker">Vaneta Becker</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+
   <div class="tab-content" id="tab-house">
     <div class="boundary-view boundary-view-current" id="bview-current-house">
       <div class="house-note">
-        <strong>Note:</strong> 2020, 2022, and 2024 columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
+        <strong>Note:</strong> '20, '22, and Race columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
       </div>
       <div class="table-wrap">
         <table id="table-house">
           <thead>
             <tr>
-              <th onclick="sortTable('table-house', 0, 'num')">2020 House Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 1, 'num')">2022 House Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 3, 'num')">2024 House Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 0, 'num')" title="2020 State House race result">'20 Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 1, 'num')" title="2022 State House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 3, 'num')" title="2024 State House race result">Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 4, 'num')" title="IN-Index: 2024 presidential lean (adjusted for unopposed races)">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 5, 'num')" title="House District">Dist <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 6, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
             </tr>
           </thead>
           <tbody>
@@ -2030,6 +2600,830 @@ table { font-size: 13px; }
       </div>
     </div>
 
+  <div class="boundary-view boundary-view-2010" id="bview-2010-house" style="display:none">
+    <div class="house-note">
+      <strong>Note:</strong> Under pre-2012 boundaries, 2020 presidential margins are available
+      for all chambers including House, computed via county-to-district weights from precinct spatial assignments.
+    </div>
+    <div class="table-wrap">
+      <table id="table-house-2010">
+        <thead>
+          <tr>
+            <th onclick="sortTable('table-house-2010', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house-2010', 1, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house-2010', 2, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house-2010', 3, 'num')">District <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house-2010', 4, 'alpha')">Rep. (2009&ndash;2011) <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house-2010', 5, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr data-district="1">
+          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-d-strong" data-sort-value="-0.2005">+20.1D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1767">+17.7D</td>
+          <td class="col-dist" data-sort-value="1">HD-1</td>
+          <td class="col-rep" data-sort-value="Linda Lawson">Linda Lawson</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="2">
+          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.196">+19.6D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1744">+17.4D</td>
+          <td class="col-dist" data-sort-value="2">HD-2</td>
+          <td class="col-rep" data-sort-value="Earl Harris">Earl Harris</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="3">
+          <td class="lean-d-slight" data-sort-value="-0.0394">+3.9D</td>
+          <td class="lean-d-strong" data-sort-value="-0.276">+27.6D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1577">+15.8D</td>
+          <td class="col-dist" data-sort-value="3">HD-3</td>
+          <td class="col-rep" data-sort-value="Charlie Brown">Charlie Brown</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="4">
+          <td class="lean-r-slight" data-sort-value="0.0193">+1.9R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1899">+19R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1046">+10.5R</td>
+          <td class="col-dist" data-sort-value="4">HD-4</td>
+          <td class="col-rep" data-sort-value="Edmond Soliday">Edmond Soliday</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="5">
+          <td class="lean-r-slight" data-sort-value="0.0095">+0.9R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1259">+12.6R</td>
+          <td class="lean-r-lean col-avg" data-sort-value="0.0677">+6.8R</td>
+          <td class="col-dist" data-sort-value="5">HD-5</td>
+          <td class="col-rep" data-sort-value="Craig Fry">Craig Fry</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="6">
+          <td class="lean-d-lean" data-sort-value="-0.0595">+6D</td>
+          <td class="lean-d-strong" data-sort-value="-0.247">+24.7D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1533">+15.3D</td>
+          <td class="col-dist" data-sort-value="6">HD-6</td>
+          <td class="col-rep" data-sort-value="B. Patrick Bauer">B. Patrick Bauer</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="7">
+          <td class="lean-d-lean" data-sort-value="-0.0595">+6D</td>
+          <td class="lean-d-lean" data-sort-value="-0.0705">+7.1D</td>
+          <td class="lean-d-lean col-avg" data-sort-value="-0.065">+6.5D</td>
+          <td class="col-dist" data-sort-value="7">HD-7</td>
+          <td class="col-rep" data-sort-value="David Niezgodski">David Niezgodski</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="8">
+          <td class="lean-d-lean" data-sort-value="-0.0595">+6D</td>
+          <td class="lean-d-lean" data-sort-value="-0.0859">+8.6D</td>
+          <td class="lean-d-lean col-avg" data-sort-value="-0.0727">+7.3D</td>
+          <td class="col-dist" data-sort-value="8">HD-8</td>
+          <td class="col-rep" data-sort-value="Ryan Dvorak">Ryan Dvorak</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="9">
+          <td class="lean-r-lean" data-sort-value="0.0737">+7.4R</td>
+          <td class="lean-d-slight" data-sort-value="-0.0147">+1.5D</td>
+          <td class="lean-r-slight col-avg" data-sort-value="0.0295">+3R</td>
+          <td class="col-dist" data-sort-value="9">HD-9</td>
+          <td class="col-rep" data-sort-value="Scott Pelath">Scott Pelath</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="10">
+          <td class="lean-r-lean" data-sort-value="0.0621">+6.2R</td>
+          <td class="lean-r-slight" data-sort-value="0.0406">+4.1R</td>
+          <td class="lean-r-lean col-avg" data-sort-value="0.0514">+5.1R</td>
+          <td class="col-dist" data-sort-value="10">HD-10</td>
+          <td class="col-rep" data-sort-value="Chuck Moseley">Chuck Moseley</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="11">
+          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-d-lean" data-sort-value="-0.0549">+5.5D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1039">+10.4D</td>
+          <td class="col-dist" data-sort-value="11">HD-11</td>
+          <td class="col-rep" data-sort-value="Dan Stevenson">Dan Stevenson</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="12">
+          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1605">+16.1D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1567">+15.7D</td>
+          <td class="col-dist" data-sort-value="12">HD-12</td>
+          <td class="col-rep" data-sort-value="Mara Candelaria Reardon">Mara Candelaria Reardon</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="13">
+          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-d-lean" data-sort-value="-0.0775">+7.7D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1152">+11.5D</td>
+          <td class="col-dist" data-sort-value="13">HD-13</td>
+          <td class="col-rep" data-sort-value="Chester Dobis">Chester Dobis</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="14">
+          <td class="lean-d-moderate" data-sort-value="-0.1528">+15.3D</td>
+          <td class="lean-d-strong" data-sort-value="-0.3661">+36.6D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2595">+25.9D</td>
+          <td class="col-dist" data-sort-value="14">HD-14</td>
+          <td class="col-rep" data-sort-value="Vernon Smith">Vernon Smith</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="15">
+          <td class="lean-r-moderate" data-sort-value="0.1232">+12.3R</td>
+          <td class="lean-r-strong" data-sort-value="0.3908">+39.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.257">+25.7R</td>
+          <td class="col-dist" data-sort-value="15">HD-15</td>
+          <td class="col-rep" data-sort-value="Donald Lehe">Donald Lehe</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="16">
+          <td class="lean-r-strong" data-sort-value="0.4827">+48.3R</td>
+          <td class="lean-r-strong" data-sort-value="0.5415">+54.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5121">+51.2R</td>
+          <td class="col-dist" data-sort-value="16">HD-16</td>
+          <td class="col-rep" data-sort-value="Douglas Gutwein">Douglas Gutwein</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="17">
+          <td class="lean-r-strong" data-sort-value="0.4116">+41.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.4489">+44.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4302">+43R</td>
+          <td class="col-dist" data-sort-value="17">HD-17</td>
+          <td class="col-rep" data-sort-value="Nancy Dembowski">Nancy Dembowski</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="18">
+          <td class="lean-r-strong" data-sort-value="0.4599">+46R</td>
+          <td class="lean-r-strong" data-sort-value="0.5343">+53.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4971">+49.7R</td>
+          <td class="col-dist" data-sort-value="18">HD-18</td>
+          <td class="col-rep" data-sort-value="David Wolkins">David Wolkins</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="19">
+          <td class="lean-d-lean" data-sort-value="-0.0922">+9.2D</td>
+          <td class="lean-r-moderate" data-sort-value="0.1687">+16.9R</td>
+          <td class="lean-r-slight col-avg" data-sort-value="0.0382">+3.8R</td>
+          <td class="col-dist" data-sort-value="19">HD-19</td>
+          <td class="col-rep" data-sort-value="Robert Kuzman">Robert Kuzman</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="20">
+          <td class="lean-r-moderate" data-sort-value="0.1831">+18.3R</td>
+          <td class="lean-r-strong" data-sort-value="0.358">+35.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2705">+27.1R</td>
+          <td class="col-dist" data-sort-value="20">HD-20</td>
+          <td class="col-rep" data-sort-value="Thomas Dermody">Thomas Dermody</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="21">
+          <td class="lean-r-moderate" data-sort-value="0.1387">+13.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.2873">+28.7R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.213">+21.3R</td>
+          <td class="col-dist" data-sort-value="21">HD-21</td>
+          <td class="col-rep" data-sort-value="Jackie Walorski">Jackie Walorski</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="22">
+          <td class="lean-r-strong" data-sort-value="0.5144">+51.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.5382">+53.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5263">+52.6R</td>
+          <td class="col-dist" data-sort-value="22">HD-22</td>
+          <td class="col-rep" data-sort-value="William J. Ruppel">William J. Ruppel</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="23">
+          <td class="lean-r-strong" data-sort-value="0.4806">+48.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.5668">+56.7R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5237">+52.4R</td>
+          <td class="col-dist" data-sort-value="23">HD-23</td>
+          <td class="col-rep" data-sort-value="William Friend">William Friend</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="24">
+          <td class="lean-r-strong" data-sort-value="0.4649">+46.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.4789">+47.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4719">+47.2R</td>
+          <td class="col-dist" data-sort-value="24">HD-24</td>
+          <td class="col-rep" data-sort-value="Richard McClain">Richard McClain</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="25">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.2188">+21.9D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2581">+25.8D</td>
+          <td class="col-dist" data-sort-value="25">HD-25</td>
+          <td class="col-rep" data-sort-value="Jeb Bardon">Jeb Bardon</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="26">
+          <td class="lean-r-slight" data-sort-value="0.0124">+1.2R</td>
+          <td class="lean-d-lean" data-sort-value="-0.0825">+8.3D</td>
+          <td class="lean-d-slight col-avg" data-sort-value="-0.0351">+3.5D</td>
+          <td class="col-dist" data-sort-value="26">HD-26</td>
+          <td class="col-rep" data-sort-value="Randy Truitt">Randy Truitt</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="27">
+          <td class="lean-d-slight" data-sort-value="-0.0063">+0.6D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1178">+11.8D</td>
+          <td class="lean-d-lean col-avg" data-sort-value="-0.0621">+6.2D</td>
+          <td class="col-dist" data-sort-value="27">HD-27</td>
+          <td class="col-rep" data-sort-value="Sheila Klinker">Sheila Klinker</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="28">
+          <td class="lean-r-strong" data-sort-value="0.2364">+23.6R</td>
+          <td class="lean-r-strong" data-sort-value="0.4335">+43.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.335">+33.5R</td>
+          <td class="col-dist" data-sort-value="28">HD-28</td>
+          <td class="col-rep" data-sort-value="Jeffrey Thompson">Jeffrey Thompson</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="29">
+          <td class="lean-r-lean" data-sort-value="0.085">+8.5R</td>
+          <td class="lean-r-lean" data-sort-value="0.0848">+8.5R</td>
+          <td class="lean-r-lean col-avg" data-sort-value="0.0849">+8.5R</td>
+          <td class="col-dist" data-sort-value="29">HD-29</td>
+          <td class="col-rep" data-sort-value="Kathy Richardson">Kathy Richardson</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="30">
+          <td class="lean-r-strong" data-sort-value="0.3307">+33.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.2824">+28.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3065">+30.7R</td>
+          <td class="col-dist" data-sort-value="30">HD-30</td>
+          <td class="col-rep" data-sort-value="Ron Herrell">Ron Herrell</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="31">
+          <td class="lean-r-strong" data-sort-value="0.4155">+41.6R</td>
+          <td class="lean-r-strong" data-sort-value="0.4084">+40.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.412">+41.2R</td>
+          <td class="col-dist" data-sort-value="31">HD-31</td>
+          <td class="col-rep" data-sort-value="Joe Pearson">Joe Pearson</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="32">
+          <td class="lean-r-strong" data-sort-value="0.3578">+35.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.5179">+51.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4379">+43.8R</td>
+          <td class="col-dist" data-sort-value="32">HD-32</td>
+          <td class="col-rep" data-sort-value="P. Eric Turner">P. Eric Turner</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="33">
+          <td class="lean-r-strong" data-sort-value="0.3946">+39.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.4811">+48.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4378">+43.8R</td>
+          <td class="col-dist" data-sort-value="33">HD-33</td>
+          <td class="col-rep" data-sort-value="Bill Davis">Bill Davis</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="34">
+          <td class="lean-r-moderate" data-sort-value="0.1343">+13.4R</td>
+          <td class="lean-d-lean" data-sort-value="-0.0515">+5.1D</td>
+          <td class="lean-r-slight col-avg" data-sort-value="0.0414">+4.1R</td>
+          <td class="col-dist" data-sort-value="34">HD-34</td>
+          <td class="col-rep" data-sort-value="Dennis Tyler">Dennis Tyler</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="35">
+          <td class="lean-r-moderate" data-sort-value="0.1802">+18R</td>
+          <td class="lean-r-strong" data-sort-value="0.3419">+34.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2611">+26.1R</td>
+          <td class="col-dist" data-sort-value="35">HD-35</td>
+          <td class="col-rep" data-sort-value="L. Jack Lutz">L. Jack Lutz</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="36">
+          <td class="lean-r-strong" data-sort-value="0.2242">+22.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.2715">+27.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2478">+24.8R</td>
+          <td class="col-dist" data-sort-value="36">HD-36</td>
+          <td class="col-rep" data-sort-value="Terri Jo Austin">Terri Jo Austin</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="37">
+          <td class="lean-r-strong" data-sort-value="0.2304">+23R</td>
+          <td class="lean-r-strong" data-sort-value="0.2453">+24.5R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2379">+23.8R</td>
+          <td class="col-dist" data-sort-value="37">HD-37</td>
+          <td class="col-rep" data-sort-value="Scott Reske">Scott Reske</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="38">
+          <td class="lean-r-strong" data-sort-value="0.2945">+29.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.3233">+32.3R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3089">+30.9R</td>
+          <td class="col-dist" data-sort-value="38">HD-38</td>
+          <td class="col-rep" data-sort-value="Jacqueline Clements">Jacqueline Clements</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="39">
+          <td class="lean-r-lean" data-sort-value="0.0695">+6.9R</td>
+          <td class="lean-r-slight" data-sort-value="0.0291">+2.9R</td>
+          <td class="lean-r-slight col-avg" data-sort-value="0.0493">+4.9R</td>
+          <td class="col-dist" data-sort-value="39">HD-39</td>
+          <td class="col-rep" data-sort-value="Gerald Torr">Gerald Torr</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="40">
+          <td class="lean-r-strong" data-sort-value="0.2453">+24.5R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1159">+11.6R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1806">+18.1R</td>
+          <td class="col-dist" data-sort-value="40">HD-40</td>
+          <td class="col-rep" data-sort-value="Matthew Whetstone">Matthew Whetstone</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="41">
+          <td class="lean-r-strong" data-sort-value="0.2101">+21R</td>
+          <td class="lean-r-strong" data-sort-value="0.3195">+31.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2648">+26.5R</td>
+          <td class="col-dist" data-sort-value="41">HD-41</td>
+          <td class="col-rep" data-sort-value="Timothy Brown">Timothy Brown</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="42">
+          <td class="lean-r-strong" data-sort-value="0.4783">+47.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.5288">+52.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5036">+50.4R</td>
+          <td class="col-dist" data-sort-value="42">HD-42</td>
+          <td class="col-rep" data-sort-value="F. Dale Grubb">F. Dale Grubb</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="43">
+          <td class="lean-r-moderate" data-sort-value="0.1683">+16.8R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1257">+12.6R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.147">+14.7R</td>
+          <td class="col-dist" data-sort-value="43">HD-43</td>
+          <td class="col-rep" data-sort-value="Clyde Kersey">Clyde Kersey</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="44">
+          <td class="lean-r-strong" data-sort-value="0.5231">+52.3R</td>
+          <td class="lean-r-strong" data-sort-value="0.5379">+53.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5305">+53R</td>
+          <td class="col-dist" data-sort-value="44">HD-44</td>
+          <td class="col-rep" data-sort-value="Nancy Michael">Nancy Michael</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="45">
+          <td class="lean-r-strong" data-sort-value="0.4769">+47.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.5744">+57.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5257">+52.6R</td>
+          <td class="col-dist" data-sort-value="45">HD-45</td>
+          <td class="col-rep" data-sort-value="Bruce Borders">Bruce Borders</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="46">
+          <td class="lean-r-strong" data-sort-value="0.2814">+28.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.3732">+37.3R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3273">+32.7R</td>
+          <td class="col-dist" data-sort-value="46">HD-46</td>
+          <td class="col-rep" data-sort-value="Vern Tincher">Vern Tincher</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="47">
+          <td class="lean-r-strong" data-sort-value="0.519">+51.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.5822">+58.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5506">+55.1R</td>
+          <td class="col-dist" data-sort-value="47">HD-47</td>
+          <td class="col-rep" data-sort-value="Ralph Foley">Ralph Foley</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="48">
+          <td class="lean-r-moderate" data-sort-value="0.1833">+18.3R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1967">+19.7R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.19">+19R</td>
+          <td class="col-dist" data-sort-value="48">HD-48</td>
+          <td class="col-rep" data-sort-value="Timothy Neese">Timothy Neese</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="49">
+          <td class="lean-r-strong" data-sort-value="0.2855">+28.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.2994">+29.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2924">+29.2R</td>
+          <td class="col-dist" data-sort-value="49">HD-49</td>
+          <td class="col-rep" data-sort-value="Wes Culver">Wes Culver</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="50">
+          <td class="lean-r-strong" data-sort-value="0.5084">+50.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.4962">+49.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5023">+50.2R</td>
+          <td class="col-dist" data-sort-value="50">HD-50</td>
+          <td class="col-rep" data-sort-value="Daniel Leonard">Daniel Leonard</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="51">
+          <td class="lean-r-strong" data-sort-value="0.4542">+45.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.4482">+44.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4512">+45.1R</td>
+          <td class="col-dist" data-sort-value="51">HD-51</td>
+          <td class="col-rep" data-sort-value="Richard Dodge">Richard Dodge</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="52">
+          <td class="lean-r-strong" data-sort-value="0.5179">+51.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.5143">+51.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5161">+51.6R</td>
+          <td class="col-dist" data-sort-value="52">HD-52</td>
+          <td class="col-rep" data-sort-value="David Yarde">David Yarde</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="53">
+          <td class="lean-r-strong" data-sort-value="0.3971">+39.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.4022">+40.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3997">+40R</td>
+          <td class="col-dist" data-sort-value="53">HD-53</td>
+          <td class="col-rep" data-sort-value="Robert Cherry">Robert Cherry</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="54">
+          <td class="lean-r-strong" data-sort-value="0.4029">+40.3R</td>
+          <td class="lean-r-strong" data-sort-value="0.4797">+48R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4413">+44.1R</td>
+          <td class="col-dist" data-sort-value="54">HD-54</td>
+          <td class="col-rep" data-sort-value="Thomas Saunders">Thomas Saunders</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="55">
+          <td class="lean-r-strong" data-sort-value="0.548">+54.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.5945">+59.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5712">+57.1R</td>
+          <td class="col-dist" data-sort-value="55">HD-55</td>
+          <td class="col-rep" data-sort-value="Thomas Knollman">Thomas Knollman</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="56">
+          <td class="lean-r-strong" data-sort-value="0.3577">+35.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.3056">+30.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3317">+33.2R</td>
+          <td class="col-dist" data-sort-value="56">HD-56</td>
+          <td class="col-rep" data-sort-value="Phillip Pflum">Phillip Pflum</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="57">
+          <td class="lean-r-strong" data-sort-value="0.4084">+40.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.4427">+44.3R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4256">+42.6R</td>
+          <td class="col-dist" data-sort-value="57">HD-57</td>
+          <td class="col-rep" data-sort-value="Sean Eberhart">Sean Eberhart</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="58">
+          <td class="lean-r-strong" data-sort-value="0.3487">+34.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.3233">+32.3R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.336">+33.6R</td>
+          <td class="col-dist" data-sort-value="58">HD-58</td>
+          <td class="col-rep" data-sort-value="Woody Burton">Woody Burton</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="59">
+          <td class="lean-r-strong" data-sort-value="0.298">+29.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.2931">+29.3R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2956">+29.6R</td>
+          <td class="col-dist" data-sort-value="59">HD-59</td>
+          <td class="col-rep" data-sort-value="Milo Smith">Milo Smith</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="60">
+          <td class="lean-d-strong" data-sort-value="-0.2511">+25.1D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1488">+14.9D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1999">+20D</td>
+          <td class="col-dist" data-sort-value="60">HD-60</td>
+          <td class="col-rep" data-sort-value="Peggy Welch">Peggy Welch</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="61">
+          <td class="lean-d-strong" data-sort-value="-0.2873">+28.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.5363">+53.6D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.4118">+41.2D</td>
+          <td class="col-dist" data-sort-value="61">HD-61</td>
+          <td class="col-rep" data-sort-value="Matt Pierce">Matt Pierce</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="62">
+          <td class="lean-r-strong" data-sort-value="0.5182">+51.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.5481">+54.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5332">+53.3R</td>
+          <td class="col-dist" data-sort-value="62">HD-62</td>
+          <td class="col-rep" data-sort-value="Jerry Denbo">Jerry Denbo</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="63">
+          <td class="lean-r-strong" data-sort-value="0.5167">+51.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.5207">+52.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5187">+51.9R</td>
+          <td class="col-dist" data-sort-value="63">HD-63</td>
+          <td class="col-rep" data-sort-value="Mark Messmer">Mark Messmer</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="64">
+          <td class="lean-r-strong" data-sort-value="0.4966">+49.7R</td>
+          <td class="lean-r-strong" data-sort-value="0.4902">+49R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4934">+49.3R</td>
+          <td class="col-dist" data-sort-value="64">HD-64</td>
+          <td class="col-rep" data-sort-value="Kreg Battles">Kreg Battles</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="65">
+          <td class="lean-r-strong" data-sort-value="0.4184">+41.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.4469">+44.7R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4326">+43.3R</td>
+          <td class="col-dist" data-sort-value="65">HD-65</td>
+          <td class="col-rep" data-sort-value="Eric Koch">Eric Koch</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="66">
+          <td class="lean-r-strong" data-sort-value="0.4153">+41.5R</td>
+          <td class="lean-r-strong" data-sort-value="0.504">+50.4R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4597">+46R</td>
+          <td class="col-dist" data-sort-value="66">HD-66</td>
+          <td class="col-rep" data-sort-value="Terry Goodin">Terry Goodin</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="67">
+          <td class="lean-r-strong" data-sort-value="0.5917">+59.2R</td>
+          <td class="lean-r-strong" data-sort-value="0.5708">+57.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5812">+58.1R</td>
+          <td class="col-dist" data-sort-value="67">HD-67</td>
+          <td class="col-rep" data-sort-value="Cleo Duncan">Cleo Duncan</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="68">
+          <td class="lean-r-strong" data-sort-value="0.5698">+57R</td>
+          <td class="lean-r-strong" data-sort-value="0.5955">+59.5R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.5826">+58.3R</td>
+          <td class="col-dist" data-sort-value="68">HD-68</td>
+          <td class="col-rep" data-sort-value="Robert Bischoff">Robert Bischoff</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="69">
+          <td class="lean-r-strong" data-sort-value="0.4591">+45.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.4771">+47.7R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4681">+46.8R</td>
+          <td class="col-dist" data-sort-value="69">HD-69</td>
+          <td class="col-rep" data-sort-value="Dave Cheatham">Dave Cheatham</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="70">
+          <td class="lean-r-strong" data-sort-value="0.3241">+32.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.4295">+43R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3768">+37.7R</td>
+          <td class="col-dist" data-sort-value="70">HD-70</td>
+          <td class="col-rep" data-sort-value="Paul Robertson">Paul Robertson</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="71">
+          <td class="lean-r-moderate" data-sort-value="0.1863">+18.6R</td>
+          <td class="lean-r-lean" data-sort-value="0.053">+5.3R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1196">+12R</td>
+          <td class="col-dist" data-sort-value="71">HD-71</td>
+          <td class="col-rep" data-sort-value="Steve Stemler">Steve Stemler</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="72">
+          <td class="lean-r-moderate" data-sort-value="0.1449">+14.5R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1061">+10.6R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1255">+12.5R</td>
+          <td class="col-dist" data-sort-value="72">HD-72</td>
+          <td class="col-rep" data-sort-value="Edward Clere">Edward Clere</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="73">
+          <td class="lean-r-strong" data-sort-value="0.4594">+45.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.5395">+53.9R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.4994">+49.9R</td>
+          <td class="col-dist" data-sort-value="73">HD-73</td>
+          <td class="col-rep" data-sort-value="Dennie III Oxley">Dennie III Oxley</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="74">
+          <td class="lean-r-strong" data-sort-value="0.3306">+33.1R</td>
+          <td class="lean-r-strong" data-sort-value="0.3783">+37.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3544">+35.4R</td>
+          <td class="col-dist" data-sort-value="74">HD-74</td>
+          <td class="col-rep" data-sort-value="Russell Stilwell">Russell Stilwell</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="75">
+          <td class="lean-r-moderate" data-sort-value="0.1477">+14.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.2684">+26.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.208">+20.8R</td>
+          <td class="col-dist" data-sort-value="75">HD-75</td>
+          <td class="col-rep" data-sort-value="Dennis Avery">Dennis Avery</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="76">
+          <td class="lean-r-strong" data-sort-value="0.2428">+24.3R</td>
+          <td class="lean-r-strong" data-sort-value="0.3214">+32.1R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2821">+28.2R</td>
+          <td class="col-dist" data-sort-value="76">HD-76</td>
+          <td class="col-rep" data-sort-value="Trent Van Haaften">Trent Van Haaften</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="77">
+          <td class="lean-r-moderate" data-sort-value="0.1206">+12.1R</td>
+          <td class="lean-d-lean" data-sort-value="-0.0937">+9.4D</td>
+          <td class="lean-r-slight col-avg" data-sort-value="0.0135">+1.3R</td>
+          <td class="col-dist" data-sort-value="77">HD-77</td>
+          <td class="col-rep" data-sort-value="Gail Riecken">Gail Riecken</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="78">
+          <td class="lean-r-moderate" data-sort-value="0.1937">+19.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.2623">+26.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.228">+22.8R</td>
+          <td class="col-dist" data-sort-value="78">HD-78</td>
+          <td class="col-rep" data-sort-value="Suzanne Crouch">Suzanne Crouch</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="79">
+          <td class="lean-r-strong" data-sort-value="0.3329">+33.3R</td>
+          <td class="lean-r-strong" data-sort-value="0.4621">+46.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.3975">+39.8R</td>
+          <td class="col-dist" data-sort-value="79">HD-79</td>
+          <td class="col-rep" data-sort-value="Matthew Lehman">Matthew Lehman</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="80">
+          <td class="lean-r-moderate" data-sort-value="0.1143">+11.4R</td>
+          <td class="lean-d-strong" data-sort-value="-0.3661">+36.6D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.1259">+12.6D</td>
+          <td class="col-dist" data-sort-value="80">HD-80</td>
+          <td class="col-rep" data-sort-value="Phil GiaQuinta">Phil GiaQuinta</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="81">
+          <td class="lean-r-moderate" data-sort-value="0.1143">+11.4R</td>
+          <td class="lean-d-strong" data-sort-value="-0.2056">+20.6D</td>
+          <td class="lean-d-slight col-avg" data-sort-value="-0.0456">+4.6D</td>
+          <td class="col-dist" data-sort-value="81">HD-81</td>
+          <td class="col-rep" data-sort-value="Winfield Moses Jr.">Winfield Moses Jr.</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="82">
+          <td class="lean-r-strong" data-sort-value="0.2858">+28.6R</td>
+          <td class="lean-r-strong" data-sort-value="0.2957">+29.6R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2907">+29.1R</td>
+          <td class="col-dist" data-sort-value="82">HD-82</td>
+          <td class="col-rep" data-sort-value="Jeffrey Espich">Jeffrey Espich</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="83">
+          <td class="lean-r-strong" data-sort-value="0.268">+26.8R</td>
+          <td class="lean-r-strong" data-sort-value="0.3077">+30.8R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2879">+28.8R</td>
+          <td class="col-dist" data-sort-value="83">HD-83</td>
+          <td class="col-rep" data-sort-value="Matt Bell">Matt Bell</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="84">
+          <td class="lean-r-moderate" data-sort-value="0.1143">+11.4R</td>
+          <td class="lean-r-moderate" data-sort-value="0.1185">+11.9R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1164">+11.6R</td>
+          <td class="col-dist" data-sort-value="84">HD-84</td>
+          <td class="col-rep" data-sort-value="Randy Borror">Randy Borror</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="85">
+          <td class="lean-r-moderate" data-sort-value="0.1389">+13.9R</td>
+          <td class="lean-r-strong" data-sort-value="0.3524">+35.2R</td>
+          <td class="lean-r-strong col-avg" data-sort-value="0.2457">+24.6R</td>
+          <td class="col-dist" data-sort-value="85">HD-85</td>
+          <td class="col-rep" data-sort-value="Phyllis Pond">Phyllis Pond</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="86">
+          <td class="lean-d-strong" data-sort-value="-0.2111">+21.1D</td>
+          <td class="lean-d-strong" data-sort-value="-0.4113">+41.1D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.3112">+31.1D</td>
+          <td class="col-dist" data-sort-value="86">HD-86</td>
+          <td class="col-rep" data-sort-value="Ed DeLaney">Ed DeLaney</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="87">
+          <td class="lean-d-slight" data-sort-value="-0.0094">+0.9D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1519">+15.2D</td>
+          <td class="lean-d-lean col-avg" data-sort-value="-0.0807">+8.1D</td>
+          <td class="col-dist" data-sort-value="87">HD-87</td>
+          <td class="col-rep" data-sort-value="Cynthia Noe">Cynthia Noe</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="88">
+          <td class="lean-d-strong" data-sort-value="-0.2137">+21.4D</td>
+          <td class="lean-d-lean" data-sort-value="-0.0924">+9.2D</td>
+          <td class="lean-d-moderate col-avg" data-sort-value="-0.153">+15.3D</td>
+          <td class="col-dist" data-sort-value="88">HD-88</td>
+          <td class="col-rep" data-sort-value="Brian Bosma">Brian Bosma</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="89">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1111">+11.1D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2043">+20.4D</td>
+          <td class="col-dist" data-sort-value="89">HD-89</td>
+          <td class="col-rep" data-sort-value="John Barnes">John Barnes</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="90">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-r-moderate" data-sort-value="0.1503">+15R</td>
+          <td class="lean-d-lean col-avg" data-sort-value="-0.0735">+7.4D</td>
+          <td class="col-dist" data-sort-value="90">HD-90</td>
+          <td class="col-rep" data-sort-value="Michael Murphy">Michael Murphy</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="91">
+          <td class="lean-r-lean" data-sort-value="0.0842">+8.4R</td>
+          <td class="lean-r-strong" data-sort-value="0.2549">+25.5R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1695">+17R</td>
+          <td class="col-dist" data-sort-value="91">HD-91</td>
+          <td class="col-rep" data-sort-value="Robert Behning">Robert Behning</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="92">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-moderate" data-sort-value="-0.1964">+19.6D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2469">+24.7D</td>
+          <td class="col-dist" data-sort-value="92">HD-92</td>
+          <td class="col-rep" data-sort-value="Phillip Hinkle">Phillip Hinkle</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="93">
+          <td class="lean-r-slight" data-sort-value="0.0203">+2R</td>
+          <td class="lean-r-strong" data-sort-value="0.2565">+25.6R</td>
+          <td class="lean-r-moderate col-avg" data-sort-value="0.1384">+13.8R</td>
+          <td class="col-dist" data-sort-value="93">HD-93</td>
+          <td class="col-rep" data-sort-value="David Frizzell">David Frizzell</td>
+          <td class="party-r" data-sort-value="R">R</td>
+        </tr>
+        <tr data-district="94">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.6414">+64.1D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.4694">+46.9D</td>
+          <td class="col-dist" data-sort-value="94">HD-94</td>
+          <td class="col-rep" data-sort-value="Cherrish Pryor">Cherrish Pryor</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="95">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.5575">+55.7D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.4274">+42.7D</td>
+          <td class="col-dist" data-sort-value="95">HD-95</td>
+          <td class="col-rep" data-sort-value="Mae Dickinson">Mae Dickinson</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="96">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.6052">+60.5D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.4513">+45.1D</td>
+          <td class="col-dist" data-sort-value="96">HD-96</td>
+          <td class="col-rep" data-sort-value="Gregory Porter">Gregory Porter</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="97">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.277">+27.7D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.2872">+28.7D</td>
+          <td class="col-dist" data-sort-value="97">HD-97</td>
+          <td class="col-rep" data-sort-value="Mary Ann Sullivan">Mary Ann Sullivan</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="98">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.6084">+60.8D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.4529">+45.3D</td>
+          <td class="col-dist" data-sort-value="98">HD-98</td>
+          <td class="col-rep" data-sort-value="William Crawford">William Crawford</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="99">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.6118">+61.2D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.4546">+45.5D</td>
+          <td class="col-dist" data-sort-value="99">HD-99</td>
+          <td class="col-rep" data-sort-value="Vanessa Summers">Vanessa Summers</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        <tr data-district="100">
+          <td class="lean-d-strong" data-sort-value="-0.2974">+29.7D</td>
+          <td class="lean-d-strong" data-sort-value="-0.4909">+49.1D</td>
+          <td class="lean-d-strong col-avg" data-sort-value="-0.3942">+39.4D</td>
+          <td class="col-dist" data-sort-value="100">HD-100</td>
+          <td class="col-rep" data-sort-value="John Day">John Day</td>
+          <td class="party-d" data-sort-value="D">D</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  </div>
+
     </div><!-- /.content-side -->
   </div><!-- /.main-layout -->
 
@@ -2037,23 +3431,24 @@ table { font-size: 13px; }
     <h3>Methodology</h3>
     <p>
       The <strong>IN-Index</strong> measures partisan lean for each Indiana legislative and congressional
-      district. For Congressional and Senate districts it is the average of 2020 presidential, 2022 US Senate,
-      and 2024 presidential margins. For House districts it equals the 2024 presidential margin; for
-      unopposed 2024 seats, available 2020/2022 actual race results are also averaged in.
+      district. For Senate districts it is the average of all available actual race margins plus the
+      2024 presidential margin (Indiana Senate is staggered: even-cycle SDs ran in 2020 &amp; 2024;
+      odd-cycle SDs ran in 2022). For Congressional districts it averages actual 2020/2022/2024 race
+      margins plus the 2024 presidential. For House districts it equals the 2024 presidential margin;
+      for unopposed 2024 seats, available 2020/2022 race results are also averaged in.
     </p>
     <p>
-      <strong>2024 data</strong> uses precinct-level results aggregated directly by district using
-      the district assignments in the shapefile attribute table — the most accurate method available.
+      <strong>'24 Pres</strong> uses precinct-level results aggregated directly by district —
+      the most accurate method available. <strong>Race</strong> shows the most recent contested race
+      for that district.
     </p>
     <p>
-      <strong>2022 data</strong> uses county-level US Senate results for Congressional and Senate districts
-      (apportioned by census block weights). For House districts, the 2022 column shows the actual
-      2022 State House race result for each district.
+      <strong>Senate '20/'22 columns</strong> show the actual State Senate race result for the year
+      that district ran. N/A means no election in that year (staggered cycle). Unop. = uncontested.
     </p>
     <p>
-      <strong>2020 data</strong> uses county-level presidential results for Congressional and Senate
-      districts (apportioned by census block weights). For House districts, the 2020 column shows the
-      actual 2020 State House race result. The two-party margin is
+      <strong>House '20/'22 columns</strong> show the actual State House race result for each district.
+      <strong>Congressional '22</strong> shows the actual 2022 US House race result. The two-party margin is
       <code>(R votes &minus; D votes) / (R votes + D votes)</code>. A result of "+10R" means the district
       leans Republican by 10 percentage points.
     </p>
@@ -2071,14 +3466,43 @@ table { font-size: 13px; }
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 
+let boundaryView = 'current';
+const BADGE_DATA = {
+  congressional: { current: '7R / 2D — 9 districts', '2010': '4R / 5D — 9 districts' },
+  senate:        { current: '40R / 10D — 50 districts', '2010': '33R / 17D — 50 districts' },
+  house:         { current: '70R / 30D — 100 districts', '2010': '48R / 52D — 100 districts' },
+};
+function setBoundaryView(view) {
+  boundaryView = view;
+  document.querySelectorAll('.boundary-view').forEach(el => { el.style.display = 'none'; });
+  document.querySelectorAll('.boundary-view-' + view).forEach(el => { el.style.display = 'block'; });
+  document.querySelectorAll('.boundary-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === view);
+  });
+  ['congressional', 'senate', 'house'].forEach((ch, i) => {
+    document.querySelectorAll('.tab-btn')[i].querySelector('.badge').textContent = BADGE_DATA[ch][view];
+  });
+  document.getElementById('banner-2010').style.display = view === '2010' ? 'block' : 'none';
+}
+
 // ── Map setup ──────────────────────────────────────────────────────────────
 const GEO_SOURCES = {
-  congressional: 'Congressional_District_Boundaries_Current.geojson',
-  senate:        'General_Assembly_Senate_Districts_Current.geojson',
-  house:         'General_Assembly_House_Districts_Current(1).geojson',
+  current: {
+    congressional: 'Congressional_District_Boundaries_Current.geojson',
+    senate:        'General_Assembly_Senate_Districts_Current.geojson',
+    house:         'General_Assembly_House_Districts_Current(1).geojson',
+  },
+  '2010': {
+    congressional: 'Congressional_District_Boundaries_2009-2011(1).geojson',
+    senate:        'Indiana_General_Assembly_Senate_Districts_2009-2011.geojson',
+    house:         'Indiana_General_Assembly_House_Districts_2009-2011.geojson',
+  },
 };
 
-const DIST_PROP = { congressional: 'district', senate: 'districtn', house: 'districtn_2021' };
+const DIST_PROP = {
+  current: { congressional: 'district', senate: 'districtn', house: 'districtn_2021' },
+  '2010':  { congressional: 'cd',       senate: 'ndistrict',  house: 'ndistrict'   },
+};
 
 const INDIANA_BOUNDS = [[37.7, -88.1], [41.8, -84.8]];
 const defaultStyle = { color: '#94a3b8', weight: 0.8, fillColor: '#e2e8f0', fillOpacity: 0.4 };
@@ -2098,26 +3522,27 @@ let mapLayers = {};
 let lockedDist = null;
 let activeTab = 'congressional';
 
-async function fetchGeoJSON(chamber) {
-  if (geoCache[chamber]) return geoCache[chamber];
+async function fetchGeoJSON(view, chamber) {
+  const key = view + '-' + chamber;
+  if (geoCache[key]) return geoCache[key];
   try {
-    const r = await fetch(GEO_SOURCES[chamber]);
+    const r = await fetch(GEO_SOURCES[view][chamber]);
     const d = await r.json();
-    geoCache[chamber] = d;
+    geoCache[key] = d;
     return d;
   } catch(e) { return null; }
 }
 
-async function loadMap(tab) {
+async function loadMap(tab, view) {
   Object.values(mapLayers).forEach(l => indyMap.removeLayer(l));
   mapLayers = {};
   lockedDist = null;
   document.getElementById('map-label').textContent = 'Loading…';
 
-  const data = await fetchGeoJSON(tab);
+  const data = await fetchGeoJSON(view, tab);
   if (!data) { document.getElementById('map-label').textContent = 'Map unavailable'; return; }
 
-  const propKey = DIST_PROP[tab];
+  const propKey = DIST_PROP[view][tab];
   data.features.forEach(feat => {
     const raw = feat.properties[propKey];
     const distNum = parseInt(String(raw).replace(/\D/g, ''), 10);
@@ -2126,13 +3551,13 @@ async function loadMap(tab) {
     const layer = L.geoJSON(feat, { style: Object.assign({}, defaultStyle) });
     layer.on('mouseover', () => {
       if (distNum !== lockedDist) layer.setStyle(hoverStyle);
-      setHighlight(distNum, tab, true);
+      setHighlight(distNum, tab, view, true);
       document.getElementById('map-label').textContent =
         ({congressional:'CD',senate:'SD',house:'HD'}[tab] || '') + '-' + distNum;
     });
     layer.on('mouseout', () => {
       if (distNum !== lockedDist) layer.setStyle(defaultStyle);
-      setHighlight(distNum, tab, false);
+      setHighlight(distNum, tab, view, false);
       document.getElementById('map-label').textContent =
         lockedDist ? ({congressional:'CD',senate:'SD',house:'HD'}[tab]||'') + '-' + lockedDist
                    : 'Hover or click a district';
@@ -2140,18 +3565,18 @@ async function loadMap(tab) {
     layer.on('click', () => {
       if (lockedDist === distNum) {
         layer.setStyle(defaultStyle);
-        setLocked(lockedDist, tab, false);
+        setLocked(lockedDist, tab, view, false);
         lockedDist = null;
         indyMap.fitBounds(INDIANA_BOUNDS);
         document.getElementById('map-label').textContent = 'Hover or click a district';
       } else {
         if (lockedDist && mapLayers[lockedDist]) {
           mapLayers[lockedDist].setStyle(defaultStyle);
-          setLocked(lockedDist, tab, false);
+          setLocked(lockedDist, tab, view, false);
         }
         layer.setStyle(lockedStyle);
         lockedDist = distNum;
-        setLocked(distNum, tab, true);
+        setLocked(distNum, tab, view, true);
         indyMap.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 11 });
         document.getElementById('map-label').textContent =
           ({congressional:'CD',senate:'SD',house:'HD'}[tab]||'') + '-' + distNum + ' (locked)';
@@ -2165,8 +3590,9 @@ async function loadMap(tab) {
   document.getElementById('map-label').textContent = 'Hover or click a district';
 }
 
-function setHighlight(distNum, tab, on) {
-  const t = document.getElementById('table-' + tab);
+function setHighlight(distNum, tab, view, on) {
+  const suffix = view === '2010' ? '-2010' : '';
+  const t = document.getElementById('table-' + tab + suffix);
   if (!t) return;
   t.querySelectorAll('tr[data-district]').forEach(row => {
     if (parseInt(row.dataset.district) === distNum) {
@@ -2176,8 +3602,9 @@ function setHighlight(distNum, tab, on) {
   });
 }
 
-function setLocked(distNum, tab, on) {
-  const t = document.getElementById('table-' + tab);
+function setLocked(distNum, tab, view, on) {
+  const suffix = view === '2010' ? '-2010' : '';
+  const t = document.getElementById('table-' + tab + suffix);
   if (!t) return;
   t.querySelectorAll('tr[data-district]').forEach(row => {
     if (parseInt(row.dataset.district) === distNum)
@@ -2211,18 +3638,18 @@ document.addEventListener('click', e => {
   if (!layer) return;
   if (lockedDist === distNum) {
     layer.setStyle(defaultStyle);
-    setLocked(lockedDist, activeTab, false);
+    setLocked(lockedDist, activeTab, boundaryView, false);
     lockedDist = null;
     indyMap.fitBounds(INDIANA_BOUNDS);
     document.getElementById('map-label').textContent = 'Hover or click a district';
   } else {
     if (lockedDist && mapLayers[lockedDist]) {
       mapLayers[lockedDist].setStyle(defaultStyle);
-      setLocked(lockedDist, activeTab, false);
+      setLocked(lockedDist, activeTab, boundaryView, false);
     }
     layer.setStyle(lockedStyle);
     lockedDist = distNum;
-    setLocked(distNum, activeTab, true);
+    setLocked(distNum, activeTab, boundaryView, true);
     indyMap.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 11 });
     document.getElementById('map-label').textContent =
       ({congressional:'CD',senate:'SD',house:'HD'}[activeTab]||'') + '-' + distNum + ' (locked)';
@@ -2237,7 +3664,27 @@ function switchTab(tab) {
   const tabs = ['congressional', 'senate', 'house'];
   document.querySelectorAll('.tab-btn')[tabs.indexOf(tab)].classList.add('active');
   activeTab = tab;
-  loadMap(tab);
+  loadMap(tab, boundaryView);
+}
+
+// Patch setBoundaryView to also reload map
+const _origSetBoundary = typeof setBoundaryView !== 'undefined' ? setBoundaryView : null;
+function setBoundaryView(view) {
+  boundaryView = view;
+  const chambers = ['congressional', 'senate', 'house'];
+  document.querySelectorAll('.boundary-view').forEach(el => { el.style.display = 'none'; });
+  document.querySelectorAll('.boundary-view-' + view).forEach(el => { el.style.display = 'block'; });
+  document.querySelectorAll('.boundary-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === view);
+  });
+  if (typeof BADGE_DATA !== 'undefined') {
+    chambers.forEach((ch, i) => {
+      document.querySelectorAll('.tab-btn')[i].querySelector('.badge').textContent = BADGE_DATA[ch][view];
+    });
+  }
+  const banner = document.getElementById('banner-2010');
+  if (banner) banner.style.display = view === '2010' ? 'block' : 'none';
+  loadMap(activeTab, view);
 }
 
 // ── Sort ───────────────────────────────────────────────────────────────────
@@ -2263,7 +3710,7 @@ function sortTable(tableId, colIdx, type) {
 }
 
 // Initial map load
-loadMap('congressional');
+loadMap('congressional', boundaryView);
 </script>
 
 </body>
