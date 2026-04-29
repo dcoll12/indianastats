@@ -570,11 +570,24 @@ def _simplify_geom(geom, eps=0.01):
 
 
 def determine_race(contact):
-    """Return (district_type, district_num) for the contact's primary race."""
+    """Return (district_type, district_num) for the contact's primary race.
+
+    Priority is determined by the Title field (matching build_card logic) so a
+    senate candidate with a House District column value isn't mis-classified as HD.
+    """
     hd = str(contact.get('House District', '')).strip()
     sd = str(contact.get('Senate District', '')).strip()
     cd = str(contact.get('Congressional District', '')).strip()
-    for dtype, val in (('house', hd), ('senate', sd), ('congressional', cd)):
+    title_lower = str(contact.get('Title', '')).lower()
+    if 'congress' in title_lower or 'us house' in title_lower:
+        order = (('congressional', cd), ('senate', sd), ('house', hd))
+    elif 'senate' in title_lower:
+        order = (('senate', sd), ('congressional', cd), ('house', hd))
+    elif 'house' in title_lower:
+        order = (('house', hd), ('senate', sd), ('congressional', cd))
+    else:
+        order = (('house', hd), ('senate', sd), ('congressional', cd))
+    for dtype, val in order:
         if not val:
             continue
         num_str = re.sub(r'[^0-9]', '', val)
