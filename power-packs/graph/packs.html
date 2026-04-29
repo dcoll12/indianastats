@@ -182,10 +182,11 @@ Promise.all([
   fetch('../../data.json').then(r => r.json()),
   fetch('../../candidates_2026.json').then(r => r.json()),
   fetch('../../district_data.json').then(r => r.json()),
-]).then(([lean, cands, distData]) => {
+  fetch('../../rural_summit_cohort.json').then(r => r.json()).catch(() => []),
+]).then(([lean, cands, distData, cohort]) => {
   MSG.textContent = 'Building pack network…';
   setTimeout(() => {
-    try { build(lean, cands, distData); }
+    try { build(lean, cands, distData, cohort); }
     catch(e) { MSG.textContent = 'Error: ' + e.message; console.error(e); }
   }, 30);
 }).catch(e => { MSG.textContent = 'Load error: ' + e.message; });
@@ -227,11 +228,15 @@ function nodeR(chamber, comp) {
 }
 
 // ── Main build ────────────────────────────────────────────────────────────
-function build(lean, cands, distData) {
+function build(lean, cands, distData, cohort) {
   const ll       = buildLeanLookup(lean);
   const sdToHds  = distData.sd_to_hds  || {};
   const sdToCd   = distData.sd_to_cd   || {};
   const cdToSds  = distData.cd_to_sds  || {};
+
+  const cohortSet      = new Set((cohort || []).map(c => c.name.trim().toLowerCase()));
+  const cohortPhotoMap = new Map((cohort || []).map(c => [c.name.trim().toLowerCase(), c.photo_url || '']));
+  const hasCohort      = cohortSet.size > 0;
 
   const W = window.innerWidth, H = window.innerHeight - 46;
 
@@ -256,7 +261,9 @@ function build(lean, cands, distData) {
   const packBySd = {};
 
   contestedSDs.forEach(sdNum => {
-    const sdCandidates = cands.sd[sdNum] || [];
+    const sdCandidates = (cands.sd[sdNum] || []).filter(c =>
+      !hasCohort || cohortSet.has(c.name.trim().toLowerCase())
+    );
     if (!sdCandidates.length) return;
 
     const cdNum  = +(sdToCd[String(sdNum)] || 0);
@@ -284,6 +291,7 @@ function build(lean, cands, distData) {
         name: c.name, party: c.party || '',
         comp: compSD, ii: leanSD.in_index ?? 0, lean_lbl: leanSD.in_index_label || '',
         tier, tcol,
+        photo: cohortPhotoMap.get(c.name.trim().toLowerCase()) || '',
         x: cdPos.x + (Math.random() - 0.5) * 180,
         y: cdPos.y + (Math.random() - 0.5) * 150,
       });
@@ -296,11 +304,15 @@ function build(lean, cands, distData) {
         addLink(sdCandNodes[a].id, sdCandNodes[b].id, 'race');
 
     // HDs in this pack
-    const packHDs = (sdToHds[String(sdNum)] || []).filter(hd => (cands.hd || {})[hd]?.length);
+    const packHDs = (sdToHds[String(sdNum)] || []).filter(hd =>
+      ((cands.hd || {})[hd] || []).some(c => !hasCohort || cohortSet.has(c.name.trim().toLowerCase()))
+    );
     packBySd[sdNum] = { sdNum, cdNum, tier, hdNums: packHDs, sdAnchorId };
 
     packHDs.forEach(hdNum => {
-      const hdCandidates = (cands.hd || {})[hdNum] || [];
+      const hdCandidates = ((cands.hd || {})[hdNum] || []).filter(c =>
+        !hasCohort || cohortSet.has(c.name.trim().toLowerCase())
+      );
       const leanHD = ll.house[hdNum] || {};
       const compHD = competitiveness(leanHD.in_index ?? 0.5);
       const hdT    = hdTier(hdNum, ll);
@@ -328,6 +340,7 @@ function build(lean, cands, distData) {
           name: c.name, party: c.party || '',
           comp: compHD, ii: leanHD.in_index ?? 0, lean_lbl: leanHD.in_index_label || '',
           tier: hdT, tcol: TIER_COLOR[hdT], parentSd: sdNum,
+          photo: cohortPhotoMap.get(c.name.trim().toLowerCase()) || '',
           x: cdPos.x + (Math.random() - 0.5) * 220,
           y: cdPos.y + (Math.random() - 0.5) * 200,
         });
@@ -351,7 +364,11 @@ function build(lean, cands, distData) {
   });
 
   // ── CD candidate nodes (separate from packs) ─────────────────────
-  Object.entries(cands.cd || {}).forEach(([cdNum, candidates]) => {
+  Object.entries(cands.cd || {}).forEach(([cdNum, allCdCands]) => {
+    const candidates = allCdCands.filter(c =>
+      !hasCohort || cohortSet.has(c.name.trim().toLowerCase())
+    );
+    if (!candidates.length) return;
     const leanCD = ll.congressional[+cdNum] || {};
     const compCD = competitiveness(leanCD.in_index ?? 0.5);
     const cdPos  = cdXY(+cdNum);
@@ -365,6 +382,7 @@ function build(lean, cands, distData) {
         name: c.name, party: c.party || '',
         comp: compCD, ii: leanCD.in_index ?? 0, lean_lbl: leanCD.in_index_label || '',
         tier: -1, tcol: '#388bfd',
+        photo: cohortPhotoMap.get(c.name.trim().toLowerCase()) || '',
         x: cdPos.x + (Math.random() - 0.5) * 100,
         y: cdPos.y + (Math.random() - 0.5) * 80,
       });
@@ -377,11 +395,11 @@ function build(lean, cands, distData) {
   });
 
   // ── Render ───────────────────────────────────────────────────────────
-  render(nodes, links, W, H);
+  render(nodes, links, W, H, hasCohort);
 }
 
 // ── Render ────────────────────────────────────────────────────────────────
-function render(nodes, links, W, H) {
+function render(nodes, links, W, H, hasCohort) {
   simNodes = nodes;
   const svg = d3.select('#graph-svg').attr('width', W).attr('height', H);
 
@@ -395,6 +413,16 @@ function render(nodes, links, W, H) {
     m.append('feMergeNode').attr('in','b');
     m.append('feMergeNode').attr('in','SourceGraphic');
   });
+
+  // Photo clip paths — one per candidate node with a photo (referenced in local node-group coords)
+  const photoCands = nodes.filter(n => n.type === 'candidate' && n.photo);
+  defs.selectAll('.photo-clip')
+    .data(photoCands, d => d.id)
+    .join('clipPath')
+    .attr('class', 'photo-clip')
+    .attr('id', d => `pc_${d.id.replace(/[^a-zA-Z0-9]/g, '_')}`)
+    .append('circle')
+    .attr('r', d => nodeR(d.chamber, d.comp));
 
   // Zoom / pan
   gRoot = svg.append('g');
@@ -483,8 +511,21 @@ function render(nodes, links, W, H) {
     .attr('filter', d => d.party === 'D' ? 'url(#gd)' : 'url(#gr)')
     .attr('pointer-events', 'none');
 
-  // Initials
-  nodeSel.append('text')
+  // Portrait photo — clipped to circle via clipPath in local group coordinates
+  nodeSel.filter(d => d.photo)
+    .append('image')
+    .attr('href', d => d.photo)
+    .attr('x', d => -nodeR(d.chamber, d.comp))
+    .attr('y', d => -nodeR(d.chamber, d.comp))
+    .attr('width', d => nodeR(d.chamber, d.comp) * 2)
+    .attr('height', d => nodeR(d.chamber, d.comp) * 2)
+    .attr('preserveAspectRatio', 'xMidYMid slice')
+    .attr('clip-path', d => `url(#pc_${d.id.replace(/[^a-zA-Z0-9]/g, '_')})`)
+    .attr('pointer-events', 'none');
+
+  // Initials — hidden when portrait photo is available
+  nodeSel.filter(d => !d.photo)
+    .append('text')
     .attr('text-anchor', 'middle').attr('dominant-baseline', 'central')
     .attr('font-size', d => Math.max(7, nodeR(d.chamber, d.comp) * 0.52))
     .attr('font-weight', 700).attr('fill', 'rgba(255,255,255,0.88)')
@@ -503,37 +544,37 @@ function render(nodes, links, W, H) {
   sim = d3.forceSimulation(nodes)
     .force('link', d3.forceLink(links).id(d => d.id)
       .distance(l => {
-        if (l.type === 'member' && l.source.chamber === 'hd') return 5;
-        if (l.type === 'member' && l.source.chamber === 'sd') return 5;
-        if (l.type === 'member' && l.source.chamber === 'cd') return 5;
-        if (l.type === 'race')   return 4;
-        if (l.type === 'pack')   return 55 + (1 - (l.source.comp||0)) * 30;
-        return 40;
+        if (l.type === 'member' && l.source.chamber === 'hd') return 22;
+        if (l.type === 'member' && l.source.chamber === 'sd') return 22;
+        if (l.type === 'member' && l.source.chamber === 'cd') return 22;
+        if (l.type === 'race')   return 9;
+        if (l.type === 'pack')   return 110 + (1 - (l.source.comp||0)) * 60;
+        return 60;
       })
       .strength(l => {
-        if (l.type === 'member') return 0.92;
+        if (l.type === 'member') return 0.88;
         if (l.type === 'race')   return 0.35;
-        if (l.type === 'pack')   return 0.22;
+        if (l.type === 'pack')   return 0.18;
         return 0.1;
       })
     )
     .force('charge', d3.forceManyBody()
-      .strength(d => d.type === 'cd-anchor' ? 0 : d.type === 'anchor' ? -25 : -70)
-      .distanceMax(320)
+      .strength(d => d.type === 'cd-anchor' ? 0 : d.type === 'anchor' ? -80 : -200)
+      .distanceMax(650)
     )
     .force('collide', d3.forceCollide(d => {
       if (d.type === 'cd-anchor') return 0;
-      if (d.type === 'anchor')    return 6;
-      return nodeR(d.chamber, d.comp) + 2.5;
-    }).strength(0.8))
+      if (d.type === 'anchor')    return 8;
+      return nodeR(d.chamber, d.comp) + 4;
+    }).strength(0.85))
     // Pull each node toward its CD zone center
     .force('x', d3.forceX(d => {
       const pos = CD_POS[d.cdNum]; return pos ? pos.rx * W : W/2;
-    }).strength(d => d.type === 'cd-anchor' ? 0 : d.type === 'anchor' ? 0.055 : 0.038))
+    }).strength(d => d.type === 'cd-anchor' ? 0 : d.type === 'anchor' ? 0.038 : 0.025))
     .force('y', d3.forceY(d => {
       const pos = CD_POS[d.cdNum]; return pos ? pos.ry * H : H/2;
-    }).strength(d => d.type === 'cd-anchor' ? 0 : d.type === 'anchor' ? 0.055 : 0.038))
-    .alphaDecay(0.010)
+    }).strength(d => d.type === 'cd-anchor' ? 0 : d.type === 'anchor' ? 0.038 : 0.025))
+    .alphaDecay(0.008)
     .velocityDecay(0.38);
 
   sim.on('tick', () => {
@@ -549,6 +590,10 @@ function render(nodes, links, W, H) {
     nodeSel.attr('transform', d => `translate(${d.x.toFixed(1)},${d.y.toFixed(1)})`);
   });
 
+  if (hasCohort) {
+    document.getElementById('hdr-title').textContent = 'Indiana Rural Summit — Power Packs Network';
+    document.getElementById('hdr-sub').textContent = '🌻 Rural Summit cohort · node size = competitiveness · drag nodes · scroll to zoom';
+  }
   document.getElementById('loading').style.display = 'none';
   applyFilter();
 }
