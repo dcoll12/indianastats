@@ -1877,7 +1877,7 @@ var PP = (function() {
           var total = result.senateCandidates.length + result.houseMembers.length;
           var prefix = mpd.dtype === 'senate' ? 'SD' : 'HD';
           if (statsEl) statsEl.textContent = prefix+'-'+mpd.dnum+' Area Pack: '+total+' candidate'+(total!==1?'s':'')+' across '
-            +result.packSDs.length+' senate district'+(result.packSDs.length!==1?'s':'')+' &amp; '
+            +result.packSDs.length+' senate district'+(result.packSDs.length!==1?'s':'')+' & '
             +result.packHDs.length+' house district'+(result.packHDs.length!==1?'s':'');
         }
       }
@@ -2451,7 +2451,11 @@ var PP = (function() {
     parts.push('<span style="font-size:0.77rem;opacity:0.75">Senate:&nbsp;</span>');
     result.packSDs.slice().sort(function(a,b){return a-b;}).forEach(function(sd) {
       var isAnchor = sd === dnum && dtype === 'senate';
-      parts.push('<span class="pp-mypack-district-chip'+(isAnchor?' anchor':'')+'" title="'+(isAnchor?'Selected district':'Overlapping SD')+'">SD-'+sd+(isAnchor?' ★':'')+'</span>');
+      if (isAnchor) {
+        parts.push('<span class="pp-mypack-district-chip anchor" title="Selected district">SD-'+sd+' ★</span>');
+      } else {
+        parts.push('<span class="pp-mypack-district-chip" title="View SD-'+sd+' Pack" style="cursor:pointer" onclick="(function(){var s=document.getElementById(\'pp-my-sd\');var h=document.getElementById(\'pp-my-hd\');if(s)s.value='+sd+';if(h)h.value=\'\';PP.onMyPackInput(\'senate\');})()">'+'SD-'+sd+'</span>');
+      }
     });
     parts.push('&nbsp;&nbsp;<span style="font-size:0.77rem;opacity:0.75">House:&nbsp;</span>');
     result.packHDs.slice().sort(function(a,b){return a-b;}).forEach(function(hd) {
