@@ -498,7 +498,10 @@ def load_race_margins_from_json(json_path):
 
     cd_m, cd_v = extract_margins(data.get('us_house', {}), ['2024', '2022', '2020'])
     cd22_m, cd22_v = extract_margins(data.get('us_house', {}), ['2022'])
-    sd_m, sd_v = extract_margins(data.get('indiana_state_senate', {}), ['2024', '2022'])
+    sd_m, sd_v   = extract_margins(data.get('indiana_state_senate', {}), ['2024', '2022'])
+    sd20_m, sd20_v = extract_margins(data.get('indiana_state_senate', {}), ['2020'])
+    sd22_m, sd22_v = extract_margins(data.get('indiana_state_senate', {}), ['2022'])
+    sd24_m, sd24_v = extract_margins(data.get('indiana_state_senate', {}), ['2024'])
     hd_m, hd_v = extract_margins(data.get('indiana_state_house', {}), ['2024', '2022', '2020'])
     hd22_m, hd22_v = extract_margins(data.get('indiana_state_house', {}), ['2022'])
     hd20_m, hd20_v = extract_margins(data.get('indiana_state_house', {}), ['2020'])
@@ -508,6 +511,9 @@ def load_race_margins_from_json(json_path):
             'congressional': cd_m,
             'congressional_2022': cd22_m,
             'state_senate': sd_m,
+            'state_senate_2020': sd20_m,
+            'state_senate_2022': sd22_m,
+            'state_senate_2024': sd24_m,
             'state_house': hd_m,
             'state_house_2022': hd22_m,
             'state_house_2020': hd20_m,
@@ -516,6 +522,9 @@ def load_race_margins_from_json(json_path):
             'congressional': cd_v,
             'congressional_2022': cd22_v,
             'state_senate': sd_v,
+            'state_senate_2020': sd20_v,
+            'state_senate_2022': sd22_v,
+            'state_senate_2024': sd24_v,
             'state_house': hd_v,
             'state_house_2022': hd22_v,
             'state_house_2020': hd20_v,
@@ -1179,14 +1188,14 @@ tbody tr.map-locked {{
         <table id="table-congressional">
           <thead>
             <tr>
-              <th onclick="sortTable('table-congressional', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 1, 'num')">2022 US House <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 3, 'num')">2024 US House <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 0, 'num')" title="2020 Presidential margin">'20 Pres <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 1, 'num')" title="2022 US House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 3, 'num')" title="2024 US House race result">Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 4, 'num')" title="IN-Index: average partisan lean">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 5, 'num')" title="Congressional District">Dist <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 6, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
             </tr>
           </thead>
           <tbody>
@@ -1203,14 +1212,14 @@ tbody tr.map-locked {{
       <table id="table-senate">
         <thead>
           <tr>
-            <th onclick="sortTable('table-senate', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 1, 'num')">2022 Senate <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 3, 'num')">2024 Senate <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 0, 'num')" title="2020 State Senate race (2024-cycle SDs only; N/A for 2022-cycle)">'20 Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 1, 'num')" title="2022 State Senate race (2022-cycle SDs only; N/A for 2024-cycle)">'22 Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 2, 'num')" title="2024 Presidential margin for this district">'24 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 3, 'num')" title="Most recent State Senate race result (2022 or 2024 depending on cycle)">Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 4, 'num')" title="IN-Index: average of actual race margins + 2024 presidential">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 5, 'num')" title="Senate District">Dist <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 6, 'alpha')" title="Current Senator">Sen. <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
           </tr>
         </thead>
         <tbody>
@@ -1225,20 +1234,20 @@ tbody tr.map-locked {{
   <div class="tab-content" id="tab-house">
     <div class="boundary-view boundary-view-current" id="bview-current-house">
       <div class="house-note">
-        <strong>Note:</strong> 2020, 2022, and 2024 columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
+        <strong>Note:</strong> '20, '22, and Race columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
       </div>
       <div class="table-wrap">
         <table id="table-house">
           <thead>
             <tr>
-              <th onclick="sortTable('table-house', 0, 'num')">2020 House Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 1, 'num')">2022 House Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 3, 'num')">2024 House Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 0, 'num')" title="2020 State House race result">'20 Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 1, 'num')" title="2022 State House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 3, 'num')" title="2024 State House race result">Race <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 4, 'num')" title="IN-Index: 2024 presidential lean (adjusted for unopposed races)">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 5, 'num')" title="House District">Dist <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 6, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
             </tr>
           </thead>
           <tbody>
@@ -1257,23 +1266,24 @@ tbody tr.map-locked {{
     <h3>Methodology</h3>
     <p>
       The <strong>IN-Index</strong> measures partisan lean for each Indiana legislative and congressional
-      district. For Congressional and Senate districts it is the average of 2020 presidential, 2022 US Senate,
-      and 2024 presidential margins. For House districts it equals the 2024 presidential margin; for
-      unopposed 2024 seats, available 2020/2022 actual race results are also averaged in.
+      district. For Senate districts it is the average of all available actual race margins plus the
+      2024 presidential margin (Indiana Senate is staggered: even-cycle SDs ran in 2020 &amp; 2024;
+      odd-cycle SDs ran in 2022). For Congressional districts it averages actual 2020/2022/2024 race
+      margins plus the 2024 presidential. For House districts it equals the 2024 presidential margin;
+      for unopposed 2024 seats, available 2020/2022 race results are also averaged in.
     </p>
     <p>
-      <strong>2024 data</strong> uses precinct-level results aggregated directly by district using
-      the district assignments in the shapefile attribute table — the most accurate method available.
+      <strong>'24 Pres</strong> uses precinct-level results aggregated directly by district —
+      the most accurate method available. <strong>Race</strong> shows the most recent contested race
+      for that district.
     </p>
     <p>
-      <strong>2022 data</strong> uses county-level US Senate results for Congressional and Senate districts
-      (apportioned by census block weights). For House districts, the 2022 column shows the actual
-      2022 State House race result for each district.
+      <strong>Senate '20/'22 columns</strong> show the actual State Senate race result for the year
+      that district ran. N/A means no election in that year (staggered cycle). Unop. = uncontested.
     </p>
     <p>
-      <strong>2020 data</strong> uses county-level presidential results for Congressional and Senate
-      districts (apportioned by census block weights). For House districts, the 2020 column shows the
-      actual 2020 State House race result. The two-party margin is
+      <strong>House '20/'22 columns</strong> show the actual State House race result for each district.
+      <strong>Congressional '22</strong> shows the actual 2022 US House race result. The two-party margin is
       <code>(R votes &minus; D votes) / (R votes + D votes)</code>. A result of "+10R" means the district
       leans Republican by 10 percentage points.
     </p>
@@ -1552,6 +1562,35 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
             district['race_margin'] = round(race_m, 4) if race_m is not None else None
             district['race_label'] = race_label
 
+    # Patch Senate margins with actual race results.
+    # Indiana Senate districts run on a 4-year staggered cycle:
+    #   2024-cycle SDs ran in 2020 and 2024; 2022-cycle SDs ran in 2022 (next: 2026).
+    # Replace county-level presidential estimates with actual senate race margins.
+    for district in data['senate']:
+        dist_str = str(district['district'])
+        m20, l20 = race_margins['state_senate_2020'].get(dist_str, (None, 'N/A'))
+        m22, l22 = race_margins['state_senate_2022'].get(dist_str, (None, 'N/A'))
+        m24, l24 = race_margins['state_senate_2024'].get(dist_str, (None, 'N/A'))
+
+        # Update margin_2020 with actual 2020 race (or Unop./N/A if no contested race)
+        district['margin_2020'] = round(m20, 4) if m20 is not None else None
+        district['label_2020'] = l20
+
+        # Update margin_2022 with actual 2022 race (or Unop./N/A if no contested race)
+        district['margin_2022'] = round(m22, 4) if m22 is not None else None
+        district['label_2022'] = l22
+
+        # Recalculate IN-Index using actual race margins + 2024 presidential.
+        # Only contested races contribute; uncontested/missing are excluded.
+        m24_pres = district.get('margin_2024')  # district-specific 2024 presidential
+        race_vals = [m for m in (m20, m22, m24) if m is not None]
+        avail = list(race_vals)
+        if m24_pres is not None:
+            avail.append(m24_pres)
+        idx = sum(avail) / len(avail) if avail else None
+        district['in_index'] = round(idx, 4) if idx is not None else None
+        district['in_index_label'] = format_index(idx) if idx is not None else 'N/A'
+
     # Patch margin_2022 with actual race data (not county-level US Senate averages):
     # Congressional → 2022 US House race; House → 2022 state house race.
     for district in data['congressional']:
@@ -1598,13 +1637,14 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
 
     data['methodology'] = (
         'Election results from Indiana Secretary of State: https://indianavoters.in.gov/ENRHistorical/ElectionResults. '
-        '2024: precinct-level presidential results aggregated directly by district. '
-        '2022: county-level US Senate results apportioned to Congressional/Senate districts '
-        'using census block assignment weights; House districts show actual State House race results. '
-        '2020: county-level presidential results apportioned using the same methods; '
-        'House districts show actual State House race results. '
-        'IN-Index = average of 2020, 2022, and 2024 margins for Congressional/Senate; '
-        'House = 2024 presidential margin, averaged with available 2020/2022 race results for unopposed 2024 seats.'
+        '2024 Pres: precinct-level presidential results aggregated directly by district. '
+        'Senate \'20/\'22 columns: actual State Senate race results for the year that district ran '
+        '(Indiana Senate is staggered — even-cycle SDs ran in 2020 & 2024; odd-cycle in 2022). '
+        'N/A means no race in that year. '
+        'House \'20/\'22 columns: actual State House race results; Unop. shows IN-Index instead. '
+        'Congressional \'22 column: actual 2022 US House race result. '
+        'IN-Index (Senate/Congress) = average of available contested race margins + 2024 presidential. '
+        'IN-Index (House) = 2024 presidential margin; for unopposed 2024 seats, averaged with available 2020/2022 race results.'
     )
 
     with open(out_json, 'w') as f:
