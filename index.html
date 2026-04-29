@@ -546,14 +546,12 @@ tbody tr.map-locked {
       <table id="table-congressional-2010">
         <thead>
           <tr>
-            <th onclick="sortTable('table-senate', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 1, 'num')">2022 Senate <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 2, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 3, 'num')">2024 Senate Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 4, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 5, 'num')">District <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 6, 'alpha')">Representative <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 7, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional-2010', 0, 'num')">2020 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional-2010', 1, 'num')">2024 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional-2010', 2, 'num')">IN-Index <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional-2010', 3, 'num')">District <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional-2010', 4, 'alpha')">Rep. (2009&ndash;2011) <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional-2010', 5, 'alpha')">Party <span class="sort-arrow">&#9650;</span></th>
           </tr>
         </thead>
         <tbody>
@@ -3569,6 +3567,7 @@ async function loadMap(tab, view) {
         layer.setStyle(defaultStyle);
         setLocked(lockedDist, tab, view, false);
         lockedDist = null;
+        indyMap.fitBounds(INDIANA_BOUNDS);
         document.getElementById('map-label').textContent = 'Hover or click a district';
       } else {
         if (lockedDist && mapLayers[lockedDist]) {
@@ -3586,6 +3585,7 @@ async function loadMap(tab, view) {
     mapLayers[distNum] = layer;
     layer.addTo(indyMap);
   });
+  indyMap.invalidateSize();
   indyMap.fitBounds(INDIANA_BOUNDS);
   document.getElementById('map-label').textContent = 'Hover or click a district';
 }
@@ -3626,6 +3626,34 @@ document.addEventListener('mouseout', e => {
   const distNum = parseInt(row.dataset.district);
   if (mapLayers[distNum] && distNum !== lockedDist)
     mapLayers[distNum].setStyle(defaultStyle);
+});
+
+// Table row click → zoom map to district
+document.addEventListener('click', e => {
+  if (e.target.closest('a')) return;
+  const row = e.target.closest('tr[data-district]');
+  if (!row) return;
+  const distNum = parseInt(row.dataset.district);
+  const layer = mapLayers[distNum];
+  if (!layer) return;
+  if (lockedDist === distNum) {
+    layer.setStyle(defaultStyle);
+    setLocked(lockedDist, activeTab, boundaryView, false);
+    lockedDist = null;
+    indyMap.fitBounds(INDIANA_BOUNDS);
+    document.getElementById('map-label').textContent = 'Hover or click a district';
+  } else {
+    if (lockedDist && mapLayers[lockedDist]) {
+      mapLayers[lockedDist].setStyle(defaultStyle);
+      setLocked(lockedDist, activeTab, boundaryView, false);
+    }
+    layer.setStyle(lockedStyle);
+    lockedDist = distNum;
+    setLocked(distNum, activeTab, boundaryView, true);
+    indyMap.fitBounds(layer.getBounds(), { padding: [30, 30], maxZoom: 11 });
+    document.getElementById('map-label').textContent =
+      ({congressional:'CD',senate:'SD',house:'HD'}[activeTab]||'') + '-' + distNum + ' (locked)';
+  }
 });
 
 // ── Tab switching ──────────────────────────────────────────────────────────
