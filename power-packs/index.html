@@ -604,9 +604,23 @@ var PP = (function() {
     var hd = clean(row, 'House District');
     var sd = clean(row, 'Senate District');
     var cd = clean(row, 'Congressional District');
-    if (hd) { var n = parseInt(hd.replace(/\D/g,'')); if (n) return { dtype:'house', dnum:n }; }
-    if (sd) { var n = parseInt(sd.replace(/\D/g,'')); if (n) return { dtype:'senate', dnum:n }; }
-    if (cd) { var n = parseInt(cd.replace(/\D/g,'')); if (n) return { dtype:'congressional', dnum:n }; }
+    var title = clean(row, 'Title').toLowerCase();
+    var order;
+    if (title.indexOf('congress') !== -1 || title.indexOf('us house') !== -1) {
+      order = [['congressional', cd], ['senate', sd], ['house', hd]];
+    } else if (title.indexOf('senate') !== -1) {
+      order = [['senate', sd], ['congressional', cd], ['house', hd]];
+    } else if (title.indexOf('house') !== -1 || title.indexOf('representative') !== -1) {
+      order = [['house', hd], ['senate', sd], ['congressional', cd]];
+    } else {
+      order = [['house', hd], ['senate', sd], ['congressional', cd]];
+    }
+    for (var i = 0; i < order.length; i++) {
+      var dtype = order[i][0], val = order[i][1];
+      if (!val) continue;
+      var n = parseInt(val.replace(/\D/g,''));
+      if (n) return { dtype: dtype, dnum: n };
+    }
     return { dtype: null, dnum: null };
   }
 
