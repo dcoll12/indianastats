@@ -1374,6 +1374,7 @@ async function loadMap(tab, view) {{
         layer.setStyle(defaultStyle);
         setLocked(lockedDist, tab, view, false);
         lockedDist = null;
+        indyMap.fitBounds(INDIANA_BOUNDS);
         document.getElementById('map-label').textContent = 'Hover or click a district';
       }} else {{
         if (lockedDist && mapLayers[lockedDist]) {{
@@ -1391,6 +1392,7 @@ async function loadMap(tab, view) {{
     mapLayers[distNum] = layer;
     layer.addTo(indyMap);
   }});
+  indyMap.invalidateSize();
   indyMap.fitBounds(INDIANA_BOUNDS);
   document.getElementById('map-label').textContent = 'Hover or click a district';
 }}
@@ -1431,6 +1433,34 @@ document.addEventListener('mouseout', e => {{
   const distNum = parseInt(row.dataset.district);
   if (mapLayers[distNum] && distNum !== lockedDist)
     mapLayers[distNum].setStyle(defaultStyle);
+}});
+
+// Table row click → zoom map to district
+document.addEventListener('click', e => {{
+  if (e.target.closest('a')) return;
+  const row = e.target.closest('tr[data-district]');
+  if (!row) return;
+  const distNum = parseInt(row.dataset.district);
+  const layer = mapLayers[distNum];
+  if (!layer) return;
+  if (lockedDist === distNum) {{
+    layer.setStyle(defaultStyle);
+    setLocked(lockedDist, activeTab, boundaryView, false);
+    lockedDist = null;
+    indyMap.fitBounds(INDIANA_BOUNDS);
+    document.getElementById('map-label').textContent = 'Hover or click a district';
+  }} else {{
+    if (lockedDist && mapLayers[lockedDist]) {{
+      mapLayers[lockedDist].setStyle(defaultStyle);
+      setLocked(lockedDist, activeTab, boundaryView, false);
+    }}
+    layer.setStyle(lockedStyle);
+    lockedDist = distNum;
+    setLocked(distNum, activeTab, boundaryView, true);
+    indyMap.fitBounds(layer.getBounds(), {{ padding: [30, 30], maxZoom: 11 }});
+    document.getElementById('map-label').textContent =
+      ({{congressional:'CD',senate:'SD',house:'HD'}}[activeTab]||'') + '-' + distNum + ' (locked)';
+  }}
 }});
 
 // ── Tab switching ──────────────────────────────────────────────────────────
