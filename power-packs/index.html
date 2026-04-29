@@ -372,8 +372,26 @@ footer {
 .pp-role-multipak { background: #7c3aed; }
 .pp-role-anchor   { background: #dc2626; }
 
-/* ── My Pack mode ─────────────────────────────────────────────────── */
+/* ── Geographical & Senate Coalition modes ────────────────────────── */
+#pp-btn-geo.active    { background: #0891b2; color: white; }
 #pp-btn-mypack.active { background: #dc2626; color: white; }
+.pp-uncontested-row {
+  padding: 10px 14px; background: #fef9c3; border-radius: 6px; margin: 6px 0;
+  font-size: 0.82rem; color: #78350f; border-left: 3px solid #f59e0b;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.pp-uncontested-badge {
+  background: #f59e0b; color: white; padding: 2px 7px; border-radius: 4px;
+  font-size: 0.72rem; font-weight: 700; white-space: nowrap;
+}
+.pp-geo-pack-title { font-size: 1rem; font-weight: 700; color: #1e3a5f; margin-bottom: 2px; }
+.pp-geo-region-header {
+  background: linear-gradient(135deg, #0891b2, #0e7490); color: white;
+  border-radius: 8px; padding: 12px 18px; margin-bottom: 12px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+}
+.pp-geo-region-label { font-size: 1rem; font-weight: 800; }
+.pp-geo-region-meta  { font-size: 0.8rem; opacity: 0.85; }
 .pp-candidate-select {
   padding: 9px 14px; font-size: 0.9rem; font-weight: 600;
   border: 2px solid #cbd5e1; border-radius: 8px;
@@ -424,12 +442,13 @@ footer {
   </header>
 
   <div class="pp-controls">
-    <div class="pp-mode-toggle" title="Focus: each candidate once, grouped by priority tier. By Senate: CD-organized packs anchored by Senate races. By House: house-district-first view. By County: filter by county. My Pack: build your candidate's personal coalition.">
+    <div class="pp-mode-toggle" title="Focus: each candidate once, grouped by priority tier. By Senate: CD-organized packs anchored by Senate races. By House: house-district-first view. By County: filter by county. Geographical: all districts grouped by geographic adjacency including uncontested races. Senate Coalition: build your candidate's personal coalition.">
       <button class="pp-mode-btn active" id="pp-btn-focus"  onclick="PP.setMode('focus')">⚡ Focus</button>
       <button class="pp-mode-btn"        id="pp-btn-all"    onclick="PP.setMode('all')">By Senate</button>
       <button class="pp-mode-btn"        id="pp-btn-house"  onclick="PP.setMode('house')">🏠 By House</button>
       <button class="pp-mode-btn"        id="pp-btn-county" onclick="PP.setMode('county')">📍 By County</button>
-      <button class="pp-mode-btn"        id="pp-btn-mypack" onclick="PP.setMode('mypack')">🎯 My Pack</button>
+      <button class="pp-mode-btn"        id="pp-btn-geo"    onclick="PP.setMode('geo')">🗺 Geographical</button>
+      <button class="pp-mode-btn"        id="pp-btn-mypack" onclick="PP.setMode('mypack')">🎯 Senate Coalition</button>
     </div>
     <div id="pp-cd-select-wrap">
       <select id="pp-cd-select" class="pp-cd-select" onchange="PP.selectCD(this.value)" title="Select Congressional District"></select>
@@ -1770,11 +1789,16 @@ var PP = (function() {
 
   function setMode(mode) {
     state.mode = mode;
-    ['all', 'focus', 'county', 'house', 'mypack'].forEach(function(m) {
+    ['all', 'focus', 'county', 'house', 'geo', 'mypack'].forEach(function(m) {
       var btn = $$('pp-btn-' + m);
       if (btn) btn.classList.toggle('active', m === mode);
     });
-    var url = mode === 'all' ? '?mode=senate' : mode === 'county' ? '?mode=county' : mode === 'house' ? '?mode=house' : mode === 'mypack' ? '?mode=mypack' : location.pathname;
+    var url = mode === 'all' ? '?mode=senate'
+      : mode === 'county' ? '?mode=county'
+      : mode === 'house'  ? '?mode=house'
+      : mode === 'geo'    ? '?mode=geo'
+      : mode === 'mypack' ? '?mode=mypack'
+      : location.pathname;
     history.replaceState(null, '', url);
     render();
   }
@@ -1794,8 +1818,8 @@ var PP = (function() {
       if (candidateWrap) candidateWrap.style.display = '';
       updateCandidateDropdown();
       if (!state.selectedCandidate) {
-        if (statsEl) statsEl.textContent = 'Select a candidate to generate their personal Power Pack';
-        out.innerHTML = '<div class="pp-status"><p>Select a candidate above to see their Power Pack — everyone whose district overlaps theirs.</p></div>';
+        if (statsEl) statsEl.textContent = 'Select a candidate to generate their Senate Coalition';
+        out.innerHTML = '<div class="pp-status"><p>Select a candidate above to see their Senate Coalition — everyone whose district overlaps theirs.</p></div>';
       } else {
         var parts = state.selectedCandidate.split(':');
         var cdtype = parts[0], cdnum = Number(parts[1]);
@@ -1814,7 +1838,7 @@ var PP = (function() {
           out.innerHTML = renderMyPack(result, anchorRow);
           var total = result.senateCandidates.length + result.houseMembers.length;
           var prefix = cdtype === 'senate' ? 'SD' : 'HD';
-          if (statsEl) statsEl.textContent = prefix+'-'+cdnum+' · My Pack: '+total+' candidate'+(total!==1?'s':'')+' across '
+          if (statsEl) statsEl.textContent = prefix+'-'+cdnum+' · Senate Coalition: '+total+' candidate'+(total!==1?'s':'')+' across '
             +result.packSDs.length+' senate district'+(result.packSDs.length!==1?'s':'')+' &amp; '
             +result.packHDs.length+' house district'+(result.packHDs.length!==1?'s':'');
         }
@@ -1854,6 +1878,18 @@ var PP = (function() {
         + ' across ' + result.packs.length + ' district' + (result.packs.length !== 1 ? 's' : '')
         + ' — house-first view';
       out.innerHTML = renderHousePacks(result);
+    } else if (state.mode === 'geo') {
+      if (cdWrap)     cdWrap.style.display     = 'none';
+      if (countyWrap) countyWrap.style.display = 'none';
+      var result = buildGeoPacks();
+      var totalDistricts = result.regions.reduce(function(n, r) { return n + r.packs.length; }, 0);
+      var totalCands = result.regions.reduce(function(n, r) {
+        return n + r.packs.reduce(function(m, p) { return m + p.candidates.length; }, 0);
+      }, 0);
+      if (statsEl) statsEl.textContent = totalCands + ' candidate' + (totalCands !== 1 ? 's' : '')
+        + ' across ' + totalDistricts + ' district' + (totalDistricts !== 1 ? 's' : '')
+        + ' — geographical view (uncontested races included)';
+      out.innerHTML = renderGeoPacks(result);
     } else {
       if (cdWrap)     cdWrap.style.display     = '';
       if (countyWrap) countyWrap.style.display = 'none';
@@ -1885,9 +1921,9 @@ var PP = (function() {
     state.loaded = true;
     var urlParams = new URLSearchParams(location.search);
     var urlMode = urlParams.get('mode');
-    if (urlMode === 'senate' || urlMode === 'county' || urlMode === 'house' || urlMode === 'mypack') {
+    if (urlMode === 'senate' || urlMode === 'county' || urlMode === 'house' || urlMode === 'geo' || urlMode === 'mypack') {
       state.mode = urlMode === 'senate' ? 'all' : urlMode;
-      ['all', 'focus', 'county', 'house', 'mypack'].forEach(function(m) {
+      ['all', 'focus', 'county', 'house', 'geo', 'mypack'].forEach(function(m) {
         var btn = $$('pp-btn-' + m);
         if (btn) btn.classList.toggle('active', m === state.mode);
       });
@@ -2079,6 +2115,278 @@ var PP = (function() {
     };
   }
 
+  // ── Geographical Pack builder ─────────────────────────────────────────
+  // Groups every Senate district (including uncontested ones) into geographic
+  // regions using Congressional Districts as the organizing unit.
+  // Within each region, districts that share House Districts (directly touch)
+  // are clustered together. Uncontested SDs are shown with their lean data.
+  function buildGeoPacks() {
+    var dd = state.districtData;
+    var ll = state.leanLookup;
+    var search = (($$('pp-search') || {}).value || '').trim().toLowerCase();
+
+    // Index candidates by district
+    var senateBySD = {}, houseByHD = {};
+    state.rows.forEach(function(row) {
+      var role = clean(row, 'Role').toLowerCase();
+      if (!role.includes('candidate') || role.includes('former')) return;
+      var race = determinePrimaryRace(row);
+      var lean = (race.dtype && race.dnum) ? ((ll[race.dtype] || {})[race.dnum] || null) : null;
+      var entry = { row: row, dtype: race.dtype, dnum: race.dnum, lean: lean };
+      if (race.dtype === 'senate') {
+        if (!senateBySD[race.dnum]) senateBySD[race.dnum] = [];
+        senateBySD[race.dnum].push(entry);
+      } else if (race.dtype === 'house') {
+        if (!houseByHD[race.dnum]) houseByHD[race.dnum] = [];
+        houseByHD[race.dnum].push(entry);
+      }
+    });
+
+    // Build adjacency between SDs via shared House Districts
+    var sdAdj = {};
+    Object.keys(dd.hd_to_sds || {}).forEach(function(hd) {
+      var sds = (dd.hd_to_sds[hd] || []).map(Number);
+      sds.forEach(function(a) {
+        sds.forEach(function(b) {
+          if (a !== b) {
+            if (!sdAdj[a]) sdAdj[a] = {};
+            sdAdj[a][b] = true;
+          }
+        });
+      });
+    });
+
+    // Organize by CD region — each region shows every SD in the CD
+    var GEO_CD_NAMES = {
+      1: 'Northwest Indiana', 2: 'Northern Indiana', 3: 'Northeast Indiana',
+      4: 'West-Central Indiana', 5: 'North-Central Indiana', 6: 'East-Central Indiana',
+      7: 'Indianapolis Metro', 8: 'Western Indiana / Wabash Valley', 9: 'Southern Indiana'
+    };
+    var allCDs = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    var regions = [];
+    allCDs.forEach(function(cdNum) {
+      var sdsInCD = ((dd.cd_to_sds || {})[String(cdNum)] || []).map(Number).sort(function(a,b){return a-b;});
+      if (!sdsInCD.length) return;
+
+      // Build clusters within this CD via shared-HD adjacency (transitive within CD)
+      var parent = {};
+      sdsInCD.forEach(function(sd) { parent[sd] = sd; });
+      function find(x) { while (parent[x] !== x) { parent[x] = parent[parent[x]]; x = parent[x]; } return x; }
+      function union(x, y) { parent[find(x)] = find(y); }
+      sdsInCD.forEach(function(a) {
+        sdsInCD.forEach(function(b) {
+          if (a !== b && sdAdj[a] && sdAdj[a][b]) union(a, b);
+        });
+      });
+
+      // Group SDs by cluster root
+      var clusters = {};
+      sdsInCD.forEach(function(sd) {
+        var root = find(sd);
+        if (!clusters[root]) clusters[root] = [];
+        clusters[root].push(sd);
+      });
+
+      // Each SD in the CD becomes a pack entry
+      var packs = [];
+      sdsInCD.forEach(function(sdNum) {
+        var sdLean = (ll.senate || {})[sdNum] || null;
+        var sdCandidates = senateBySD[sdNum] || [];
+        var allSDHDs = ((dd.sd_to_hds || {})[String(sdNum)] || []).map(Number);
+        var houseMembers = [];
+        allSDHDs.forEach(function(hd) {
+          (houseByHD[hd] || []).forEach(function(e) { houseMembers.push(e); });
+        });
+        houseMembers.sort(function(a, b) {
+          var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
+          var mb = (b.lean && b.lean.in_index !== null) ? b.lean.in_index : 0.5;
+          return ma - mb;
+        });
+
+        // Determine uncontested status from lean data race_label
+        var raceLabel = sdLean ? (sdLean.race_label || '') : '';
+        var isUncontested = raceLabel === 'Unop.';
+
+        var clusterSDs = clusters[find(sdNum)] || [sdNum];
+
+        packs.push({
+          sdNum: sdNum,
+          cdNum: cdNum,
+          sdLean: sdLean,
+          tier: sdTier(sdNum),
+          counties: (dd.sd_to_counties || {})[String(sdNum)] || [],
+          candidates: sdCandidates,
+          houseMembers: houseMembers,
+          isUncontested: isUncontested,
+          clusterSDs: clusterSDs
+        });
+      });
+
+      // Sort: most competitive first (tightest in_index), then uncontested
+      packs.sort(function(a, b) {
+        var ma = (a.sdLean && a.sdLean.in_index !== null) ? a.sdLean.in_index : 0.5;
+        var mb = (b.sdLean && b.sdLean.in_index !== null) ? b.sdLean.in_index : 0.5;
+        return ma - mb;
+      });
+
+      // Apply search filter — include pack if any candidate matches, or if SD itself matches search
+      if (search) {
+        packs = packs.filter(function(p) {
+          var allCands = p.candidates.concat(p.houseMembers);
+          if (allCands.some(function(e) { return getSearchText(e.row).includes(search); })) return true;
+          // Also match on district number or county name
+          var sdStr = 'sd-' + p.sdNum + ' sd ' + p.sdNum + ' ' + (p.counties.join(' ')).toLowerCase();
+          return sdStr.includes(search);
+        });
+      }
+
+      if (packs.length) {
+        var totalCands = packs.reduce(function(n, p) { return n + p.candidates.length + p.houseMembers.length; }, 0);
+        var uncontested = packs.filter(function(p) { return p.isUncontested; }).length;
+        regions.push({
+          cdNum: cdNum,
+          cdName: GEO_CD_NAMES[cdNum] || ('CD-' + cdNum),
+          packs: packs,
+          totalCands: totalCands,
+          uncontested: uncontested
+        });
+      }
+    });
+
+    return { regions: regions };
+  }
+
+  function renderGeoPackCard(pack) {
+    var sdLean = pack.sdLean;
+    var indexLabel = sdLean ? (sdLean.in_index_label || '—') : '—';
+    var party = sdLean ? (sdLean.party || '') : '';
+    var rep   = sdLean ? (sdLean.representative || '') : '';
+    var tc = {
+      0: { border:'#0891b2', bg:'#f0f9ff', badgeClass:'pp-tier-0', label:'🏠 HOLD' },
+      1: { border:'#dc2626', bg:'#fff5f5', badgeClass:'pp-tier-1', label:'🎯 TARGET' },
+      2: { border:'#7c3aed', bg:'#faf5ff', badgeClass:'pp-tier-2', label:'📈 OPPORTUNITY' },
+      3: { border:'#16a34a', bg:'#f0fdf4', badgeClass:'pp-tier-3', label:'🌱 TURNOUT' }
+    }[pack.tier] || { border:'#94a3b8', bg:'white', badgeClass:'', label:'PACK' };
+
+    var holderHtml = party === 'Republican'
+      ? '<span class="pp-holder-badge pp-holder-r">Held by Republican</span>'
+      : party === 'Democratic'
+        ? '<span class="pp-holder-badge pp-holder-d">Held by Democrat</span>'
+        : '';
+
+    var totalCount = pack.candidates.length + pack.houseMembers.length;
+    var hdNums = pack.houseMembers.map(function(m) { return m.dnum; }).join(',');
+    var parts = [];
+
+    var borderColor = pack.isUncontested ? '#f59e0b' : tc.border;
+    var bgColor     = pack.isUncontested ? '#fffbeb' : tc.bg;
+
+    parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums
+      +'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
+
+    parts.push('<div class="pp-pack-head">');
+    parts.push('<div class="pp-pack-head-left">');
+    parts.push('<div class="pp-pack-title">');
+    if (!pack.isUncontested) {
+      parts.push('<span class="pp-tier-badge '+tc.badgeClass+'">'+tc.label+'</span> ');
+    } else {
+      parts.push('<span class="pp-uncontested-badge">⚠ UNCONTESTED</span> ');
+    }
+    parts.push('<strong>SD-'+pack.sdNum+'</strong>');
+    parts.push('<span class="pp-pack-lean">&nbsp;'+esc(indexLabel)+'</span>');
+    parts.push(holderHtml);
+    parts.push('</div>');
+    if (pack.counties.length) parts.push('<div class="pp-pack-counties">'+esc(pack.counties.join(' · '))+'</div>');
+    parts.push('</div>');
+    parts.push('<div class="pp-pack-count">'+totalCount+' candidate'+(totalCount!==1?'s':'')+'</div>');
+    parts.push('</div>');
+
+    // Senate candidates (or uncontested notice)
+    if (pack.candidates.length) {
+      parts.push('<div class="pp-section-label pp-section-senate">⚡ Senate — SD-'+pack.sdNum+'</div>');
+      parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+      pack.candidates.forEach(function(cand) {
+        parts.push(renderEntry(cand, { isSenate: true, noOverlaps: true }));
+      });
+      parts.push('</tbody></table></div>');
+    } else if (pack.isUncontested) {
+      var raceLabel = sdLean ? (sdLean.race_label || 'Unop.') : 'Unop.';
+      var m = sdLean ? sdLean.in_index : null;
+      var c = getLeanColor(m);
+      parts.push('<div class="pp-uncontested-row">');
+      parts.push('<span class="pp-uncontested-badge">UNCONTESTED</span>');
+      parts.push('<span><strong>SD-'+pack.sdNum+'</strong>');
+      if (rep) parts.push(' · '+esc(rep)+' ('+esc(party.charAt(0))+')');
+      parts.push(' — no Democratic candidate filed');
+      parts.push('</span>');
+      parts.push('<span style="background:'+c.bg+';color:'+c.fg+';padding:2px 7px;border-radius:4px;font-size:0.75rem;font-weight:700">'+esc(indexLabel)+'</span>');
+      parts.push('</div>');
+    } else {
+      parts.push('<div class="pp-no-senate">⚠ Recruiting — no Senate candidate filed for SD-'+pack.sdNum+'</div>');
+    }
+
+    // House members
+    if (pack.houseMembers.length) {
+      parts.push('<div class="pp-section-label pp-section-house">House Districts ('+pack.houseMembers.length+')</div>');
+      parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+      pack.houseMembers.forEach(function(member) {
+        var hdm = (member.lean && member.lean.in_index !== null) ? member.lean.in_index : 0.5;
+        var roleLabel, roleCls;
+        if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
+        else if (hdm <= 0.25) { roleLabel = '📊 Challenge';   roleCls = 'challenge'; }
+        else                   { roleLabel = '🗳️ Turnout';     roleCls = 'turnout'; }
+        parts.push(renderEntry(member, { isHouse: true, roleLabel: roleLabel, roleCls: roleCls }));
+      });
+      parts.push('</tbody></table></div>');
+    }
+
+    parts.push('</div>');
+    return parts.join('');
+  }
+
+  function renderGeoPacks(result) {
+    var regions = result.regions;
+    if (!regions.length) {
+      return '<div class="pp-status"><p>No districts match your search.</p></div>';
+    }
+
+    var parts = [];
+
+    parts.push('<div class="pp-legend" style="background:#ecfeff;border-color:#a5f3fc;color:#164e63">');
+    parts.push('<strong>🗺 Geographical Packs</strong> — every Senate district organized by geographic region, '
+      + 'including <strong>uncontested races</strong> (shown with ⚠ UNCONTESTED badge). '
+      + 'Districts that share House District boundaries are geographically adjacent. '
+      + 'Use this view to see the complete electoral landscape of each region.<br>');
+    parts.push('<span style="font-size:0.77rem;line-height:2.2">');
+    parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> Competitive &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat &nbsp;');
+    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
+    parts.push('</span></div>');
+
+    regions.forEach(function(region) {
+      parts.push('<div class="pp-cd-section">');
+      parts.push('<div class="pp-geo-region-header">');
+      parts.push('<div>');
+      parts.push('<div class="pp-geo-region-label">🗺 '+esc(region.cdName)+'</div>');
+      parts.push('<div class="pp-geo-region-meta">CD-'+region.cdNum+' · '+region.packs.length+' Senate district'+(region.packs.length!==1?'s':'')+' · '+region.totalCands+' candidate'+(region.totalCands!==1?'s':''));
+      if (region.uncontested) parts.push(' · <strong>'+region.uncontested+' uncontested</strong>');
+      parts.push('</div>');
+      parts.push('</div>');
+      parts.push('</div>');
+
+      region.packs.forEach(function(pack, i) {
+        if (i > 0) parts.push('<div class="pp-pack-divider"></div>');
+        parts.push(renderGeoPackCard(pack));
+      });
+      parts.push('</div>');
+    });
+
+    return parts.join('');
+  }
+
   function renderMyPack(result, anchorRow) {
     if (!result) return '<div class="pp-status"><p>No pack data available.</p></div>';
     var parts = [];
@@ -2106,7 +2414,7 @@ var PP = (function() {
     parts.push('<div class="pp-mypack-hero-info">');
     parts.push('<div class="pp-mypack-hero-name">'+esc(name)+'</div>');
     parts.push('<div class="pp-mypack-hero-dist">'+esc(distLabel)+(city ? ' · '+esc(city) : '')+(indexLabel !== '—' ? ' · IN-Index: '+esc(indexLabel) : '')+'</div>');
-    parts.push('<div class="pp-mypack-hero-stats">Power Pack: '+totalCands+' candidate'+(totalCands!==1?'s':'')+' across '
+    parts.push('<div class="pp-mypack-hero-stats">Senate Coalition: '+totalCands+' candidate'+(totalCands!==1?'s':'')+' across '
       +result.packSDs.length+' senate district'+(result.packSDs.length!==1?'s':'')+' &amp; '
       +result.packHDs.length+' house district'+(result.packHDs.length!==1?'s':'')+'</div>');
     parts.push('</div></div>');
@@ -2131,7 +2439,7 @@ var PP = (function() {
 
     // Senate candidates section
     if (result.senateCandidates.length) {
-      parts.push('<div class="pp-section-label pp-section-senate">⚡ Senate Candidates in Your Pack</div>');
+      parts.push('<div class="pp-section-label pp-section-senate">⚡ Senate Candidates in Your Coalition</div>');
       parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
       result.senateCandidates.forEach(function(cand) {
         parts.push(renderEntry(cand, { isSenate: true, isAnchor: !!cand.isMyAnchor }));
@@ -2143,7 +2451,7 @@ var PP = (function() {
     if (result.houseMembers.length) {
       var houseSectionLabel = dtype === 'house'
         ? 'Your Senate Coalition ('+result.houseMembers.length+' House Candidates)'
-        : 'House Candidates in Your Pack ('+result.houseMembers.length+')';
+        : 'House Candidates in Your Coalition ('+result.houseMembers.length+')';
       parts.push('<div class="pp-section-label pp-section-house">'+houseSectionLabel+'</div>');
       parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
       result.houseMembers.forEach(function(member) {
