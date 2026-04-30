@@ -280,7 +280,7 @@ header p {
   </div>
 
   <div class="dmt-irs-section" id="dmt-irs-neighbor-section" style="display:none">
-    <div class="dmt-irs-header" style="background:#374151">★ IRS Candidates in Touching Districts</div>
+    <div class="dmt-irs-header" style="background:#92400e">Neighboring Districts</div>
     <div id="dmt-irs-neighbor-table"></div>
   </div>
 </div>
@@ -1072,12 +1072,40 @@ var DMT = (function() {
       section.style.display = 'none';
       return;
     }
-    var entries = collectIrsCandidates(neighbors.hdNums, neighbors.sdNums, [], shownNames);
-    if (!entries.length) {
-      section.style.display = 'none';
-      return;
+
+    var parts = [];
+
+    // District chips row
+    parts.push('<div style="padding:12px 16px 8px;border-bottom:1px solid #e2e8f0">');
+    if (neighbors.sdNums.length) {
+      parts.push('<div style="margin-bottom:6px"><span style="font-size:0.72rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.4px;margin-right:8px">Senate:</span>');
+      neighbors.sdNums.forEach(function(sd) {
+        var lean = (leanLookup.senate || {})[sd] || null;
+        var idxLabel = lean ? (lean.in_index_label || '') : '';
+        parts.push('<span class="dmt-badge" style="border-color:#d97706;color:#92400e;margin-right:4px" data-dtype="senate" data-dnum="' + sd + '">SD-' + sd + (idxLabel ? ' <span style="font-weight:400;font-size:0.68rem">' + xesc(idxLabel) + '</span>' : '') + '</span>');
+      });
+      parts.push('</div>');
     }
-    tableEl.innerHTML = renderIrsTable(entries);
+    if (neighbors.hdNums.length) {
+      parts.push('<div><span style="font-size:0.72rem;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:0.4px;margin-right:8px">House:</span>');
+      neighbors.hdNums.forEach(function(hd) {
+        var lean = (leanLookup.house || {})[hd] || null;
+        var idxLabel = lean ? (lean.in_index_label || '') : '';
+        parts.push('<span class="dmt-badge" style="border-color:#d97706;color:#92400e;margin-right:4px" data-dtype="house" data-dnum="' + hd + '">HD-' + hd + (idxLabel ? ' <span style="font-weight:400;font-size:0.68rem">' + xesc(idxLabel) + '</span>' : '') + '</span>');
+      });
+      parts.push('</div>');
+    }
+    parts.push('</div>');
+
+    // IRS candidates in neighboring districts (if any)
+    var entries = collectIrsCandidates(neighbors.hdNums, neighbors.sdNums, [], shownNames);
+    if (entries.length) {
+      parts.push(renderIrsTable(entries));
+    } else {
+      parts.push('<div class="dmt-irs-empty">No IRS candidates in touching districts.</div>');
+    }
+
+    tableEl.innerHTML = parts.join('');
     section.style.display = 'block';
   }
 
