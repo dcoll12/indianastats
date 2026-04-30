@@ -337,26 +337,37 @@ var DMT = (function() {
   }
 
   function parseCSVSimple(csv) {
-    var lines = [], cur = '', inQ = false;
-    for (var i = 0; i < csv.length; i++) {
-      var ch = csv[i];
-      if (inQ) {
-        if (ch === '"' && csv[i+1] === '"') { cur += '"'; i++; }
-        else if (ch === '"') { inQ = false; }
-        else { cur += ch; }
-      } else if (ch === '"') { inQ = true; }
-      else if (ch === '\n') { lines.push(cur); cur = ''; }
-      else if (ch !== '\r') { cur += ch; }
+    var pos = 0, n = csv.length;
+    function readField() {
+      var f = '';
+      if (pos < n && csv[pos] === '"') {
+        pos++;
+        while (pos < n) {
+          if (csv[pos] === '"' && csv[pos+1] === '"') { f += '"'; pos += 2; }
+          else if (csv[pos] === '"') { pos++; break; }
+          else { f += csv[pos++]; }
+        }
+      } else {
+        while (pos < n && csv[pos] !== ',' && csv[pos] !== '\n' && csv[pos] !== '\r') f += csv[pos++];
+      }
+      return f.trim();
     }
-    if (cur) lines.push(cur);
-    if (!lines.length) return [];
-    var headers = lines[0].split(',').map(function(h) { return h.trim(); });
-    var records = [];
-    for (var j = 1; j < lines.length; j++) {
-      if (!lines[j].trim()) continue;
-      var vals = lines[j].split(',');
+    function readRow() {
+      var row = [];
+      while (pos < n) {
+        row.push(readField());
+        if (pos < n && csv[pos] === ',') { pos++; }
+        else { if (pos < n && csv[pos] === '\r') pos++; if (pos < n && csv[pos] === '\n') pos++; break; }
+      }
+      return row;
+    }
+    var headers = null, records = [];
+    while (pos < n) {
+      var row = readRow();
+      if (!row.length || (row.length === 1 && !row[0])) continue;
+      if (!headers) { headers = row; continue; }
       var obj = {};
-      headers.forEach(function(h, idx) { obj[h] = (vals[idx] || '').trim(); });
+      headers.forEach(function(h, i) { obj[h] = row[i] || ''; });
       records.push(obj);
     }
     return records;
