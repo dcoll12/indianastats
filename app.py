@@ -1612,6 +1612,7 @@ def render_district_match_view(df, district_data, district_geojson=None):
         'all_counties', 'county_to_hds', 'county_to_sds', 'county_to_cds',
         'hd_to_counties', 'sd_to_counties', 'cd_to_counties',
         'cd_to_hds', 'cd_to_sds', 'sd_to_hds', 'hd_to_sds',
+        'hd_to_cd', 'sd_to_cd',
     )}
 
     # ── Compact GeoJSON (RDP-simplified to ~73KB total) ──────────────────────
@@ -1707,6 +1708,10 @@ body{{font-family:system-ui,sans-serif;overflow:hidden;background:#f8fafc;}}
 .dm-clink{{font-size:.7rem;padding:2px 7px;border-radius:3px;text-decoration:none;background:#eff6ff;color:#3b82f6;font-weight:600;}}
 .dm-clink:hover{{background:#dbeafe;}}
 .dm-info{{color:#64748b;font-style:italic;font-size:.85rem;padding:8px 0;}}
+/* Anchor badge (selected district) */
+.dm-badge.anchor{{background:linear-gradient(135deg,#667eea,#764ba2);color:white;border-color:transparent;}}
+/* District group sub-header in candidate list */
+.dm-dist-group-hdr{{font-weight:700;font-size:.85rem;color:#334155;margin:12px 0 6px;padding-bottom:4px;border-bottom:1px solid #e2e8f0;}}
 /* County map labels */
 .county-lbl{{font-size:9.5px;font-weight:700;color:#475569;white-space:nowrap;pointer-events:none;text-shadow:0 0 3px white,0 0 3px white;}}
 </style>
@@ -1719,12 +1724,12 @@ body{{font-family:system-ui,sans-serif;overflow:hidden;background:#f8fafc;}}
   </div>
   <div class="dm-right">
     <div class="dm-hdr">
-      <h2>🗺️ District Match</h2>
-      <p>Select a county or district — or click the map — to see candidates.</p>
+      <h2>📦 My Pack</h2>
+      <p>Select a county or enter a district number to see your candidate pack.</p>
     </div>
     <div class="dm-tabbar">
       <div class="dm-tab active" id="tbtn-county" onclick="setTab('county')">📍 By County</div>
-      <div class="dm-tab" id="tbtn-district" onclick="setTab('district')">🔢 By District</div>
+      <div class="dm-tab" id="tbtn-district" onclick="setTab('district')">🎯 By District</div>
     </div>
     <div class="dm-body">
       <div id="tab-county">
@@ -1814,19 +1819,129 @@ function applyHL(keys,label){{
   if(bnds&&bnds.isValid()) map.fitBounds(bnds,{{padding:[16,16],maxZoom:10}});
 }}
 
+// ── My Pack: compute overlapping districts ─────────────────────────────────
+function computePack(dtype,dnum){{
+  var ds=String(dnum),packHDs=[],packSDs=[],packCDs=[];
+  if(dtype==='house'){{
+    if(packHDs.indexOf(dnum)<0) packHDs.push(dnum);
+    (DM.hd_to_sds[ds]||[]).map(Number).forEach(function(sd){{
+      if(packSDs.indexOf(sd)<0) packSDs.push(sd);
+      (DM.sd_to_hds[String(sd)]||[]).map(Number).forEach(function(hd){{
+        if(packHDs.indexOf(hd)<0) packHDs.push(hd);
+      }});
+    }});
+    var cd=DM.hd_to_cd&&DM.hd_to_cd[ds]; if(cd) packCDs=[Number(cd)];
+  }} else if(dtype==='senate'){{
+    if(packSDs.indexOf(dnum)<0) packSDs.push(dnum);
+    (DM.sd_to_hds[ds]||[]).map(Number).forEach(function(hd){{
+      if(packHDs.indexOf(hd)<0) packHDs.push(hd);
+      (DM.hd_to_sds[String(hd)]||[]).map(Number).forEach(function(sd){{
+        if(packSDs.indexOf(sd)<0) packSDs.push(sd);
+      }});
+    }});
+    var cd=DM.sd_to_cd&&DM.sd_to_cd[ds]; if(cd) packCDs=[Number(cd)];
+  }} else{{
+    packCDs.push(dnum);
+    packHDs=(DM.cd_to_hds[ds]||[]).map(Number);
+    packSDs=(DM.cd_to_sds[ds]||[]).map(Number);
+  }}
+  return {{packHDs:packHDs,packSDs:packSDs,packCDs:packCDs}};
+}}
+
+// ── My Pack: render full pack view ────────────────────────────────────────
+function renderMyPack(dtype,dnum){{
+  var prefix=dtype==='congressional'?'CD':dtype==='senate'?'SD':'HD';
+  var pack=computePack(dtype,dnum);
+  var sortN=function(a,b){{return a-b;}};
+  var keys=pack.packHDs.map(function(n){{return 'house:'+n;}})
+    .concat(pack.packSDs.map(function(n){{return 'senate:'+n;}}))
+    .concat(pack.packCDs.map(function(n){{return 'congressional:'+n;}}));
+  applyHL(keys,prefix+'-'+dnum+' Area Pack');
+  var countyKey=dtype==='house'?'hd_to_counties':dtype==='senate'?'sd_to_counties':'cd_to_counties';
+  var anchorCounties=((DM[countyKey]||{{}})[String(dnum)]||[]).slice().sort();
+  var html='';
+  html+='<div style="margin-bottom:12px"><span class="dm-badge anchor" style="font-size:.95rem;padding:7px 14px">'+prefix+'-'+dnum+' ★</span></div>';
+  if(anchorCounties.length){{
+    html+='<div class="dm-section"><div class="dm-section-title">Counties covered</div>'
+      +'<div class="dm-badge-grid">'+anchorCounties.map(function(c){{return '<span class="dm-badge" style="border-color:#94a3b8;color:#475569">'+c+'</span>';}}).join('')+'</div></div>';
+  }}
+  html+='<div class="dm-section"><div class="dm-section-title" style="text-transform:uppercase;letter-spacing:.4px;color:#475569;font-size:.82rem;margin-bottom:8px">Overlapping Districts</div>';
+  if(pack.packHDs.length){{
+    html+='<div style="margin-bottom:7px"><span style="font-size:.78rem;font-weight:700;color:#64748b">House ('+pack.packHDs.length+'):&nbsp;</span>'
+      +'<span style="display:inline-flex;flex-wrap:wrap;gap:4px;">'+pack.packHDs.slice().sort(sortN).map(function(n){{
+        var isA=dtype==='house'&&n===dnum;
+        return '<span class="dm-badge'+(isA?' anchor':'')+'">'+'HD-'+n+(isA?' ★':'')+'</span>';
+      }}).join('')+'</span></div>';
+  }}
+  if(pack.packSDs.length){{
+    html+='<div style="margin-bottom:7px"><span style="font-size:.78rem;font-weight:700;color:#64748b">Senate ('+pack.packSDs.length+'):&nbsp;</span>'
+      +'<span style="display:inline-flex;flex-wrap:wrap;gap:4px;">'+pack.packSDs.slice().sort(sortN).map(function(n){{
+        var isA=dtype==='senate'&&n===dnum;
+        return '<span class="dm-badge'+(isA?' anchor':'')+'">'+'SD-'+n+(isA?' ★':'')+'</span>';
+      }}).join('')+'</span></div>';
+  }}
+  if(pack.packCDs.length){{
+    html+='<div style="margin-bottom:7px"><span style="font-size:.78rem;font-weight:700;color:#64748b">Congressional ('+pack.packCDs.length+'):&nbsp;</span>'
+      +'<span style="display:inline-flex;flex-wrap:wrap;gap:4px;">'+pack.packCDs.slice().sort(sortN).map(function(n){{
+        var isA=dtype==='congressional'&&n===dnum;
+        return '<span class="dm-badge'+(isA?' anchor':'')+'">'+'CD-'+n+(isA?' ★':'')+'</span>';
+      }}).join('')+'</span></div>';
+  }}
+  html+='</div>';
+  document.getElementById('district-info').innerHTML=html;
+  renderCandsGrouped(pack,dtype,dnum);
+}}
+
+// ── Render candidates grouped by district ─────────────────────────────────
+function renderCandsGrouped(pack,anchorDtype,anchorDnum){{
+  var el=document.getElementById('cands-section');
+  var sortN=function(a,b){{return a-b;}};
+  var sdSet=new Set(pack.packSDs),hdSet=new Set(pack.packHDs);
+  var sdCands={{}},hdCands={{}};
+  CANDS.forEach(function(c){{
+    if(c.dtype==='senate'&&sdSet.has(c.dnum)){{
+      if(!sdCands[c.dnum]) sdCands[c.dnum]=[];
+      sdCands[c.dnum].push(c);
+    }} else if(c.dtype==='house'&&hdSet.has(c.dnum)){{
+      if(!hdCands[c.dnum]) hdCands[c.dnum]=[];
+      hdCands[c.dnum].push(c);
+    }}
+  }});
+  var totalSd=Object.values(sdCands).reduce(function(s,a){{return s+a.length;}},0);
+  var totalHd=Object.values(hdCands).reduce(function(s,a){{return s+a.length;}},0);
+  if(!totalSd&&!totalHd){{
+    el.innerHTML='<p class="dm-info">No candidates found in overlapping districts yet.</p>';
+    return;
+  }}
+  var html='';
+  if(totalSd){{
+    html+='<div class="dm-cands-hdr">Senate Candidates ('+totalSd+')</div>';
+    pack.packSDs.slice().sort(sortN).forEach(function(sd){{
+      var cs=sdCands[sd]; if(!cs||!cs.length) return;
+      var isA=anchorDtype==='senate'&&sd===anchorDnum;
+      html+='<div class="dm-dist-group-hdr">SD-'+sd+(isA?' ★':'')+'</div>';
+      html+='<div class="dm-card-grid">'+cs.map(cardHtml).join('')+'</div>';
+    }});
+  }}
+  if(totalHd){{
+    html+='<div class="dm-cands-hdr" style="margin-top:'+(totalSd?'18px':'14px')+'">House Candidates ('+totalHd+')</div>';
+    pack.packHDs.slice().sort(sortN).forEach(function(hd){{
+      var cs=hdCands[hd]; if(!cs||!cs.length) return;
+      var isA=anchorDtype==='house'&&hd===anchorDnum;
+      html+='<div class="dm-dist-group-hdr">HD-'+hd+(isA?' ★':'')+'</div>';
+      html+='<div class="dm-card-grid">'+cs.map(cardHtml).join('')+'</div>';
+    }});
+  }}
+  el.innerHTML=html;
+}}
+
 // ── Map click on district ──────────────────────────────────────────────────
 function onMapClick(dtype,dnum){{
-  var prefix=dtype==='congressional'?'CD':dtype==='senate'?'SD':'HD';
-  var key=dtype+':'+dnum;
-  // Update inputs to reflect clicked district
   if(dtype==='house')         document.getElementById('hd-inp').value=dnum;
   else if(dtype==='senate')   document.getElementById('sd-inp').value=dnum;
   else                        document.getElementById('cd-inp').value=dnum;
   setTab('district');
-  // Highlight + show results
-  applyHL([key], prefix+'-'+dnum);
-  showDistrictInfo(dtype,String(dnum));
-  renderCands(CANDS.filter(function(c){{return c.dtype===dtype&&c.dnum===dnum;}}), prefix+'-'+dnum);
+  renderMyPack(dtype,dnum);
 }}
 
 // ── Tab switching ──────────────────────────────────────────────────────────
@@ -1863,12 +1978,19 @@ function onDistrictInput(){{
   var sd=document.getElementById('sd-inp').value.trim();
   var cd=document.getElementById('cd-inp').value.trim();
   if(!hd&&!sd&&!cd){{ clearHL(); document.getElementById('district-info').innerHTML=''; document.getElementById('cands-section').innerHTML=''; return; }}
+  var count=[hd,sd,cd].filter(Boolean).length;
+  if(count===1){{
+    if(hd) renderMyPack('house',parseInt(hd));
+    else if(sd) renderMyPack('senate',parseInt(sd));
+    else renderMyPack('congressional',parseInt(cd));
+    return;
+  }}
+  // Multiple districts selected — show flat view
   var keys=[], parts=[];
   if(hd){{ keys.push('house:'+hd); parts.push('HD-'+hd); }}
   if(sd){{ keys.push('senate:'+sd); parts.push('SD-'+sd); }}
   if(cd){{ keys.push('congressional:'+cd); parts.push('CD-'+cd); }}
   applyHL(keys, parts.join(', '));
-  // Show county info for each selected district
   var html='';
   if(hd){{ var cs=DM.hd_to_counties[hd]||[]; html+='<div class="dm-section"><div class="dm-section-title">HD-'+hd+' Counties ('+cs.length+')</div><div class="dm-county-grid">'+cs.slice().sort().map(function(c){{return '<div class="dm-county-item">'+c+'</div>';}}).join('')+'</div></div>'; }}
   if(sd){{ var cs=DM.sd_to_counties[sd]||[]; html+='<div class="dm-section"><div class="dm-section-title">SD-'+sd+' Counties ('+cs.length+')</div><div class="dm-county-grid">'+cs.slice().sort().map(function(c){{return '<div class="dm-county-item">'+c+'</div>';}}).join('')+'</div></div>'; }}
@@ -1878,16 +2000,6 @@ function onDistrictInput(){{
   renderCands(CANDS.filter(function(c){{
     return (c.dtype==='house'&&hdN!==null&&c.dnum===hdN)||(c.dtype==='senate'&&sdN!==null&&c.dnum===sdN)||(c.dtype==='congressional'&&cdN!==null&&c.dnum===cdN);
   }}), parts.join(', '));
-}}
-
-// ── Show county info for map click ────────────────────────────────────────
-function showDistrictInfo(dtype,dnum){{
-  var map2key={{house:'hd_to_counties',senate:'sd_to_counties',congressional:'cd_to_counties'}};
-  var cs=(DM[map2key[dtype]]||{{}})[dnum]||[];
-  var prefix=dtype==='congressional'?'CD':dtype==='senate'?'SD':'HD';
-  document.getElementById('district-info').innerHTML=
-    '<div class="dm-section"><div class="dm-section-title">'+prefix+'-'+dnum+' Counties ('+cs.length+')</div>'+
-    '<div class="dm-county-grid">'+cs.slice().sort().map(function(c){{return '<div class="dm-county-item">'+c+'</div>';}}).join('')+'</div></div>';
 }}
 
 // ── Render candidate cards ────────────────────────────────────────────────
