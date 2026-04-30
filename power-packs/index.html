@@ -2491,6 +2491,74 @@ var PP = (function() {
     return parts.join('');
   }
 
+  function buildNeighboringCandidates(result) {
+    var dd = state.districtData;
+    var ll = state.leanLookup;
+    var packHdSet = new Set(result.packHDs.map(Number));
+    var packSdSet = new Set(result.packSDs.map(Number));
+
+    var neighborSds = new Set();
+    var neighborHds = new Set();
+
+    // SDs touched by any pack HD but not in the pack
+    result.packHDs.forEach(function(hd) {
+      ((dd.hd_to_sds || {})[String(hd)] || []).forEach(function(sd) {
+        if (!packSdSet.has(Number(sd))) neighborSds.add(Number(sd));
+      });
+    });
+    // HDs touched by any pack SD but not in the pack
+    result.packSDs.forEach(function(sd) {
+      ((dd.sd_to_hds || {})[String(sd)] || []).forEach(function(hd) {
+        if (!packHdSet.has(Number(hd))) neighborHds.add(Number(hd));
+      });
+    });
+    // Also pull HDs belonging to neighboring SDs
+    neighborSds.forEach(function(sd) {
+      ((dd.sd_to_hds || {})[String(sd)] || []).forEach(function(hd) {
+        if (!packHdSet.has(Number(hd))) neighborHds.add(Number(hd));
+      });
+    });
+
+    var senateBySD = {}, houseByHD = {};
+    state.rows.forEach(function(row) {
+      var role = clean(row, 'Role').toLowerCase();
+      if (!role.includes('candidate') || role.includes('former')) return;
+      var race = determinePrimaryRace(row);
+      if (!race.dtype || !race.dnum) return;
+      var lean = (ll[race.dtype] || {})[race.dnum] || null;
+      var entry = { row: row, dtype: race.dtype, dnum: race.dnum, lean: lean };
+      if (race.dtype === 'senate') {
+        if (!senateBySD[race.dnum]) senateBySD[race.dnum] = [];
+        senateBySD[race.dnum].push(entry);
+      } else if (race.dtype === 'house') {
+        if (!houseByHD[race.dnum]) houseByHD[race.dnum] = [];
+        houseByHD[race.dnum].push(entry);
+      }
+    });
+
+    var neighboringSenate = [];
+    neighborSds.forEach(function(sd) {
+      (senateBySD[sd] || []).forEach(function(e) { neighboringSenate.push(e); });
+    });
+    neighboringSenate.sort(function(a, b) {
+      var ma = (a.lean && a.lean.in_index !== null) ? Math.abs(a.lean.in_index) : 1;
+      var mb = (b.lean && b.lean.in_index !== null) ? Math.abs(b.lean.in_index) : 1;
+      return ma - mb;
+    });
+
+    var neighboringHouse = [];
+    neighborHds.forEach(function(hd) {
+      (houseByHD[hd] || []).forEach(function(e) { neighboringHouse.push(e); });
+    });
+    neighboringHouse.sort(function(a, b) {
+      var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
+      var mb = (b.lean && b.lean.in_index !== null) ? b.lean.in_index : 0.5;
+      return ma - mb;
+    });
+
+    return { senate: neighboringSenate, house: neighboringHouse };
+  }
+
   function renderMyPack(result) {
     if (!result) return '<div class="pp-status"><p>No pack data available.</p></div>';
     var parts = [];
@@ -2623,6 +2691,33 @@ var PP = (function() {
 
     if (!hasCandidates && !hasUncontested) {
       parts.push('<div class="pp-status"><p>No candidates found in overlapping districts.</p></div>');
+    }
+
+    // Touching (neighboring) districts — IRS candidates in districts that border the pack
+    var neighbors = buildNeighboringCandidates(result);
+    if (neighbors.senate.length || neighbors.house.length) {
+      parts.push('<div class="pp-primary-section-header" style="color:#854d0e;border-color:#d97706;margin-top:18px">Candidates in Touching Districts</div>');
+      if (neighbors.senate.length) {
+        parts.push('<div class="pp-section-label pp-section-neighbor">⚡ Neighboring Senate Districts</div>');
+        parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+        neighbors.senate.forEach(function(cand) {
+          parts.push(renderEntry(cand, { isSenate: true }));
+        });
+        parts.push('</tbody></table></div>');
+      }
+      if (neighbors.house.length) {
+        parts.push('<div class="pp-section-label pp-section-neighbor" style="border-left-color:#b45309">🏘 Neighboring House Districts</div>');
+        parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+        neighbors.house.forEach(function(member) {
+          var hdm = (member.lean && member.lean.in_index !== null) ? member.lean.in_index : 0.5;
+          var roleLabel, roleCls;
+          if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
+          else if (hdm <= 0.25) { roleLabel = '📊 Challenge';   roleCls = 'challenge'; }
+          else                   { roleLabel = '🗳️ Turnout';     roleCls = 'turnout'; }
+          parts.push(renderEntry(member, { isHouse: true, roleLabel: roleLabel, roleCls: roleCls }));
+        });
+        parts.push('</tbody></table></div>');
+      }
     }
 
     return '<div class="pp-pack-card-standalone">'+parts.join('')+'</div>';
