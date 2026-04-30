@@ -3704,6 +3704,17 @@ function sortTable(tableId, colIdx, type) {
 
 // Initial map load
 loadMap('congressional', boundaryView);
+
+// Add lean index sublabel to Unop. cells
+document.querySelectorAll('tbody tr').forEach(function(row) {
+  var avgTd = row.querySelector('td.col-avg');
+  if (!avgTd) return;
+  var idxText = avgTd.textContent.trim();
+  row.querySelectorAll('td.lean-na').forEach(function(td) {
+    if (td.textContent.trim() !== 'Unop.') return;
+    td.innerHTML = 'Unop.<br><span style="font-size:0.7em;opacity:0.8;font-weight:600">' + idxText + '</span>';
+  });
+});
 </script>
 
 </body>
