@@ -830,10 +830,9 @@ var DMT = (function() {
     var list = (candidatesData[type] || {})[String(dnum)];
     if (!list || !list.length) {
       if (type === 'sd' && Number(dnum) % 2 === 0) return '';
-      return '<div class="dmt-candidates"><div class="dmt-uncontested-row"><span class="dmt-uncontested-badge">Uncontested</span></div></div>';
+      return '';
     }
-    var parties = new Set(list.map(function(c) { return c.party; }));
-    var isUncontested = !parties.has('D') || !parties.has('R');
+    var isUncontested = list.length < 2;
     var uncontestedRow = isUncontested
       ? '<div class="dmt-uncontested-row"><span class="dmt-uncontested-badge">Uncontested</span></div>'
       : '';
