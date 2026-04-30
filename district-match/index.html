@@ -143,6 +143,13 @@ header p {
 .dmt-party-R { background: #fee2e2; color: #b91c1c; }
 .dmt-party-L { background: #fef9c3; color: #92400e; }
 .dmt-party-I { background: #f1f5f9; color: #475569; }
+.dmt-cohort-candidate { font-weight: 700; color: #1e40af; }
+.dmt-cohort-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.62rem; font-weight: 900; padding: 1px 5px;
+  background: #dbeafe; color: #1e40af; border-radius: 3px;
+  letter-spacing: 0; margin-left: 3px; white-space: nowrap;
+}
 .dmt-map-side { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .dmt-layer-row {
   display: flex; gap: 8px; padding: 10px 12px;
@@ -250,6 +257,7 @@ var DMT = (function() {
 
   var CSV_URL = 'https://docs.google.com/spreadsheets/d/1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw/export?format=csv&gid=918237840';
   var candidatesData = null;
+  var directoryNames = new Set();
 
   function init() {
     if (_initialized) {
@@ -270,7 +278,7 @@ var DMT = (function() {
 
     fetch(CSV_URL)
       .then(function(r) { return r.text(); })
-      .then(function(csv) { candidateRows = parseCSVSimple(csv); populateCandidateSelect(); })
+      .then(function(csv) { candidateRows = parseCSVSimple(csv); buildDirectorySet(); populateCandidateSelect(); })
       .catch(function() {
         var sel = document.getElementById('dmt-cand-select');
         if (sel) sel.innerHTML = '<option value="">Unable to load candidates</option>';
@@ -287,17 +295,28 @@ var DMT = (function() {
     }).join('');
   }
 
+  function buildDirectorySet() {
+    directoryNames = new Set();
+    candidateRows.forEach(function(r) {
+      var role = (r['Role'] || '').trim().toLowerCase();
+      if (!role.includes('candidate') || role.includes('former')) return;
+      var name = ((r['First Name'] || '') + ' ' + (r['Last Name'] || '')).trim().toLowerCase();
+      if (name) directoryNames.add(name);
+    });
+  }
+
   function populateCandidateSelect() {
     var sel = document.getElementById('dmt-cand-select');
     if (!sel) return;
-    sel.innerHTML = '<option value="">-- Select a candidate or contact --</option>';
+    sel.innerHTML = '<option value="">-- Select a candidate --</option>';
     candidateRows.forEach(function(r, i) {
+      var role = (r['Role'] || '').trim().toLowerCase();
+      if (!role.includes('candidate') || role.includes('former')) return;
       var name = ((r['First Name'] || '') + ' ' + (r['Last Name'] || '')).trim();
       if (!name) return;
-      var role = r['Role'] ? ' — ' + r['Role'] : '';
       var opt = document.createElement('option');
       opt.value = i;
-      opt.textContent = name + role;
+      opt.textContent = name;
       sel.appendChild(opt);
     });
   }
@@ -736,7 +755,10 @@ var DMT = (function() {
     if (!list || !list.length) return '';
     var items = list.map(function(c) {
       var pc = 'dmt-party-' + (c.party || 'I');
-      return '<div class="dmt-candidate"><span class="dmt-party ' + pc + '">' + xesc(c.party) + '</span>' + xesc(c.name) + '</div>';
+      var inDirectory = directoryNames.has((c.name || '').trim().toLowerCase());
+      var cls = 'dmt-candidate' + (inDirectory ? ' dmt-cohort-candidate' : '');
+      var badge = inDirectory ? '<span class="dmt-cohort-badge">★ IRS</span>' : '';
+      return '<div class="' + cls + '"><span class="dmt-party ' + pc + '">' + xesc(c.party) + '</span>' + xesc(c.name) + badge + '</div>';
     }).join('');
     return '<div class="dmt-candidates">' + items + '</div>';
   }
