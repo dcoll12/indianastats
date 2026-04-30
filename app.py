@@ -1685,9 +1685,12 @@ body{{font-family:system-ui,sans-serif;overflow:hidden;background:#f8fafc;}}
 #dm-map{{flex:1;}}
 /* Right panel */
 .dm-right{{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}}
-.dm-hdr{{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:14px 20px;flex-shrink:0;}}
+.dm-hdr{{background:linear-gradient(135deg,#667eea,#764ba2);color:white;padding:14px 20px;flex-shrink:0;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}}
+.dm-hdr-text{{flex:1;min-width:0;}}
 .dm-hdr h2{{margin:0;font-size:1.1rem;}}
 .dm-hdr p{{margin:4px 0 0;font-size:.8rem;opacity:.9;}}
+.dm-reset-btn{{flex-shrink:0;margin-top:2px;padding:5px 12px;background:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.5);border-radius:6px;color:white;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;}}
+.dm-reset-btn:hover{{background:rgba(255,255,255,0.3);}}
 .dm-tabbar{{display:flex;background:#f1f5f9;border-bottom:1px solid #e2e8f0;flex-shrink:0;}}
 .dm-tab{{padding:10px 18px;font-size:.85rem;font-weight:600;cursor:pointer;color:#64748b;border-bottom:3px solid transparent;}}
 .dm-tab.active{{color:#667eea;border-bottom-color:#667eea;background:white;}}
@@ -1733,8 +1736,11 @@ body{{font-family:system-ui,sans-serif;overflow:hidden;background:#f8fafc;}}
   </div>
   <div class="dm-right">
     <div class="dm-hdr">
-      <h2>📦 My Pack</h2>
-      <p>Select a county or enter a district number to see your candidate pack.</p>
+      <div class="dm-hdr-text">
+        <h2>📦 My Pack</h2>
+        <p>Select a county or enter a district number to see your candidate pack.</p>
+      </div>
+      <button class="dm-reset-btn" onclick="resetPack()">↺ Reset</button>
     </div>
     <div class="dm-tabbar">
       <div class="dm-tab active" id="tbtn-county" onclick="setTab('county')">📍 By County</div>
@@ -1826,6 +1832,18 @@ function applyHL(keys,label){{
   }});
   if(label) labelEl.textContent=label;
   if(bnds&&bnds.isValid()) map.fitBounds(bnds,{{padding:[16,16],maxZoom:10}});
+}}
+
+function resetPack(){{
+  clearHL();
+  document.getElementById('county-sel').value='';
+  document.getElementById('hd-inp').value='';
+  document.getElementById('sd-inp').value='';
+  document.getElementById('cd-inp').value='';
+  document.getElementById('county-info').innerHTML='';
+  document.getElementById('district-info').innerHTML='';
+  document.getElementById('cands-section').innerHTML='';
+  map.fitBounds(geoLayer.getBounds(),{{padding:[4,4]}});
 }}
 
 // ── My Pack: compute overlapping districts ─────────────────────────────────
