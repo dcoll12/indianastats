@@ -677,6 +677,12 @@ GRASSROOTS_CSS = """
     font-size: 1rem; font-weight: 700; color: white; flex-shrink: 0;
 }
 .gt-cand-name { font-weight: 700; color: #1e293b; font-size: 0.95rem; line-height: 1.3; }
+.gt-primary-badge {
+    display: inline-block; background: #7c3aed; color: white;
+    font-size: 0.65rem; font-weight: 800; padding: 1px 5px;
+    border-radius: 4px; margin-left: 5px; vertical-align: middle;
+    letter-spacing: 0.5px;
+}
 .gt-btns { padding: 10px 8px; text-align: center; white-space: nowrap; }
 .gt-btn {
     display: inline-block; padding: 7px 14px; border-radius: 4px;
@@ -923,10 +929,11 @@ def render_grassroots_table(df, partisan_data, race_results=None, senate_2022=No
             else:
                 photo_html = f'<div class="gt-photo-placeholder">{initials}</div>'
 
+            primary_badge = '<span class="gt-primary-badge">P</span>' if len(seat_rows) > 1 else ''
             cand_cell = (
                 f'<td class="gt-candidate"><div class="gt-cand-inner">'
                 f'{photo_html}'
-                f'<div><div class="gt-cand-name">{name}</div></div>'
+                f'<div><div class="gt-cand-name">{name}{primary_badge}</div></div>'
                 f'</div></td>'
             )
 
