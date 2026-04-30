@@ -20,6 +20,37 @@ body {
   padding: 20px;
 }
 
+.mobile-notice {
+  display: none;
+  background: #fef3c7;
+  color: #92400e;
+  text-align: center;
+  padding: 10px 40px 10px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.mobile-notice button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: #92400e;
+  padding: 0 4px;
+}
+
+@media (max-width: 768px) {
+  .mobile-notice { display: block; }
+}
+
 header {
   background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
   color: white;
@@ -218,6 +249,10 @@ header p {
 </head>
 <body>
 <div class="container">
+  <div id="mobile-notice" class="mobile-notice">
+    &#128196; This site works best on desktop — mobile experience is limited.
+    <button onclick="document.getElementById('mobile-notice').style.display='none'" aria-label="Dismiss">&times;</button>
+  </div>
   <header>
     <h1>My Pack</h1>
     <p>Find your candidate coalition by county, candidate, or district number</p>
