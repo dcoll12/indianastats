@@ -334,6 +334,8 @@ var DMT = (function() {
   var dmtLayers = {};
   var dmtActiveLayer = 'house';
   var countyLayer = null;
+  var countyRawData = null;
+  var countyHighlightLayer = null;
   var selectedCounty = null;
   var featureLayers = {};
   var highlightedLayers = [];
@@ -546,6 +548,33 @@ var DMT = (function() {
       lyr.setStyle({ color: '#667eea', weight: 0.8, fillColor: '#e0e7ff', fillOpacity: 0.35 });
     });
     highlightedLayers = [];
+    if (countyHighlightLayer) {
+      if (dmtMap && dmtMap.hasLayer(countyHighlightLayer)) dmtMap.removeLayer(countyHighlightLayer);
+      countyHighlightLayer = null;
+    }
+  }
+
+  function highlightCountiesOnMap(countyNames) {
+    if (countyHighlightLayer) {
+      if (dmtMap && dmtMap.hasLayer(countyHighlightLayer)) dmtMap.removeLayer(countyHighlightLayer);
+      countyHighlightLayer = null;
+    }
+    if (!countyNames || !countyNames.length || !dmtMap) return;
+    var namesSet = new Set(countyNames.map(function(n) { return n.toLowerCase(); }));
+    function renderHighlight(geoData) {
+      countyHighlightLayer = L.geoJSON(geoData, {
+        filter: function(feat) {
+          var name = (feat.properties && (feat.properties.name || feat.properties.NAME)) || '';
+          return namesSet.has(name.toLowerCase());
+        },
+        style: { color: '#b45309', weight: 2.5, fillColor: '#fbbf24', fillOpacity: 0.3, dashArray: '5 4' },
+        interactive: false
+      }).addTo(dmtMap);
+    }
+    if (countyRawData) { renderHighlight(countyRawData); return; }
+    fetch('County_Boundaries_of_Indiana_Current.geojson')
+      .then(function(r) { return r.json(); })
+      .then(function(data) { countyRawData = data; renderHighlight(data); });
   }
 
   function highlightPack(hdNums, sdNums, cdNums, anchorDtype, anchorDnum) {
@@ -594,8 +623,10 @@ var DMT = (function() {
     var countyHoverStyle    = { color: '#0e7490', weight: 2.5, fillColor: '#7dd3fc', fillOpacity: 0.6 };
     var countySelectedStyle = { color: '#0369a1', weight: 2.5, fillColor: '#38bdf8', fillOpacity: 0.75 };
 
-    fetch('County_Boundaries_of_Indiana_Current.geojson')
-      .then(function(r) { return r.json(); })
+    var countyFetch = countyRawData
+      ? Promise.resolve(countyRawData)
+      : fetch('County_Boundaries_of_Indiana_Current.geojson').then(function(r) { return r.json(); }).then(function(d) { countyRawData = d; return d; });
+    countyFetch
       .then(function(data) {
         countyLayer = L.geoJSON(data, {
           style: countyDefaultStyle,
@@ -778,6 +809,12 @@ var DMT = (function() {
       Array.from(pCds).map(Number),
       anchorDtype, anchorDnum
     );
+
+    // Highlight counties of the anchor district
+    var anchorCounties = hd ? (districtData.hd_to_counties[hd] || [])
+                       : sd ? (districtData.sd_to_counties[sd] || [])
+                            : (districtData.cd_to_counties[cd] || []);
+    highlightCountiesOnMap(anchorCounties);
 
     var html = '<div class="dmt-result-title">Selected</div><div class="dmt-badges">';
     if (hd) html += '<span class="dmt-badge dmt-badge-active" data-dtype="house" data-dnum="' + xesc(hd) + '">HD ' + xesc(hd) + '</span>';
