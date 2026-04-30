@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>District Match — Indiana</title>
+<title>My Pack — Indiana</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -177,12 +177,12 @@ header p {
 <body>
 <div class="container">
   <header>
-    <h1>District Match</h1>
-    <p>Find Indiana legislative districts by county, candidate, or district number</p>
+    <h1>My Pack</h1>
+    <p>Find your candidate coalition by county, candidate, or district number</p>
     <nav class="site-nav">
       <a href="../power-packs/">Power Packs</a>
+      <a class="active" href="./">My Pack</a>
       <a href="../">Indiana Partisan Lean Index</a>
-      <a class="active" href="./">District Match</a>
     </nav>
   </header>
 
@@ -245,6 +245,8 @@ var DMT = (function() {
   var dmtActiveLayer = 'house';
   var countyLayer = null;
   var selectedCounty = null;
+  var featureLayers = {};
+  var highlightedLayers = [];
 
   var CSV_URL = 'https://docs.google.com/spreadsheets/d/1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw/export?format=csv&gid=918237840';
   var candidatesData = null;
@@ -340,6 +342,8 @@ var DMT = (function() {
 
     var defaultStyle = { color: '#667eea', weight: 0.8, fillColor: '#e0e7ff', fillOpacity: 0.35 };
     var hoverStyle   = { color: '#764ba2', weight: 2.5, fillColor: '#a78bfa', fillOpacity: 0.65 };
+    var activeStyle  = { color: '#4f46e5', weight: 2,   fillColor: '#818cf8', fillOpacity: 0.45 };
+    var anchorStyle  = { color: '#6d28d9', weight: 3,   fillColor: '#a78bfa', fillOpacity: 0.7  };
     var statusEl = document.getElementById('dmt-map-status');
 
     fetch('../districts_simplified.json')
@@ -359,9 +363,15 @@ var DMT = (function() {
             onEachFeature: function(feat, layer) {
               var prefix = feat._dtype === 'congressional' ? 'CD' : feat._dtype === 'senate' ? 'SD' : 'HD';
               layer.bindTooltip(prefix + '-' + feat._dnum, { sticky: true, opacity: 0.9 });
-              layer.on('mouseover', function() { layer.setStyle(hoverStyle); layer.bringToFront(); });
-              layer.on('mouseout',  function() { layer.setStyle(defaultStyle); });
-              layer.on('click',     function() { onMapClick(feat._dtype, feat._dnum); });
+              featureLayers[feat._dtype + ':' + feat._dnum] = layer;
+              layer.on('mouseover', function() {
+                if (highlightedLayers.indexOf(layer) < 0) layer.setStyle(hoverStyle);
+                layer.bringToFront();
+              });
+              layer.on('mouseout', function() {
+                if (highlightedLayers.indexOf(layer) < 0) layer.setStyle(defaultStyle);
+              });
+              layer.on('click', function() { onMapClick(feat._dtype, feat._dnum); });
             }
           });
           dmtLayers[dtype] = lyr;
@@ -393,6 +403,45 @@ var DMT = (function() {
       if (countyLayer && dmtMap.hasLayer(countyLayer)) dmtMap.removeLayer(countyLayer);
       if (dmtLayers[type]) dmtMap.fitBounds(dmtLayers[type].getBounds(), { padding: [10, 10] });
     }
+  }
+
+  function clearHighlights() {
+    highlightedLayers.forEach(function(lyr) {
+      lyr.setStyle({ color: '#667eea', weight: 0.8, fillColor: '#e0e7ff', fillOpacity: 0.35 });
+    });
+    highlightedLayers = [];
+  }
+
+  function highlightPack(hdNums, sdNums, cdNums, anchorDtype, anchorDnum) {
+    clearHighlights();
+    if (!dmtMap) return;
+    var activeStyle = { color: '#4f46e5', weight: 2,   fillColor: '#818cf8', fillOpacity: 0.45 };
+    var anchorStyle = { color: '#6d28d9', weight: 3,   fillColor: '#a78bfa', fillOpacity: 0.7  };
+    // Ensure house + senate layers are both visible
+    ['house', 'senate'].forEach(function(t) {
+      if (dmtLayers[t] && !dmtMap.hasLayer(dmtLayers[t])) dmtLayers[t].addTo(dmtMap);
+    });
+    if (countyLayer && dmtMap.hasLayer(countyLayer)) dmtMap.removeLayer(countyLayer);
+    var bounds = null;
+    function applyOne(key, style) {
+      var lyr = featureLayers[key];
+      if (!lyr) return;
+      lyr.setStyle(style);
+      lyr.bringToFront();
+      highlightedLayers.push(lyr);
+      var b = lyr.getBounds();
+      bounds = bounds ? bounds.extend(b) : b;
+    }
+    hdNums.forEach(function(d) {
+      applyOne('house:' + d, (anchorDtype === 'house' && d === anchorDnum) ? anchorStyle : activeStyle);
+    });
+    sdNums.forEach(function(d) {
+      applyOne('senate:' + d, (anchorDtype === 'senate' && d === anchorDnum) ? anchorStyle : activeStyle);
+    });
+    cdNums.forEach(function(d) {
+      applyOne('congressional:' + d, (anchorDtype === 'congressional' && d === anchorDnum) ? anchorStyle : activeStyle);
+    });
+    if (bounds && bounds.isValid()) dmtMap.fitBounds(bounds, { padding: [20, 20], maxZoom: 10 });
   }
 
   function loadCountyLayer() {
@@ -491,6 +540,8 @@ var DMT = (function() {
     var sortedSds = sds.slice().sort(function(a,b){return a-b;});
     var sortedCds = cds.slice().sort(function(a,b){return a-b;});
 
+    highlightPack(sortedHds.map(Number), sortedSds.map(Number), sortedCds.map(Number), null, null);
+
     var html = '<div class="dmt-result-title">📍 ' + xesc(matched) + ' County</div>';
     if (hds.length) html += '<div class="dmt-result-group"><strong>House Districts:</strong>'
       + '<div class="dmt-badges">' + sortedHds
@@ -577,6 +628,16 @@ var DMT = (function() {
       var f = new Set(Array.from(pSds).filter(function(s) { return direct.has(s); }));
       if (f.size > 0) pSds = f;
     }
+
+    // Highlight overlapping districts on map
+    var anchorDtype = hd ? 'house' : sd ? 'senate' : 'congressional';
+    var anchorDnum  = hd ? parseInt(hd) : sd ? parseInt(sd) : parseInt(cd);
+    highlightPack(
+      Array.from(pHds).map(Number),
+      Array.from(pSds).map(Number),
+      Array.from(pCds).map(Number),
+      anchorDtype, anchorDnum
+    );
 
     var html = '<div class="dmt-result-title">Selected</div><div class="dmt-badges">';
     if (hd) html += '<span class="dmt-badge dmt-badge-active">HD ' + xesc(hd) + '</span>';
