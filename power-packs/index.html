@@ -1297,7 +1297,7 @@ var PP = (function() {
     parts.push(holderHtml);
     parts.push(cdHint);
     parts.push('</div>');
-    if (pack.counties.length) parts.push('<div class="pp-pack-counties">'+esc(pack.counties.join(' · '))+'</div>');
+    if (pack.counties.length) parts.push('<div class="pp-pack-counties">counties covered in pack: '+esc(pack.counties.join(' · '))+'</div>');
     if (!pack.isUncontested && tc.mission) parts.push('<div class="pp-pack-mission">'+tc.mission+'</div>');
     parts.push('</div>');
     parts.push('<div class="pp-pack-count">'+totalCands+' candidate'+(totalCands!==1?'s':'')+'</div>');
@@ -1592,7 +1592,7 @@ var PP = (function() {
     parts.push(holderHtml);
     parts.push(cdHint);
     parts.push('</div>');
-    if (pack.counties.length) parts.push('<div class="pp-pack-counties">' + esc(pack.counties.join(' · ')) + '</div>');
+    if (pack.counties.length) parts.push('<div class="pp-pack-counties">counties covered in pack: ' + esc(pack.counties.join(' · ')) + '</div>');
     parts.push('</div>');
     parts.push('<div class="pp-pack-count">' + hdCount + ' candidate' + (hdCount !== 1 ? 's' : '') + '</div>');
     parts.push('</div>');
@@ -2401,7 +2401,7 @@ var PP = (function() {
     parts.push('<span class="pp-pack-lean">&nbsp;'+esc(indexLabel)+'</span>');
     parts.push(holderHtml);
     parts.push('</div>');
-    if (pack.counties.length) parts.push('<div class="pp-pack-counties">'+esc(pack.counties.join(' · '))+'</div>');
+    if (pack.counties.length) parts.push('<div class="pp-pack-counties">counties covered in pack: '+esc(pack.counties.join(' · '))+'</div>');
     parts.push('</div>');
     parts.push('<div class="pp-pack-count">'+totalCount+' candidate'+(totalCount!==1?'s':'')+'</div>');
     parts.push('</div>');
