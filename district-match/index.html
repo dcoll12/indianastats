@@ -117,7 +117,9 @@ header p {
   display: inline-block; padding: 3px 8px;
   background: white; border: 2px solid #667eea;
   color: #667eea; border-radius: 5px; font-size: 0.78rem; font-weight: 700;
+  cursor: pointer; transition: transform 0.1s, box-shadow 0.1s;
 }
+.dmt-badge:hover { transform: scale(1.08); box-shadow: 0 2px 6px rgba(102,126,234,0.45); }
 .dmt-badge-active { background: #667eea; color: white; }
 .dmt-counties { display: flex; flex-wrap: wrap; gap: 4px; }
 .dmt-county-item {
@@ -222,7 +224,7 @@ header p {
     <nav class="site-nav">
       <a href="../power-packs/">Power Packs</a>
       <a class="active" href="./">My Pack</a>
-      <a href="../">IN Partisan Lean Index</a>
+      <a href="../lean-index.html">IN Partisan Lean Index</a>
     </nav>
   </header>
 
@@ -335,6 +337,7 @@ var DMT = (function() {
       });
 
     initMap();
+    initBadgeHover();
   }
 
   function populateCountyList() {
@@ -640,13 +643,13 @@ var DMT = (function() {
     var html = '<div class="dmt-result-title">📍 ' + xesc(matched) + ' County</div>';
     if (hds.length) html += '<div class="dmt-result-group"><strong>House Districts:</strong>'
       + '<div class="dmt-badges">' + sortedHds
-        .map(function(d){return '<span class="dmt-badge">HD ' + d + '</span>';}).join('') + '</div></div>';
+        .map(function(d){return '<span class="dmt-badge" data-dtype="house" data-dnum="' + d + '">HD ' + d + '</span>';}).join('') + '</div></div>';
     if (sds.length) html += '<div class="dmt-result-group"><strong>Senate Districts:</strong>'
       + '<div class="dmt-badges">' + sortedSds
-        .map(function(d){return '<span class="dmt-badge">SD ' + d + '</span>';}).join('') + '</div></div>';
+        .map(function(d){return '<span class="dmt-badge" data-dtype="senate" data-dnum="' + d + '">SD ' + d + '</span>';}).join('') + '</div></div>';
     if (cds.length) html += '<div class="dmt-result-group"><strong>Congressional:</strong>'
       + '<div class="dmt-badges">' + sortedCds
-        .map(function(d){return '<span class="dmt-badge">CD ' + d + '</span>';}).join('') + '</div></div>';
+        .map(function(d){return '<span class="dmt-badge" data-dtype="congressional" data-dnum="' + d + '">CD ' + d + '</span>';}).join('') + '</div></div>';
 
     var candHtml = '';
     var sdCandParts = [];
@@ -737,9 +740,9 @@ var DMT = (function() {
     );
 
     var html = '<div class="dmt-result-title">Selected</div><div class="dmt-badges">';
-    if (hd) html += '<span class="dmt-badge dmt-badge-active">HD ' + xesc(hd) + '</span>';
-    if (sd) html += '<span class="dmt-badge dmt-badge-active">SD ' + xesc(sd) + '</span>';
-    if (cd) html += '<span class="dmt-badge dmt-badge-active">CD ' + xesc(cd) + '</span>';
+    if (hd) html += '<span class="dmt-badge dmt-badge-active" data-dtype="house" data-dnum="' + xesc(hd) + '">HD ' + xesc(hd) + '</span>';
+    if (sd) html += '<span class="dmt-badge dmt-badge-active" data-dtype="senate" data-dnum="' + xesc(sd) + '">SD ' + xesc(sd) + '</span>';
+    if (cd) html += '<span class="dmt-badge dmt-badge-active" data-dtype="congressional" data-dnum="' + xesc(cd) + '">CD ' + xesc(cd) + '</span>';
     html += '</div>';
 
     if (counties.length) {
@@ -753,19 +756,19 @@ var DMT = (function() {
     if (pHds.size) {
       html += '<div class="dmt-result-group"><strong>House (' + pHds.size + '):</strong><div class="dmt-badges">'
         + Array.from(pHds).sort(function(a,b){return a-b;}).map(function(d) {
-            return '<span class="dmt-badge' + (String(d) === hd ? ' dmt-badge-active' : '') + '">HD ' + d + '</span>';
+            return '<span class="dmt-badge' + (String(d) === hd ? ' dmt-badge-active' : '') + '" data-dtype="house" data-dnum="' + d + '">HD ' + d + '</span>';
           }).join('') + '</div></div>';
     }
     if (pSds.size) {
       html += '<div class="dmt-result-group"><strong>Senate (' + pSds.size + '):</strong><div class="dmt-badges">'
         + Array.from(pSds).sort(function(a,b){return a-b;}).map(function(d) {
-            return '<span class="dmt-badge' + (String(d) === sd ? ' dmt-badge-active' : '') + '">SD ' + d + '</span>';
+            return '<span class="dmt-badge' + (String(d) === sd ? ' dmt-badge-active' : '') + '" data-dtype="senate" data-dnum="' + d + '">SD ' + d + '</span>';
           }).join('') + '</div></div>';
     }
     if (pCds.size) {
       html += '<div class="dmt-result-group"><strong>Congressional (' + pCds.size + '):</strong><div class="dmt-badges">'
         + Array.from(pCds).sort(function(a,b){return a-b;}).map(function(d) {
-            return '<span class="dmt-badge' + (String(d) === cd ? ' dmt-badge-active' : '') + '">CD ' + d + '</span>';
+            return '<span class="dmt-badge' + (String(d) === cd ? ' dmt-badge-active' : '') + '" data-dtype="congressional" data-dnum="' + d + '">CD ' + d + '</span>';
           }).join('') + '</div></div>';
     }
 
@@ -1073,6 +1076,50 @@ var DMT = (function() {
   function showResults(html) {
     var el = document.getElementById('dmt-results');
     if (el) { el.innerHTML = html; el.style.display = 'block'; }
+  }
+
+  var _badgeFocusStyle = { color: '#1d4ed8', weight: 3.5, fillColor: '#3b82f6', fillOpacity: 0.85 };
+  var _badgeHoverLayerAdded = null;
+
+  function badgeHover(dtype, dnum) {
+    var lyr = featureLayers[dtype + ':' + dnum];
+    if (!lyr || !dmtMap) return;
+    _badgeHoverLayerAdded = null;
+    if (dmtLayers[dtype] && !dmtMap.hasLayer(dmtLayers[dtype])) {
+      dmtLayers[dtype].addTo(dmtMap);
+      _badgeHoverLayerAdded = dtype;
+    }
+    lyr.setStyle(_badgeFocusStyle);
+    lyr.bringToFront();
+  }
+
+  function badgeUnhover(dtype, dnum) {
+    var lyr = featureLayers[dtype + ':' + dnum];
+    if (!lyr) return;
+    if (highlightedLayers.indexOf(lyr) >= 0) {
+      lyr.setStyle({ color: '#4f46e5', weight: 2, fillColor: '#818cf8', fillOpacity: 0.45 });
+    } else {
+      lyr.setStyle({ color: '#667eea', weight: 0.8, fillColor: '#e0e7ff', fillOpacity: 0.35 });
+    }
+    if (_badgeHoverLayerAdded && dmtLayers[_badgeHoverLayerAdded]) {
+      dmtMap.removeLayer(dmtLayers[_badgeHoverLayerAdded]);
+      _badgeHoverLayerAdded = null;
+    }
+  }
+
+  function initBadgeHover() {
+    var el = document.getElementById('dmt-results');
+    if (!el) return;
+    el.addEventListener('mouseover', function(e) {
+      var badge = e.target.closest('.dmt-badge');
+      if (!badge || !badge.dataset.dtype) return;
+      badgeHover(badge.dataset.dtype, parseInt(badge.dataset.dnum, 10));
+    });
+    el.addEventListener('mouseout', function(e) {
+      var badge = e.target.closest('.dmt-badge');
+      if (!badge || !badge.dataset.dtype) return;
+      badgeUnhover(badge.dataset.dtype, parseInt(badge.dataset.dnum, 10));
+    });
   }
 
   return {
