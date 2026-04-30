@@ -184,6 +184,32 @@ header p {
   .dmt-district-grid { grid-template-columns: repeat(3, 1fr); }
   #dmt-map { min-height: 350px; }
 }
+
+/* ── IRS Candidates Table ────────────────────────────────────────── */
+.dmt-irs-section { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; margin-top: 20px; }
+.dmt-irs-header { background: #1e3a5f; color: white; padding: 12px 18px; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.3px; display: flex; align-items: center; gap: 8px; }
+.dmt-irs-empty { padding: 14px 18px; font-size: 0.85rem; color: #64748b; font-style: italic; }
+.pp-wrapper { width: 100%; overflow-x: auto; }
+.pp-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 800px; background: white; }
+.pp-table thead th { background: #1e3a5f; color: white; font-weight: 700; font-size: 0.78rem; padding: 10px 8px; text-align: center; border: 1px solid #163050; white-space: nowrap; }
+.pp-row { border-bottom: 1px solid #e2e8f0; background: white; }
+.pp-row:hover { background: #f0f7ff; }
+.pp-lean { text-align: center; font-weight: 700; font-size: 0.88rem; padding: 12px 6px; white-space: nowrap; min-width: 66px; }
+.pp-dist { text-align: center; padding: 10px 8px; }
+.pp-badge { display: inline-flex; align-items: center; justify-content: center; width: 54px; height: 54px; border-radius: 50%; font-weight: 800; font-size: 0.75rem; border: 3px solid; background: white; line-height: 1.1; text-align: center; }
+.pp-badge.r-lean { border-color: #b91c1c; color: #b91c1c; }
+.pp-badge.d-lean { border-color: #1d4ed8; color: #1d4ed8; }
+.pp-badge.even   { border-color: #6b7280; color: #6b7280; }
+.pp-loc { padding: 10px 8px; color: #475569; font-size: 0.85rem; min-width: 90px; text-align: center; }
+.pp-candidate { padding: 8px 10px; min-width: 180px; }
+.pp-cand-inner { display: flex; align-items: center; gap: 10px; }
+.pp-photo { width: 50px; height: 50px; border-radius: 6px; object-fit: cover; flex-shrink: 0; border: 2px solid #e2e8f0; }
+.pp-initials { width: 50px; height: 50px; border-radius: 6px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 700; color: white; flex-shrink: 0; }
+.pp-cand-name { font-weight: 700; color: #1e293b; font-size: 0.92rem; line-height: 1.3; }
+.pp-party { padding: 10px 8px; text-align: center; font-weight: 700; font-size: 0.8rem; white-space: nowrap; min-width: 90px; }
+.pp-party-r { color: #b91c1c; }
+.pp-party-d { color: #1d4ed8; }
+.pp-party-rep { font-weight: 400; font-size: 0.72rem; color: #475569; margin-top: 3px; white-space: normal; }
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -245,6 +271,11 @@ header p {
       <div id="dmt-map-status" class="dmt-map-status">Click a district on the map to look it up</div>
     </div>
   </div>
+
+  <div class="dmt-irs-section" id="dmt-irs-section" style="display:none">
+    <div class="dmt-irs-header">★ IRS Candidates in Your Pack</div>
+    <div id="dmt-irs-table"></div>
+  </div>
 </div>
 
 <script>
@@ -265,6 +296,8 @@ var DMT = (function() {
   var CSV_URL = 'https://docs.google.com/spreadsheets/d/1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw/export?format=csv&gid=918237840';
   var candidatesData = null;
   var directoryNames = new Set();
+  var leanLookup = { congressional: {}, senate: {}, house: {} };
+  var rowByName = {};
 
   function init() {
     if (_initialized) {
@@ -283,9 +316,14 @@ var DMT = (function() {
       .then(function(d) { candidatesData = d; })
       .catch(function() {});
 
+    fetch('../data.json')
+      .then(function(r) { return r.json(); })
+      .then(function(d) { leanLookup = buildLeanLookup(d); })
+      .catch(function() {});
+
     fetch(CSV_URL)
       .then(function(r) { return r.text(); })
-      .then(function(csv) { candidateRows = parseCSVSimple(csv); buildDirectorySet(); populateCandidateSelect(); })
+      .then(function(csv) { candidateRows = parseCSVSimple(csv); buildDirectorySet(); buildRowByName(); populateCandidateSelect(); })
       .catch(function() {
         var sel = document.getElementById('dmt-cand-select');
         if (sel) sel.innerHTML = '<option value="">Unable to load candidates</option>';
@@ -628,6 +666,7 @@ var DMT = (function() {
       html += '<div class="dmt-result-title" style="margin-top:12px">2026 Primary Candidates</div>' + candHtml;
     }
 
+    showIrsTable(sortedHds.map(Number), sortedSds.map(Number), sortedCds.map(Number));
     showResults(html);
   }
 
@@ -754,6 +793,7 @@ var DMT = (function() {
       html += '<div class="dmt-result-title" style="margin-top:12px">2026 Primary Candidates</div>' + candHtml;
     }
 
+    showIrsTable(sortedPHds, sortedPSds, sortedPCds);
     showResults(html);
   }
 
@@ -819,6 +859,154 @@ var DMT = (function() {
       );
     });
     return parts.join('');
+  }
+
+  function buildLeanLookup(leanData) {
+    var lookup = { congressional: {}, senate: {}, house: {} };
+    ['congressional', 'senate', 'house'].forEach(function(dtype) {
+      (leanData[dtype] || []).forEach(function(d) { lookup[dtype][d.district] = d; });
+    });
+    return lookup;
+  }
+
+  function buildRowByName() {
+    rowByName = {};
+    candidateRows.forEach(function(r) {
+      var role = (r['Role'] || '').trim().toLowerCase();
+      if (!role.includes('candidate') || role.includes('former')) return;
+      var first = (r['First Name'] || '').trim();
+      var last  = (r['Last Name']  || '').trim();
+      var name  = (first + ' ' + last).trim();
+      if (!name) return;
+      rowByName[name.toLowerCase()] = r;
+      rowByName[normalizeName(name)] = r;
+      rowByName[nameKey(name)] = r;
+    });
+  }
+
+  function irsLeanColor(margin) {
+    if (margin === null || margin === undefined) return { bg: '#e2e8f0', fg: '#475569' };
+    if (margin > 0.25)  return { bg: '#8B0000', fg: 'white' };
+    if (margin > 0.15)  return { bg: '#CC0000', fg: 'white' };
+    if (margin > 0.08)  return { bg: '#EF4444', fg: 'white' };
+    if (margin > 0.03)  return { bg: '#FCA5A5', fg: '#1e293b' };
+    if (margin > -0.03) return { bg: '#DDD6FE', fg: '#1e293b' };
+    if (margin > -0.08) return { bg: '#93C5FD', fg: '#1e293b' };
+    if (margin > -0.15) return { bg: '#3B82F6', fg: 'white' };
+    if (margin > -0.25) return { bg: '#1D4ED8', fg: 'white' };
+    return { bg: '#1E3A8A', fg: 'white' };
+  }
+
+  function irsLeanCell(margin, label) {
+    var c = irsLeanColor(margin);
+    return '<td class="pp-lean" style="background:' + c.bg + ';color:' + c.fg + ';">' + xesc(label || '—') + '</td>';
+  }
+
+  function irsDriveThumbnail(url) {
+    if (!url) return '';
+    var m = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (m) return 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w300';
+    var m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (m2) return 'https://drive.google.com/thumbnail?id=' + m2[1] + '&sz=w300';
+    return url;
+  }
+
+  function collectIrsCandidates(hdNums, sdNums, cdNums) {
+    if (!candidatesData) return [];
+    var entries = [];
+    var seen = new Set();
+
+    function addDistrict(dtype, cdataKey, dnums) {
+      dnums.forEach(function(d) {
+        var list = (candidatesData[cdataKey] || {})[String(d)] || [];
+        list.forEach(function(c) {
+          var name = (c.name || '').trim();
+          if (!name) return;
+          var nl = name.toLowerCase();
+          if (!directoryNames.has(nl) && !directoryNames.has(normalizeName(name)) && !directoryNames.has(nameKey(name))) return;
+          if (seen.has(nl)) return;
+          seen.add(nl);
+          var csvRow = rowByName[nl] || rowByName[normalizeName(name)] || rowByName[nameKey(name)] || null;
+          var lean = (leanLookup[dtype] || {})[d] || null;
+          entries.push({ name: name, party: c.party, dtype: dtype, dnum: d, csvRow: csvRow, lean: lean });
+        });
+      });
+    }
+
+    addDistrict('senate',       'sd', sdNums);
+    addDistrict('house',        'hd', hdNums);
+    addDistrict('congressional','cd', cdNums);
+    return entries;
+  }
+
+  function renderIrsTable(entries) {
+    if (!entries.length) return '<div class="dmt-irs-empty">No IRS candidates found in the selected districts.</div>';
+
+    var thead = '<thead><tr>'
+      + '<th>IRS Candidate</th><th>2020 Pres</th><th>2022 Senate</th><th>2024 Pres</th>'
+      + '<th>IN-Index</th><th>District</th><th>Location</th><th>Holds Seat</th>'
+      + '</tr></thead>';
+
+    var rows = entries.map(function(e) {
+      var lean  = e.lean;
+      var m2020 = lean ? lean.margin_2020 : null;
+      var m2022 = lean ? lean.margin_2022 : null;
+      var m2024 = lean ? lean.margin_2024 : null;
+      var midx  = lean ? lean.in_index    : null;
+      var l2020 = lean ? (lean.label_2020       || '—') : 'N/A';
+      var l2022 = lean ? (lean.label_2022       || '—') : '—';
+      var l2024 = lean ? (lean.label_2024       || '—') : '—';
+      var lidx  = lean ? (lean.in_index_label   || '—') : '—';
+
+      var prefix = { house: 'HD', senate: 'SD', congressional: 'CD' }[e.dtype] || '';
+      var distBadge = e.dtype && e.dnum ? prefix + '-' + e.dnum : '—';
+      var badgeCls = (midx !== null && midx !== undefined)
+        ? (midx > 0.03 ? 'r-lean' : midx < -0.03 ? 'd-lean' : 'even')
+        : 'even';
+
+      var csvRow  = e.csvRow;
+      var first   = csvRow ? (csvRow['First Name'] || '').trim() : '';
+      var last    = csvRow ? (csvRow['Last Name']  || '').trim() : '';
+      var initials = ((first[0] || '') + (last[0] || '')).toUpperCase() || (e.name[0] || '?').toUpperCase();
+      var rawPhoto = csvRow ? (csvRow['Photo URL'] || csvRow['Photo'] || '') : '';
+      var photo    = rawPhoto ? irsDriveThumbnail(rawPhoto) : '';
+      var photoHtml = photo
+        ? '<img class="pp-photo" src="' + xesc(photo) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><div class="pp-initials" style="display:none">' + xesc(initials) + '</div>'
+        : '<div class="pp-initials">' + xesc(initials) + '</div>';
+
+      var seatParty = lean ? (lean.party || '') : '';
+      var rep       = lean ? (lean.representative || '') : '';
+      var holdsCell = seatParty === 'Republican'
+        ? '<td class="pp-party pp-party-r">Republican<div class="pp-party-rep">' + xesc(rep) + '</div></td>'
+        : seatParty === 'Democratic'
+          ? '<td class="pp-party pp-party-d">Democratic<div class="pp-party-rep">' + xesc(rep) + '</div></td>'
+          : '<td class="pp-party">—</td>';
+
+      var city = csvRow ? ((csvRow['Home City'] || '').trim() || '—') : '—';
+
+      return '<tr class="pp-row">'
+        + '<td class="pp-candidate"><div class="pp-cand-inner">' + photoHtml
+        + '<div class="pp-cand-name">' + xesc(e.name) + '<br><span class="dmt-cohort-badge">★ IRS</span></div></div></td>'
+        + irsLeanCell(m2020, l2020)
+        + irsLeanCell(m2022, l2022)
+        + irsLeanCell(m2024, l2024)
+        + irsLeanCell(midx,  lidx)
+        + '<td class="pp-dist"><div class="pp-badge ' + badgeCls + '">' + xesc(distBadge) + '</div></td>'
+        + '<td class="pp-loc">' + xesc(city) + '</td>'
+        + holdsCell
+        + '</tr>';
+    }).join('');
+
+    return '<div class="pp-wrapper"><table class="pp-table">' + thead + '<tbody>' + rows + '</tbody></table></div>';
+  }
+
+  function showIrsTable(hdNums, sdNums, cdNums) {
+    var section = document.getElementById('dmt-irs-section');
+    var tableEl = document.getElementById('dmt-irs-table');
+    if (!section || !tableEl) return;
+    var entries = collectIrsCandidates(hdNums || [], sdNums || [], cdNums || []);
+    tableEl.innerHTML = renderIrsTable(entries);
+    section.style.display = 'block';
   }
 
   function showResults(html) {
