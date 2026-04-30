@@ -160,6 +160,10 @@ header p {
   background: #f1f5f9; border-left: 3px solid #667eea;
   border-radius: 3px; font-size: 0.78rem; color: #475569;
 }
+.dmt-county-item-anchor {
+  background: #fef3c7; border-left: 3px solid #b45309;
+  color: #92400e; font-weight: 600;
+}
 .dmt-error {
   padding: 10px; background: #fee2e2; border-left: 3px solid #ef4444;
   border-radius: 4px; color: #b91c1c; font-size: 0.85rem;
@@ -810,10 +814,11 @@ var DMT = (function() {
       anchorDtype, anchorDnum
     );
 
-    // Highlight counties of the anchor district
+    // Counties belonging to the anchor district
     var anchorCounties = hd ? (districtData.hd_to_counties[hd] || [])
                        : sd ? (districtData.sd_to_counties[sd] || [])
                             : (districtData.cd_to_counties[cd] || []);
+    var anchorCountySet = new Set(anchorCounties.map(function(c) { return c.toLowerCase(); }));
     highlightCountiesOnMap(anchorCounties);
 
     var html = '<div class="dmt-result-title">Selected</div><div class="dmt-badges">';
@@ -825,7 +830,10 @@ var DMT = (function() {
     if (counties.length) {
       html += '<div class="dmt-result-group" style="margin-top:10px"><strong>Counties covered:</strong>'
         + '<div class="dmt-counties">'
-        + counties.map(function(cn) { return '<span class="dmt-county-item">' + xesc(cn) + '</span>'; }).join('')
+        + counties.map(function(cn) {
+            var cls = 'dmt-county-item' + (anchorCountySet.has(cn.toLowerCase()) ? ' dmt-county-item-anchor' : '');
+            return '<span class="' + cls + '">' + xesc(cn) + '</span>';
+          }).join('')
         + '</div></div>';
     }
 
