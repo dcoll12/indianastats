@@ -721,8 +721,10 @@ var DMT = (function() {
     var cd = document.getElementById('dmt-cd').value.trim();
     if (!hd && !sd && !cd) { showResults('<div class="dmt-error">Enter at least one district number.</div>'); return; }
 
-    var knownCounties = null;
+    var knownCounties = null;  // intersection — used for overlapping district discovery
+    var allCounties = new Set(); // union — used for display
     function intersect(arr) {
+      arr.forEach(function(c) { allCounties.add(c); });
       if (!knownCounties) { knownCounties = new Set(arr); }
       else {
         var f = arr.filter(function(c) { return knownCounties.has(c); });
@@ -745,7 +747,7 @@ var DMT = (function() {
       intersect(c);
     }
 
-    var counties = knownCounties ? Array.from(knownCounties).sort() : [];
+    var counties = Array.from(allCounties).sort();
     var pHds = new Set(), pSds = new Set(), pCds = new Set();
     counties.forEach(function(cn) {
       (districtData.county_to_hds[cn] || []).forEach(function(d) { pHds.add(d); });

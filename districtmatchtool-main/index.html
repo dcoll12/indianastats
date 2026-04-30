@@ -558,8 +558,9 @@
             }
 
             // Get counties for each district
-            let knownCounties = new Set();
-            
+            let knownCounties = new Set();  // intersection — used for overlapping district discovery
+            let allCounties = new Set();    // union — used for display
+
             if (hd) {
                 const hdCounties = districtData.hd_to_counties[hd] || [];
                 if (hdCounties.length === 0) {
@@ -568,6 +569,7 @@
                     return;
                 }
                 hdCounties.forEach(c => knownCounties.add(c));
+                hdCounties.forEach(c => allCounties.add(c));
             }
 
             if (sd) {
@@ -577,6 +579,7 @@
                     resultsDiv.classList.add('show');
                     return;
                 }
+                sdCounties.forEach(c => allCounties.add(c));
                 if (knownCounties.size > 0) {
                     // Find intersection
                     knownCounties = new Set([...knownCounties].filter(c => sdCounties.includes(c)));
@@ -596,6 +599,7 @@
                     resultsDiv.classList.add('show');
                     return;
                 }
+                cdCounties.forEach(c => allCounties.add(c));
                 if (knownCounties.size > 0) {
                     knownCounties = new Set([...knownCounties].filter(c => cdCounties.includes(c)));
                     if (knownCounties.size === 0) {
@@ -642,12 +646,12 @@
             if (cd) html += `<div class="district-badge active">CD ${cd}</div>`;
             html += '</div></div>';
 
-            if (knownCounties.size > 0) {
+            if (allCounties.size > 0) {
                 html += `
                     <div class="result-section">
                         <div class="result-title">📍 Counties Covered</div>
                         <div class="county-list">
-                            ${[...knownCounties].sort().map(c => `<div class="county-item">${c}</div>`).join('')}
+                            ${[...allCounties].sort().map(c => `<div class="county-item">${c}</div>`).join('')}
                         </div>
                     </div>
                 `;
