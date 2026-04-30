@@ -908,9 +908,13 @@ var DMT = (function() {
     return { bg: '#1E3A8A', fg: 'white' };
   }
 
-  function irsLeanCell(margin, label) {
+  function irsLeanCell(margin, label, subLabel) {
     var c = irsLeanColor(margin);
-    return '<td class="pp-lean" style="background:' + c.bg + ';color:' + c.fg + ';">' + xesc(label || '—') + '</td>';
+    var content = xesc(label || '—');
+    if (subLabel && subLabel !== '—') {
+      content += '<br><span style="font-size:0.7em;opacity:0.8;font-weight:600">' + xesc(subLabel) + '</span>';
+    }
+    return '<td class="pp-lean" style="background:' + c.bg + ';color:' + c.fg + ';">' + content + '</td>';
   }
 
   function irsDriveThumbnail(url) {
@@ -1029,12 +1033,16 @@ var DMT = (function() {
 
       var city = csvRow ? ((csvRow['Home City'] || '').trim() || '—') : '—';
 
+      var sub2020 = (l2020 && l2020.includes('Unop')) ? lidx : '';
+      var sub2022 = (l2022 && l2022.includes('Unop')) ? lidx : '';
+      var sub2024 = (l2024 && l2024.includes('Unop')) ? lidx : '';
+
       return '<tr class="pp-row">'
         + '<td class="pp-candidate"><div class="pp-cand-inner">' + photoHtml
         + '<div class="pp-cand-name">' + xesc(e.name) + '<br><span class="dmt-cohort-badge">★ IRS</span></div></div></td>'
-        + irsLeanCell(m2020, l2020)
-        + irsLeanCell(m2022, l2022)
-        + irsLeanCell(m2024, l2024)
+        + irsLeanCell(m2020, l2020, sub2020)
+        + irsLeanCell(m2022, l2022, sub2022)
+        + irsLeanCell(m2024, l2024, sub2024)
         + irsLeanCell(midx,  lidx)
         + '<td class="pp-dist"><div class="pp-badge ' + badgeCls + '">' + xesc(distBadge) + '</div></td>'
         + '<td class="pp-loc">' + xesc(city) + '</td>'
