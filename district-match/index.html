@@ -104,6 +104,8 @@ header p {
   font-size: 0.88rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s;
 }
 .dmt-btn:hover { opacity: 0.85; }
+.dmt-btn-reset { margin-top: 6px; background: white; color: #667eea; border: 2px solid #667eea; }
+.dmt-btn-reset:hover { opacity: 1; background: #eff6ff; }
 .dmt-results { margin-top: 14px; display: none; }
 .dmt-result-title {
   font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
@@ -259,6 +261,7 @@ header p {
           </div>
         </div>
         <button class="dmt-btn" onclick="DMT.lookupByDistricts()">Find Counties &amp; Related Districts</button>
+        <button class="dmt-btn dmt-btn-reset" onclick="DMT.reset()">↺ Reset</button>
       </div>
       <div id="dmt-results" class="dmt-results"></div>
     </div>
@@ -1158,12 +1161,30 @@ var DMT = (function() {
     });
   }
 
+  function reset() {
+    var sel = document.getElementById('dmt-cand-select');
+    if (sel) sel.value = '';
+    var county = document.getElementById('dmt-county');
+    if (county) county.value = '';
+    document.getElementById('dmt-hd').value = '';
+    document.getElementById('dmt-sd').value = '';
+    document.getElementById('dmt-cd').value = '';
+    var results = document.getElementById('dmt-results');
+    if (results) { results.innerHTML = ''; results.style.display = 'none'; }
+    var irsSection = document.getElementById('dmt-irs-section');
+    if (irsSection) irsSection.style.display = 'none';
+    var irsNeighbor = document.getElementById('dmt-irs-neighbor-section');
+    if (irsNeighbor) irsNeighbor.style.display = 'none';
+    clearHighlights();
+  }
+
   return {
     init: init,
     switchLayer: switchLayer,
     lookupByCounty: lookupByCounty,
     lookupByDistricts: lookupByDistricts,
-    onCandidateChange: onCandidateChange
+    onCandidateChange: onCandidateChange,
+    reset: reset
   };
 })();
 
