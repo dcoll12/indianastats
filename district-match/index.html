@@ -150,6 +150,13 @@ header p {
   background: #dbeafe; color: #1e40af; border-radius: 3px;
   letter-spacing: 0; margin-left: 3px; white-space: nowrap;
 }
+.dmt-uncontested-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.62rem; font-weight: 900; padding: 1px 5px;
+  background: #dcfce7; color: #166534; border-radius: 3px;
+  letter-spacing: 0; white-space: nowrap;
+}
+.dmt-uncontested-row { font-size: 0.80rem; color: #64748b; }
 .dmt-map-side { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .dmt-layer-row {
   display: flex; gap: 8px; padding: 10px 12px;
@@ -778,7 +785,14 @@ var DMT = (function() {
   function renderCandidates(type, dnum) {
     if (!candidatesData) return '';
     var list = (candidatesData[type] || {})[String(dnum)];
-    if (!list || !list.length) return '';
+    if (!list || !list.length) {
+      return '<div class="dmt-candidates"><div class="dmt-uncontested-row"><span class="dmt-uncontested-badge">Uncontested</span></div></div>';
+    }
+    var parties = new Set(list.map(function(c) { return c.party; }));
+    var isUncontested = !parties.has('D') || !parties.has('R');
+    var uncontestedRow = isUncontested
+      ? '<div class="dmt-uncontested-row"><span class="dmt-uncontested-badge">Uncontested</span></div>'
+      : '';
     var items = list.map(function(c) {
       var pc = 'dmt-party-' + (c.party || 'I');
       var cn = (c.name || '').trim();
@@ -787,7 +801,7 @@ var DMT = (function() {
       var badge = inDirectory ? '<span class="dmt-cohort-badge">★ IRS</span>' : '';
       return '<div class="' + cls + '"><span class="dmt-party ' + pc + '">' + xesc(c.party) + '</span>' + xesc(c.name) + badge + '</div>';
     }).join('');
-    return '<div class="dmt-candidates">' + items + '</div>';
+    return '<div class="dmt-candidates">' + uncontestedRow + items + '</div>';
   }
 
   function candidatesSection(label, type, dnums, activeNum) {
