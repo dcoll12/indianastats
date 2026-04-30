@@ -423,10 +423,23 @@ footer {
 .pp-mypack-coalition strong { font-weight: 800; }
 .pp-mypack-district-chip {
   display: inline-block; font-size: 0.72rem; font-weight: 600;
-  padding: 2px 8px; border-radius: 4px; margin: 2px;
+  padding: 3px 9px; border-radius: 4px; margin: 2px;
   background: #dbeafe; color: #1e40af;
+  border: 1.5px solid #93c5fd; cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
-.pp-mypack-district-chip.anchor { background: #fee2e2; color: #991b1b; }
+.pp-mypack-district-chip:hover { background: #bfdbfe; border-color: #60a5fa; }
+.pp-mypack-district-chip.anchor { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+.pp-mypack-district-chip.anchor:hover { background: #fecaca; }
+.pp-mypack-district-chip.pinned { background: #1e3a5f; color: #fff; border-color: #1e3a5f; }
+.pp-mypack-district-chip.pinned:hover { background: #1e40af; border-color: #1e40af; }
+.pp-mypack-district-chip.pinned.anchor { background: #991b1b; border-color: #991b1b; color: #fff; }
+.pp-mypack-coalition-row { display: flex; align-items: center; gap: 6px; margin: 3px 0; flex-wrap: wrap; }
+.pp-mypack-coalition-type { font-size: 0.72rem; font-weight: 700; color: #475569; min-width: 80px; }
+.pp-primary-section-header {
+  font-size: 0.78rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+  color: #475569; padding: 10px 0 6px; border-bottom: 2px solid #e2e8f0; margin: 14px 0 10px;
+}
 .pp-district-inputs {
   display: flex; align-items: flex-end; gap: 10px; flex-wrap: wrap; padding: 4px 0;
 }
@@ -521,7 +534,7 @@ footer {
 <script>
 /* ── Power Packs module ─────────────────────────────────────────────── */
 var PP = (function() {
-  var state = { rows: [], leanLookup: {}, districtData: {}, loaded: false, mode: 'focus', selectedCD: 1, selectedCounty: '', selectedMyPackDistrict: { dtype: null, dnum: null } };
+  var state = { rows: [], leanLookup: {}, districtData: {}, loaded: false, mode: 'focus', selectedCD: 1, selectedCounty: '', selectedMyPackDistrict: { dtype: null, dnum: null }, myPackPinnedChip: null };
   var CSV_URL = 'https://docs.google.com/spreadsheets/d/1jJUkXqj4o4pAhQLoRVjwB0VGROsoD6jBKCTQafiCOHw/export?format=csv&gid=918237840';
   var SEARCH_FIELDS = ['First Name', 'Last Name', 'Home City', 'Counties'];
 
@@ -2166,6 +2179,26 @@ var PP = (function() {
       ((dd.sd_to_counties || {})[String(sd)] || []).forEach(function(c) { allCounties[c] = true; });
     });
 
+    // Compute overlapping congressional districts
+    var packCDsMap = {};
+    packSDs.forEach(function(sd) {
+      var cd = (dd.sd_to_cd || {})[String(sd)];
+      if (cd) packCDsMap[cd] = true;
+    });
+    packHDs.forEach(function(hd) {
+      var cd = (dd.hd_to_cd || {})[String(hd)];
+      if (cd) packCDsMap[cd] = true;
+    });
+    var packCDs = Object.keys(packCDsMap).map(Number).sort(function(a,b){return a-b;});
+
+    // Track districts with no candidates (uncontested/unfiled)
+    var candSDSet = {};
+    senateCandidates.forEach(function(c) { candSDSet[c.dnum] = true; });
+    var candHDSet = {};
+    houseMembers.forEach(function(m) { candHDSet[m.dnum] = true; });
+    var uncontestedSDs = packSDs.filter(function(sd) { return !candSDSet[sd]; });
+    var uncontestedHDs = packHDs.filter(function(hd) { return !candHDSet[hd]; });
+
     var anchorLean = dtype === 'senate'
       ? (ll.senate || {})[dnum] || null
       : (ll.house || {})[dnum] || null;
@@ -2174,9 +2207,11 @@ var PP = (function() {
       dtype: dtype, dnum: dnum,
       anchorLean: anchorLean,
       tier: dtype === 'senate' ? sdTier(dnum) : hdTier(dnum),
-      packSDs: packSDs, packHDs: packHDs,
+      packSDs: packSDs, packHDs: packHDs, packCDs: packCDs,
       senateCandidates: senateCandidates,
       houseMembers: houseMembers,
+      uncontestedSDs: uncontestedSDs,
+      uncontestedHDs: uncontestedHDs,
       counties: Object.keys(allCounties).sort()
     };
   }
@@ -2473,31 +2508,58 @@ var PP = (function() {
       +result.packHDs.length+' house district'+(result.packHDs.length!==1?'s':''));
     parts.push('</div></div>');
 
-    // Coalition chips
+    // Coalition chips — click to pin/unpin on map
+    var pinned = state.myPackPinnedChip || {};
     parts.push('<div class="pp-mypack-coalition">');
-    parts.push('<strong>Overlapping districts</strong>:<br style="margin-bottom:4px">');
-    parts.push('<span style="font-size:0.77rem;opacity:0.75">Senate:&nbsp;</span>');
-    result.packSDs.slice().sort(function(a,b){return a-b;}).forEach(function(sd) {
-      var isAnchor = sd === dnum && dtype === 'senate';
-      if (isAnchor) {
-        parts.push('<span class="pp-mypack-district-chip anchor" title="Selected district">SD-'+sd+' ★</span>');
-      } else {
-        parts.push('<span class="pp-mypack-district-chip" title="View SD-'+sd+' Pack" style="cursor:pointer" onclick="(function(){var s=document.getElementById(\'pp-my-sd\');var h=document.getElementById(\'pp-my-hd\');if(s)s.value='+sd+';if(h)h.value=\'\';PP.onMyPackInput(\'senate\');})()">'+'SD-'+sd+'</span>');
-      }
-    });
-    parts.push('&nbsp;&nbsp;<span style="font-size:0.77rem;opacity:0.75">House:&nbsp;</span>');
+    parts.push('<div style="font-size:0.72rem;color:#475569;margin-bottom:6px"><strong style="color:#1e40af">Click a district tag to highlight it on the map</strong> &nbsp;·&nbsp; click again to deselect</div>');
+
+    // House chips
+    parts.push('<div class="pp-mypack-coalition-row">');
+    parts.push('<span class="pp-mypack-coalition-type">House ('+result.packHDs.length+'):</span>');
     result.packHDs.slice().sort(function(a,b){return a-b;}).forEach(function(hd) {
       var isAnchor = hd === dnum && dtype === 'house';
-      parts.push('<span class="pp-mypack-district-chip'+(isAnchor?' anchor':'')+'" title="'+(isAnchor?'Selected district':'Overlapping HD')+'">HD-'+hd+(isAnchor?' ★':'')+'</span>');
+      var isPinned = pinned.dtype === 'house' && pinned.dnum === hd;
+      var cls = 'pp-mypack-district-chip' + (isAnchor ? ' anchor' : '') + (isPinned ? ' pinned' : '');
+      parts.push('<span class="'+cls+'" title="'+(isAnchor?'Selected district ':'')+'Click to highlight HD-'+hd+' on map" onclick="PP.toggleChipPin(\'house\','+hd+')">HD-'+hd+(isAnchor?' ★':'')+'</span>');
     });
+    parts.push('</div>');
+
+    // Senate chips
+    parts.push('<div class="pp-mypack-coalition-row">');
+    parts.push('<span class="pp-mypack-coalition-type">Senate ('+result.packSDs.length+'):</span>');
+    result.packSDs.slice().sort(function(a,b){return a-b;}).forEach(function(sd) {
+      var isAnchor = sd === dnum && dtype === 'senate';
+      var isPinned = pinned.dtype === 'senate' && pinned.dnum === sd;
+      var cls = 'pp-mypack-district-chip' + (isAnchor ? ' anchor' : '') + (isPinned ? ' pinned' : '');
+      parts.push('<span class="'+cls+'" title="'+(isAnchor?'Selected district ':'')+'Click to highlight SD-'+sd+' on map" onclick="PP.toggleChipPin(\'senate\','+sd+')">SD-'+sd+(isAnchor?' ★':'')+'</span>');
+    });
+    parts.push('</div>');
+
+    // Congressional chips
+    if (result.packCDs && result.packCDs.length) {
+      parts.push('<div class="pp-mypack-coalition-row">');
+      parts.push('<span class="pp-mypack-coalition-type">Congressional ('+result.packCDs.length+'):</span>');
+      result.packCDs.forEach(function(cd) {
+        var isPinned = pinned.dtype === 'congressional' && pinned.dnum === cd;
+        var cls = 'pp-mypack-district-chip' + (isPinned ? ' pinned' : '');
+        parts.push('<span class="'+cls+'" title="Click to highlight CD-'+cd+' on map" onclick="PP.toggleChipPin(\'congressional\','+cd+')">CD-'+cd+'</span>');
+      });
+      parts.push('</div>');
+    }
+
     if (result.counties.length) {
-      parts.push('<br><span style="font-size:0.74rem;opacity:0.65;margin-top:4px;display:inline-block">Counties: '+esc(result.counties.join(' · '))+'</span>');
+      parts.push('<div style="font-size:0.74rem;opacity:0.65;margin-top:4px">Counties: '+esc(result.counties.join(' · '))+'</div>');
     }
     parts.push('</div>');
 
-    // Senate candidates — grouped by SD
-    if (result.senateCandidates.length) {
-      parts.push('<div class="pp-section-label pp-section-senate">⚡ Senate Candidates ('+result.senateCandidates.length+')</div>');
+    // 2026 Primary Candidates section header
+    var hasCandidates = result.senateCandidates.length || result.houseMembers.length;
+    var hasUncontested = (result.uncontestedSDs && result.uncontestedSDs.length) || (result.uncontestedHDs && result.uncontestedHDs.length);
+    parts.push('<div class="pp-primary-section-header">2026 Primary Candidates</div>');
+
+    // Senate candidates — grouped by SD, including uncontested
+    if (result.senateCandidates.length || (result.uncontestedSDs && result.uncontestedSDs.length)) {
+      parts.push('<div class="pp-section-label pp-section-senate">⚡ Senate Candidates ('+result.senateCandidates.length+')'+(result.uncontestedSDs && result.uncontestedSDs.length ? ' · <span style="color:#b45309;font-size:0.78rem">'+result.uncontestedSDs.length+' uncontested</span>' : '')+'</div>');
       var bySd = {};
       result.senateCandidates.forEach(function(c) {
         if (!bySd[c.dnum]) bySd[c.dnum] = [];
@@ -2505,10 +2567,15 @@ var PP = (function() {
       });
       result.packSDs.slice().sort(function(a,b){return a-b;}).forEach(function(sd) {
         var cands = bySd[sd];
-        if (!cands || !cands.length) return;
         var isAnchor = sd === dnum && dtype === 'senate';
         var sdLean = (state.leanLookup.senate || {})[sd] || null;
         var sdIndex = sdLean ? (sdLean.in_index_label || '') : '';
+        if (!cands || !cands.length) {
+          // Show uncontested district
+          parts.push('<div class="pp-mypack-dist-sub">SD-'+sd+(isAnchor?' ★':'')+( sdIndex ? '&nbsp;<span style="font-weight:400;opacity:0.7">'+esc(sdIndex)+'</span>' : '')+'</div>');
+          parts.push('<div class="pp-uncontested-row"><span class="pp-uncontested-badge">⚠ UNCONTESTED</span><span>No Democratic candidate filed for SD-'+sd+'</span>'+(sdLean && sdLean.representative ? '<span style="opacity:0.7;font-size:0.78rem">Current seat: '+esc(sdLean.representative)+' ('+esc(sdLean.party || '')+')</span>' : '')+'</div>');
+          return;
+        }
         parts.push('<div class="pp-mypack-dist-sub">SD-'+sd+(isAnchor?' ★':'')+( sdIndex ? '&nbsp;<span style="font-weight:400;opacity:0.7">'+esc(sdIndex)+'</span>' : '')+'</div>');
         parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
         cands.forEach(function(cand) {
@@ -2518,9 +2585,9 @@ var PP = (function() {
       });
     }
 
-    // House candidates — grouped by HD
-    if (result.houseMembers.length) {
-      parts.push('<div class="pp-section-label pp-section-house">House Candidates ('+result.houseMembers.length+')</div>');
+    // House candidates — grouped by HD, including uncontested
+    if (result.houseMembers.length || (result.uncontestedHDs && result.uncontestedHDs.length)) {
+      parts.push('<div class="pp-section-label pp-section-house">House Candidates ('+result.houseMembers.length+')'+(result.uncontestedHDs && result.uncontestedHDs.length ? ' · <span style="color:#b45309;font-size:0.78rem">'+result.uncontestedHDs.length+' uncontested</span>' : '')+'</div>');
       var byHd = {};
       result.houseMembers.forEach(function(m) {
         if (!byHd[m.dnum]) byHd[m.dnum] = [];
@@ -2528,10 +2595,15 @@ var PP = (function() {
       });
       result.packHDs.slice().sort(function(a,b){return a-b;}).forEach(function(hd) {
         var members = byHd[hd];
-        if (!members || !members.length) return;
         var isAnchor = hd === dnum && dtype === 'house';
         var hdLean = (state.leanLookup.house || {})[hd] || null;
         var hdIndex = hdLean ? (hdLean.in_index_label || '') : '';
+        if (!members || !members.length) {
+          // Show uncontested district
+          parts.push('<div class="pp-mypack-dist-sub">HD-'+hd+(isAnchor?' ★':'')+( hdIndex ? '&nbsp;<span style="font-weight:400;opacity:0.7">'+esc(hdIndex)+'</span>' : '')+'</div>');
+          parts.push('<div class="pp-uncontested-row"><span class="pp-uncontested-badge">⚠ UNCONTESTED</span><span>No Democratic candidate filed for HD-'+hd+'</span>'+(hdLean && hdLean.representative ? '<span style="opacity:0.7;font-size:0.78rem">Current seat: '+esc(hdLean.representative)+' ('+esc(hdLean.party || '')+')</span>' : '')+'</div>');
+          return;
+        }
         parts.push('<div class="pp-mypack-dist-sub">HD-'+hd+(isAnchor?' ★':'')+( hdIndex ? '&nbsp;<span style="font-weight:400;opacity:0.7">'+esc(hdIndex)+'</span>' : '')+'</div>');
         parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
         members.forEach(function(member) {
@@ -2546,7 +2618,7 @@ var PP = (function() {
       });
     }
 
-    if (!result.senateCandidates.length && !result.houseMembers.length) {
+    if (!hasCandidates && !hasUncontested) {
       parts.push('<div class="pp-status"><p>No candidates found in overlapping districts.</p></div>');
     }
 
@@ -2612,10 +2684,28 @@ var PP = (function() {
     } else {
       state.selectedMyPackDistrict = { dtype: null, dnum: null };
     }
+    state.myPackPinnedChip = null;
+    MAP.unpin();
     render();
   }
 
-  return { init: init, render: render, reset: reset, setMode: setMode, selectCD: selectCD, selectCounty: selectCounty, onMyPackInput: onMyPackInput, export: exportData, _reload: function(){state.loaded=false;init();} };
+  function toggleChipPin(dtype, dnum) {
+    var cur = state.myPackPinnedChip;
+    if (cur && cur.dtype === dtype && cur.dnum === dnum) {
+      // Unpin
+      state.myPackPinnedChip = null;
+      MAP.unpin();
+    } else {
+      // Pin this chip
+      state.myPackPinnedChip = { dtype: dtype, dnum: dnum };
+      var prefix = { house: 'HD', senate: 'SD', congressional: 'CD' }[dtype] || dtype.toUpperCase();
+      MAP.pin(dtype, dnum, prefix + '-' + dnum);
+    }
+    // Re-render just the coalition chips by updating the full output
+    render();
+  }
+
+  return { init: init, render: render, reset: reset, setMode: setMode, selectCD: selectCD, selectCounty: selectCounty, onMyPackInput: onMyPackInput, toggleChipPin: toggleChipPin, export: exportData, _reload: function(){state.loaded=false;init();} };
 })();
 
 /* ── District map ────────────────────────────────────────────────────── */
@@ -2625,6 +2715,7 @@ var MAP = (function() {
   var geoData = null;
   var activeLayer = null;
   var secondaryLayers = [];
+  var pinnedChip = null; // { dtype, dnum, label } — persists across hover
   var INDIANA_BOUNDS = [[37.77, -88.10], [41.77, -84.78]];
 
   function init() {
@@ -2682,7 +2773,29 @@ var MAP = (function() {
     });
   }
 
+  function revertToPinned() {
+    if (pinnedChip) {
+      highlight(pinnedChip.dtype, pinnedChip.dnum, [], pinnedChip.label);
+    } else {
+      clearHighlight();
+      setLabel('');
+      if (map) map.fitBounds(INDIANA_BOUNDS);
+    }
+  }
+
   function reset() {
+    clearHighlight();
+    setLabel('');
+    if (map) map.fitBounds(INDIANA_BOUNDS);
+  }
+
+  function pin(dtype, dnum, label) {
+    pinnedChip = { dtype: dtype, dnum: dnum, label: label };
+    highlight(dtype, dnum, [], label);
+  }
+
+  function unpin() {
+    pinnedChip = null;
     clearHighlight();
     setLabel('');
     if (map) map.fitBounds(INDIANA_BOUNDS);
@@ -2701,7 +2814,7 @@ var MAP = (function() {
         highlight('senate', sdNum, secondary, label);
       });
       card.addEventListener('mouseleave', function(e) {
-        if (!card.contains(e.relatedTarget)) reset();
+        if (!card.contains(e.relatedTarget)) revertToPinned();
       });
     });
 
@@ -2715,7 +2828,7 @@ var MAP = (function() {
         highlight('house', hdNum, secondary, label);
       });
       card.addEventListener('mouseleave', function(e) {
-        if (!card.contains(e.relatedTarget)) reset();
+        if (!card.contains(e.relatedTarget)) revertToPinned();
       });
     });
 
@@ -2742,13 +2855,13 @@ var MAP = (function() {
           var secondary = sdNums.map(function(sd) { return { dtype: 'senate', dnum: sd }; });
           highlight('house', hdNum, secondary, 'HD-' + hdNum + (sdNums.length ? ' + ' + sdNums.length + ' SD' + (sdNums.length !== 1 ? 's' : '') : ''));
         } else {
-          reset();
+          revertToPinned();
         }
       });
     });
   }
 
-  return { init: init, wireDynamic: wireDynamic };
+  return { init: init, wireDynamic: wireDynamic, pin: pin, unpin: unpin };
 })();
 
 window.MAP_wireDynamic = function() { MAP.wireDynamic(); };
