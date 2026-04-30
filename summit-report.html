@@ -169,11 +169,19 @@
     }
     .mission-box strong { color: #0f2d4a; }
 
-    /* ── THREE COL LAYOUT ── */
-    .three-col {
+    /* ── TWO COL LAYOUT ── */
+    .two-col {
       display: grid;
-      grid-template-columns: 1.1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 18px;
+    }
+
+    /* ── TOOLS ROW ── */
+    .tools-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 20px;
     }
 
     /* ── COHORT BREAKDOWN ── */
@@ -241,12 +249,6 @@
     }
     .cd-chip.full { background: #1a5c3a; }
 
-    /* ── TOOLS LIST ── */
-    .tools-list {
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-    }
     .tool-row {
       display: flex;
       gap: 10px;
@@ -285,35 +287,6 @@
     }
     .context-note strong { color: #1d4ed8; }
 
-    /* ── FOOTER ── */
-    .footer {
-      background: #0f2d4a;
-      padding: 14px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-    .footer-left {
-      color: rgba(255,255,255,0.65);
-      font-size: 0.72rem;
-      line-height: 1.5;
-    }
-    .footer-left strong { color: white; }
-    .footer-right {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .footer-pill {
-      background: rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.75);
-      border: 1px solid rgba(255,255,255,0.18);
-      padding: 3px 10px;
-      border-radius: 999px;
-      font-size: 0.67rem;
-      font-weight: 500;
-    }
 
     @media print {
       body { padding: 0; background: white; }
@@ -384,8 +357,8 @@
       </div>
     </div>
 
-    <!-- THREE COL: Breakdown · CD Coverage · Tools -->
-    <div class="three-col">
+    <!-- TWO COL: Breakdown · Statewide Coverage -->
+    <div class="two-col">
 
       <!-- COHORT BREAKDOWN -->
       <div class="section" style="margin-bottom:0">
@@ -466,57 +439,43 @@
         </div>
       </div>
 
-      <!-- TOOLS -->
-      <div class="section" style="margin-bottom:0">
-        <div class="section-title">Organizer Tools Built</div>
-        <div class="tools-list">
-          <div class="tool-row t1">
-            <div class="tool-icon">🗺️</div>
-            <div class="tool-info">
-              <div class="tool-name">IN-Index Dashboard</div>
-              <div class="tool-desc">Partisan lean for all 159 districts — 2020–2024 margins, vote counts, competitiveness scores.</div>
-            </div>
+    </div>
+
+    <!-- TOOLS ROW -->
+    <div class="section" style="margin-bottom:0">
+      <div class="section-title">Organizer Tools Built</div>
+      <div class="tools-row">
+        <div class="tool-row t1">
+          <div class="tool-icon">🗺️</div>
+          <div class="tool-info">
+            <div class="tool-name">IN-Index Dashboard</div>
+            <div class="tool-desc">Partisan lean for all 159 districts — 2020–2024 margins, vote counts, competitiveness scores.</div>
           </div>
-          <div class="tool-row t2">
-            <div class="tool-icon">🌻</div>
-            <div class="tool-info">
-              <div class="tool-name">Summit Directory</div>
-              <div class="tool-desc">Live searchable contact directory for cohort candidates, volunteers, and organizers by district or county.</div>
-            </div>
+        </div>
+        <div class="tool-row t2">
+          <div class="tool-icon">🌻</div>
+          <div class="tool-info">
+            <div class="tool-name">Summit Directory</div>
+            <div class="tool-desc">Live searchable contact directory for cohort candidates, volunteers, and organizers by district or county.</div>
           </div>
-          <div class="tool-row t3">
-            <div class="tool-icon">🕸️</div>
-            <div class="tool-info">
-              <div class="tool-name">Power Packs Network</div>
-              <div class="tool-desc">Visual candidate network highlighting cohort members across all 2026 races.</div>
-            </div>
+        </div>
+        <div class="tool-row t3">
+          <div class="tool-icon">🕸️</div>
+          <div class="tool-info">
+            <div class="tool-name">Power Packs Network</div>
+            <div class="tool-desc">Visual candidate network highlighting cohort members across all 2026 races.</div>
           </div>
-          <div class="tool-row t4">
-            <div class="tool-icon">📍</div>
-            <div class="tool-info">
-              <div class="tool-name">District Match Tool</div>
-              <div class="tool-desc">Instant county ↔ district lookup across all 92 Indiana counties.</div>
-            </div>
+        </div>
+        <div class="tool-row t4">
+          <div class="tool-icon">📍</div>
+          <div class="tool-info">
+            <div class="tool-name">District Match Tool</div>
+            <div class="tool-desc">Instant county ↔ district lookup across all 92 Indiana counties.</div>
           </div>
         </div>
       </div>
-
     </div>
 
-  </div>
-
-  <!-- FOOTER -->
-  <div class="footer">
-    <div class="footer-left">
-      <strong>Indiana Rural Summit</strong> · 56-candidate cohort · April 2026<br>
-      Data: Indiana Secretary of State (2020–2024) · Tools: GitHub Pages · Streamlit · Google Sheets
-    </div>
-    <div class="footer-right">
-      <span class="footer-pill">IN-Index</span>
-      <span class="footer-pill">Summit Directory</span>
-      <span class="footer-pill">Power Packs</span>
-      <span class="footer-pill">District Match</span>
-    </div>
   </div>
 
 </div>
