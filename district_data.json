@@ -304,7 +304,8 @@
     "69": [
       "Bartholomew",
       "Jackson",
-      "Scott"
+      "Scott",
+      "Washington"
     ],
     "70": [
       "Clark",
@@ -1171,6 +1172,7 @@
     ],
     "Washington": [
       65,
+      69,
       70
     ],
     "Wayne": [
