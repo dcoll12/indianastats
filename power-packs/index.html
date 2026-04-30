@@ -436,6 +436,17 @@ footer {
 .pp-mypack-district-chip.pinned.anchor { background: #991b1b; border-color: #991b1b; color: #fff; }
 .pp-mypack-coalition-row { display: flex; align-items: center; gap: 6px; margin: 3px 0; flex-wrap: wrap; }
 .pp-mypack-coalition-type { font-size: 0.72rem; font-weight: 700; color: #475569; min-width: 80px; }
+.pp-mypack-county-chip {
+  display: inline-block; font-size: 0.7rem; font-weight: 500;
+  padding: 2px 7px; border-radius: 3px; margin: 2px 1px;
+  background: #f1f5f9; color: #64748b;
+  border: 1px solid #cbd5e1;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.pp-mypack-county-chip.highlighted {
+  background: #fef9c3; color: #854d0e;
+  border-color: #fde047; font-weight: 700;
+}
 .pp-primary-section-header {
   font-size: 0.78rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
   color: #475569; padding: 10px 0 6px; border-bottom: 2px solid #e2e8f0; margin: 14px 0 10px;
@@ -2582,7 +2593,7 @@ var PP = (function() {
     // Coalition chips — click to pin/unpin on map
     var pinned = state.myPackPinnedChip || {};
     parts.push('<div class="pp-mypack-coalition">');
-    parts.push('<div style="font-size:0.72rem;color:#475569;margin-bottom:6px"><strong style="color:#1e40af">Click a district tag to highlight it on the map</strong> &nbsp;·&nbsp; click again to deselect</div>');
+    parts.push('<div style="font-size:0.72rem;color:#475569;margin-bottom:6px"><strong style="color:#1e40af">Click a district tag to highlight it on the map</strong> &nbsp;·&nbsp; county chips below will highlight to show which counties that district covers &nbsp;·&nbsp; click again to deselect</div>');
 
     // House chips
     parts.push('<div class="pp-mypack-coalition-row">');
@@ -2619,7 +2630,20 @@ var PP = (function() {
     }
 
     if (result.counties.length) {
-      parts.push('<div style="font-size:0.74rem;opacity:0.65;margin-top:4px">counties covered in pack: '+esc(result.counties.join(' · '))+'</div>');
+      var pinnedCounties = new Set();
+      if (pinned.dtype && pinned.dnum) {
+        var dd = state.districtData;
+        var pCountyKey = pinned.dtype === 'senate' ? 'sd_to_counties'
+                       : pinned.dtype === 'house' ? 'hd_to_counties'
+                       : 'cd_to_counties';
+        ((dd[pCountyKey] || {})[String(pinned.dnum)] || []).forEach(function(c) { pinnedCounties.add(c); });
+      }
+      var countyChips = result.counties.map(function(cn) {
+        var isHL = pinnedCounties.size > 0 && pinnedCounties.has(cn);
+        return '<span class="pp-mypack-county-chip' + (isHL ? ' highlighted' : '') + '">' + esc(cn) + '</span>';
+      }).join('');
+      parts.push('<div style="margin-top:6px"><span style="font-size:0.72rem;color:#475569;font-weight:600">Counties covered in pack:</span>'
+        + '<div style="margin-top:3px;display:flex;flex-wrap:wrap;">' + countyChips + '</div></div>');
     }
     parts.push('</div>');
 
