@@ -295,13 +295,28 @@ var DMT = (function() {
     }).join('');
   }
 
+  function normalizeName(s) {
+    return (s || '').trim().toLowerCase()
+      .replace(/\b[a-z]\.\s*/g, '')
+      .replace(/\s+/g, ' ').trim();
+  }
+
+  function nameKey(s) {
+    var parts = (s || '').trim().split(/\s+/);
+    if (parts.length < 2) return s.toLowerCase();
+    return (parts[0] + ' ' + parts[parts.length - 1]).toLowerCase();
+  }
+
   function buildDirectorySet() {
     directoryNames = new Set();
     candidateRows.forEach(function(r) {
       var role = (r['Role'] || '').trim().toLowerCase();
       if (!role.includes('candidate') || role.includes('former')) return;
-      var name = ((r['First Name'] || '') + ' ' + (r['Last Name'] || '')).trim().toLowerCase();
-      if (name) directoryNames.add(name);
+      var name = ((r['First Name'] || '') + ' ' + (r['Last Name'] || '')).trim();
+      if (!name) return;
+      directoryNames.add(name.toLowerCase());
+      directoryNames.add(normalizeName(name));
+      directoryNames.add(nameKey(name));
     });
   }
 
@@ -755,7 +770,8 @@ var DMT = (function() {
     if (!list || !list.length) return '';
     var items = list.map(function(c) {
       var pc = 'dmt-party-' + (c.party || 'I');
-      var inDirectory = directoryNames.has((c.name || '').trim().toLowerCase());
+      var cn = (c.name || '').trim();
+      var inDirectory = directoryNames.has(cn.toLowerCase()) || directoryNames.has(normalizeName(cn)) || directoryNames.has(nameKey(cn));
       var cls = 'dmt-candidate' + (inDirectory ? ' dmt-cohort-candidate' : '');
       var badge = inDirectory ? '<span class="dmt-cohort-badge">★ IRS</span>' : '';
       return '<div class="' + cls + '"><span class="dmt-party ' + pc + '">' + xesc(c.party) + '</span>' + xesc(c.name) + badge + '</div>';
