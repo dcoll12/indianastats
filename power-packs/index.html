@@ -1055,16 +1055,19 @@ var PP = (function() {
           return ma - mb;
         });
 
+        var _sdLean = (ll.senate || {})[sdNum] || null;
+        var _raceLabel = _sdLean ? (_sdLean.race_label || '') : '';
         packs.push({
           sdNum: sdNum,
           cdNum: cdNum,
-          sdLean: (ll.senate || {})[sdNum] || null,
+          sdLean: _sdLean,
           tier: sdTier(sdNum),
           counties: (dd.sd_to_counties || {})[String(sdNum)] || [],
           senateCandidates: senateCandidates,
           houseMembers: houseMembers,
           neighboringSenate: neighboringSenate,
-          neighboringHouse: neighboringHouse
+          neighboringHouse: neighboringHouse,
+          isUncontested: _raceLabel === 'Unop.'
         });
       });
 
@@ -1260,22 +1263,29 @@ var PP = (function() {
     var totalCands = pack.senateCandidates.length + pack.houseMembers.length;
     var parts = [];
 
+    var borderColor = pack.isUncontested ? '#f59e0b' : tc.border;
+    var bgColor     = pack.isUncontested ? '#fffbeb' : tc.bg;
+
     var hdNums = pack.houseMembers.map(function(m) { return m.dnum; }).join(',');
-    parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums+'" style="border-left:4px solid '+tc.border+';background:'+tc.bg+'">');
+    parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums+'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
 
     // Pack header
     parts.push('<div class="pp-pack-head">');
     parts.push('<div class="pp-pack-head-left">');
     parts.push('<div class="pp-pack-title">');
     parts.push(numBadge);
-    parts.push('<span class="pp-tier-badge '+tc.badgeClass+'">'+tc.label+'</span>');
+    if (!pack.isUncontested) {
+      parts.push('<span class="pp-tier-badge '+tc.badgeClass+'">'+tc.label+'</span>');
+    } else {
+      parts.push('<span class="pp-uncontested-badge">⚠ UNCONTESTED</span>');
+    }
     parts.push(' <strong>SD-'+pack.sdNum+'</strong>');
     parts.push('<span class="pp-pack-lean">&nbsp;'+esc(indexLabel)+'</span>');
     parts.push(holderHtml);
     parts.push(cdHint);
     parts.push('</div>');
     if (pack.counties.length) parts.push('<div class="pp-pack-counties">'+esc(pack.counties.join(' · '))+'</div>');
-    if (tc.mission) parts.push('<div class="pp-pack-mission">'+tc.mission+'</div>');
+    if (!pack.isUncontested && tc.mission) parts.push('<div class="pp-pack-mission">'+tc.mission+'</div>');
     parts.push('</div>');
     parts.push('<div class="pp-pack-count">'+totalCands+' candidate'+(totalCands!==1?'s':'')+'</div>');
     parts.push('</div>');
@@ -1289,6 +1299,19 @@ var PP = (function() {
         parts.push(renderEntry(cand, { isSenate: true, noOverlaps: true, isPrimary: senatePrimary, isAnchor: !!cand.isMyAnchor }));
       });
       parts.push('</tbody></table></div>');
+    } else if (pack.isUncontested) {
+      var rep   = sdLean ? (sdLean.representative || '') : '';
+      var raceLabel = sdLean ? (sdLean.race_label || 'Unop.') : 'Unop.';
+      var m = sdLean ? sdLean.in_index : null;
+      var c = getLeanColor(m);
+      parts.push('<div class="pp-uncontested-row">');
+      parts.push('<span class="pp-uncontested-badge">UNCONTESTED</span>');
+      parts.push('<span><strong>SD-'+pack.sdNum+'</strong>');
+      if (rep) parts.push(' · '+esc(rep)+' ('+esc(party.charAt(0))+')');
+      parts.push(' — no Democratic candidate filed');
+      parts.push('</span>');
+      parts.push('<span style="background:'+c.bg+';color:'+c.fg+';padding:2px 7px;border-radius:4px;font-size:0.75rem;font-weight:700">'+esc(indexLabel)+'</span>');
+      parts.push('</div>');
     } else {
       parts.push('<div class="pp-no-senate">⚠ Recruiting for 2028 — Senate candidate needed for SD-'+pack.sdNum
         +' — <em>contact Indiana Rural Summit to get involved</em></div>');
@@ -1375,7 +1398,8 @@ var PP = (function() {
     parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future');
+    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future &nbsp;&nbsp;');
+    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
     parts.push('</span></div>');
 
     // Congressional candidates (IRS focuses on state races, so these appear last)
@@ -1471,7 +1495,8 @@ var PP = (function() {
     parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future');
+    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future &nbsp;&nbsp;');
+    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
     parts.push('</span></div>');
 
     var tierInfo = {
@@ -1696,14 +1721,17 @@ var PP = (function() {
         return ma - mb;
       });
 
+      var _ctySDLean = (ll.senate || {})[sdNum] || null;
+      var _ctyRaceLabel = _ctySDLean ? (_ctySDLean.race_label || '') : '';
       packs.push({
         sdNum: sdNum,
-        sdLean: (ll.senate || {})[sdNum] || null,
+        sdLean: _ctySDLean,
         tier: sdTier(sdNum),
         counties: (dd.sd_to_counties || {})[String(sdNum)] || [],
         senateCandidates: senateCandidates,
         houseMembers: houseMembers,
-        cdNum: Number((dd.sd_to_cd || {})[String(sdNum)] || 0)
+        cdNum: Number((dd.sd_to_cd || {})[String(sdNum)] || 0),
+        isUncontested: _ctyRaceLabel === 'Unop.'
       });
     });
 
@@ -1773,7 +1801,8 @@ var PP = (function() {
     parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future');
+    parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future &nbsp;&nbsp;');
+    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
     parts.push('</span></div>');
 
     parts.push('<div class="pp-cd-section">');
