@@ -664,12 +664,14 @@ var DMT = (function() {
       if (ch) hdCandParts.push('<div class="dmt-result-group" style="margin-top:6px"><strong>HD ' + d + ':</strong>' + ch + '</div>');
     });
     if (hdCandParts.length) candHtml += '<div class="dmt-result-group" style="margin-top:8px"><strong style="font-size:.82rem;color:#475569">House Candidates</strong></div>' + hdCandParts.join('');
+    /* Congressional candidates hidden until after primary
     var cdCandParts = [];
     sortedCds.forEach(function(d) {
       var ch = renderCandidates('cd', d);
       if (ch) cdCandParts.push('<div class="dmt-result-group" style="margin-top:6px"><strong>CD ' + d + ':</strong>' + ch + '</div>');
     });
     if (cdCandParts.length) candHtml += '<div class="dmt-result-group" style="margin-top:8px"><strong style="font-size:.82rem;color:#475569">Congressional Candidates</strong></div>' + cdCandParts.join('');
+    */
     if (candHtml) {
       html += '<div class="dmt-result-title" style="margin-top:12px">2026 Primary Candidates</div>' + candHtml;
     }
@@ -791,6 +793,7 @@ var DMT = (function() {
       hdCandParts.push('<div class="dmt-result-group" style="margin-top:6px"><strong>HD ' + d + (String(d) === hd ? ' ★' : '') + ':</strong>' + ch + '</div>');
     });
     if (hdCandParts.length) candHtml += '<div class="dmt-result-group" style="margin-top:8px"><strong style="font-size:.82rem;color:#475569">House Candidates</strong></div>' + hdCandParts.join('');
+    /* Congressional candidates hidden until after primary
     var cdCandParts = [];
     sortedPCds.forEach(function(d) {
       var ch = renderCandidates('cd', d);
@@ -798,6 +801,7 @@ var DMT = (function() {
       cdCandParts.push('<div class="dmt-result-group" style="margin-top:6px"><strong>CD ' + d + (String(d) === cd ? ' ★' : '') + ':</strong>' + ch + '</div>');
     });
     if (cdCandParts.length) candHtml += '<div class="dmt-result-group" style="margin-top:8px"><strong style="font-size:.82rem;color:#475569">Congressional Candidates</strong></div>' + cdCandParts.join('');
+    */
     if (candHtml) {
       html += '<div class="dmt-result-title" style="margin-top:12px">2026 Primary Candidates</div>' + candHtml;
     }

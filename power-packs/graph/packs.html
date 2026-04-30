@@ -363,8 +363,8 @@ function build(lean, cands, distData, cohort) {
     n.fx = pos.rx * W; n.fy = pos.ry * H;
   });
 
-  // ── CD candidate nodes (separate from packs) ─────────────────────
-  Object.entries(cands.cd || {}).forEach(([cdNum, allCdCands]) => {
+  // ── CD candidate nodes hidden until after primary ─────────────────
+  Object.entries({/* cands.cd hidden until after primary */}).forEach(([cdNum, allCdCands]) => {
     const candidates = allCdCands.filter(c =>
       !hasCohort || cohortSet.has(c.name.trim().toLowerCase())
     );
