@@ -346,12 +346,12 @@
       <div class="stat-label">Districts Tracked</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num green">357</div>
-      <div class="stat-label">2026 Candidates</div>
+      <div class="stat-num green" id="cohort-count">—</div>
+      <div class="stat-label">Summit Cohort Candidates</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">90</div>
-      <div class="stat-label">House Districts with D Candidate</div>
+      <div class="stat-num">183</div>
+      <div class="stat-label">Dem Candidates Statewide</div>
     </div>
     <div class="stat-item">
       <div class="stat-num green">4</div>
@@ -366,11 +366,12 @@
     <div class="section">
       <div class="section-title">Mission</div>
       <div class="mission-box">
-        The <strong>Indiana Rural Summit</strong> is building a statewide coalition of candidates, volunteers,
-        and organizers committed to contesting every corner of Indiana in 2026.
+        The <strong>Indiana Rural Summit</strong> recruits, trains, and supports a cohort of candidates
+        running in Indiana's rural and competitive districts in 2026.
         By combining real precinct-level election data with purpose-built organizing tools,
-        the Summit equips rural campaigns with the <strong>data intelligence, coordination infrastructure,
-        and community networks</strong> they need to compete — from CD-8 to the smallest House district.
+        the Summit equips its cohort with the <strong>data intelligence, coordination infrastructure,
+        and community networks</strong> they need to compete — part of a broader wave of
+        183 Democratic candidates contesting races across the state.
       </div>
     </div>
 
@@ -422,11 +423,11 @@
           </li>
           <li>
             <div class="impact-dot dot-amber">✓</div>
-            <span>Summit staff track which districts are contested — 90 of 100 House seats now have a Democratic challenger</span>
+            <span>Summit cohort members are highlighted in the Power Packs network, separating them from the broader 183-candidate Dem field</span>
           </li>
           <li>
             <div class="impact-dot dot-green">✓</div>
-            <span>Network visualizations show candidate cohorts and allow donors/volunteers to see the full 2026 slate at a glance</span>
+            <span>Donors and volunteers can see exactly which races the Summit is prioritizing vs. the full statewide slate at a glance</span>
           </li>
           <li>
             <div class="impact-dot dot-blue">✓</div>
@@ -441,42 +442,46 @@
 
       <!-- COVERAGE -->
       <div class="section" style="margin-bottom:0">
-        <div class="section-title">2026 Ballot Coverage</div>
+        <div class="section-title">2026 Dem Field at a Glance</div>
         <div class="coverage-grid">
           <div class="coverage-row">
-            <div class="coverage-label">House Seats</div>
+            <div class="coverage-label">House (D)</div>
             <div class="coverage-bar-wrap">
               <div class="coverage-bar bar-green" style="width:90%"></div>
             </div>
-            <div class="coverage-pct">90%</div>
+            <div class="coverage-pct">90</div>
           </div>
           <div class="coverage-row">
-            <div class="coverage-label">Senate Seats</div>
+            <div class="coverage-label">Senate (D)</div>
             <div class="coverage-bar-wrap">
               <div class="coverage-bar bar-blue" style="width:72%"></div>
             </div>
-            <div class="coverage-pct">72%</div>
+            <div class="coverage-pct">36</div>
           </div>
           <div class="coverage-row">
-            <div class="coverage-label">Congressional</div>
+            <div class="coverage-label">Congress (D)</div>
             <div class="coverage-bar-wrap">
               <div class="coverage-bar bar-amber" style="width:89%"></div>
             </div>
-            <div class="coverage-pct">89%</div>
+            <div class="coverage-pct">8</div>
           </div>
           <div class="coverage-row">
-            <div class="coverage-label">Total Candidates</div>
+            <div class="coverage-label">Total Dem</div>
             <div class="coverage-bar-wrap">
               <div class="coverage-bar bar-green" style="width:100%"></div>
             </div>
-            <div class="coverage-pct">357</div>
+            <div class="coverage-pct">183</div>
           </div>
         </div>
 
-        <div style="margin-top:18px; padding:14px; background:#f0fdf4; border-radius:8px; font-size:0.78rem; color:#374151; line-height:1.55;">
+        <div style="margin-top:14px; padding:12px 14px; background:#eff6ff; border-left:3px solid #3b82f6; border-radius:0 8px 8px 0; font-size:0.78rem; color:#374151; line-height:1.55;">
+          <strong style="color:#1d4ed8;">Summit cohort</strong> candidates are a targeted subset of this field —
+          recruited and supported by the Summit, highlighted separately in the Power Packs network and Directory.
+        </div>
+
+        <div style="margin-top:10px; padding:12px 14px; background:#f0fdf4; border-left:3px solid #2d6a4f; border-radius:0 8px 8px 0; font-size:0.78rem; color:#374151; line-height:1.55;">
           <strong style="color:#2d6a4f;">Data backbone:</strong> Precinct-level results from the Indiana Secretary of State (2020–2024),
-          processed into the IN-Index using a weighted 3-cycle average that accounts for unopposed incumbents
-          and off-year swing patterns across all 92 counties.
+          processed into the IN-Index using a weighted 3-cycle average across all 92 counties.
         </div>
       </div>
 
@@ -499,5 +504,19 @@
   </div>
 
 </div>
+
+<script>
+  fetch('rural_summit_cohort.json')
+    .then(r => r.json())
+    .then(data => {
+      const n = Array.isArray(data) ? data.length : 0;
+      document.getElementById('cohort-count').textContent = n > 0 ? n : '—';
+    })
+    .catch(() => {
+      // file:// protocol blocks fetch — instruct user to use a local server
+      document.getElementById('cohort-count').title =
+        'Serve with: python3 -m http.server 8000';
+    });
+</script>
 </body>
 </html>
