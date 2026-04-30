@@ -847,7 +847,7 @@ var DMT = (function() {
     var items = list.map(function(c) {
       var pc = 'dmt-party-' + (c.party || 'I');
       var cn = (c.name || '').trim();
-      var inDirectory = directoryNames.has(cn.toLowerCase()) || directoryNames.has(normalizeName(cn)) || directoryNames.has(nameKey(cn));
+      var inDirectory = type !== 'cd' && (directoryNames.has(cn.toLowerCase()) || directoryNames.has(normalizeName(cn)) || directoryNames.has(nameKey(cn)));
       var cls = 'dmt-candidate' + (inDirectory ? ' dmt-cohort-candidate' : '');
       var badge = inDirectory ? '<span class="dmt-cohort-badge">★ IRS</span>' : '';
       return '<div class="' + cls + '"><span class="dmt-party ' + pc + '">' + xesc(c.party) + '</span>' + xesc(c.name) + badge + '</div>';
@@ -950,7 +950,7 @@ var DMT = (function() {
 
     addDistrict('senate',       'sd', sdNums);
     addDistrict('house',        'hd', hdNums);
-    addDistrict('congressional','cd', cdNums);
+    // congressional excluded from IRS table until after primary
     return entries;
   }
 

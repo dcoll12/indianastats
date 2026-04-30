@@ -309,7 +309,7 @@ function buildMap(lean, cands, countyGeo, cdGeo, sdGeo, hdGeo, distData) {
   const allCandNodes = [];
   const raceLinks    = [];
 
-  const chamberMap = { hd: cands.hd || {}, sd: cands.sd || {}, cd: cands.cd || {} };
+  const chamberMap = { hd: cands.hd || {}, sd: cands.sd || {}, cd: {} }; // cd hidden until after primary
 
   // Process in order: hd first (back), then sd, then cd (front)
   ['hd', 'sd', 'cd'].forEach(ch => {

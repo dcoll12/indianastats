@@ -779,6 +779,8 @@ def render_grassroots_table(df, partisan_data, race_results=None, senate_2022=No
         if 'candidate' not in role or 'former' in role:
             continue
         dtype, dnum = determine_race(c)
+        if dtype == 'congressional':
+            continue
         pdata = partisan_data.get(dtype, {}).get(dnum, {}) if dtype else {}
         pdata_2010 = partisan_data_2010.get(dtype, {}).get(dnum, {}) if (partisan_data_2010 and dtype) else {}
         rdata = race_results.get(dtype, {}).get(dnum, {}) if dtype else {}
