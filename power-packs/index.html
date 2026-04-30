@@ -2641,7 +2641,6 @@ var MAP = (function() {
       activeLayer = L.geoJSON(feature, {
         style: { color: '#1e3a5f', weight: 2.5, fillColor: '#3b82f6', fillOpacity: 0.45 }
       }).addTo(map);
-      map.fitBounds(activeLayer.getBounds(), { padding: [18, 18], maxZoom: 10 });
 
       secondaryLayers = (secondary || []).map(function(d) {
         var f = (data[d.dtype] || {})[String(d.dnum)];
