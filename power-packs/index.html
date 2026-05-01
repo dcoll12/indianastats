@@ -18,7 +18,7 @@ body {
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 20px;
 }
@@ -209,6 +209,8 @@ footer {
 /* If the separated card is also the last, fully round it */
 .pp-cd-section .pp-pack-divider + .pp-pack-card:last-of-type,
 .pp-tier-section .pp-pack-divider + .pp-pack-card:last-of-type { border-radius: 10px; }
+.pp-cd-section .pp-pack-card:has(+ .pp-pack-divider),
+.pp-tier-section .pp-pack-card:has(+ .pp-pack-divider) { border-radius: 0 0 10px 10px; }
 .pp-pack-card-standalone {
   background: white; border-radius: 10px; border: 1px solid #e2e8f0;
   margin-bottom: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
