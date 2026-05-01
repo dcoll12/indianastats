@@ -172,9 +172,9 @@ footer {
 }
 
 /* ── Power Packs card layout ────────────────────────────────────────── */
-.pp-cd-section { margin-bottom: 32px; }
+.pp-cd-section { margin-bottom: 32px; border-radius: 10px; overflow: hidden; }
 .pp-cd-header {
-  background: #0f172a; color: white; border-radius: 10px 10px 0 0;
+  background: #0f172a; color: white;
   padding: 12px 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;
 }
 .pp-cd-header-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -182,12 +182,12 @@ footer {
 .pp-cd-name { font-size: 0.8rem; opacity: 0.8; font-style: italic; }
 .pp-cd-lean { font-size: 0.73rem; opacity: 0.65; }
 .pp-cd-count { font-size: 0.73rem; opacity: 0.75; white-space: nowrap; }
-.pp-tier-section { margin-bottom: 24px; }
+.pp-tier-section { margin-bottom: 24px; border-radius: 10px; overflow: hidden; }
 .pp-tier-group-header {
-  background: #1e3a5f; color: white; border-radius: 10px 10px 0 0;
+  background: #1e3a5f; color: white;
   padding: 11px 18px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
 }
-.pp-tier-cd-header { background: #1e40af; border-radius: 10px 10px 0 0; }
+.pp-tier-cd-header { background: #1e40af; }
 .pp-tier-label { font-size: 0.92rem; font-weight: 800; letter-spacing: 0.4px; }
 .pp-tier-count { font-size: 0.76rem; opacity: 0.8; }
 .pp-tier-desc { font-size: 0.73rem; opacity: 0.7; width: 100%; margin-top: 1px; font-style: italic; }
@@ -204,11 +204,6 @@ footer {
   border-top: 1px solid #e2e8f0;
   border-radius: 10px 10px 0 0;
 }
-.pp-cd-section .pp-pack-card:last-of-type { border-radius: 0 0 10px 10px; margin-bottom: 0; }
-.pp-tier-section .pp-pack-card:last-of-type { border-radius: 0 0 10px 10px; margin-bottom: 0; }
-/* If the separated card is also the last, fully round it */
-.pp-cd-section .pp-pack-divider + .pp-pack-card:last-of-type,
-.pp-tier-section .pp-pack-divider + .pp-pack-card:last-of-type { border-radius: 10px; }
 .pp-cd-section .pp-pack-card:has(+ .pp-pack-divider),
 .pp-tier-section .pp-pack-card:has(+ .pp-pack-divider) { border-radius: 0 0 10px 10px; }
 .pp-pack-card-standalone {
