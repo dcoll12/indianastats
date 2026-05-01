@@ -27,6 +27,8 @@ import zipfile
 from collections import defaultdict
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR   = os.path.dirname(SCRIPT_DIR)
+DATA_DIR   = os.path.join(ROOT_DIR, 'data')
 
 
 # ---------------------------------------------------------------------------
@@ -397,22 +399,22 @@ def main():
     # --- Load 2010 boundaries ---
     print("Loading 2010 district boundaries...")
     cd_dists = load_2010_districts(
-        os.path.join(SCRIPT_DIR, 'Congressional_District_Boundaries_2009-2011(1).geojson'),
+        os.path.join(DATA_DIR, 'Congressional_District_Boundaries_2009-2011(1).geojson'),
         dist_key='cd', name_key='representa', party_key='party',
     )
     sen_dists = load_2010_districts(
-        os.path.join(SCRIPT_DIR, 'Indiana_General_Assembly_Senate_Districts_2009-2011.geojson'),
+        os.path.join(DATA_DIR, 'Indiana_General_Assembly_Senate_Districts_2009-2011.geojson'),
         dist_key='ndistrict', name_key='senate_115', party_key='party',
     )
     house_dists = load_2010_districts(
-        os.path.join(SCRIPT_DIR, 'Indiana_General_Assembly_House_Districts_2009-2011.geojson'),
+        os.path.join(DATA_DIR, 'Indiana_General_Assembly_House_Districts_2009-2011.geojson'),
         dist_key='ndistrict', name_key='house_115', party_key='party',
     )
     print(f"  CD: {len(cd_dists)}, SD: {len(sen_dists)}, HD: {len(house_dists)}\n")
 
     # --- Assign precincts and aggregate 2024 votes ---
     print("Assigning 2024 precincts to 2010 districts...")
-    zip_path = os.path.join(SCRIPT_DIR, 'in_2024.zip')
+    zip_path = os.path.join(DATA_DIR, 'in_2024.zip')
     cd_votes, sen_votes, house_votes, cd_county, sen_county, house_county = \
         assign_precincts_to_2010_districts(zip_path, cd_dists, sen_dists, house_dists)
     print()
@@ -425,7 +427,7 @@ def main():
 
     # --- 2020 county-level data ---
     pres_results = defaultdict(dict)
-    with open(os.path.join(SCRIPT_DIR, 'presidential_results.csv'), newline='') as f:
+    with open(os.path.join(DATA_DIR, 'presidential_results.csv'), newline='') as f:
         for row in csv.DictReader(f):
             pres_results[row['fips']][row['year']] = (
                 int(row['r_votes']), int(row['d_votes']), int(row['total_votes'])
@@ -473,7 +475,7 @@ def main():
         print(f"  SD-{d['district']:>2}: {d['in_index_label']:>7}")
 
     # --- Write output ---
-    output_path = os.path.join(SCRIPT_DIR, 'data_2010.json')
+    output_path = os.path.join(DATA_DIR, 'data_2010.json')
     with open(output_path, 'w') as f:
         json.dump({
             'generated': '2026-04-27',

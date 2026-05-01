@@ -169,13 +169,13 @@ const STATUS = document.getElementById('loading-msg');
 function status(msg) { STATUS.textContent = msg; }
 
 Promise.all([
-  fetch('../../data.json').then(r => r.json()),
-  fetch('../../candidates_2026.json').then(r => r.json()),
-  fetch('../../County_Boundaries_of_Indiana_Current.geojson').then(r => r.json()),
-  fetch('../../Congressional_District_Boundaries_Current.geojson').then(r => r.json()),
-  fetch('../../General_Assembly_Senate_Districts_Current.geojson').then(r => r.json()),
-  fetch('../../General_Assembly_House_Districts_Current(1).geojson').then(r => r.json()),
-  fetch('../../district_data.json').then(r => r.json()),
+  fetch('../../data/data.json').then(r => r.json()),
+  fetch('../../data/candidates_2026.json').then(r => r.json()),
+  fetch('../../data/County_Boundaries_of_Indiana_Current.geojson').then(r => r.json()),
+  fetch('../../data/Congressional_District_Boundaries_Current.geojson').then(r => r.json()),
+  fetch('../../data/General_Assembly_Senate_Districts_Current.geojson').then(r => r.json()),
+  fetch('../../data/General_Assembly_House_Districts_Current(1).geojson').then(r => r.json()),
+  fetch('../../data/district_data.json').then(r => r.json()),
 ]).then(([lean, cands, countyGeo, cdGeo, sdGeo, hdGeo, distData]) => {
   status('Building race map…');
   setTimeout(() => {

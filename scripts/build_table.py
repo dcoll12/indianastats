@@ -16,6 +16,8 @@ import zipfile
 from collections import defaultdict
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR   = os.path.dirname(SCRIPT_DIR)
+DATA_DIR   = os.path.join(ROOT_DIR, 'data')
 
 
 def load_presidential_results(filepath):
@@ -1651,7 +1653,7 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
         json.dump(data, f, indent=2)
     print(f"Wrote {out_json}")
 
-    data_2010_path = os.path.join(SCRIPT_DIR, 'data_2010.json')
+    data_2010_path = os.path.join(DATA_DIR, 'data_2010.json')
     data_2010 = None
     if os.path.exists(data_2010_path):
         with open(data_2010_path) as f:
@@ -1660,15 +1662,15 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
 
 
 def main():
-    pres_csv = os.path.join(SCRIPT_DIR, 'presidential_results.csv')
+    pres_csv = os.path.join(DATA_DIR, 'presidential_results.csv')
 
     if not os.path.exists(pres_csv):
         print("Source CSVs not found — rebuilding from existing data.json")
         rebuild_from_existing(
-            os.path.join(SCRIPT_DIR, 'data.json'),
-            os.path.join(SCRIPT_DIR, 'Indiana_Election_Results_2020-2024.json'),
-            os.path.join(SCRIPT_DIR, 'index.html'),
-            os.path.join(SCRIPT_DIR, 'data.json'),
+            os.path.join(DATA_DIR, 'data.json'),
+            os.path.join(DATA_DIR, 'Indiana_Election_Results_2020-2024.json'),
+            os.path.join(ROOT_DIR, 'index.html'),
+            os.path.join(DATA_DIR, 'data.json'),
         )
         print("Done! Open index.html in a browser to view the table.")
         return
@@ -1677,14 +1679,14 @@ def main():
     print(f"Loaded presidential results: {len(results)} counties")
 
     # Load 2022 US Senate county results
-    senate_2022_csv = os.path.join(SCRIPT_DIR, 'senate_2022.csv')
+    senate_2022_csv = os.path.join(DATA_DIR, 'senate_2022.csv')
     senate_2022_county = load_senate_2022(senate_2022_csv)
     # Wrap in the same {fips: {year: (r, d, total)}} structure for reuse
     results_2022 = {fips: {'2022': v} for fips, v in senate_2022_county.items()}
     print(f"Loaded 2022 Senate results: {len(results_2022)} counties")
 
     # Load 2024 precinct-level results (all chambers)
-    precinct_zip = os.path.join(SCRIPT_DIR, 'in_2024.zip')
+    precinct_zip = os.path.join(DATA_DIR, 'in_2024.zip')
     precinct_2024, votes_2024 = compute_2024_from_precincts(precinct_zip)
     print(f"Loaded precinct 2024 data: "
           f"{len(precinct_2024['congressional'])} CD, "
@@ -1692,7 +1694,7 @@ def main():
           f"{len(precinct_2024['house'])} HD districts")
 
     # Load actual district race results from election results JSON
-    race_json = os.path.join(SCRIPT_DIR, 'Indiana_Election_Results_2020-2024.json')
+    race_json = os.path.join(DATA_DIR, 'Indiana_Election_Results_2020-2024.json')
     race_margins, race_vote_totals = load_race_margins_from_json(race_json)
     print(f"Loaded race margins: "
           f"{len(race_margins['congressional'])} CD, "
@@ -1701,14 +1703,14 @@ def main():
 
     # Congressional — 2022 uses actual 2022 US House race (district-specific) for both
     # display and IN-Index; 2020 uses county-level presidential apportioned by block weights.
-    cong_block_csv = os.path.join(SCRIPT_DIR, 'Congressionalblockassignments(1).csv')
+    cong_block_csv = os.path.join(DATA_DIR, 'Congressionalblockassignments(1).csv')
     cong_weights = build_weight_matrix(cong_block_csv)
     cong_2020, cong_votes_2020 = compute_district_margins(cong_weights, results, '2020')
     cong_2022 = {d: m for d, (m, _) in race_margins['congressional_2022'].items() if m is not None}
     cong_2024 = precinct_2024['congressional']
     cong_index = compute_in_index(cong_2020, cong_2022, cong_2024)
     cong_reps = load_representatives(
-        os.path.join(SCRIPT_DIR, 'Congressional_District_Boundaries_Current.geojson'),
+        os.path.join(DATA_DIR, 'Congressional_District_Boundaries_Current.geojson'),
         'congressional'
     )
     # votes_2022 for congressional = actual 2022 US House race vote totals
@@ -1724,14 +1726,14 @@ def main():
     print(f"Congressional: {len(congressional)} districts processed")
 
     # Senate
-    sen_block_csv = os.path.join(SCRIPT_DIR, 'Senateblockassignments(1).csv')
+    sen_block_csv = os.path.join(DATA_DIR, 'Senateblockassignments(1).csv')
     sen_weights = build_weight_matrix(sen_block_csv)
     sen_2020, sen_votes_2020 = compute_district_margins(sen_weights, results, '2020')
     sen_2022, sen_votes_2022 = compute_district_margins(sen_weights, results_2022, '2022')
     sen_2024 = precinct_2024['senate']
     sen_index = compute_in_index(sen_2020, sen_2022, sen_2024)
     sen_reps = load_representatives(
-        os.path.join(SCRIPT_DIR, 'General_Assembly_Senate_Districts_Current.geojson'),
+        os.path.join(DATA_DIR, 'General_Assembly_Senate_Districts_Current.geojson'),
         'senate'
     )
     senate = merge_data(sen_index, sen_2020, sen_2022, sen_2024, sen_reps,
@@ -1743,8 +1745,8 @@ def main():
     # IN-Index uses 2024 Pres; for unopposed 2024 seats it also averages in available
     # 2020/2022 actual race results (district-specific, unlike county apportionment).
     house_reps = load_house_representatives_from_csv(
-        os.path.join(SCRIPT_DIR, 'indiana_election_results_2020_2024.csv'),
-        os.path.join(SCRIPT_DIR, 'General_Assembly_House_Districts_Current(1).geojson'),
+        os.path.join(DATA_DIR, 'indiana_election_results_2020_2024.csv'),
+        os.path.join(DATA_DIR, 'General_Assembly_House_Districts_Current(1).geojson'),
     )
     house_2024 = precinct_2024['house']
     house_2020, house_votes_2020, house_2022, house_votes_2022 = compute_house_margins_from_county(
@@ -1779,7 +1781,7 @@ def main():
         print(f"  SD-{d['district']:>2}: {d['in_index_label']:>7}  {d['representative']} ({d['party'][0]})")
 
     # Load 2010 boundary data if available (generated by build_2010_data.py)
-    data_2010_path = os.path.join(SCRIPT_DIR, 'data_2010.json')
+    data_2010_path = os.path.join(DATA_DIR, 'data_2010.json')
     data_2010 = None
     if os.path.exists(data_2010_path):
         with open(data_2010_path) as f:
@@ -1787,8 +1789,8 @@ def main():
         print("Loaded 2010 boundary data — advanced view will be included.")
 
     # Write outputs
-    write_data_json(os.path.join(SCRIPT_DIR, 'data.json'), congressional, senate, house)
-    generate_html(os.path.join(SCRIPT_DIR, 'index.html'), congressional, senate, house, data_2010)
+    write_data_json(os.path.join(DATA_DIR, 'data.json'), congressional, senate, house)
+    generate_html(os.path.join(ROOT_DIR, 'index.html'), congressional, senate, house, data_2010)
 
     print("\nDone! Open index.html in a browser to view the table.")
 
@@ -1809,9 +1811,9 @@ def main_2010():
     House districts are omitted here because mapping 2024 precinct data back to
     2010 house boundaries requires a separate precinct-to-2010-district crosswalk.
     """
-    pres_csv = os.path.join(SCRIPT_DIR, 'presidential_results.csv')
-    cong_block_2010 = os.path.join(SCRIPT_DIR, 'Congressional_2010_blockassignments.csv')
-    sen_block_2010 = os.path.join(SCRIPT_DIR, 'Senate_2010_blockassignments.csv')
+    pres_csv = os.path.join(DATA_DIR, 'presidential_results.csv')
+    cong_block_2010 = os.path.join(DATA_DIR, 'Congressional_2010_blockassignments.csv')
+    sen_block_2010 = os.path.join(DATA_DIR, 'Senate_2010_blockassignments.csv')
 
     for path, label in [
         (pres_csv, 'presidential_results.csv'),
@@ -1826,16 +1828,16 @@ def main_2010():
     results = load_presidential_results(pres_csv)
     print(f"Loaded presidential results: {len(results)} counties")
 
-    senate_2022_csv = os.path.join(SCRIPT_DIR, 'senate_2022.csv')
+    senate_2022_csv = os.path.join(DATA_DIR, 'senate_2022.csv')
     senate_2022_county = load_senate_2022(senate_2022_csv)
     results_2022 = {fips: {'2022': v} for fips, v in senate_2022_county.items()}
     print(f"Loaded 2022 Senate results: {len(results_2022)} counties")
 
-    precinct_zip = os.path.join(SCRIPT_DIR, 'in_2024.zip')
+    precinct_zip = os.path.join(DATA_DIR, 'in_2024.zip')
     precinct_2024, _ = compute_2024_from_precincts(precinct_zip)
     print(f"Loaded 2024 precinct data: {len(precinct_2024['congressional'])} CD, {len(precinct_2024['senate'])} SD")
 
-    race_json = os.path.join(SCRIPT_DIR, 'Indiana_Election_Results_2020-2024.json')
+    race_json = os.path.join(DATA_DIR, 'Indiana_Election_Results_2020-2024.json')
     race_margins, _ = load_race_margins_from_json(race_json)
 
     # Congressional with 2010 boundaries
@@ -1845,7 +1847,7 @@ def main_2010():
     cong_2024 = precinct_2024['congressional']
     cong_index = compute_in_index(cong_2020, cong_2022, cong_2024)
     cong_reps = load_representatives(
-        os.path.join(SCRIPT_DIR, 'Congressional_District_Boundaries_Current.geojson'),
+        os.path.join(DATA_DIR, 'Congressional_District_Boundaries_Current.geojson'),
         'congressional',
     )
     congressional = merge_data(cong_index, cong_2020, cong_2022, cong_2024, cong_reps)
@@ -1858,7 +1860,7 @@ def main_2010():
     sen_2024 = precinct_2024['senate']
     sen_index = compute_in_index(sen_2020, sen_2022, sen_2024)
     sen_reps = load_representatives(
-        os.path.join(SCRIPT_DIR, 'General_Assembly_Senate_Districts_Current.geojson'),
+        os.path.join(DATA_DIR, 'General_Assembly_Senate_Districts_Current.geojson'),
         'senate',
     )
     senate = merge_data(sen_index, sen_2020, sen_2022, sen_2024, sen_reps)
@@ -1875,7 +1877,7 @@ def main_2010():
         'senate': senate,
         'house': [],
     }
-    out_path = os.path.join(SCRIPT_DIR, 'data_2010.json')
+    out_path = os.path.join(DATA_DIR, 'data_2010.json')
     with open(out_path, 'w') as f:
         json.dump(output, f, indent=2)
     print(f"\nWrote {out_path}")
