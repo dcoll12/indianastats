@@ -24,10 +24,3 @@ A sortable table and map showing how far each district leans Republican or Democ
 ### Power Packs (`power-packs/index.html`)
 
 A district-level roster view organized around IRS candidate cohorts. Useful for planning coalition outreach across groups of districts.
-
-
-The site will be available at:
-
-```
-https://<owner>.github.io/<repo>/
-```
