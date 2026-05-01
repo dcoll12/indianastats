@@ -367,7 +367,7 @@ footer {
 }
 
 /* ── Neighboring senate + multi-pack ──────────────────────────────── */
-.pp-section-neighbor { background: #fefce8; color: #854d0e; border-left: 5px solid #d97706; }
+.pp-section-neighbor { background: #fefce8; color: #854d0e; border-left: 5px solid #d97706; border-top: 3px solid #d97706; margin-top: 8px; }
 .pp-neighbor-group-sep td { border-top: 3px solid #d97706; padding: 0; height: 3px; background: #fef9c3; }
 .pp-role-multipak { background: #7c3aed; }
 .pp-role-anchor   { background: #dc2626; }
@@ -375,24 +375,25 @@ footer {
 /* ── Neighbor tiles layout ───────────────────────────────────────── */
 .pp-neighbor-tiles {
   display: flex; flex-wrap: wrap; gap: 10px;
-  padding: 10px 14px 14px; background: #fefce8;
+  padding: 10px 14px 16px; background: #fefce8;
 }
 .pp-neighbor-tile {
-  display: flex; align-items: center; gap: 9px;
-  background: white; border: 1px solid #fde68a; border-radius: 8px;
-  padding: 8px 12px; cursor: default; min-width: 170px; max-width: 230px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: white; border: 1px solid #fde68a; border-radius: 10px;
+  padding: 10px 10px 10px; cursor: default; width: 100px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06); text-align: center;
 }
 .pp-neighbor-tile:hover { border-color: #d97706; box-shadow: 0 2px 6px rgba(217,119,6,0.15); }
-.pp-neighbor-tile .pp-photo { width: 36px; height: 36px; border-radius: 5px; flex-shrink: 0; }
-.pp-neighbor-tile .pp-initials { width: 36px; height: 36px; border-radius: 5px; font-size: 0.78rem; flex-shrink: 0; }
-.pp-neighbor-tile-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.pp-neighbor-tile-name { font-weight: 700; font-size: 0.82rem; color: #1e293b; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pp-neighbor-tile-meta { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.pp-neighbor-tile .pp-photo { width: 44px; height: 44px; border-radius: 6px; flex-shrink: 0; }
+.pp-neighbor-tile .pp-initials { width: 44px; height: 44px; border-radius: 6px; font-size: 0.82rem; flex-shrink: 0; }
+.pp-neighbor-tile-info { display: flex; flex-direction: column; gap: 3px; width: 100%; }
+.pp-neighbor-tile-name { font-weight: 700; font-size: 0.76rem; color: #1e293b; line-height: 1.2; }
+.pp-neighbor-tile-meta { display: flex; align-items: center; justify-content: center; gap: 5px; flex-wrap: wrap; }
 .pp-neighbor-tile-badge {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 40px; height: 40px; border-radius: 50%; font-weight: 800; font-size: 0.62rem;
+  width: 38px; height: 38px; border-radius: 50%; font-weight: 800; font-size: 0.6rem;
   border: 2px solid; background: white; line-height: 1.1; text-align: center; flex-shrink: 0;
+  margin-top: 2px;
 }
 .pp-neighbor-tile-badge.r-lean { border-color: #b91c1c; color: #b91c1c; }
 .pp-neighbor-tile-badge.d-lean { border-color: #1d4ed8; color: #1d4ed8; }
@@ -1351,12 +1352,12 @@ var PP = (function() {
       : '<div class="pp-initials">' + esc(initials) + '</div>';
     var rowAttrs = (dtype && dnum) ? ' data-dtype="' + dtype + '" data-dnum="' + dnum + '"' : '';
     return '<div class="pp-neighbor-tile"' + rowAttrs + '>'
-      + '<div class="pp-neighbor-tile-badge ' + badgeCls + '">' + esc(distBadge) + '</div>'
       + photoHtml
       + '<div class="pp-neighbor-tile-info">'
       + '<div class="pp-neighbor-tile-name">' + esc(name) + '</div>'
       + '<div class="pp-neighbor-tile-meta"><span class="pp-neighbor-tile-index">' + esc(lidx) + '</span></div>'
       + '</div>'
+      + '<div class="pp-neighbor-tile-badge ' + badgeCls + '">' + esc(distBadge) + '</div>'
       + '</div>';
   }
 
@@ -1467,23 +1468,13 @@ var PP = (function() {
       parts.push('</tbody></table></div>');
     }
 
-    // Neighboring senate candidates — from adjacent SDs that share at least one HD with this pack
-    if (pack.neighboringSenate && pack.neighboringSenate.length) {
-      parts.push('<div class="pp-section-label pp-section-neighbor">🤝 Neighboring Senate Districts</div>');
+    // Neighboring candidates — adjacent SDs and competitive HDs that touch this pack
+    var allNeighbors = (pack.neighboringSenate || []).concat(pack.neighboringHouse || []);
+    if (allNeighbors.length) {
+      parts.push('<div class="pp-section-label pp-section-neighbor">🤝 Neighboring Districts</div>');
       parts.push('<div class="pp-neighbor-tiles">');
-      pack.neighboringSenate.forEach(function(cand) {
-        parts.push(renderNeighborTile(cand));
-      });
-      parts.push('</div>');
-    }
-
-    // Neighboring HD candidates — competitive house races (≤ R+25%) in adjacent HDs that share
-    // a Senate district with this pack but aren't already assigned here
-    if (pack.neighboringHouse && pack.neighboringHouse.length) {
-      parts.push('<div class="pp-section-label pp-section-neighbor" style="border-left-color:#b45309">🏘 Neighboring House Districts</div>');
-      parts.push('<div class="pp-neighbor-tiles" style="background:#fffbeb">');
-      pack.neighboringHouse.forEach(function(member) {
-        parts.push(renderNeighborTile(member));
+      allNeighbors.forEach(function(entry) {
+        parts.push(renderNeighborTile(entry));
       });
       parts.push('</div>');
     }
@@ -2823,19 +2814,12 @@ var PP = (function() {
     var neighbors = buildNeighboringCandidates(result);
     if (neighbors.senate.length || neighbors.house.length) {
       parts.push('<div class="pp-primary-section-header" style="color:#854d0e;border-color:#d97706;margin-top:18px">Candidates in Touching Districts</div>');
-      if (neighbors.senate.length) {
-        parts.push('<div class="pp-section-label pp-section-neighbor">⚡ Neighboring Senate Districts</div>');
+      var allNeighbors = neighbors.senate.concat(neighbors.house);
+      if (allNeighbors.length) {
+        parts.push('<div class="pp-section-label pp-section-neighbor">🤝 Neighboring Districts</div>');
         parts.push('<div class="pp-neighbor-tiles">');
-        neighbors.senate.forEach(function(cand) {
-          parts.push(renderNeighborTile(cand));
-        });
-        parts.push('</div>');
-      }
-      if (neighbors.house.length) {
-        parts.push('<div class="pp-section-label pp-section-neighbor" style="border-left-color:#b45309">🏘 Neighboring House Districts</div>');
-        parts.push('<div class="pp-neighbor-tiles" style="background:#fffbeb">');
-        neighbors.house.forEach(function(member) {
-          parts.push(renderNeighborTile(member));
+        allNeighbors.forEach(function(entry) {
+          parts.push(renderNeighborTile(entry));
         });
         parts.push('</div>');
       }
