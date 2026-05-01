@@ -1003,17 +1003,7 @@ var PP = (function() {
       pack.neighboringHouse = neighboringHouse;
     });
 
-    // Expand packs with multiple senate candidates into separate pack containers
-    var focusPackList = [];
-    Object.values(packBySD).forEach(function(pack) {
-      if (pack.senateCandidates.length <= 1) {
-        focusPackList.push(pack);
-      } else {
-        pack.senateCandidates.forEach(function(cand) {
-          focusPackList.push(Object.assign({}, pack, { senateCandidates: [cand] }));
-        });
-      }
-    });
+    var focusPackList = Object.values(packBySD);
 
     // Add HD-only packs: set tier from most competitive HD member, sort members, then add
     Object.values(hdOnlyPackBySD).forEach(function(pack) {
@@ -1192,18 +1182,6 @@ var PP = (function() {
         });
       });
 
-      // Expand packs with multiple senate candidates into separate pack containers
-      var expandedPacks = [];
-      packs.forEach(function(pack) {
-        if (pack.senateCandidates.length <= 1) {
-          expandedPacks.push(pack);
-        } else {
-          pack.senateCandidates.forEach(function(cand) {
-            expandedPacks.push(Object.assign({}, pack, { senateCandidates: [cand] }));
-          });
-        }
-      });
-      packs = expandedPacks;
 
       // Apply search filter, then drop empty packs
       packs = packs.filter(function(p) {
@@ -1872,18 +1850,6 @@ var PP = (function() {
       });
     });
 
-    // Expand packs with multiple senate candidates into separate pack containers
-    var countyExpandedPacks = [];
-    packs.forEach(function(pack) {
-      if (pack.senateCandidates.length <= 1) {
-        countyExpandedPacks.push(pack);
-      } else {
-        pack.senateCandidates.forEach(function(cand) {
-          countyExpandedPacks.push(Object.assign({}, pack, { senateCandidates: [cand] }));
-        });
-      }
-    });
-    packs = countyExpandedPacks;
 
     // Apply search filter after deduplication, then drop empty packs
     packs = packs.filter(function(p) {
@@ -2766,8 +2732,9 @@ var PP = (function() {
         }
         parts.push('<div class="pp-mypack-dist-sub">SD-'+sd+(isAnchor?' ★':'')+( sdIndex ? '&nbsp;<span style="font-weight:400;opacity:0.7">'+esc(sdIndex)+'</span>' : '')+'</div>');
         parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+        var sdPrimary = cands.length > 1;
         cands.forEach(function(cand) {
-          parts.push(renderEntry(cand, { isSenate: true, isAnchor: isAnchor }));
+          parts.push(renderEntry(cand, { isSenate: true, isAnchor: isAnchor, isPrimary: sdPrimary }));
         });
         parts.push('</tbody></table></div>');
       });
@@ -2794,13 +2761,14 @@ var PP = (function() {
         }
         parts.push('<div class="pp-mypack-dist-sub">HD-'+hd+(isAnchor?' ★':'')+( hdIndex ? '&nbsp;<span style="font-weight:400;opacity:0.7">'+esc(hdIndex)+'</span>' : '')+'</div>');
         parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+        var hdPrimary = members.length > 1;
         members.forEach(function(member) {
           var hdm = (member.lean && member.lean.in_index !== null) ? member.lean.in_index : 0.5;
           var roleLabel, roleCls;
           if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
           else if (hdm <= 0.25) { roleLabel = '📊 Challenge';   roleCls = 'challenge'; }
           else                   { roleLabel = '🗳️ Turnout';     roleCls = 'turnout'; }
-          parts.push(renderEntry(member, { isHouse: true, roleLabel: roleLabel, roleCls: roleCls, isAnchor: isAnchor }));
+          parts.push(renderEntry(member, { isHouse: true, roleLabel: roleLabel, roleCls: roleCls, isAnchor: isAnchor, isPrimary: hdPrimary }));
         });
         parts.push('</tbody></table></div>');
       });
