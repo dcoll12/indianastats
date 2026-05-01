@@ -485,7 +485,7 @@ var DMT = (function() {
     var defaultStyle = { color: '#667eea', weight: 0.8, fillColor: '#e0e7ff', fillOpacity: 0.35 };
     var hoverStyle   = { color: '#764ba2', weight: 2.5, fillColor: '#a78bfa', fillOpacity: 0.65 };
     var activeStyle  = { color: '#4f46e5', weight: 2,   fillColor: '#818cf8', fillOpacity: 0.45 };
-    var anchorStyle  = { color: '#6d28d9', weight: 3,   fillColor: '#a78bfa', fillOpacity: 0.7  };
+    var anchorStyle  = { color: '#92400e', weight: 3,   fillColor: '#fbbf24', fillOpacity: 0.75 };
     var statusEl = document.getElementById('dmt-map-status');
 
     fetch('data/districts_simplified.json')
@@ -585,7 +585,7 @@ var DMT = (function() {
     clearHighlights();
     if (!dmtMap) return;
     var activeStyle = { color: '#4f46e5', weight: 2,   fillColor: '#818cf8', fillOpacity: 0.45 };
-    var anchorStyle = { color: '#6d28d9', weight: 3,   fillColor: '#a78bfa', fillOpacity: 0.7  };
+    var anchorStyle = { color: '#92400e', weight: 3,   fillColor: '#fbbf24', fillOpacity: 0.75 };
     // Ensure house + senate layers are both visible
     ['house', 'senate'].forEach(function(t) {
       if (dmtLayers[t] && !dmtMap.hasLayer(dmtLayers[t])) dmtLayers[t].addTo(dmtMap);
