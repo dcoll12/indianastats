@@ -35,11 +35,13 @@ import os
 import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR   = os.path.dirname(SCRIPT_DIR)
+DATA_DIR   = os.path.join(ROOT_DIR, 'data')
 
 
 def main():
-    data_path = os.path.join(SCRIPT_DIR, 'data.json')
-    out_path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(SCRIPT_DIR, 'sheets_export.csv')
+    data_path = os.path.join(DATA_DIR, 'data.json')
+    out_path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(DATA_DIR, 'sheets_export.csv')
 
     with open(data_path) as f:
         data = json.load(f)

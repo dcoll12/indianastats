@@ -357,17 +357,17 @@ var DMT = (function() {
     }
     _initialized = true;
 
-    fetch('district_data.json')
+    fetch('data/district_data.json')
       .then(function(r) { return r.json(); })
       .then(function(d) { districtData = d; populateCountyList(); })
       .catch(function() {});
 
-    fetch('candidates_2026.json')
+    fetch('data/candidates_2026.json')
       .then(function(r) { return r.json(); })
       .then(function(d) { candidatesData = d; })
       .catch(function() {});
 
-    fetch('data.json')
+    fetch('data/data.json')
       .then(function(r) { return r.json(); })
       .then(function(d) { leanLookup = buildLeanLookup(d); })
       .catch(function() {});
@@ -488,7 +488,7 @@ var DMT = (function() {
     var anchorStyle  = { color: '#6d28d9', weight: 3,   fillColor: '#a78bfa', fillOpacity: 0.7  };
     var statusEl = document.getElementById('dmt-map-status');
 
-    fetch('districts_simplified.json')
+    fetch('data/districts_simplified.json')
       .then(function(r) { return r.json(); })
       .then(function(GEOJSON) {
         ['congressional', 'senate', 'house'].forEach(function(dtype) {
@@ -576,7 +576,7 @@ var DMT = (function() {
       }).addTo(dmtMap);
     }
     if (countyRawData) { renderHighlight(countyRawData); return; }
-    fetch('County_Boundaries_of_Indiana_Current.geojson')
+    fetch('data/County_Boundaries_of_Indiana_Current.geojson')
       .then(function(r) { return r.json(); })
       .then(function(data) { countyRawData = data; renderHighlight(data); });
   }
@@ -629,7 +629,7 @@ var DMT = (function() {
 
     var countyFetch = countyRawData
       ? Promise.resolve(countyRawData)
-      : fetch('County_Boundaries_of_Indiana_Current.geojson').then(function(r) { return r.json(); }).then(function(d) { countyRawData = d; return d; });
+      : fetch('data/County_Boundaries_of_Indiana_Current.geojson').then(function(r) { return r.json(); }).then(function(d) { countyRawData = d; return d; });
     countyFetch
       .then(function(data) {
         countyLayer = L.geoJSON(data, {

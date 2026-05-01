@@ -2087,8 +2087,8 @@ var PP = (function() {
 
     var fetches = [
       fetch(CSV_URL).then(function(r) { return r.text(); }),
-      fetch('../data.json').then(function(r) { return r.json(); }).catch(function() { return {}; }),
-      fetch('../district_data.json').then(function(r) { return r.json(); }).catch(function() { return {}; })
+      fetch('../data/data.json').then(function(r) { return r.json(); }).catch(function() { return {}; }),
+      fetch('../data/district_data.json').then(function(r) { return r.json(); }).catch(function() { return {}; })
     ];
 
     Promise.all(fetches).then(function(results) {
@@ -2907,7 +2907,7 @@ var MAP = (function() {
 
   function loadGeo() {
     if (geoPromise) return geoPromise;
-    geoPromise = fetch('../districts_simplified.json')
+    geoPromise = fetch('../data/districts_simplified.json')
       .then(function(r) { return r.json(); })
       .then(function(data) { geoData = data; return data; })
       .catch(function() { geoData = {}; return {}; });

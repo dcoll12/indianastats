@@ -31,7 +31,9 @@ CSV_URL        = (
 )
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-OUT_FILE   = os.path.join(SCRIPT_DIR, 'rural_summit_cohort.json')
+ROOT_DIR   = os.path.dirname(SCRIPT_DIR)
+DATA_DIR   = os.path.join(ROOT_DIR, 'data')
+OUT_FILE   = os.path.join(DATA_DIR, 'rural_summit_cohort.json')
 
 
 def convert_drive_url(url: str) -> str:

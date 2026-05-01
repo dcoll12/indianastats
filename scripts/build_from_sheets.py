@@ -29,6 +29,8 @@ import sys
 import urllib.request
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR   = os.path.dirname(SCRIPT_DIR)
+DATA_DIR   = os.path.join(ROOT_DIR, 'data')
 
 
 def fetch_csv(source):
@@ -184,21 +186,21 @@ def main():
 
     # Load representative info from GeoJSON (unchanged from standard build)
     cong_reps = load_representatives(
-        os.path.join(SCRIPT_DIR, 'Congressional_District_Boundaries_Current.geojson'),
+        os.path.join(DATA_DIR, 'Congressional_District_Boundaries_Current.geojson'),
         'congressional',
     )
     sen_reps = load_representatives(
-        os.path.join(SCRIPT_DIR, 'General_Assembly_Senate_Districts_Current.geojson'),
+        os.path.join(DATA_DIR, 'General_Assembly_Senate_Districts_Current.geojson'),
         'senate',
     )
     house_reps = load_house_representatives_from_csv(
-        os.path.join(SCRIPT_DIR, 'indiana_election_results_2020_2024.csv'),
-        os.path.join(SCRIPT_DIR, 'General_Assembly_House_Districts_Current(1).geojson'),
+        os.path.join(DATA_DIR, 'indiana_election_results_2020_2024.csv'),
+        os.path.join(DATA_DIR, 'General_Assembly_House_Districts_Current(1).geojson'),
     )
 
     # Load actual race margins (for the "Race" display column — separate from IN-Index)
     race_margins, race_vote_totals = load_race_margins_from_json(
-        os.path.join(SCRIPT_DIR, 'Indiana_Election_Results_2020-2024.json')
+        os.path.join(DATA_DIR, 'Indiana_Election_Results_2020-2024.json')
     )
 
     # Build district lists
@@ -241,8 +243,8 @@ def main():
         d['label_2022_race'] = src.get('label_2022_race', 'N/A')
 
     # Write outputs
-    write_data_json(os.path.join(SCRIPT_DIR, 'data.json'), congressional, senate, house)
-    generate_html(os.path.join(SCRIPT_DIR, 'index.html'), congressional, senate, house)
+    write_data_json(os.path.join(DATA_DIR, 'data.json'), congressional, senate, house)
+    generate_html(os.path.join(ROOT_DIR, 'index.html'), congressional, senate, house)
 
     print("\nDone! index.html and data.json rebuilt from Google Sheets data.")
 

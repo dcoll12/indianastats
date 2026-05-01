@@ -238,7 +238,7 @@ def load_data():
 def load_partisan_data():
     """Load partisan lean data from data.json, keyed by (type, district_num)."""
     try:
-        data_path = Path(__file__).parent / "data.json"
+        data_path = Path(__file__).parent / "data" / "data.json"
         with open(data_path) as f:
             data = json.load(f)
         lookup = {"congressional": {}, "senate": {}, "house": {}}
@@ -253,7 +253,7 @@ def load_partisan_data():
 def load_partisan_data_2010():
     """Load pre-2021-redistricting (2010 boundaries) lean data from data_2010.json."""
     try:
-        data_path = Path(__file__).parent / "data_2010.json"
+        data_path = Path(__file__).parent / "data" / "data_2010.json"
         with open(data_path) as f:
             data = json.load(f)
         lookup = {"congressional": {}, "senate": {}, "house": {}}
@@ -271,7 +271,7 @@ def load_partisan_data_2010():
 def load_district_data():
     """Load Indiana district-match lookup tables (counties <-> HD/SD/CD)."""
     try:
-        path = Path(__file__).parent / "district_data.json"
+        path = Path(__file__).parent / "data" / "district_data.json"
         with open(path) as f:
             return json.load(f)
     except Exception:
@@ -288,7 +288,7 @@ def _parse_party_from_candidate(name):
 def load_race_results():
     """Load 2024 actual race results from election_results.json."""
     try:
-        path = Path(__file__).parent / "election_results.json"
+        path = Path(__file__).parent / "data" / "election_results.json"
         with open(path) as f:
             data = json.load(f)
 
@@ -402,7 +402,7 @@ def _build_entry_from_new_format(candidates):
 def load_election_results_full():
     """Load 2024 race results from Indiana_Election_Results_2020-2024.json."""
     try:
-        path = Path(__file__).parent / "Indiana_Election_Results_2020-2024.json"
+        path = Path(__file__).parent / "data" / "Indiana_Election_Results_2020-2024.json"
         with open(path) as f:
             data = json.load(f)
         lookup = {"congressional": {}, "senate": {}, "house": {}}
@@ -464,7 +464,7 @@ def _parse_2022_votes_pct(raw_votes, raw_pct):
 def load_senate_2022_results():
     """Load 2022 Indiana Senate results from Indiana_Election_Results_2020-2024.json."""
     try:
-        path = Path(__file__).parent / "Indiana_Election_Results_2020-2024.json"
+        path = Path(__file__).parent / "data" / "Indiana_Election_Results_2020-2024.json"
         with open(path) as f:
             data = json.load(f)
         lookup = {}
@@ -482,7 +482,7 @@ def load_senate_2022_results():
 def load_statewide_results():
     """Load statewide race results (President, Governor, US Senate) from Indiana_Election_Results_2020-2024.json."""
     try:
-        path = Path(__file__).parent / "Indiana_Election_Results_2020-2024.json"
+        path = Path(__file__).parent / "data" / "Indiana_Election_Results_2020-2024.json"
         with open(path) as f:
             data = json.load(f)
         return data.get("statewide_races", {})
@@ -508,9 +508,9 @@ def load_district_geojson():
         return {"type": "Feature", "geometry": geom, "properties": feat.get("properties", {})}
 
     files = {
-        "congressional": (BASE / "Congressional_District_Boundaries_Current.geojson", "district"),
-        "senate":        (BASE / "General_Assembly_Senate_Districts_Current.geojson", "districtn"),
-        "house":         (BASE / "General_Assembly_House_Districts_Current(1).geojson", "districtn_2021"),
+        "congressional": (BASE / "data" / "Congressional_District_Boundaries_Current.geojson", "district"),
+        "senate":        (BASE / "data" / "General_Assembly_Senate_Districts_Current.geojson", "districtn"),
+        "house":         (BASE / "data" / "General_Assembly_House_Districts_Current(1).geojson", "districtn_2021"),
     }
     result = {}
     for dtype, (path, prop) in files.items():

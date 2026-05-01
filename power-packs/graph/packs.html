@@ -179,10 +179,10 @@ let gRoot, webSel, raceSel, nodeSel, simNodes;
 // ── Load data ─────────────────────────────────────────────────────────────
 const MSG = document.getElementById('loading-msg');
 Promise.all([
-  fetch('../../data.json').then(r => r.json()),
-  fetch('../../candidates_2026.json').then(r => r.json()),
-  fetch('../../district_data.json').then(r => r.json()),
-  fetch('../../rural_summit_cohort.json').then(r => r.json()).catch(() => []),
+  fetch('../../data/data.json').then(r => r.json()),
+  fetch('../../data/candidates_2026.json').then(r => r.json()),
+  fetch('../../data/district_data.json').then(r => r.json()),
+  fetch('../../data/rural_summit_cohort.json').then(r => r.json()).catch(() => []),
 ]).then(([lean, cands, distData, cohort]) => {
   MSG.textContent = 'Building pack network…';
   setTimeout(() => {
