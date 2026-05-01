@@ -199,13 +199,21 @@ footer {
   height: 12px; background: #f1f5f9;
   border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0;
 }
-/* Pack card immediately after a divider gets its own rounded top and border */
+/* First pack card in a section gets rounded top corners */
+.pp-cd-header + .pp-pack-card,
+.pp-tier-group-header + .pp-pack-card {
+  border-top-left-radius: 10px; border-top-right-radius: 10px;
+}
+/* Pack card immediately after a divider gets rounded top corners and a top border */
 .pp-pack-divider + .pp-pack-card {
   border-top: 1px solid #e2e8f0;
-  border-radius: 10px 10px 0 0;
+  border-top-left-radius: 10px; border-top-right-radius: 10px;
 }
+/* Pack card before a divider gets rounded bottom corners */
 .pp-cd-section .pp-pack-card:has(+ .pp-pack-divider),
-.pp-tier-section .pp-pack-card:has(+ .pp-pack-divider) { border-radius: 0 0 10px 10px; }
+.pp-tier-section .pp-pack-card:has(+ .pp-pack-divider) {
+  border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;
+}
 .pp-pack-card-standalone {
   background: white; border-radius: 10px; border: 1px solid #e2e8f0;
   margin-bottom: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
