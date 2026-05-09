@@ -179,10 +179,10 @@ let gRoot, webSel, raceSel, nodeSel, simNodes;
 // ── Load data ─────────────────────────────────────────────────────────────
 const MSG = document.getElementById('loading-msg');
 Promise.all([
-  fetch('../../data.json').then(r => r.json()),
-  fetch('../../candidates_2026.json').then(r => r.json()),
-  fetch('../../district_data.json').then(r => r.json()),
-  fetch('../../rural_summit_cohort.json').then(r => r.json()).catch(() => []),
+  fetch('../../data/data.json').then(r => r.json()),
+  fetch('../../data/candidates_2026.json').then(r => r.json()),
+  fetch('../../data/district_data.json').then(r => r.json()),
+  fetch('../../data/rural_summit_cohort.json').then(r => r.json()).catch(() => []),
 ]).then(([lean, cands, distData, cohort]) => {
   MSG.textContent = 'Building pack network…';
   setTimeout(() => {
@@ -363,8 +363,8 @@ function build(lean, cands, distData, cohort) {
     n.fx = pos.rx * W; n.fy = pos.ry * H;
   });
 
-  // ── CD candidate nodes (separate from packs) ─────────────────────
-  Object.entries(cands.cd || {}).forEach(([cdNum, allCdCands]) => {
+  // ── CD candidate nodes hidden until after primary ─────────────────
+  Object.entries({/* cands.cd hidden until after primary */}).forEach(([cdNum, allCdCands]) => {
     const candidates = allCdCands.filter(c =>
       !hasCohort || cohortSet.has(c.name.trim().toLowerCase())
     );

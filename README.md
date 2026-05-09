@@ -1,38 +1,26 @@
-# indianastats
+© 2026 Indiana Rural Summit
 
-Indiana Partisan Lean Index (IN-Index) — a static site that shows how far each
-Indiana congressional, state senate, and state house district leans Republican
-or Democratic, based on the 2020 and 2024 presidential election results.
+# Indiana Stats — Indiana Rural Summit Election Tools
 
-## Hosting
+A static web app that helps Indiana Rural Summit (IRS) members and organizers explore legislative districts, track 2026 primary candidates, and understand the partisan lean of every district in the state.
 
-The site is deployed to **GitHub Pages** from `main` via the
-`.github/workflows/deploy-pages.yml` workflow. On every push to `main`, the
-workflow publishes `index.html` plus `districts_simplified.json` (used by the
-Leaflet district map) to Pages.
+## Pages
 
-### One-time setup
+### My Pack (`index.html`)
 
-In the repository **Settings → Pages**, set **Source** to
-**GitHub Actions**. After the first successful workflow run, the site will be
-available at:
+The main tool. Given a county name, a candidate's name, or one or more district numbers, it shows:
 
-```
-https://<owner>.github.io/<repo>/
-```
+- Which **House**, **Senate**, and **Congressional** districts overlap that area
+- The **2026 primary candidates** running in each overlapping district, with IRS-member candidates highlighted
+- An **IRS Candidates in Your Pack** table — partisan lean data (2020 presidential, 2022 Senate, 2024 presidential, and the IN-Index composite) for every IRS candidate in the matched districts
+- A **Neighboring Districts** panel listing adjacent districts and any IRS candidates there
 
-## Local preview
+An interactive Leaflet map lets you click districts or counties directly instead of typing.
 
-```
-python3 -m http.server 8000
-```
+### IN Partisan Lean Index (`lean-index.html`)
 
-Then open http://localhost:8000.
+A sortable table and map showing how far each district leans Republican or Democratic. The IN-Index is a composite score built from the 2020 and 2024 presidential results plus the 2022 Senate race. Covers all 100 House, 50 Senate, and 9 Congressional districts.
 
-## Files
+### Power Packs (`power-packs/index.html`)
 
-- `index.html` — the full static app (tables, sorting, interactive map).
-- `districts_simplified.json` — simplified GeoJSON for the district overlay.
-- `directory/index.html` — static Indiana Rural Summit Directory page. Fetches
-  contacts directly from the source Google Sheet at runtime; deployed to
-  `/directory/` on the Pages site.
+A district-level roster view organized around IRS candidate cohorts. Useful for planning coalition outreach across groups of districts.

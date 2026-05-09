@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indiana Rural Summit — 2026 Cohort Report</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f0ede8;
+      color: #1a1a2e;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 32px 16px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 920px;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.14);
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: linear-gradient(135deg, #0f2d4a 0%, #1a5c3a 100%);
+      padding: 36px 48px 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: 25%;
+      width: 360px; height: 360px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 50%;
+    }
+    .header-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .header h1 {
+      color: white;
+      font-size: 2.1rem;
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.5px;
+    }
+    .header h1 span {
+      display: block;
+      color: #86efac;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .header-badges {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: flex-end;
+    }
+    .badge {
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.28);
+      color: white;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+      letter-spacing: 0.5px;
+    }
+    .badge.accent {
+      background: rgba(134,239,172,0.18);
+      border-color: rgba(134,239,172,0.45);
+      color: #86efac;
+    }
+    .header-tagline {
+      margin-top: 12px;
+      color: rgba(255,255,255,0.78);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      max-width: 640px;
+    }
+
+    /* ── STAT STRIP ── */
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .stat-item {
+      padding: 20px 14px;
+      border-right: 1px solid #e5e7eb;
+      text-align: center;
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #0f2d4a;
+      line-height: 1;
+    }
+    .stat-num.green  { color: #1a5c3a; }
+    .stat-num.amber  { color: #b45309; }
+    .stat-num.blue   { color: #1d4ed8; }
+    .stat-label {
+      margin-top: 5px;
+      font-size: 0.66rem;
+      font-weight: 600;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      line-height: 1.3;
+    }
+
+    /* ── BODY ── */
+    .body { padding: 30px 48px 28px; }
+
+    .section { margin-bottom: 26px; }
+    .section-title {
+      font-size: 0.67rem;
+      font-weight: 700;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      margin-bottom: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e5e7eb;
+    }
+
+    /* ── MISSION BOX ── */
+    .mission-box {
+      background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
+      border-left: 4px solid #1a5c3a;
+      border-radius: 0 10px 10px 0;
+      padding: 16px 20px;
+      font-size: 0.91rem;
+      line-height: 1.65;
+      color: #374151;
+    }
+    .mission-box strong { color: #0f2d4a; }
+
+    /* ── TWO COL LAYOUT ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    /* ── TOOLS ROW ── */
+    .tools-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    /* ── COHORT BREAKDOWN ── */
+    .breakdown-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .breakdown-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .breakdown-label {
+      width: 108px;
+      flex-shrink: 0;
+      font-size: 0.77rem;
+      color: #4b5563;
+      font-weight: 500;
+    }
+    .breakdown-bar-wrap {
+      flex: 1;
+      background: #f3f4f6;
+      border-radius: 999px;
+      height: 9px;
+      overflow: hidden;
+    }
+    .breakdown-bar { height: 100%; border-radius: 999px; }
+    .bar-navy  { background: #0f2d4a; }
+    .bar-green { background: #1a5c3a; }
+    .bar-amber { background: #b45309; }
+    .bar-blue  { background: #2563eb; }
+    .bar-slate { background: #64748b; }
+    .breakdown-val {
+      width: 26px;
+      text-align: right;
+      font-size: 0.77rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    /* ── CD GRID ── */
+    .cd-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 2px;
+    }
+    .cd-chip {
+      background: #0f2d4a;
+      color: white;
+      border-radius: 6px;
+      padding: 6px 8px;
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    .cd-chip span {
+      display: block;
+      font-size: 0.6rem;
+      font-weight: 400;
+      opacity: 0.7;
+      margin-top: 1px;
+    }
+    .cd-chip.full { background: #1a5c3a; }
+
+    .tool-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .tool-row::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+    }
+    .tool-row.t1::before { background: #2563eb; }
+    .tool-row.t2::before { background: #1a5c3a; }
+    .tool-row.t3::before { background: #b45309; }
+    .tool-row.t4::before { background: #7c3aed; }
+    .tool-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .tool-info {}
+    .tool-name { font-size: 0.8rem; font-weight: 700; color: #111827; }
+    .tool-desc { font-size: 0.71rem; color: #6b7280; line-height: 1.45; margin-top: 2px; }
+
+    /* ── CONTEXT NOTE ── */
+    .context-note {
+      background: #eff6ff;
+      border-left: 3px solid #2563eb;
+      border-radius: 0 7px 7px 0;
+      padding: 10px 13px;
+      font-size: 0.74rem;
+      color: #374151;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
+    .context-note strong { color: #1d4ed8; }
+
+
+    @media print {
+      body { padding: 0; background: white; }
+      .page { box-shadow: none; border-radius: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <h1>
+        <span>2026 Cohort Report</span>
+        Indiana Rural Summit
+      </h1>
+      <div class="header-badges">
+        <div class="badge">April 2026</div>
+        <div class="badge accent">56 Candidates Active</div>
+      </div>
+    </div>
+    <p class="header-tagline">
+      Recruiting, training, and equipping a cohort of Democratic candidates across Indiana's rural and
+      competitive districts — backed by precinct-level data tools and a statewide organizing network
+      contesting all 9 congressional districts in 2026.
+    </p>
+  </div>
+
+  <!-- STAT STRIP -->
+  <div class="stat-strip">
+    <div class="stat-item">
+      <div class="stat-num green" id="cohort-count">56</div>
+      <div class="stat-label">Summit Cohort<br>Candidates</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">49</div>
+      <div class="stat-label">Unique Seats<br>Contested</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num amber">2</div>
+      <div class="stat-label">Congressional<br>Candidates</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">3</div>
+      <div class="stat-label">Cohort<br>Primaries</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num blue">124 / 159</div>
+      <div class="stat-label">Seats with a Dem<br>Statewide</div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- MISSION -->
+    <div class="section">
+      <div class="section-title">About the Summit</div>
+      <div class="mission-box">
+        The <strong>Indiana Rural Summit</strong> recruits and supports Democrats running in districts
+        that have gone too long without a serious challenger. The 2026 cohort of <strong>56 candidates</strong>
+        contests <strong>49 unique seats</strong> — 31 House, 15 Senate, 2 Congressional (CD-5 &amp; CD-9),
+        and 1 statewide SOS race — including 3 seats where cohort members face each other in a primary.
+        Statewide, Democrats are contesting <strong>124 of Indiana's 159 legislative seats</strong>,
+        the broadest field in years. The Summit gives cohort members the <strong>data, connections, and
+        infrastructure</strong> rural campaigns rarely get.
+      </div>
+    </div>
+
+    <!-- TWO COL: Breakdown · Statewide Coverage -->
+    <div class="two-col">
+
+      <!-- COHORT BREAKDOWN -->
+      <div class="section" style="margin-bottom:0">
+        <div class="section-title">Cohort — Seats Contested</div>
+        <div class="breakdown-grid">
+          <div class="breakdown-row">
+            <div class="breakdown-label">House (31 seats)</div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar bar-green" style="width:63%"></div>
+            </div>
+            <div class="breakdown-val">63%</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-label">Senate (15 seats)</div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar bar-navy" style="width:31%"></div>
+            </div>
+            <div class="breakdown-val">31%</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-label">Congress (2 seats)</div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar bar-amber" style="width:4%"></div>
+            </div>
+            <div class="breakdown-val">4%</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-label">Statewide (1)</div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar bar-slate" style="width:2%"></div>
+            </div>
+            <div class="breakdown-val">2%</div>
+          </div>
+        </div>
+
+        <div class="context-note">
+          56 candidates across 49 unique seats — 3 seats (HD-29, HD-63, SD-29)
+          have two cohort members in a primary.
+        </div>
+      </div>
+
+      <!-- STATEWIDE DEM COVERAGE -->
+      <div class="section" style="margin-bottom:0">
+        <div class="section-title">Statewide Dem Coverage</div>
+        <div class="breakdown-grid">
+          <div class="breakdown-row">
+            <div class="breakdown-label">House</div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar bar-green" style="width:90%"></div>
+            </div>
+            <div class="breakdown-val" style="width:44px">90 / 100</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-label">Senate</div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar bar-navy" style="width:100%"></div>
+            </div>
+            <div class="breakdown-val" style="width:44px">25 / 25</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-label">Congressional</div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar bar-amber" style="width:100%"></div>
+            </div>
+            <div class="breakdown-val" style="width:44px">9 / 9</div>
+          </div>
+          <div class="breakdown-row">
+            <div class="breakdown-label">Total</div>
+            <div class="breakdown-bar-wrap">
+              <div class="breakdown-bar bar-blue" style="width:78%"></div>
+            </div>
+            <div class="breakdown-val" style="width:44px">124 / 159</div>
+          </div>
+        </div>
+        <div style="margin-top:10px; font-size:0.71rem; color:#6b7280; line-height:1.5;">
+          Counts unique seats with at least one Dem — primaries counted once.
+          All 25 Senate seats on the 2026 ballot have a Democratic candidate.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TOOLS ROW -->
+    <div class="section" style="margin-bottom:0">
+      <div class="section-title">Organizer Tools Built</div>
+      <div class="tools-row">
+        <div class="tool-row t1">
+          <div class="tool-icon">🗺️</div>
+          <div class="tool-info">
+            <div class="tool-name">IN-Index Dashboard</div>
+            <div class="tool-desc">Partisan lean for all 159 districts — 2020–2024 margins, vote counts, competitiveness scores.</div>
+          </div>
+        </div>
+        <div class="tool-row t2">
+          <div class="tool-icon">🌻</div>
+          <div class="tool-info">
+            <div class="tool-name">Summit Directory</div>
+            <div class="tool-desc">Live searchable contact directory for cohort candidates, volunteers, and organizers by district or county.</div>
+          </div>
+        </div>
+        <div class="tool-row t3">
+          <div class="tool-icon">🕸️</div>
+          <div class="tool-info">
+            <div class="tool-name">Power Packs Network</div>
+            <div class="tool-desc">Visual candidate network highlighting cohort members across all 2026 races.</div>
+          </div>
+        </div>
+        <div class="tool-row t4">
+          <div class="tool-icon">📍</div>
+          <div class="tool-info">
+            <div class="tool-name">District Match Tool</div>
+            <div class="tool-desc">Instant county ↔ district lookup across all 92 Indiana counties.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  fetch('rural_summit_cohort.json')
+    .then(r => r.json())
+    .then(data => {
+      const n = Array.isArray(data) ? data.length : 0;
+      if (n > 0) document.getElementById('cohort-count').textContent = n;
+    })
+    .catch(() => {});
+</script>
+</body>
+</html>
