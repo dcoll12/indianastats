@@ -1,19 +1,19 @@
 """
-Build Google Sheets county-candidates workbook — post-primary edition.
+Build Google Sheets county-candidates workbook — single-sheet edition.
 
-Changes from previous version:
-  - Lost-primary candidates removed; only winners and uncontested shown
-  - County Picker tab: checkboxes for all 92 counties (multi-select)
-    Unchecked = show all counties; any checked = filter to those counties
-  - District filter on Lookup tab: type dropdown + district-number input
-  - FILTER formula combines all three filters dynamically
+All controls live on one sheet ("Lookup"):
+  Left panel  (cols B-E): 92-county checkboxes in two columns (46 each)
+  Filter bar  (row 4):    District Type dropdown + District # input
+  Right panel (cols G-M): results table — FILTER formula spills here
 
-Sheets:
-  Lookup         – main results sheet with filter controls
-  County Picker  – 92-county checkbox selector
-  By District    – full flat reference table (auto-filter)
-  All Data       – hidden source table (winners / uncontested only)
-  Apps Script    – onEdit script + Select All / Clear All helpers
+Other sheets:
+  By District  – flat reference table (auto-filter)
+  All Data     – hidden source table (winners / uncontested only)
+  Apps Script  – onEdit + Select All / Clear All helpers
+
+Column map:
+  A  margin | B county-L | C ✓-L | D county-R | E ✓-R | F divider
+  G  District | H Type | I Dist# | J Candidate | K Party | L Result | M Votes
 """
 
 import csv, json, os, re, collections
@@ -42,23 +42,16 @@ def thin(top=True, bottom=True, left=True, right=True):
          for n, f in [("top",top),("bottom",bottom),("left",left),("right",right)]}
     return Border(**s)
 
-def header_cell(cell, text, bg=BLUE_DARK, fg=WHITE, size=11, bold=True, center=True):
-    cell.value     = text
-    cell.font      = Font(bold=bold, size=size, color=fg)
-    cell.fill      = PatternFill("solid", fgColor=bg)
-    cell.alignment = Alignment(horizontal="center" if center else "left",
-                               vertical="center", wrap_text=True)
-
 # ---------------------------------------------------------------------------
 # Paths
 # ---------------------------------------------------------------------------
-base         = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RESULTS_CSV  = os.path.join(base, "AllOfficeResults(3).csv")
-CANDS_JSON   = os.path.join(base, "data", "candidates_2026.json")
-DISTRICT_JSON= os.path.join(base, "data", "district_data.json")
+base          = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RESULTS_CSV   = os.path.join(base, "AllOfficeResults(3).csv")
+CANDS_JSON    = os.path.join(base, "data", "candidates_2026.json")
+DISTRICT_JSON = os.path.join(base, "data", "district_data.json")
 
-with open(CANDS_JSON) as f:  cands_json = json.load(f)
-with open(DISTRICT_JSON) as f: dm = json.load(f)
+with open(CANDS_JSON)    as f: cands_json = json.load(f)
+with open(DISTRICT_JSON) as f: dm         = json.load(f)
 
 # ---------------------------------------------------------------------------
 # Parse CSV → determine winners
@@ -93,8 +86,7 @@ with open(RESULTS_CSV, newline="", encoding="utf-8") as f:
         vote_totals[(dtype, dnum, party, name)] += int(row["TotalVotes"] or 0)
         seats_map[(dtype, dnum, party)] = int(row["NumberofOfficeSeats"] or 1)
 
-norm = lambda s: re.sub(r"\s+", " ", s.lower().strip())
-
+norm     = lambda s: re.sub(r"\s+", " ", s.lower().strip())
 winners  = set()
 vote_map = {}
 by_race  = collections.defaultdict(list)
@@ -102,13 +94,12 @@ for (dtype, dnum, party, name), votes in vote_totals.items():
     by_race[(dtype, dnum, party)].append((name, votes))
 for (dtype, dnum, party), candidates in by_race.items():
     n = seats_map.get((dtype, dnum, party), 1)
-    for cand_name, _ in sorted(candidates, key=lambda x: -x[1])[:n]:
-        winners.add((dtype, dnum, norm(cand_name)))
-    for cand_name, votes in candidates:
-        vote_map[(dtype, dnum, norm(cand_name))] = votes
+    for cname, _ in sorted(candidates, key=lambda x: -x[1])[:n]:
+        winners.add((dtype, dnum, norm(cname)))
+    for cname, votes in candidates:
+        vote_map[(dtype, dnum, norm(cname))] = votes
 
 def candidate_result(dtype, dnum, name):
-    """Return (result_label, result_sort, votes) — None means lost, skip it."""
     race_has_results = any(
         (dtype, dnum, p) in seats_map
         for p in ("Democratic", "Republican", "Libertarian", "Independent")
@@ -121,10 +112,10 @@ def candidate_result(dtype, dnum, name):
         return ("Uncontested", 2, 0)
     if nkey in winners:
         return ("Won Primary ✓", 0, votes)
-    return None   # lost — skip
+    return None  # lost — skip
 
 # ---------------------------------------------------------------------------
-# Build flat rows (winners + uncontested only):
+# Build flat rows  (winners + uncontested only)
 # (county, sort_order, type, dist_num, dist_label, candidate, party,
 #  result, result_sort, votes)
 # ---------------------------------------------------------------------------
@@ -144,169 +135,92 @@ for county in sorted(dm["all_counties"]):
             if r: rows.append((county, 3, "Congressional", cd, f"CD-{cd}", c["name"], c["party"], *r))
 
 all_counties  = sorted(dm["all_counties"])
-last_data_row = len(rows) + 1  # +1 for header
-print(f"Rows after removing lost candidates: {len(rows)}")
+half          = 46   # 46 left + 46 right = 92
+last_data_row = len(rows) + 1
+print(f"Rows: {len(rows)}")
 
-# ---------------------------------------------------------------------------
+# County checkbox rows: 6 … 6+half-1  (rows 6-51)
+CB_START = 6
+CB_END   = CB_START + half - 1   # 51
+
+# ============================================================
 wb = Workbook()
 wb.remove(wb.active)
 
 # ============================================================
-# Sheet: All Data  (hidden — FILTER source)
+# Sheet: All Data  (hidden)
 # A=County  B=SortOrder  C=Type  D=Num  E=District
 # F=Candidate  G=Party  H=Result  I=ResultSort  J=Votes
 # ============================================================
 ws_data = wb.create_sheet("All Data")
 ws_data.sheet_state = "hidden"
-
 DATA_HDRS = ["County","SortOrder","Type","Num","District",
              "Candidate","Party","Result","ResultSort","Votes"]
 ws_data.append(DATA_HDRS)
 for r in rows:
     ws_data.append(list(r))
-
-for col, _ in enumerate(DATA_HDRS, 1):
+for col in range(1, len(DATA_HDRS)+1):
     c = ws_data.cell(1, col)
     c.font      = Font(bold=True, color=WHITE, size=10)
     c.fill      = PatternFill("solid", fgColor=BLUE_DARK)
     c.alignment = Alignment(horizontal="center")
-
-col_w = [18,10,16,6,10,35,8,18,10,12]
-for i, w in enumerate(col_w, 1):
+for i, w in enumerate([18,10,16,6,10,35,8,18,10,12], 1):
     ws_data.column_dimensions[ws_data.cell(1,i).column_letter].width = w
 
 # ============================================================
-# Sheet: County Picker
-# Two-column checkbox layout; B5:B50 = counties 1-46, C5:C50 = checkboxes
-# E5:E50 = counties 47-92,  F5:F50 = checkboxes
+# Sheet: Lookup  (tab 0 — single interactive sheet)
 # ============================================================
-ws_cp = wb.create_sheet("County Picker", 1)
+ws = wb.create_sheet("Lookup", 0)
 
-ws_cp.merge_cells("A1:G1")
-header_cell(ws_cp["A1"], "County Picker — Select Counties to Filter", size=14)
-ws_cp.row_dimensions[1].height = 32
+# ---- Row 1: Banner (full width A:M) ----
+ws.merge_cells("A1:M1")
+ws["A1"].value     = "Indiana 2026 Primary Winners — Candidate Lookup"
+ws["A1"].font      = Font(bold=True, size=16, color=WHITE)
+ws["A1"].fill      = PatternFill("solid", fgColor=BLUE_DARK)
+ws["A1"].alignment = Alignment(horizontal="center", vertical="center")
+ws.row_dimensions[1].height = 38
 
-ws_cp.merge_cells("A2:G2")
-sub = ws_cp["A2"]
-sub.value     = ("Check counties to filter results on the Lookup tab.  "
-                 "Leave ALL unchecked to show every county.  "
-                 "Use the IRS Tools menu (Extensions → Apps Script → run onOpen first) "
-                 "for Select All / Clear All buttons.")
-sub.font      = Font(size=10, italic=True, color=BLUE_DARK)
-sub.fill      = PatternFill("solid", fgColor=GOLD_LIGHT)
-sub.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-ws_cp.row_dimensions[2].height = 36
+# ---- Row 2: Subtitle ----
+ws.merge_cells("A2:M2")
+ws["A2"].value     = ("Check counties on the left to filter results on the right.  "
+                      "Leave all unchecked to show every county.  "
+                      "Use the District Type and # fields to narrow by district.")
+ws["A2"].font      = Font(size=10, italic=True, color=BLUE_DARK)
+ws["A2"].fill      = PatternFill("solid", fgColor=GOLD_LIGHT)
+ws["A2"].alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+ws.row_dimensions[2].height = 28
 
-ws_cp.row_dimensions[3].height = 8
+ws.row_dimensions[3].height = 6  # spacer
 
-# Column headers row 4
-for col, text, bg in [("B","County",BLUE_MID), ("C","✓",BLUE_MID),
-                       ("D","",BLUE_DARK),
-                       ("E","County",BLUE_MID), ("F","✓",BLUE_MID)]:
-    cell = ws_cp[f"{col}4"]
-    cell.value     = text
-    cell.font      = Font(bold=True, color=WHITE, size=10)
-    cell.fill      = PatternFill("solid", fgColor=bg)
-    cell.alignment = Alignment(horizontal="center", vertical="center")
-ws_cp.row_dimensions[4].height = 20
+# ---- Row 4: Filter controls ----
+ws.row_dimensions[4].height = 28
 
-# County data + checkboxes
-half = 46   # 46 + 46 = 92
-dv_check = DataValidation(type="list", formula1='"TRUE,FALSE"', allow_blank=False)
-ws_cp.add_data_validation(dv_check)
+#  County section (left panel)
+ws["B4"].value     = "Counties:"
+ws["B4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
+ws["B4"].alignment = Alignment(horizontal="right", vertical="center")
 
-for i, county in enumerate(all_counties):
-    if i < half:
-        row = 5 + i
-        ws_cp.cell(row, 2).value = county   # B
-        ws_cp.cell(row, 2).alignment = Alignment(vertical="center")
-        ws_cp.cell(row, 2).font = Font(size=10)
-        ws_cp.cell(row, 3).value = False    # C  (checkbox)
-        ws_cp.cell(row, 3).alignment = Alignment(horizontal="center", vertical="center")
-        dv_check.sqref = f"C5:C50 F5:F50"  # will be set after loop
-    else:
-        row = 5 + (i - half)
-        ws_cp.cell(row, 5).value = county   # E
-        ws_cp.cell(row, 5).alignment = Alignment(vertical="center")
-        ws_cp.cell(row, 5).font = Font(size=10)
-        ws_cp.cell(row, 6).value = False    # F  (checkbox)
-        ws_cp.cell(row, 6).alignment = Alignment(horizontal="center", vertical="center")
+# Count formula spans C4:E4
+ws.merge_cells("C4:E4")
+ws["C4"].value = (
+    "=LET(n,COUNTIF(C6:C51,TRUE)+COUNTIF(E6:E51,TRUE),"
+    'IF(n=0,"All 92 counties",n&" of 92 selected"))'
+)
+ws["C4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
+ws["C4"].fill      = PatternFill("solid", fgColor=GOLD_LIGHT)
+ws["C4"].alignment = Alignment(horizontal="center", vertical="center")
+ws["C4"].border    = thin()
 
-# Alternating row shading
-for i in range(half):
-    row = 5 + i
-    bg = GREY_LIGHT if i % 2 == 0 else WHITE
-    for col in (2, 3, 5, 6):
-        ws_cp.cell(row, col).fill = PatternFill("solid", fgColor=bg)
+#  District Type section (right panel)
+ws["H4"].value     = "District Type:"
+ws["H4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
+ws["H4"].alignment = Alignment(horizontal="right", vertical="center")
 
-# Column widths
-ws_cp.column_dimensions["A"].width = 2
-ws_cp.column_dimensions["B"].width = 22
-ws_cp.column_dimensions["C"].width = 6
-ws_cp.column_dimensions["D"].width = 3
-ws_cp.column_dimensions["E"].width = 22
-ws_cp.column_dimensions["F"].width = 6
-ws_cp.sheet_properties.tabColor = GOLD
-
-# ============================================================
-# Sheet: Lookup  (tab 0 — main interactive sheet)
-# ============================================================
-ws_lu = wb.create_sheet("Lookup", 0)
-
-# ---- Banner ----
-ws_lu.merge_cells("A1:J1")
-header_cell(ws_lu["A1"], "Indiana 2026 Primary Winners — Candidate Lookup", size=16)
-ws_lu.row_dimensions[1].height = 38
-
-ws_lu.merge_cells("A2:J2")
-sub2 = ws_lu["A2"]
-sub2.value     = ("Use the filters below to look up primary winners by county and/or district.  "
-                  "Select counties on the County Picker tab.  Leave district fields blank to see all.")
-sub2.font      = Font(size=10, italic=True, color=BLUE_DARK)
-sub2.fill      = PatternFill("solid", fgColor=GOLD_LIGHT)
-sub2.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
-ws_lu.row_dimensions[2].height = 28
-
-ws_lu.row_dimensions[3].height = 8
-
-# ---- Filter row 4 ----
-#  B: "Counties:" label
-#  C: count formula
-#  D: note
-#  F: "District Type:" label
-#  G: type dropdown
-#  H: "District #:" label
-#  I: number input
-
-ws_lu.row_dimensions[4].height = 30
-
-# Counties section
-ws_lu["B4"].value     = "Counties:"
-ws_lu["B4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
-ws_lu["B4"].alignment = Alignment(horizontal="right", vertical="center")
-
-ws_lu["C4"].value     = ("=LET(n, COUNTIF('County Picker'!C5:C50, TRUE)"
-                          "+COUNTIF('County Picker'!F5:F50, TRUE),"
-                          'IF(n=0,"All 92 counties",n&" of 92 selected"))')
-ws_lu["C4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
-ws_lu["C4"].fill      = PatternFill("solid", fgColor=GOLD_LIGHT)
-ws_lu["C4"].alignment = Alignment(horizontal="center", vertical="center")
-ws_lu["C4"].border    = thin()
-
-ws_lu["D4"].value     = "← see County Picker tab"
-ws_lu["D4"].font      = Font(size=9, italic=True, color="888888")
-ws_lu["D4"].alignment = Alignment(vertical="center")
-
-# District type section
-ws_lu["F4"].value     = "District Type:"
-ws_lu["F4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
-ws_lu["F4"].alignment = Alignment(horizontal="right", vertical="center")
-
-ws_lu["G4"].value     = "All Types"
-ws_lu["G4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
-ws_lu["G4"].fill      = PatternFill("solid", fgColor=GOLD_LIGHT)
-ws_lu["G4"].alignment = Alignment(horizontal="center", vertical="center")
-ws_lu["G4"].border    = thin()
+ws["I4"].value     = "All Types"
+ws["I4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
+ws["I4"].fill      = PatternFill("solid", fgColor=GOLD_LIGHT)
+ws["I4"].alignment = Alignment(horizontal="center", vertical="center")
+ws["I4"].border    = thin()
 
 dv_type = DataValidation(
     type="list",
@@ -314,117 +228,151 @@ dv_type = DataValidation(
     allow_blank=False,
     showDropDown=False,
 )
-dv_type.sqref = "G4"
-ws_lu.add_data_validation(dv_type)
+dv_type.sqref = "I4"
+ws.add_data_validation(dv_type)
 
-# District number section
-ws_lu["H4"].value     = "District #:"
-ws_lu["H4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
-ws_lu["H4"].alignment = Alignment(horizontal="right", vertical="center")
+ws["K4"].value     = "District #:"
+ws["K4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
+ws["K4"].alignment = Alignment(horizontal="right", vertical="center")
 
-ws_lu["I4"].value     = ""   # user types a number here
-ws_lu["I4"].fill      = PatternFill("solid", fgColor=GOLD_LIGHT)
-ws_lu["I4"].alignment = Alignment(horizontal="center", vertical="center")
-ws_lu["I4"].border    = thin()
-ws_lu["I4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
+ws["L4"].value     = ""   # user types number here
+ws["L4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
+ws["L4"].fill      = PatternFill("solid", fgColor=GOLD_LIGHT)
+ws["L4"].alignment = Alignment(horizontal="center", vertical="center")
+ws["L4"].border    = thin()
 
-ws_lu.row_dimensions[5].height = 8
+# ---- Row 5: Table headers for both panels ----
+ws.row_dimensions[5].height = 22
 
-# ---- Candidate count row 6 ----
-ws_lu.row_dimensions[6].height = 20
-ws_lu["B6"].value     = "Candidates shown:"
-ws_lu["B6"].font      = Font(size=10, color=BLUE_DARK)
-ws_lu["B6"].alignment = Alignment(horizontal="right", vertical="center")
-ws_lu["C6"].value     = "=IFERROR(COUNTA(F8:F5000),0)"
-ws_lu["C6"].font      = Font(bold=True, size=10, color=BLUE_DARK)
-ws_lu["C6"].alignment = Alignment(horizontal="center")
+LEFT_HDR_COLS  = [("B","County"), ("C","✓"), ("D","County"), ("E","✓")]
+RIGHT_HDR_COLS = [("G","District"), ("H","Type"), ("I","Dist #"),
+                  ("J","Candidate Name"), ("K","Party"), ("L","Primary Result"), ("M","Votes")]
 
-ws_lu["E6"].value     = "  ■ Won Primary ✓ (green)    ■ Uncontested (no fill)"
-ws_lu["E6"].font      = Font(size=9, italic=True, color="555555")
-ws_lu["E6"].alignment = Alignment(vertical="center")
+for col_letter, hdr in LEFT_HDR_COLS:
+    c = ws[f"{col_letter}5"]
+    c.value     = hdr
+    c.font      = Font(bold=True, size=10, color=WHITE)
+    c.fill      = PatternFill("solid", fgColor=BLUE_MID)
+    c.alignment = Alignment(horizontal="center", vertical="center")
+    c.border    = thin()
 
-ws_lu.row_dimensions[7].height = 8
+for col_letter, hdr in RIGHT_HDR_COLS:
+    c = ws[f"{col_letter}5"]
+    c.value     = hdr
+    c.font      = Font(bold=True, size=10, color=WHITE)
+    c.fill      = PatternFill("solid", fgColor=BLUE_MID)
+    c.alignment = Alignment(horizontal="center", vertical="center")
+    c.border    = thin()
 
-# ---- Results header row 7 ----
-RES_COLS = ["B",       "C",      "D",      "E",              "F",     "G",              "H"]
-RES_HDRS = ["District","Type",   "Dist #", "Candidate Name", "Party", "Primary Result", "Votes"]
-for col_letter, hdr in zip(RES_COLS, RES_HDRS):
-    cell = ws_lu[f"{col_letter}7"]
-    cell.value     = hdr
-    cell.font      = Font(bold=True, size=11, color=WHITE)
-    cell.fill      = PatternFill("solid", fgColor=BLUE_MID)
-    cell.alignment = Alignment(horizontal="center", vertical="center")
-    cell.border    = thin()
-ws_lu.row_dimensions[7].height = 24
+# Candidate count in results header area
+ws["G4"].value     = f"Shown:"
+ws["G4"].font      = Font(size=10, color=BLUE_DARK)
+ws["G4"].alignment = Alignment(horizontal="right", vertical="center")
 
-# ---- Main FILTER formula in B8 ----
-# All Data cols: A=County B=SortOrder C=Type D=Num E=District F=Candidate G=Party H=Result I=ResultSort J=Votes
-# County Picker:  B5:B50=counties left, C5:C50=checkboxes left
-#                 E5:E50=counties right, F5:F50=checkboxes right
-# Filter controls: G4=dist type,  I4=dist number
+# ---- Rows 6-51: County checkboxes (left panel) ----
+dv_check = DataValidation(type="list", formula1='"TRUE,FALSE"', allow_blank=False)
+dv_check.sqref = f"C{CB_START}:C{CB_END} E{CB_START}:E{CB_END}"
+ws.add_data_validation(dv_check)
+
+for i, county in enumerate(all_counties):
+    row = CB_START + (i % half)
+    bg  = GREY_LIGHT if (i % half) % 2 == 0 else WHITE
+
+    if i < half:   # left column
+        name_cell = ws.cell(row, 2)   # B
+        chk_cell  = ws.cell(row, 3)   # C
+    else:          # right column
+        name_cell = ws.cell(row, 4)   # D
+        chk_cell  = ws.cell(row, 5)   # E
+
+    name_cell.value     = county
+    name_cell.font      = Font(size=10)
+    name_cell.fill      = PatternFill("solid", fgColor=bg)
+    name_cell.alignment = Alignment(vertical="center")
+    name_cell.border    = thin()
+
+    chk_cell.value     = False
+    chk_cell.fill      = PatternFill("solid", fgColor=bg)
+    chk_cell.alignment = Alignment(horizontal="center", vertical="center")
+    chk_cell.border    = thin()
+
+for row in range(CB_START, CB_END + 1):
+    ws.row_dimensions[row].height = 18
+
+# ---- FILTER formula in G6 (right panel, spills down) ----
 L = last_data_row
 filter_formula = (
     "=IFERROR("
     "LET("
-    # How many counties are checked?
-    "checked,COUNTIF('County Picker'!C5:C50,TRUE)+COUNTIF('County Picker'!F5:F50,TRUE),"
-    # county_match: TRUE for all rows when nothing checked; else membership test
-    "county_match,IF(checked=0,TRUE,"
-    "COUNTIF("
-    "FILTER({'County Picker'!B5:B50;'County Picker'!E5:E50},"
-    "{'County Picker'!C5:C50;'County Picker'!F5:F50}),"
+    f"checked,COUNTIF(C{CB_START}:C{CB_END},TRUE)+COUNTIF(E{CB_START}:E{CB_END},TRUE),"
+    f"county_match,IF(checked=0,TRUE,"
+    f"COUNTIF(FILTER({{B{CB_START}:B{CB_END};D{CB_START}:D{CB_END}}},"
+    f"{{C{CB_START}:C{CB_END};E{CB_START}:E{CB_END}}}),"
     f"'All Data'!A2:A{L})>0),"
-    # type_match: pass all when "All Types", else match column C
-    f"type_match,(G4=\"All Types\")+('All Data'!C2:C{L}=G4)>0,"
-    # num_match: pass all when I4 blank, else match column D (numeric)
-    f"num_match,(LEN(TRIM(I4))=0)+('All Data'!D2:D{L}=IFERROR(VALUE(I4),0))>0,"
-    # Apply all filters then sort by SortOrder, then Num, then Votes desc
+    f"type_match,(I4=\"All Types\")+('All Data'!C2:C{L}=I4)>0,"
+    f"num_match,(LEN(TRIM(L4))=0)+('All Data'!D2:D{L}=IFERROR(VALUE(L4),0))>0,"
     "SORT("
     "FILTER("
     f"{{'All Data'!E2:E{L},'All Data'!C2:C{L},'All Data'!D2:D{L},"
     f"'All Data'!F2:F{L},'All Data'!G2:G{L},'All Data'!H2:H{L},'All Data'!J2:J{L}}},"
     "county_match*type_match*num_match"
     "),"
-    "{{1,3}},{{TRUE,TRUE}}"  # sort col 1 (District label) ASC then col 3 (Num) ASC
+    "{{1,3}},{{TRUE,TRUE}}"
     ")),"
     '"No candidates match the selected filters."'
     ")"
 )
-ws_lu["B8"].value = filter_formula
+ws["G6"].value = filter_formula
 
-# ---- Conditional formatting ----
-# Party
-ws_lu.conditional_formatting.add("F8:F5000",
-    FormulaRule(formula=['$F8="D"'],
+# Count formula for G4
+ws["G4"].value = '=IFERROR("Showing "&COUNTA(J6:J5000)&" candidates","")'
+ws["G4"].font  = Font(bold=True, size=10, color=BLUE_DARK)
+ws["G4"].alignment = Alignment(horizontal="center", vertical="center")
+ws.merge_cells("G4:M4") if False else None  # keep separate for formula
+
+# ---- Conditional formatting (right panel) ----
+ws.conditional_formatting.add(f"K6:K5000",
+    FormulaRule(formula=['$K6="D"'],
                 fill=PatternFill("solid", fgColor=RED_LIGHT),
                 font=Font(color="8B0000", bold=True)))
-ws_lu.conditional_formatting.add("F8:F5000",
-    FormulaRule(formula=['$F8="R"'],
+ws.conditional_formatting.add(f"K6:K5000",
+    FormulaRule(formula=['$K6="R"'],
                 fill=PatternFill("solid", fgColor=BLUE_LIGHT),
                 font=Font(color="00008B", bold=True)))
-ws_lu.conditional_formatting.add("F8:F5000",
-    FormulaRule(formula=['AND($F8<>"D",$F8<>"R",$F8<>"")'],
+ws.conditional_formatting.add(f"K6:K5000",
+    FormulaRule(formula=['AND($K6<>"D",$K6<>"R",$K6<>"")'],
                 fill=PatternFill("solid", fgColor=GREEN_LIGHT),
                 font=Font(color="005500", bold=True)))
-# Result
-ws_lu.conditional_formatting.add("G8:G5000",
-    FormulaRule(formula=['LEFT($G8,3)="Won"'],
+ws.conditional_formatting.add(f"L6:L5000",
+    FormulaRule(formula=['LEFT($L6,3)="Won"'],
                 fill=PatternFill("solid", fgColor=WIN_FILL),
                 font=Font(color="155724", bold=True)))
 
 # ---- Column widths ----
-ws_lu.column_dimensions["A"].width = 2
-ws_lu.column_dimensions["B"].width = 12
-ws_lu.column_dimensions["C"].width = 16
-ws_lu.column_dimensions["D"].width = 9
-ws_lu.column_dimensions["E"].width = 40
-ws_lu.column_dimensions["F"].width = 8
-ws_lu.column_dimensions["G"].width = 18
-ws_lu.column_dimensions["H"].width = 12
-ws_lu.column_dimensions["I"].width = 2
+col_widths = {
+    "A": 2,   # margin
+    "B": 19,  # county name left
+    "C": 5,   # checkbox left
+    "D": 19,  # county name right
+    "E": 5,   # checkbox right
+    "F": 2,   # divider
+    "G": 11,  # District label
+    "H": 14,  # Type
+    "I": 8,   # Dist #
+    "J": 36,  # Candidate Name
+    "K": 7,   # Party
+    "L": 18,  # Result
+    "M": 10,  # Votes
+}
+for col, width in col_widths.items():
+    ws.column_dimensions[col].width = width
 
-ws_lu.freeze_panes = "B8"
-ws_lu.sheet_properties.tabColor = GOLD
+ws.freeze_panes = "G6"
+ws.sheet_properties.tabColor = GOLD
+
+# Vertical divider: colour col F dark for the whole county section
+for row in range(1, CB_END + 2):
+    ws.cell(row, 6).fill = PatternFill("solid", fgColor=BLUE_DARK)
 
 # ============================================================
 # Sheet: By District  (sorted reference table)
@@ -432,7 +380,10 @@ ws_lu.sheet_properties.tabColor = GOLD
 ws_bd = wb.create_sheet("By District")
 
 ws_bd.merge_cells("A1:H1")
-header_cell(ws_bd["A1"], "Indiana 2026 Primary Winners — All Districts", size=14)
+ws_bd["A1"].value     = "Indiana 2026 Primary Winners — All Districts"
+ws_bd["A1"].font      = Font(bold=True, size=14, color=WHITE)
+ws_bd["A1"].fill      = PatternFill("solid", fgColor=BLUE_DARK)
+ws_bd["A1"].alignment = Alignment(horizontal="center", vertical="center")
 ws_bd.row_dimensions[1].height = 30
 
 bd_hdrs = ["County","District","Type","Dist #","Candidate Name","Party","Primary Result","Votes"]
@@ -448,39 +399,26 @@ ws_bd.row_dimensions[2].height = 20
 sorted_rows = sorted(rows, key=lambda r: (r[1], r[3], r[8], -r[9], r[0], r[5]))
 for idx, r in enumerate(sorted_rows, 3):
     county, _ord, dtype, dnum, dlabel, cand, party, result, rsort, votes = r
-    vals = [county, dlabel, dtype, dnum, cand, party, result, votes]
     bg = GREY_LIGHT if idx % 2 == 0 else WHITE
-    for col, val in enumerate(vals, 1):
+    for col, val in enumerate([county, dlabel, dtype, dnum, cand, party, result, votes], 1):
         cell = ws_bd.cell(idx, col)
         cell.value     = val
         cell.fill      = PatternFill("solid", fgColor=bg)
         cell.alignment = Alignment(vertical="center")
         cell.border    = thin()
-    # Party colour
     pc = ws_bd.cell(idx, 6)
     if party == "D":
-        pc.fill = PatternFill("solid", fgColor=RED_LIGHT)
-        pc.font = Font(color="8B0000", bold=True, size=10)
+        pc.fill = PatternFill("solid", fgColor=RED_LIGHT); pc.font = Font(color="8B0000", bold=True, size=10)
     elif party == "R":
-        pc.fill = PatternFill("solid", fgColor=BLUE_LIGHT)
-        pc.font = Font(color="00008B", bold=True, size=10)
+        pc.fill = PatternFill("solid", fgColor=BLUE_LIGHT); pc.font = Font(color="00008B", bold=True, size=10)
     else:
-        pc.fill = PatternFill("solid", fgColor=GREEN_LIGHT)
-        pc.font = Font(color="005500", bold=True, size=10)
-    # Result colour
+        pc.fill = PatternFill("solid", fgColor=GREEN_LIGHT); pc.font = Font(color="005500", bold=True, size=10)
     rc = ws_bd.cell(idx, 7)
     if "Won" in result:
-        rc.fill = PatternFill("solid", fgColor=WIN_FILL)
-        rc.font = Font(color="155724", bold=True, size=10)
+        rc.fill = PatternFill("solid", fgColor=WIN_FILL); rc.font = Font(color="155724", bold=True, size=10)
 
-ws_bd.column_dimensions["A"].width = 18
-ws_bd.column_dimensions["B"].width = 10
-ws_bd.column_dimensions["C"].width = 15
-ws_bd.column_dimensions["D"].width = 8
-ws_bd.column_dimensions["E"].width = 40
-ws_bd.column_dimensions["F"].width = 8
-ws_bd.column_dimensions["G"].width = 18
-ws_bd.column_dimensions["H"].width = 12
+for col, w in zip("ABCDEFGH", [18,10,15,8,40,8,18,12]):
+    ws_bd.column_dimensions[col].width = w
 ws_bd.freeze_panes = "A3"
 ws_bd.auto_filter.ref = f"A2:H{len(sorted_rows)+2}"
 ws_bd.sheet_properties.tabColor = BLUE_MID
@@ -491,20 +429,24 @@ ws_bd.sheet_properties.tabColor = BLUE_MID
 ws_as = wb.create_sheet("Apps Script")
 
 ws_as.merge_cells("A1:G1")
-header_cell(ws_as["A1"], "Google Apps Script — Setup Instructions + Full Code", size=13)
+ws_as["A1"].value     = "Google Apps Script — Setup Instructions + Full Code"
+ws_as["A1"].font      = Font(bold=True, size=13, color=WHITE)
+ws_as["A1"].fill      = PatternFill("solid", fgColor=BLUE_DARK)
+ws_as["A1"].alignment = Alignment(horizontal="center", vertical="center")
 ws_as.row_dimensions[1].height = 28
 
 notes = [
     ("A3",  "WHAT THIS SCRIPT ADDS:"),
-    ("A4",  "• IRS Tools menu with Select All / Clear All county buttons"),
-    ("A5",  "• Toast notification when filters change"),
-    ("A6",  "• Quick navigation items (Go to Lookup / County Picker / By District)"),
+    ("A4",  "• IRS Tools menu → Select All / Clear All counties with one click"),
+    ("A5",  "• Toast notification when filters or checkboxes change"),
+    ("A6",  "• Reset District Filter menu item"),
     ("A8",  "HOW TO ADD:"),
     ("A9",  "1. Extensions → Apps Script"),
     ("A10", "2. Delete placeholder code, paste everything from row 17 onward"),
-    ("A11", "3. Save (Ctrl+S), close the Apps Script tab, reload the spreadsheet"),
-    ("A12", "4. You will see an IRS Tools menu appear in the menu bar"),
-    ("A13", "5. Run IRS Tools → Select All or Clear All to bulk-toggle county checkboxes"),
+    ("A11", "3. Save (Ctrl+S), close Apps Script tab, reload spreadsheet"),
+    ("A12", "4. IRS Tools menu appears — run Select All or Clear All to bulk-toggle"),
+    ("A13", "5. IMPORTANT: also select cells C6:C51 and E6:E51 on the Lookup tab,"),
+    ("A14", "   then Format → Checkbox to turn them into real toggle checkboxes"),
     ("A15", "── APPS SCRIPT CODE BELOW ──"),
 ]
 for addr, text in notes:
@@ -520,96 +462,76 @@ apps_script = r"""
 // Paste this entire block into Extensions → Apps Script
 // ============================================================
 
-// ---- Menu ----
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('IRS Tools')
-    .addItem('Select All Counties',  'selectAllCounties')
-    .addItem('Clear All Counties',   'clearAllCounties')
+    .addItem('Select All Counties',   'selectAllCounties')
+    .addItem('Clear All Counties',    'clearAllCounties')
     .addSeparator()
-    .addItem('Reset District Filter','resetDistrictFilter')
+    .addItem('Reset District Filter', 'resetDistrictFilter')
     .addSeparator()
-    .addItem('Go to Lookup',         'goToLookup')
-    .addItem('Go to County Picker',  'goToCountyPicker')
-    .addItem('Go to By District',    'goToByDistrict')
+    .addItem('Go to By District tab', 'goToByDistrict')
     .addToUi();
 }
 
 // ---- County helpers ----
 function selectAllCounties() {
-  const cp = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('County Picker');
-  if (!cp) return;
-  cp.getRange('C5:C50').setValue(true);
-  cp.getRange('F5:F50').setValue(true);
+  const lu = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Lookup');
+  lu.getRange('C6:C51').setValue(true);
+  lu.getRange('E6:E51').setValue(true);
   SpreadsheetApp.getActiveSpreadsheet()
     .toast('All 92 counties selected.', 'IRS Tools', 3);
 }
 
 function clearAllCounties() {
-  const cp = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('County Picker');
-  if (!cp) return;
-  cp.getRange('C5:C50').setValue(false);
-  cp.getRange('F5:F50').setValue(false);
+  const lu = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Lookup');
+  lu.getRange('C6:C51').setValue(false);
+  lu.getRange('E6:E51').setValue(false);
   SpreadsheetApp.getActiveSpreadsheet()
-    .toast('All counties cleared — showing all 92 counties.', 'IRS Tools', 3);
+    .toast('Cleared — showing all 92 counties.', 'IRS Tools', 3);
 }
 
 // ---- District filter reset ----
 function resetDistrictFilter() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const lu = ss.getSheetByName('Lookup');
-  if (!lu) return;
-  lu.getRange('G4').setValue('All Types');
-  lu.getRange('I4').clearContent();
-  ss.toast('District filter reset.', 'IRS Tools', 2);
+  const lu = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Lookup');
+  lu.getRange('I4').setValue('All Types');
+  lu.getRange('L4').clearContent();
+  SpreadsheetApp.getActiveSpreadsheet()
+    .toast('District filter reset.', 'IRS Tools', 2);
 }
 
-// ---- onEdit: toast when filters change ----
+// ---- onEdit: live feedback when any filter changes ----
 function onEdit(e) {
   const sheet = e.source.getActiveSheet();
-  const addr  = e.range.getA1Notation();
-  const ss    = e.source;
+  if (sheet.getName() !== 'Lookup') return;
 
-  // County Picker checkboxes
-  if (sheet.getName() === 'County Picker') {
-    if (e.range.getColumn() === 3 || e.range.getColumn() === 6) {
-      const n = countChecked(sheet);
-      ss.toast(
-        n === 0 ? 'Showing all 92 counties.' : n + ' counties selected.',
-        'County Filter', 3
-      );
-    }
+  const col = e.range.getColumn();
+  const row = e.range.getRow();
+  const ss  = e.source;
+
+  // County checkbox columns C (3) or E (5), rows 6-51
+  if ((col === 3 || col === 5) && row >= 6 && row <= 51) {
+    const n = sheet.getRange('C6:C51').getValues().flat().filter(Boolean).length
+            + sheet.getRange('E6:E51').getValues().flat().filter(Boolean).length;
+    ss.toast(
+      n === 0 ? 'Showing all 92 counties.' : n + ' counties selected.',
+      'County Filter', 3
+    );
     return;
   }
 
-  // Lookup district filters
-  if (sheet.getName() === 'Lookup') {
-    if (addr === 'G4' || addr === 'I4') {
-      const type = sheet.getRange('G4').getValue();
-      const num  = sheet.getRange('I4').getValue();
-      const msg  = 'Filter: ' +
-        (type === 'All Types' ? 'All Types' : type) +
-        (num ? ', District ' + num : '');
-      ss.toast(msg, 'District Filter', 3);
-    }
+  // District Type dropdown (I4) or District # input (L4)
+  const addr = e.range.getA1Notation();
+  if (addr === 'I4' || addr === 'L4') {
+    const type = sheet.getRange('I4').getValue();
+    const num  = sheet.getRange('L4').getValue();
+    ss.toast(
+      'Filter: ' + (type || 'All Types') + (num ? ', District ' + num : ''),
+      'District Filter', 3
+    );
   }
 }
 
-function countChecked(cpSheet) {
-  const left  = cpSheet.getRange('C5:C50').getValues().flat().filter(Boolean).length;
-  const right = cpSheet.getRange('F5:F50').getValues().flat().filter(Boolean).length;
-  return left + right;
-}
-
-// ---- Navigation ----
-function goToLookup() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  ss.setActiveSheet(ss.getSheetByName('Lookup'));
-}
-function goToCountyPicker() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  ss.setActiveSheet(ss.getSheetByName('County Picker'));
-}
 function goToByDistrict() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   ss.setActiveSheet(ss.getSheetByName('By District'));
@@ -629,11 +551,6 @@ ws_as.sheet_properties.tabColor    = "888888"
 # ============================================================
 out_path = os.path.join(base, "Indiana_County_Candidates_2026.xlsx")
 wb.save(out_path)
-won_rows = sum(1 for r in rows if "Won" in r[7])
-unc_rows = sum(1 for r in rows if r[7] == "Uncontested")
 print(f"Saved  : {out_path}")
-print(f"Rows   : {len(rows)}  (Won: {won_rows}  Uncontested: {unc_rows})")
-print()
-print("Import: drag onto drive.google.com → open with Google Sheets")
-print("        Then: Format the checkbox columns (C5:C50, F5:F50 on County Picker)")
-print("        → select those cells → Format → Checkbox")
+print(f"Rows   : {len(rows)}")
+print(f"Tabs   : {[s.title for s in wb.worksheets]}")
