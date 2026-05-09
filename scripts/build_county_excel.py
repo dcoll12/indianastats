@@ -1,22 +1,22 @@
 """
 Build an interactive Google Sheets workbook: County → Candidates lookup.
+Includes 2026 primary results: winner flag, vote totals, result ordering.
 
-Import the output .xlsx into Google Sheets (File → Import, or just open it
-from Drive — Google Sheets handles .xlsx natively).
+Import the output .xlsx into Google Sheets (File → Import, or open from Drive).
 
 Sheets produced:
   County Lookup  – dropdown (92 counties) + QUERY formula shows all candidates
+                   with result (Won / Lost / Uncontested) and vote totals
   By District    – flat reference table with auto-filter
   All Data       – hidden source table (powering QUERY formula)
   Apps Script    – Google Apps Script code + setup instructions
-
-Google Sheets QUERY formula drives live updates — no macros needed.
-The Apps Script tab provides optional enhancements (toast notifications,
-row highlight on change) for users who want extra interactivity.
 """
 
+import csv
 import json
 import os
+import re
+import collections
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from openpyxl.worksheet.datavalidation import DataValidation
@@ -25,16 +25,18 @@ from openpyxl.formatting.rule import FormulaRule
 # ---------------------------------------------------------------------------
 # Palette
 # ---------------------------------------------------------------------------
-BLUE_DARK  = "0C2340"
-BLUE_MID   = "1E4488"
-GOLD       = "C8962E"
-GOLD_LIGHT = "F5DFA0"
-WHITE      = "FFFFFF"
-GREY_LIGHT = "F2F4F7"
-GREY_MED   = "D0D5DD"
-RED_LIGHT  = "FFE4E4"
-BLUE_LIGHT = "E4EEFF"
-GREEN_LIGHT= "E4F5E4"
+BLUE_DARK   = "0C2340"
+BLUE_MID    = "1E4488"
+GOLD        = "C8962E"
+GOLD_LIGHT  = "F5DFA0"
+WHITE       = "FFFFFF"
+GREY_LIGHT  = "F2F4F7"
+GREY_MED    = "D0D5DD"
+RED_LIGHT   = "FFE4E4"
+BLUE_LIGHT  = "E4EEFF"
+GREEN_LIGHT = "E4F5E4"
+WIN_FILL    = "D4EDDA"   # soft green  – won primary
+LOSS_FILL   = "F8F9FA"   # near-white  – lost primary
 
 def thin(top=True, bottom=True, left=True, right=True):
     sides = {n: Side(style="thin", color=GREY_MED) if f else Side(style=None)
@@ -42,31 +44,139 @@ def thin(top=True, bottom=True, left=True, right=True):
     return Border(**sides)
 
 # ---------------------------------------------------------------------------
-# Load data
+# Paths
 # ---------------------------------------------------------------------------
 base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RESULTS_CSV  = os.path.join(base, "AllOfficeResults(3).csv")
+CANDS_JSON   = os.path.join(base, "data", "candidates_2026.json")
+DISTRICT_JSON= os.path.join(base, "data", "district_data.json")
 
-with open(os.path.join(base, "data", "candidates_2026.json")) as f:
-    cands = json.load(f)
-with open(os.path.join(base, "data", "district_data.json")) as f:
+# ---------------------------------------------------------------------------
+# Load JSON data
+# ---------------------------------------------------------------------------
+with open(CANDS_JSON) as f:
+    cands_json = json.load(f)
+with open(DISTRICT_JSON) as f:
     dm = json.load(f)
 
+# ---------------------------------------------------------------------------
+# Parse primary results CSV → determine winners
+# ---------------------------------------------------------------------------
+ORDINALS = {
+    "first":1,"second":2,"third":3,"fourth":4,"fifth":5,
+    "sixth":6,"seventh":7,"eighth":8,"ninth":9,
+}
+
+def office_to_key(office: str):
+    """Return (dtype, district_num) or None if not a target race."""
+    o = office.strip()
+    if "State Representative" in o:
+        m = re.search(r"District\s+(\d+)", o)
+        return ("hd", int(m.group(1))) if m else None
+    if "State Senator" in o:
+        m = re.search(r"District\s+(\d+)", o)
+        return ("sd", int(m.group(1))) if m else None
+    if "United States Representative" in o:
+        m = re.search(r"(\w+)\s+District", o, re.I)
+        if m:
+            word = m.group(1).lower()
+            if word.isdigit():
+                return ("cd", int(word))
+            return ("cd", ORDINALS.get(word))
+    return None
+
+# Aggregate total votes per (dtype, dnum, party, name)
+vote_totals = collections.defaultdict(int)
+seats_map   = {}
+
+with open(RESULTS_CSV, newline="", encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        key = office_to_key(row["Office"])
+        if key is None:
+            continue
+        dtype, dnum = key
+        party = row["PoliticalParty"].strip()
+        name  = row["NameonBallot"].strip()
+        votes = int(row["TotalVotes"] or 0)
+        seats = int(row["NumberofOfficeSeats"] or 1)
+        vote_totals[(dtype, dnum, party, name)] += votes
+        seats_map[(dtype, dnum, party)] = seats
+
+# Normalise name for fuzzy matching (lowercase, collapse spaces)
+def norm(s):
+    return re.sub(r"\s+", " ", s.lower().strip())
+
+# Build winner set: top-N per (dtype, dnum, party) by vote total
+# Key: (dtype, dnum, norm_name) → True
+winners = set()
+vote_map = {}   # (dtype, dnum, norm_name) → total_votes
+
+# Group by (dtype, dnum, party)
+by_race = collections.defaultdict(list)
+for (dtype, dnum, party, name), votes in vote_totals.items():
+    by_race[(dtype, dnum, party)].append((name, votes))
+
+for (dtype, dnum, party), candidates in by_race.items():
+    n = seats_map.get((dtype, dnum, party), 1)
+    ranked = sorted(candidates, key=lambda x: -x[1])
+    for i in range(min(n, len(ranked))):
+        winners.add((dtype, dnum, norm(ranked[i][0])))
+    for name, votes in candidates:
+        vote_map[(dtype, dnum, norm(name))] = votes
+
+def candidate_result(dtype, dnum, name):
+    """Return (result_label, result_sort_order, vote_total)."""
+    # Check if there were any results for this race
+    race_has_results = any(
+        (dtype, dnum, p) in seats_map for p in ("Democratic","Republican","Libertarian","Independent")
+    )
+    if not race_has_results:
+        return ("Uncontested", 2, 0)
+
+    nkey = (dtype, dnum, norm(name))
+    votes = vote_map.get(nkey, 0)
+
+    # If no votes recorded for this candidate, mark uncontested
+    if votes == 0:
+        return ("Uncontested", 2, 0)
+
+    if nkey in winners:
+        return ("Won Primary ✓", 0, votes)
+    return ("Lost Primary", 1, votes)
+
+# ---------------------------------------------------------------------------
+# Build flat rows:
+# (county, sort_order, type, dist_num, dist_label, candidate, party,
+#  result, result_sort, votes)
+# ---------------------------------------------------------------------------
 TYPE_ORDER = {"House": 1, "Senate": 2, "Congressional": 3}
+JSON_DTYPE = {"House": "hd", "Senate": "sd", "Congressional": "cd"}
 
 rows = []
 for county in sorted(dm["all_counties"]):
     for hd in sorted(dm["county_to_hds"].get(county, [])):
-        for c in cands.get("hd", {}).get(str(hd), []):
-            rows.append((county, 1, "House",         hd, f"HD-{hd}", c["name"], c["party"]))
+        for c in cands_json.get("hd", {}).get(str(hd), []):
+            result, rsort, votes = candidate_result("hd", hd, c["name"])
+            rows.append((county, 1, "House", hd, f"HD-{hd}",
+                         c["name"], c["party"], result, rsort, votes))
     for sd in sorted(dm["county_to_sds"].get(county, [])):
-        for c in cands.get("sd", {}).get(str(sd), []):
-            rows.append((county, 2, "Senate",        sd, f"SD-{sd}", c["name"], c["party"]))
+        for c in cands_json.get("sd", {}).get(str(sd), []):
+            result, rsort, votes = candidate_result("sd", sd, c["name"])
+            rows.append((county, 2, "Senate", sd, f"SD-{sd}",
+                         c["name"], c["party"], result, rsort, votes))
     for cd in sorted(dm["county_to_cds"].get(county, [])):
-        for c in cands.get("cd", {}).get(str(cd), []):
-            rows.append((county, 3, "Congressional", cd, f"CD-{cd}", c["name"], c["party"]))
+        for c in cands_json.get("cd", {}).get(str(cd), []):
+            result, rsort, votes = candidate_result("cd", cd, c["name"])
+            rows.append((county, 3, "Congressional", cd, f"CD-{cd}",
+                         c["name"], c["party"], result, rsort, votes))
 
 all_counties = sorted(dm["all_counties"])
-last_data_row = len(rows) + 1   # +1 for header
+last_data_row = len(rows) + 1
+
+# Sanity check
+won_count = sum(1 for r in rows if "Won" in r[7])
+print(f"Rows: {len(rows)} | Winners flagged: {won_count}")
 
 # ---------------------------------------------------------------------------
 wb = Workbook()
@@ -74,12 +184,14 @@ wb.remove(wb.active)
 
 # ============================================================
 # Sheet: All Data  (hidden — QUERY source)
-# Columns: A=County  B=SortOrder  C=Type  D=Num  E=District  F=Candidate  G=Party
+# A=County  B=SortOrder  C=Type  D=Num  E=District
+# F=Candidate  G=Party  H=Result  I=ResultSort  J=Votes
 # ============================================================
 ws_data = wb.create_sheet("All Data")
 ws_data.sheet_state = "hidden"
 
-DATA_HEADERS = ["County", "SortOrder", "Type", "Num", "District", "Candidate", "Party"]
+DATA_HEADERS = ["County","SortOrder","Type","Num","District",
+                "Candidate","Party","Result","ResultSort","Votes"]
 ws_data.append(DATA_HEADERS)
 for r in rows:
     ws_data.append(list(r))
@@ -97,6 +209,9 @@ ws_data.column_dimensions["D"].width = 6
 ws_data.column_dimensions["E"].width = 10
 ws_data.column_dimensions["F"].width = 35
 ws_data.column_dimensions["G"].width = 8
+ws_data.column_dimensions["H"].width = 18
+ws_data.column_dimensions["I"].width = 12
+ws_data.column_dimensions["J"].width = 10
 
 # ============================================================
 # Sheet: County Lookup  (tab 1 — main interactive sheet)
@@ -104,23 +219,23 @@ ws_data.column_dimensions["G"].width = 8
 ws_lu = wb.create_sheet("County Lookup", 0)
 
 # ---- Banner ----
-ws_lu.merge_cells("A1:H1")
+ws_lu.merge_cells("A1:I1")
 banner = ws_lu["A1"]
-banner.value     = "Indiana 2026 Primary Candidates — County Lookup"
+banner.value     = "Indiana 2026 Primary Results — County Lookup"
 banner.font      = Font(bold=True, size=16, color=WHITE)
 banner.fill      = PatternFill("solid", fgColor=BLUE_DARK)
 banner.alignment = Alignment(horizontal="center", vertical="center")
 ws_lu.row_dimensions[1].height = 38
 
-ws_lu.merge_cells("A2:H2")
+ws_lu.merge_cells("A2:I2")
 sub = ws_lu["A2"]
-sub.value     = "Select a county from the dropdown to view all 2026 primary candidates in that county's House, Senate, and Congressional districts."
+sub.value     = "Select a county from the dropdown to view all 2026 primary candidates and results for that county's House, Senate, and Congressional districts."
 sub.font      = Font(size=10, color=BLUE_DARK, italic=True)
 sub.fill      = PatternFill("solid", fgColor=GOLD_LIGHT)
 sub.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
 ws_lu.row_dimensions[2].height = 28
 
-ws_lu.row_dimensions[3].height = 8  # spacer
+ws_lu.row_dimensions[3].height = 8
 
 # ---- County selector ----
 ws_lu.merge_cells("B4:C4")
@@ -137,8 +252,6 @@ sel.fill      = PatternFill("solid", fgColor=GOLD_LIGHT)
 sel.alignment = Alignment(horizontal="center", vertical="center")
 sel.border    = thin()
 
-# Data validation dropdown — embed all county names directly so it works
-# both in Google Sheets and Excel without a named range.
 dv = DataValidation(
     type="list",
     formula1='"' + ",".join(all_counties) + '"',
@@ -152,25 +265,27 @@ dv.sqref = "D4"
 ws_lu.add_data_validation(dv)
 
 # ---- Candidate count ----
-ws_lu.row_dimensions[5].height = 8  # spacer
+ws_lu.row_dimensions[5].height = 8
 
 ws_lu.merge_cells("B6:C6")
-cnt_lbl = ws_lu["B6"]
-cnt_lbl.value     = "Candidates found:"
-cnt_lbl.font      = Font(size=10, color=BLUE_DARK)
-cnt_lbl.alignment = Alignment(horizontal="right", vertical="center")
-
-# COUNTA on the spill area col E (Candidate column), rows 9 onward
-ws_lu["D6"].value     = '=IFERROR(COUNTA(E9:E2000),0)'
+ws_lu["B6"].value     = "Candidates found:"
+ws_lu["B6"].font      = Font(size=10, color=BLUE_DARK)
+ws_lu["B6"].alignment = Alignment(horizontal="right", vertical="center")
+ws_lu["D6"].value     = "=IFERROR(COUNTA(F9:F2000),0)"
 ws_lu["D6"].font      = Font(bold=True, size=10, color=BLUE_DARK)
 ws_lu["D6"].alignment = Alignment(horizontal="center")
 ws_lu.row_dimensions[6].height = 20
 
-ws_lu.row_dimensions[7].height = 8  # spacer
+ws_lu.merge_cells("E6:F6")
+ws_lu["E6"].value     = "  ■ Won Primary ✓   ■ Lost Primary   ■ Uncontested"
+ws_lu["E6"].font      = Font(size=9, color="555555", italic=True)
+ws_lu["E6"].alignment = Alignment(vertical="center")
+
+ws_lu.row_dimensions[7].height = 8
 
 # ---- Results header row ----
-result_cols    = ["B",  "C",      "D",      "E",               "F"]
-result_headers = ["District", "Type", "Dist #", "Candidate Name", "Party"]
+result_cols    = ["B",       "C",      "D",      "E",               "F",     "G",              "H"]
+result_headers = ["District","Type",   "Dist #", "Candidate Name",  "Party", "Primary Result", "Votes"]
 
 for col_letter, hdr in zip(result_cols, result_headers):
     cell = ws_lu[f"{col_letter}8"]
@@ -181,23 +296,23 @@ for col_letter, hdr in zip(result_cols, result_headers):
     cell.border    = thin()
 ws_lu.row_dimensions[8].height = 24
 
-# ---- QUERY formula (Google Sheets native) ----
-# All Data columns by name: County SortOrder Type Num District Candidate Party
-# We SELECT District(E), Type(C), Num(D), Candidate(F), Party(G)
-# ORDER BY SortOrder ASC, Num ASC
-# headers=1 tells QUERY that row 1 of the source is a header row.
+# ---- QUERY formula ----
+# All Data: A=County B=SortOrder C=Type D=Num E=District F=Candidate G=Party H=Result I=ResultSort J=Votes
+# SELECT District(E), Type(C), Num(D), Candidate(F), Party(G), Result(H), Votes(J)
+# ORDER BY SortOrder(B) ASC, Num(D) ASC, ResultSort(I) ASC, Votes(J) DESC
 query_formula = (
     "=IFERROR("
-    "QUERY('All Data'!A:G,"
-    "\"SELECT E, C, D, F, G "
+    "QUERY('All Data'!A:J,"
+    "\"SELECT E, C, D, F, G, H, J "
     "WHERE A = '\"&D4&\"' "
-    "ORDER BY B ASC, D ASC\","
+    "ORDER BY B ASC, D ASC, I ASC, J DESC\","
     "1),"
-    "{\"No candidates found for this county.\",\"\",\"\",\"\",\"\"})"
+    "{\"No candidates found for this county.\",\"\",\"\",\"\",\"\",\"\",\"\"})"
 )
 ws_lu["B9"].value = query_formula
 
-# ---- Conditional formatting: Party column (F) ----
+# ---- Conditional formatting ----
+# Party column G: D=red, R=blue, other=green
 ws_lu.conditional_formatting.add(
     "F9:F2000",
     FormulaRule(formula=['$F9="D"'],
@@ -217,31 +332,47 @@ ws_lu.conditional_formatting.add(
                 font=Font(color="005500", bold=True)),
 )
 
+# Result column H: Won=green, Lost=grey
+ws_lu.conditional_formatting.add(
+    "G9:G2000",
+    FormulaRule(formula=['LEFT($G9,3)="Won"'],
+                fill=PatternFill("solid", fgColor=WIN_FILL),
+                font=Font(color="155724", bold=True)),
+)
+ws_lu.conditional_formatting.add(
+    "G9:G2000",
+    FormulaRule(formula=['LEFT($G9,4)="Lost"'],
+                fill=PatternFill("solid", fgColor=LOSS_FILL),
+                font=Font(color="888888")),
+)
+
 # ---- Column widths ----
 ws_lu.column_dimensions["A"].width = 3
-ws_lu.column_dimensions["B"].width = 12   # District label
-ws_lu.column_dimensions["C"].width = 16   # Type
-ws_lu.column_dimensions["D"].width = 9    # Dist #
-ws_lu.column_dimensions["E"].width = 40   # Candidate Name
-ws_lu.column_dimensions["F"].width = 8    # Party
-ws_lu.column_dimensions["G"].width = 3
+ws_lu.column_dimensions["B"].width = 12
+ws_lu.column_dimensions["C"].width = 16
+ws_lu.column_dimensions["D"].width = 9
+ws_lu.column_dimensions["E"].width = 40
+ws_lu.column_dimensions["F"].width = 8
+ws_lu.column_dimensions["G"].width = 18
+ws_lu.column_dimensions["H"].width = 12
+ws_lu.column_dimensions["I"].width = 3
 
 ws_lu.freeze_panes = "B9"
 ws_lu.sheet_properties.tabColor = GOLD
 
 # ============================================================
-# Sheet: By District  (sorted reference table with auto-filter)
+# Sheet: By District  (sorted reference table)
 # ============================================================
 ws_bd = wb.create_sheet("By District")
 
-ws_bd.merge_cells("A1:F1")
-ws_bd["A1"].value     = "Indiana 2026 Primary Candidates — All Districts"
+ws_bd.merge_cells("A1:H1")
+ws_bd["A1"].value     = "Indiana 2026 Primary Results — All Districts"
 ws_bd["A1"].font      = Font(bold=True, size=14, color=WHITE)
 ws_bd["A1"].fill      = PatternFill("solid", fgColor=BLUE_DARK)
 ws_bd["A1"].alignment = Alignment(horizontal="center", vertical="center")
 ws_bd.row_dimensions[1].height = 30
 
-bd_hdrs = ["County", "District", "Type", "Dist #", "Candidate Name", "Party"]
+bd_hdrs = ["County","District","Type","Dist #","Candidate Name","Party","Primary Result","Votes"]
 ws_bd.append(bd_hdrs)
 for col, hdr in enumerate(bd_hdrs, 1):
     cell = ws_bd.cell(2, col)
@@ -251,10 +382,10 @@ for col, hdr in enumerate(bd_hdrs, 1):
     cell.border    = thin()
 ws_bd.row_dimensions[2].height = 20
 
-sorted_rows = sorted(rows, key=lambda r: (r[1], r[3], r[0], r[5]))  # SortOrder, Num, County, Candidate
+sorted_rows = sorted(rows, key=lambda r: (r[1], r[3], r[8], -r[9], r[0], r[5]))
 for idx, r in enumerate(sorted_rows, 3):
-    county, _order, dtype, dnum, dlabel, cand, party = r
-    vals = [county, dlabel, dtype, dnum, cand, party]
+    county, _order, dtype, dnum, dlabel, cand, party, result, rsort, votes = r
+    vals = [county, dlabel, dtype, dnum, cand, party, result, votes]
     bg = GREY_LIGHT if idx % 2 == 0 else WHITE
     for col, val in enumerate(vals, 1):
         cell = ws_bd.cell(idx, col)
@@ -262,6 +393,7 @@ for idx, r in enumerate(sorted_rows, 3):
         cell.fill      = PatternFill("solid", fgColor=bg)
         cell.alignment = Alignment(vertical="center")
         cell.border    = thin()
+    # Party colour
     pcell = ws_bd.cell(idx, 6)
     if party == "D":
         pcell.fill = PatternFill("solid", fgColor=RED_LIGHT)
@@ -272,6 +404,14 @@ for idx, r in enumerate(sorted_rows, 3):
     else:
         pcell.fill = PatternFill("solid", fgColor=GREEN_LIGHT)
         pcell.font = Font(color="005500", bold=True, size=10)
+    # Result colour
+    rcell = ws_bd.cell(idx, 7)
+    if "Won" in result:
+        rcell.fill = PatternFill("solid", fgColor=WIN_FILL)
+        rcell.font = Font(color="155724", bold=True, size=10)
+    elif "Lost" in result:
+        rcell.fill = PatternFill("solid", fgColor=LOSS_FILL)
+        rcell.font = Font(color="888888", size=10)
 
 ws_bd.column_dimensions["A"].width = 18
 ws_bd.column_dimensions["B"].width = 10
@@ -279,12 +419,14 @@ ws_bd.column_dimensions["C"].width = 15
 ws_bd.column_dimensions["D"].width = 8
 ws_bd.column_dimensions["E"].width = 40
 ws_bd.column_dimensions["F"].width = 8
+ws_bd.column_dimensions["G"].width = 18
+ws_bd.column_dimensions["H"].width = 12
 ws_bd.freeze_panes = "A3"
-ws_bd.auto_filter.ref = f"A2:F{len(sorted_rows)+2}"
+ws_bd.auto_filter.ref = f"A2:H{len(sorted_rows)+2}"
 ws_bd.sheet_properties.tabColor = BLUE_MID
 
 # ============================================================
-# Sheet: Apps Script  (setup instructions + full script source)
+# Sheet: Apps Script  (unchanged from previous version)
 # ============================================================
 ws_as = wb.create_sheet("Apps Script")
 
@@ -299,7 +441,7 @@ instructions = [
     ("A3",  "WHY ADD APPS SCRIPT?"),
     ("A4",  "The QUERY formula handles lookups automatically — no script needed for basic use."),
     ("A5",  "The Apps Script below adds: a toast notification when you change county, a dynamic"),
-    ("A6",  "page title update, and a manual Refresh button in the toolbar."),
+    ("A6",  "page title update, and a manual Refresh button in the IRS Tools menu."),
     ("A8",  "HOW TO ADD THE SCRIPT:"),
     ("A9",  "1. In Google Sheets, go to Extensions → Apps Script."),
     ("A10", "2. Delete any placeholder code in the editor."),
@@ -327,10 +469,6 @@ apps_script = r"""
 //  (replaces any placeholder code already there)
 // ============================================================
 
-/**
- * Fires whenever any cell is edited.
- * When D4 on "County Lookup" changes, shows a brief toast.
- */
 function onEdit(e) {
   const sheet = e.source.getActiveSheet();
   if (sheet.getName() !== 'County Lookup') return;
@@ -339,51 +477,36 @@ function onEdit(e) {
   const county = e.range.getValue();
   if (!county) return;
 
-  // Brief toast notification bottom-right
   e.source.toast(
-    'Showing candidates for ' + county,
+    'Showing 2026 primary results for ' + county,
     'County Lookup',
-    3   // seconds to display
+    3
   );
 
-  // Highlight the selector cell briefly then restore
   highlightSelector(sheet);
 }
 
-/**
- * Flash the county selector cell gold → white to signal the update.
- */
 function highlightSelector(sheet) {
   const cell = sheet.getRange('D4');
   const original = cell.getBackground();
-  cell.setBackground('#F5DFA0');   // gold flash
+  cell.setBackground('#F5DFA0');
   SpreadsheetApp.flush();
   Utilities.sleep(300);
   cell.setBackground(original);
 }
 
-/**
- * Optional: call this from a custom menu or button to force-refresh
- * any cached formula results.
- */
 function refreshLookup() {
   const ss    = SpreadsheetApp.getActiveSpreadsheet();
   const sheet = ss.getSheetByName('County Lookup');
   if (!sheet) return;
-
-  // Toggle the county value to force QUERY to re-evaluate
   const cell   = sheet.getRange('D4');
   const county = cell.getValue();
   cell.clearContent();
   SpreadsheetApp.flush();
   cell.setValue(county);
-
   ss.toast('Refreshed: ' + county, 'County Lookup', 2);
 }
 
-/**
- * Adds a custom "IRS Tools" menu when the spreadsheet opens.
- */
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('IRS Tools')
@@ -419,10 +542,11 @@ ws_as.sheet_properties.tabColor    = "888888"
 # ============================================================
 out_path = os.path.join(base, "Indiana_County_Candidates_2026.xlsx")
 wb.save(out_path)
-print(f"Saved: {out_path}")
-print(f"Data rows : {len(rows)}")
-print(f"Counties  : {len(all_counties)}")
+print(f"Saved : {out_path}")
+print(f"Rows  : {len(rows)}")
+print(f"Won   : {won_count}")
+print(f"Uncontested: {sum(1 for r in rows if r[7]=='Uncontested')}")
 print()
 print("Import into Google Sheets:")
-print("  File → Import → Upload → select this file → 'Replace spreadsheet'")
-print("  OR drag the file onto drive.google.com and open with Google Sheets.")
+print("  Drag onto drive.google.com → open with Google Sheets")
+print("  OR File → Import → Upload → Replace spreadsheet")
