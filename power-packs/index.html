@@ -248,6 +248,7 @@ footer {
 }
 .pp-section-senate { background: #ede9fe; color: #5b21b6; border-left: 5px solid #7c3aed; }
 .pp-section-house  { background: #dcfce7; color: #14532d; border-left: 5px solid #16a34a; }
+.pp-section-polar-anchor { background: #fef3c7; color: #92400e; border-left: 5px solid #f59e0b; }
 .pp-no-senate {
   padding: 8px 16px; font-size: 0.78rem; color: #92400e;
   background: #fffbeb; border-left: 3px solid #d97706; border-top: 1px solid #f1f5f9;
@@ -265,10 +266,11 @@ footer {
   display: inline-block; font-size: 0.57rem; font-weight: 700;
   padding: 1px 5px; border-radius: 3px; margin-top: 3px; color: white; white-space: nowrap;
 }
-.pp-role-competitive { background: #059669; }
-.pp-role-challenge   { background: #d97706; }
-.pp-role-turnout     { background: #94a3b8; }
-.pp-role-caucus      { background: #0f172a; }
+.pp-role-competitive    { background: #059669; }
+.pp-role-challenge      { background: #d97706; }
+.pp-role-turnout        { background: #94a3b8; }
+.pp-role-caucus         { background: #0f172a; }
+.pp-role-polar-anchor   { background: #f59e0b; color: #1c1917; }
 .pp-primary-badge { display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 900; width: 18px; height: 18px; border-radius: 4px; background: #7c3aed; color: white; flex-shrink: 0; letter-spacing: 0; }
 .pp-senate-row { background: #faf5ff !important; }
 .pp-senate-row:hover { background: #f3e8ff !important; }
@@ -762,6 +764,14 @@ var PP = (function() {
     return 3;
   }
 
+  // Polar power = competitiveness score (0–1). Higher = stronger candidate, more competitive
+  // district. The candidate with the highest polar power in a pack is the gravitational center —
+  // if that's an HD candidate, they lead the pack display over the senate anchor.
+  function polarPower(lean) {
+    if (!lean || lean.in_index === null || lean.in_index === undefined) return 0;
+    return Math.max(0, 1 - Math.abs(lean.in_index) / 0.45);
+  }
+
   // Builds packs where each House District is the anchor.
   // Senate candidates overlapping the HD are shown as supporting context.
   function buildHousePacks() {
@@ -964,6 +974,19 @@ var PP = (function() {
       });
     });
 
+    // Compute polar anchor: if an HD candidate has higher polar power than the SD,
+    // they become the gravitational center of the pack.
+    Object.values(packBySD).forEach(function(pack) {
+      var sdPP = polarPower(pack.sdLean);
+      var bestHD = null, bestHDPP = 0;
+      pack.houseMembers.forEach(function(m) {
+        var pp = polarPower(m.lean);
+        if (pp > bestHDPP) { bestHDPP = pp; bestHD = m; }
+      });
+      pack.hdPolarAnchor = (bestHD && bestHDPP > sdPP) ? bestHD : null;
+      pack.maxPolarPower = Math.max(sdPP, bestHDPP);
+    });
+
     // Add neighboring SD senate candidates and competitive neighboring HD candidates to each pack
     Object.values(packBySD).forEach(function(pack) {
       var allSDHDs = ((dd.sd_to_hds || {})[String(pack.sdNum)] || []).map(Number);
@@ -1024,15 +1047,16 @@ var PP = (function() {
     });
 
     // Collect, sort: TARGET → OPPORTUNITY → TURNOUT → HOLD (Tier 1→2→3→0)
-    // HOLD packs (safe D incumbents) sort last — they don't need heavy volunteer focus
+    // HOLD packs (safe D incumbents) sort last — they don't need heavy volunteer focus.
+    // Within each tier, sort by max polar power (strongest candidate in pack leads).
     var FOCUS_TIER_ORDER = { 1: 1, 2: 2, 3: 3, 0: 4 };
     var packs = focusPackList.sort(function(a, b) {
       var oa = FOCUS_TIER_ORDER[a.tier] !== undefined ? FOCUS_TIER_ORDER[a.tier] : 99;
       var ob = FOCUS_TIER_ORDER[b.tier] !== undefined ? FOCUS_TIER_ORDER[b.tier] : 99;
       if (oa !== ob) return oa - ob;
-      var ma = (a.sdLean && a.sdLean.in_index !== null) ? Math.abs(a.sdLean.in_index) : 1;
-      var mb = (b.sdLean && b.sdLean.in_index !== null) ? Math.abs(b.sdLean.in_index) : 1;
-      return ma - mb;
+      var pa = a.maxPolarPower !== undefined ? a.maxPolarPower : polarPower(a.sdLean);
+      var pb = b.maxPolarPower !== undefined ? b.maxPolarPower : polarPower(b.sdLean);
+      return pb - pa; // descending: highest polar power first
     });
 
     function matches(entry) {
@@ -1187,6 +1211,18 @@ var PP = (function() {
         });
       });
 
+      // Compute polar anchor: the HD candidate with highest polar power, if they
+      // exceed the SD's polar power — they become the gravitational center of the pack.
+      packs.forEach(function(pack) {
+        var sdPP = polarPower(pack.sdLean);
+        var bestHD = null, bestHDPP = 0;
+        pack.houseMembers.forEach(function(m) {
+          var pp = polarPower(m.lean);
+          if (pp > bestHDPP) { bestHDPP = pp; bestHD = m; }
+        });
+        pack.hdPolarAnchor = (bestHD && bestHDPP > sdPP) ? bestHD : null;
+        pack.maxPolarPower = Math.max(sdPP, bestHDPP);
+      });
 
       // Apply search filter, then drop empty packs
       packs = packs.filter(function(p) {
@@ -1401,15 +1437,30 @@ var PP = (function() {
     }
     parts.push(cdHint);
     parts.push('</div>');
+    if (pack.hdPolarAnchor) {
+      parts.push('<div class="pp-pack-counties" style="color:#92400e">⭐ HD-'+pack.hdPolarAnchor.dnum+' is the gravitational center of this pack — highest polar power among all candidates</div>');
+    }
     if (pack.counties.length) parts.push('<div class="pp-pack-counties">counties covered in pack: '+esc(pack.counties.join(' · '))+'</div>');
     if (!pack.isUncontested && !pack.isHDOnly && tc.mission) parts.push('<div class="pp-pack-mission">'+tc.mission+'</div>');
     parts.push('</div>');
     parts.push('<div class="pp-pack-count">'+totalCands+' candidate'+(totalCands!==1?'s':'')+'</div>');
     parts.push('</div>');
 
-    // Senate anchor
+    // HD polar anchor — if an HD candidate has more polar power than the senate anchor,
+    // they're the gravitational center of the pack and are featured first.
+    var hdPolarAnchor = pack.hdPolarAnchor || null;
+    if (hdPolarAnchor) {
+      var paLidx = hdPolarAnchor.lean ? (hdPolarAnchor.lean.in_index_label || '—') : '—';
+      parts.push('<div class="pp-section-label pp-section-polar-anchor">⭐ Pack Center · HD-'+hdPolarAnchor.dnum+' · '+esc(paLidx)+'</div>');
+      parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
+      parts.push(renderEntry(hdPolarAnchor, { isHouse: true, noOverlaps: true, roleLabel: '⭐ Polar Anchor', roleCls: 'polar-anchor' }));
+      parts.push('</tbody></table></div>');
+    }
+
+    // Senate anchor (labelled "Coalition" when an HD holds the polar anchor position)
+    var senateLabel = hdPolarAnchor ? '⚡ Senate Coalition — SD-'+pack.sdNum : '⚡ Senate Anchor — SD-'+pack.sdNum;
     if (pack.senateCandidates.length) {
-      parts.push('<div class="pp-section-label pp-section-senate">⚡ Senate Anchor — SD-'+pack.sdNum+'</div>');
+      parts.push('<div class="pp-section-label pp-section-senate">'+senateLabel+'</div>');
       parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
       var senatePrimary = pack.senateCandidates.length > 1;
       pack.senateCandidates.forEach(function(cand) {
@@ -1434,13 +1485,16 @@ var PP = (function() {
         +' — <em>contact Indiana Rural Summit to get involved</em></div>');
     }
 
-    // House members
-    if (pack.houseMembers.length) {
-      parts.push('<div class="pp-section-label pp-section-house">House Districts ('+pack.houseMembers.length+')</div>');
+    // House members (polar anchor excluded — already shown above)
+    var houseRemainder = hdPolarAnchor
+      ? pack.houseMembers.filter(function(m) { return !(m.dtype === 'house' && m.dnum === hdPolarAnchor.dnum && m.row === hdPolarAnchor.row); })
+      : pack.houseMembers;
+    if (houseRemainder.length) {
+      parts.push('<div class="pp-section-label pp-section-house">House Districts ('+houseRemainder.length+')</div>');
       parts.push('<div class="pp-wrapper"><table class="pp-table">'+PP_THEAD+'<tbody>');
       var hdCounts = {};
-      pack.houseMembers.forEach(function(m) { hdCounts[m.dnum] = (hdCounts[m.dnum] || 0) + 1; });
-      pack.houseMembers.forEach(function(member) {
+      houseRemainder.forEach(function(m) { hdCounts[m.dnum] = (hdCounts[m.dnum] || 0) + 1; });
+      houseRemainder.forEach(function(member) {
         var hdm = (member.lean && member.lean.in_index !== null) ? member.lean.in_index : 0.5;
         var roleLabel, roleCls;
         if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
@@ -1495,6 +1549,7 @@ var PP = (function() {
     parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district — contest the Senate seat to build infrastructure &amp; move the margin; House races are the near-term prize &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat; incumbent drives House turnout wave &nbsp;&nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-polar-anchor">⭐ Polar Anchor</span> most competitive candidate in pack — gravitational center &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
@@ -1585,13 +1640,16 @@ var PP = (function() {
     parts.push('<div class="pp-legend" style="background:#f0fdf4;border-color:#bbf7d0;color:#14532d">');
     parts.push('<strong>⚡ Focus Packs</strong> — each candidate appears exactly once, assigned to their single most '
       + 'competitive Senate pack (R-held races preferred per Virginia model). '
+      + 'Packs are sorted by <strong>polar power</strong> — the strongest candidate in a pack (highest competitiveness) '
+      + 'is the gravitational center: if that\'s an HD candidate, they lead the pack display. '
       + 'HD candidates not connected to a Senate pack appear as standalone House Districts Packs. '
-      + 'TARGET → OPPORTUNITY → TURNOUT → HOLD; tightest tossups appear first within each tier.<br>');
+      + 'TARGET → OPPORTUNITY → TURNOUT → HOLD.<br>');
     parts.push('<span style="font-size:0.77rem;line-height:2.2">');
     parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> Competitive flip or critical D defense &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district — contest the Senate seat to build infrastructure &amp; move the margin; House races are the near-term prize &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat; incumbent drives House turnout wave &nbsp;&nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-polar-anchor">⭐ Polar Anchor</span> most competitive candidate in pack — gravitational center &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
