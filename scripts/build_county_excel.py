@@ -314,42 +314,48 @@ ws.conditional_formatting.add(
 )
 
 # ---- FILTER formula in G6 ----
-# Replaces the broken QUERY approach.
 #
-# Why FILTER instead of QUERY:
-#   - QUERY with a dynamically-built WHERE string inside LET is unreliable
-#     in Google Sheets and was returning only headers with no data rows.
-#   - FILTER + REGEXMATCH handles the multi-county OR condition cleanly.
-#   - Google Sheets SORT() accepts array columns; MATCH maps chamber names
-#     to 1/2/3 so House sorts first, Senate second, Congressional third.
+# County check uses MMULT (matrix multiply) — the most reliable approach
+# in Google Sheets for "is this row's county in the selected list?":
 #
-# Handles text "TRUE"/"FALSE" (xlsx import) AND boolean true/false
-# (written by Apps Script) by checking both forms in lsel/rsel.
+#   match_matrix  =  736×46  boolean: data_county_i == left_county_j
+#   selection_vec =  46×1    numeric: 1 if county j is selected, else 0
+#   MMULT(match_matrix, selection_vec)  →  736×1: # selected counties matching
+#   result > 0  →  county is selected
 #
-# All Data rows 2:{L}: A=County C=Type D=Num E=District F=Candidate
-#                      G=Party  H=Result J=Votes
-L = last_data_row
+# When nothing is selected, use All Data col B (SortOrder, always 1/2/3 > 0)
+# as an all-TRUE stand-in so every row passes.
+#
+# All Data is already ordered House→Senate→CD within each county, so no SORT
+# is needed — rows come out in the correct order from FILTER.
+#
+# Handles xlsx-imported text "TRUE"/"FALSE" AND boolean true/false from
+# Apps Script by summing both comparisons in ls/rs.
+L  = last_data_row        # 737  (header row 1 + 736 data rows → data in 2:{L})
+CB_S = CB_START           # 6
+CB_E = CB_END             # 51
+
 filter_formula = (
     "=IFERROR("
     "LET("
-    # detect which state cells are selected — handle text AND boolean TRUE
-    f"lsel,(C{CB_START}:C{CB_END}=TRUE)+(C{CB_START}:C{CB_END}=\"TRUE\"),"
-    f"rsel,(E{CB_START}:E{CB_END}=TRUE)+(E{CB_START}:E{CB_END}=\"TRUE\"),"
-    # build regex pattern: "^(Adams|Allen|...)$" or ".*" when none selected
-    "any,SUMPRODUCT(lsel)+SUMPRODUCT(rsel)>0,"
-    f"pat,IF(any,\"^(\"&TEXTJOIN(\"|\",TRUE,IF(lsel,B{CB_START}:B{CB_END},\"\"),IF(rsel,D{CB_START}:D{CB_END},\"\"))&\")$\",\".*\"),"
-    # per-row conditions (all return arrays matching All Data height)
-    f"cm,REGEXMATCH('All Data'!A2:A{L},pat),"
+    # ls/rs: 46×1 numeric — 1 if selected (text OR boolean TRUE), else 0
+    f"ls,(C{CB_S}:C{CB_E}=TRUE)+(C{CB_S}:C{CB_E}=\"TRUE\"),"
+    f"rs,(E{CB_S}:E{CB_E}=TRUE)+(E{CB_S}:E{CB_E}=\"TRUE\"),"
+    "any,SUMPRODUCT(ls)+SUMPRODUCT(rs),"
+    # cm: 736×1 county match condition
+    # MMULT: (736×46 match matrix) × (46×1 selection vector) → 736×1 count
+    "cm,IF(any=0,"
+    f"'All Data'!B2:B{L}>0,"        # nothing selected → all rows pass (B=SortOrder, always 1-3)
+    f"MMULT(--('All Data'!A2:A{L}=TRANSPOSE(B{CB_S}:B{CB_E})),--( ls>0))+"
+    f"MMULT(--('All Data'!A2:A{L}=TRANSPOSE(D{CB_S}:D{CB_E})),--( rs>0))>0),"
+    # tm: 736×1 type filter
     f"tm,(I4=\"All Types\")+('All Data'!C2:C{L}=I4)>0,"
+    # nm: 736×1 district-number filter
     f"nm,(LEN(TRIM(L4))=0)+('All Data'!D2:D{L}=IFERROR(VALUE(L4),0))>0,"
-    # filter to matching rows; output cols: District,Type,Num,Candidate,Party,Result,Votes
-    f"src,FILTER({{'All Data'!E2:E{L},'All Data'!C2:C{L},'All Data'!D2:D{L},"
+    # return matching rows; cols: District,Type,Num,Candidate,Party,Result,Votes
+    f"FILTER({{'All Data'!E2:E{L},'All Data'!C2:C{L},'All Data'!D2:D{L},"
     f"'All Data'!F2:F{L},'All Data'!G2:G{L},'All Data'!H2:H{L},'All Data'!J2:J{L}}},"
-    "cm*tm*nm),"
-    # sort: col2=Type mapped to 1/2/3 (House→Senate→Congressional), then col3=Num
-    "SORT(src,"
-    "MATCH(INDEX(src,0,2),{\"House\",\"Senate\",\"Congressional\"},0),TRUE,"
-    "INDEX(src,0,3),TRUE)"
+    "cm*tm*nm)"
     "),"
     "\"No candidates match the selected filters.\""
     ")"
