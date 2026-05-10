@@ -79,10 +79,12 @@ header p {
 .tabs {
   display: flex;
   gap: 4px;
-  margin-bottom: 0;
   background: #e2e8f0;
   border-radius: 10px;
   padding: 4px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
 }
 
 .tab-btn {
@@ -123,7 +125,7 @@ header p {
 
 .tab-content.active {
   display: block;
-  margin-top: 20px;
+  padding-top: 16px;
 }
 
 .table-wrap {
@@ -347,7 +349,7 @@ tbody tr.map-locked {
 }
 @media (max-width: 768px) {
   header h1 { font-size: 22px; }
-  .tabs { flex-direction: column; }
+  .tabs { flex-direction: column; position: static; }
   .tab-btn { padding: 10px; }
   .boundary-toggle { width: 100%; }
   .boundary-btn { flex: 1; }
