@@ -82,8 +82,7 @@ header p {
   background: #e2e8f0;
   border-radius: 10px;
   padding: 4px;
-  position: sticky;
-  top: 0;
+  flex-shrink: 0;
   z-index: 20;
 }
 
@@ -125,6 +124,9 @@ header p {
 
 .tab-content.active {
   display: block;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   padding-top: 16px;
 }
 
@@ -149,7 +151,7 @@ thead th {
   user-select: none;
   white-space: nowrap;
   position: sticky;
-  top: 73px;
+  top: 0;
   z-index: 15;
 }
 
@@ -287,8 +289,10 @@ footer .sources {
 .content-side {
   flex: 1;
   min-width: 0;
-  overflow-y: auto;
-  max-height: calc(100vh - 200px);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 300px);
+  min-height: 400px;
 }
 
 
@@ -351,17 +355,18 @@ tbody tr.map-locked {
   .main-layout { flex-direction: column; }
   .map-panel { width: 100%; position: static; }
   #indiana-map { height: 300px; }
-  .content-side { max-height: none; overflow-y: visible; }
+  .content-side { height: auto; min-height: 0; display: block; }
+  .tab-content.active { overflow-y: visible; }
+  .table-wrap { overflow-y: auto; max-height: 60vh; }
 }
 @media (max-width: 768px) {
   header h1 { font-size: 22px; }
-  .tabs { flex-direction: column; position: static; }
+  .tabs { flex-direction: column; }
   .tab-btn { padding: 10px; }
   .boundary-toggle { width: 100%; }
   .boundary-btn { flex: 1; }
   table { font-size: 13px; }
   thead th, tbody td { padding: 8px 10px; }
-  thead th { top: 0; }
 }
 </style>
 </head>
