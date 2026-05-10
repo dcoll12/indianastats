@@ -122,7 +122,9 @@ header p {
   background: white;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: calc(100vh - 220px);
 }
 
 .tab-content.active {
@@ -131,8 +133,6 @@ header p {
 
 .table-wrap {
   overflow-x: auto;
-  overflow-y: auto;
-  max-height: calc(100vh - 320px);
 }
 
 table {
