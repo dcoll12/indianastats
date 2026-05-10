@@ -341,21 +341,23 @@ filter_formula = (
     # ls/rs: 46×1 numeric — 1 if selected (text OR boolean TRUE), else 0
     f"ls,(C{CB_S}:C{CB_E}=TRUE)+(C{CB_S}:C{CB_E}=\"TRUE\"),"
     f"rs,(E{CB_S}:E{CB_E}=TRUE)+(E{CB_S}:E{CB_E}=\"TRUE\"),"
-    "any,SUMPRODUCT(ls)+SUMPRODUCT(rs),"
-    # cm: 736×1 county match condition
-    # MMULT: (736×46 match matrix) × (46×1 selection vector) → 736×1 count
-    "cm,IF(any=0,"
-    f"'All Data'!B2:B{L}>0,"        # nothing selected → all rows pass (B=SortOrder, always 1-3)
-    f"MMULT(--('All Data'!A2:A{L}=TRANSPOSE(B{CB_S}:B{CB_E})),--( ls>0))+"
-    f"MMULT(--('All Data'!A2:A{L}=TRANSPOSE(D{CB_S}:D{CB_E})),--( rs>0))>0),"
-    # tm: 736×1 type filter
-    f"tm,(I4=\"All Types\")+('All Data'!C2:C{L}=I4)>0,"
-    # nm: 736×1 district-number filter
-    f"nm,(LEN(TRIM(L4))=0)+('All Data'!D2:D{L}=IFERROR(VALUE(L4),0))>0,"
+    "n,SUMPRODUCT(ls)+SUMPRODUCT(rs),"
+    # sl/sr: replace unselected county names with sentinel "~~~" so they never match
+    f"sl,IF(ls>0,B{CB_S}:B{CB_E},\"~~~\"),"
+    f"sr,IF(rs>0,D{CB_S}:D{CB_E},\"~~~\"),"
+    # co: 736×1 county match — BYROW checks each data row's county against selected lists
+    # BYROW+SUMPRODUCT is more reliable in Google Sheets than MMULT 2-D broadcasting
+    f"co,IF(n=0,SEQUENCE({L-1})>0,"
+    f"BYROW('All Data'!A2:A{L},LAMBDA(x,"
+    "SUMPRODUCT(--(x=sl))+SUMPRODUCT(--(x=sr))>0))),"
+    # to: 736×1 type filter
+    f"to,(I4=\"All Types\")+('All Data'!C2:C{L}=I4)>0,"
+    # do: 736×1 district-number filter
+    f"do,(LEN(TRIM(L4))=0)+('All Data'!D2:D{L}=IFERROR(VALUE(L4),0))>0,"
     # return matching rows; cols: District,Type,Num,Candidate,Party,Result,Votes
     f"FILTER({{'All Data'!E2:E{L},'All Data'!C2:C{L},'All Data'!D2:D{L},"
     f"'All Data'!F2:F{L},'All Data'!G2:G{L},'All Data'!H2:H{L},'All Data'!J2:J{L}}},"
-    "cm*tm*nm)"
+    "co*to*do)"
     "),"
     "\"No candidates match the selected filters.\""
     ")"
