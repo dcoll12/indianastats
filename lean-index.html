@@ -130,7 +130,8 @@ header p {
 
 .table-wrap {
   overflow-x: auto;
-  overflow-y: clip;
+  overflow-y: auto;
+  max-height: calc(100vh - 160px);
 }
 
 table {
@@ -150,7 +151,7 @@ thead th {
   user-select: none;
   white-space: nowrap;
   position: sticky;
-  top: 73px;
+  top: 0;
   z-index: 15;
 }
 
@@ -359,7 +360,6 @@ tbody tr.map-locked {
   .boundary-btn { flex: 1; }
   table { font-size: 13px; }
   thead th, tbody td { padding: 8px 10px; }
-  thead th { top: 0; }
 }
 </style>
 </head>
