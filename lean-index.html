@@ -114,6 +114,7 @@ header p {
   font-weight: 400;
   opacity: 0.7;
   display: block;
+  white-space: nowrap;
 }
 
 .tab-content {
@@ -412,23 +413,22 @@ tbody tr.map-locked {
   </div>
 
   <div class="tab-content active" id="tab-congressional">
-    <div class="boundary-view boundary-view-current" id="bview-current-congressional">
-      <div class="table-wrap">
-        <table id="table-congressional">
-          <thead>
-            <tr>
-              <th onclick="sortTable('table-congressional', 0, 'num')" title="2020 Presidential margin">'20 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 1, 'num')" title="2022 US House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 3, 'num')" title="2024 US House race result">Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 5, 'num')" title="IN-Index: average partisan lean">IN-Idx <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 6, 'num')" title="Congressional District">Dist <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 7, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
-            </tr>
-          </thead>
-          <tbody>
+    <div class="table-wrap">
+      <table id="table-congressional">
+        <thead>
+          <tr>
+            <th onclick="sortTable('table-congressional', 0, 'num')" title="2020 Presidential margin">'20 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 1, 'num')" title="2022 US House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 3, 'num')" title="2024 US House race result">Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 5, 'num')" title="IN-Index: average partisan lean">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 6, 'num')" title="Congressional District">Dist <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 7, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
+          </tr>
+        </thead>
+        <tbody>
         <tr data-district="1">
           <td class="lean-d-moderate" data-sort-value="-0.1201">+12D</td>
           <td class="lean-d-lean" data-sort-value="-0.0568">+5.7D</td>
@@ -528,11 +528,9 @@ tbody tr.map-locked {
           <td class="col-rep" data-sort-value="Erin Houchin"><a href="https://houchin.house.gov/" target="_blank" rel="noopener">Erin Houchin</a></td>
           <td class="party-r" data-sort-value="R">R</td>
         </tr>
-          </tbody>
-        </table>
-      </div>
+        </tbody>
+      </table>
     </div>
-
   </div>
 
   <div class="tab-content" id="tab-senate">
@@ -1110,26 +1108,25 @@ tbody tr.map-locked {
   </div>
 
   <div class="tab-content" id="tab-house">
-    <div class="boundary-view boundary-view-current" id="bview-current-house">
-      <div class="house-note">
-        <strong>Note:</strong> '20, '22, and Race columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
-      </div>
-      <div class="table-wrap">
-        <table id="table-house">
-          <thead>
-            <tr>
-              <th onclick="sortTable('table-house', 0, 'num')" title="2020 State House race result">'20 Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 1, 'num')" title="2022 State House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 3, 'num')" title="2024 State House race result">Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 5, 'num')" title="IN-Index: 2024 presidential lean (adjusted for unopposed races)">IN-Idx <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 6, 'num')" title="House District">Dist <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 7, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
-            </tr>
-          </thead>
-          <tbody>
+    <div class="house-note">
+      <strong>Note:</strong> '20, '22, and Race columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
+    </div>
+    <div class="table-wrap">
+      <table id="table-house">
+        <thead>
+          <tr>
+            <th onclick="sortTable('table-house', 0, 'num')" title="2020 State House race result">'20 Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 1, 'num')" title="2022 State House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 3, 'num')" title="2024 State House race result">Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 5, 'num')" title="IN-Index: 2024 presidential lean (adjusted for unopposed races)">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 6, 'num')" title="House District">Dist <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 7, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
+          </tr>
+        </thead>
+        <tbody>
         <tr data-district="1">
           <td class="lean-d-strong" data-sort-value="-0.2616">+26.2D</td>
           <td class="lean-d-strong" data-sort-value="-0.2616">+26.2D</td>
@@ -2230,11 +2227,9 @@ tbody tr.map-locked {
           <td class="col-rep" data-sort-value="Blake Johnson"><a href="https://indianahousedemocrats.org/members/blake-johnson" target="_blank" rel="noopener">Blake Johnson</a></td>
           <td class="party-d" data-sort-value="D">D</td>
         </tr>
-          </tbody>
-        </table>
-      </div>
+        </tbody>
+      </table>
     </div>
-
   </div>
 
     </div><!-- /.content-side -->
@@ -2459,28 +2454,9 @@ function switchTab(tab) {
   const tabs = ['congressional', 'senate', 'house'];
   document.querySelectorAll('.tab-btn')[tabs.indexOf(tab)].classList.add('active');
   activeTab = tab;
-  loadMap(tab, boundaryView);
+  loadMap(tab, 'current');
 }
 
-// Patch setBoundaryView to also reload map
-const _origSetBoundary = typeof setBoundaryView !== 'undefined' ? setBoundaryView : null;
-function setBoundaryView(view) {
-  boundaryView = view;
-  const chambers = ['congressional', 'senate', 'house'];
-  document.querySelectorAll('.boundary-view').forEach(el => { el.style.display = 'none'; });
-  document.querySelectorAll('.boundary-view-' + view).forEach(el => { el.style.display = 'block'; });
-  document.querySelectorAll('.boundary-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.view === view);
-  });
-  if (typeof BADGE_DATA !== 'undefined') {
-    chambers.forEach((ch, i) => {
-      document.querySelectorAll('.tab-btn')[i].querySelector('.badge').textContent = BADGE_DATA[ch][view];
-    });
-  }
-  const banner = document.getElementById('banner-2010');
-  if (banner) banner.style.display = view === '2010' ? 'block' : 'none';
-  loadMap(activeTab, view);
-}
 
 // ── Sort ───────────────────────────────────────────────────────────────────
 const sortState = {};
