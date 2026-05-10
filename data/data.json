@@ -20,7 +20,11 @@
       "race_margin": -0.0863,
       "race_label": "+8.6D",
       "r_votes_2022": 100542,
-      "d_votes_2022": 112656
+      "d_votes_2022": 112656,
+      "margin_2026_primary": -0.3018,
+      "label_2026_primary": "+30.2D",
+      "r_votes_2026_primary": 28393,
+      "d_votes_2026_primary": 52938
     },
     {
       "district": 2,
@@ -40,7 +44,11 @@
       "race_margin": 0.289,
       "race_label": "+28.9R",
       "r_votes_2022": 125537,
-      "d_votes_2022": 62955
+      "d_votes_2022": 62955,
+      "margin_2026_primary": 0.2419,
+      "label_2026_primary": "+24.2R",
+      "r_votes_2026_primary": 41207,
+      "d_votes_2026_primary": 25152
     },
     {
       "district": 3,
@@ -60,7 +68,11 @@
       "race_margin": 0.3487,
       "race_label": "+34.9R",
       "r_votes_2022": 131579,
-      "d_votes_2022": 60577
+      "d_votes_2022": 60577,
+      "margin_2026_primary": 0.4674,
+      "label_2026_primary": "+46.7R",
+      "r_votes_2026_primary": 58262,
+      "d_votes_2026_primary": 21146
     },
     {
       "district": 4,
@@ -80,7 +92,11 @@
       "race_margin": 0.354,
       "race_label": "+35.4R",
       "r_votes_2022": 134864,
-      "d_votes_2022": 62834
+      "d_votes_2022": 62834,
+      "margin_2026_primary": 0.4311,
+      "label_2026_primary": "+43.1R",
+      "r_votes_2026_primary": 62546,
+      "d_votes_2026_primary": 24863
     },
     {
       "district": 5,
@@ -100,7 +116,11 @@
       "race_margin": 0.1964,
       "race_label": "+19.6R",
       "r_votes_2022": 146575,
-      "d_votes_2022": 93434
+      "d_votes_2022": 93434,
+      "margin_2026_primary": 0.1518,
+      "label_2026_primary": "+15.2R",
+      "r_votes_2026_primary": 56206,
+      "d_votes_2026_primary": 41388
     },
     {
       "district": 6,
@@ -120,7 +140,11 @@
       "race_margin": 0.337,
       "race_label": "+33.7R",
       "r_votes_2022": 130686,
-      "d_votes_2022": 62838
+      "d_votes_2022": 62838,
+      "margin_2026_primary": 0.3848,
+      "label_2026_primary": "+38.5R",
+      "r_votes_2026_primary": 52357,
+      "d_votes_2026_primary": 23257
     },
     {
       "district": 7,
@@ -140,7 +164,11 @@
       "race_margin": -0.4048,
       "race_label": "+40.5D",
       "r_votes_2022": 53631,
-      "d_votes_2022": 117309
+      "d_votes_2022": 117309,
+      "margin_2026_primary": -0.7079,
+      "label_2026_primary": "+70.8D",
+      "r_votes_2026_primary": 12251,
+      "d_votes_2026_primary": 71628
     },
     {
       "district": 8,
@@ -160,7 +188,11 @@
       "race_margin": 0.3953,
       "race_label": "+39.5R",
       "r_votes_2022": 141995,
-      "d_votes_2022": 68109
+      "d_votes_2022": 68109,
+      "margin_2026_primary": 0.3617,
+      "label_2026_primary": "+36.2R",
+      "r_votes_2026_primary": 45485,
+      "d_votes_2026_primary": 21320
     },
     {
       "district": 9,
@@ -180,7 +212,11 @@
       "race_margin": 0.3256,
       "race_label": "+32.6R",
       "r_votes_2022": 143166,
-      "d_votes_2022": 75700
+      "d_votes_2022": 75700,
+      "margin_2026_primary": 0.2054,
+      "label_2026_primary": "+20.5R",
+      "r_votes_2026_primary": 51144,
+      "d_votes_2026_primary": 33715
     }
   ],
   "senate": [
@@ -200,7 +236,11 @@
       "r_votes_2024": 36270,
       "d_votes_2024": 31343,
       "race_margin": 0.0467,
-      "race_label": "+4.7R"
+      "race_label": "+4.7R",
+      "margin_2026_primary": 0.051,
+      "label_2026_primary": "+5.1R",
+      "r_votes_2026_primary": 9052,
+      "d_votes_2026_primary": 8173
     },
     {
       "district": 2,
@@ -218,7 +258,11 @@
       "r_votes_2024": 16303,
       "d_votes_2024": 27592,
       "race_margin": -0.3132,
-      "race_label": "+31.3D"
+      "race_label": "+31.3D",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 3,
@@ -236,7 +280,11 @@
       "r_votes_2024": 13732,
       "d_votes_2024": 33080,
       "race_margin": -0.4624,
-      "race_label": "+46.2D"
+      "race_label": "+46.2D",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 4,
@@ -254,7 +302,11 @@
       "r_votes_2024": 29135,
       "d_votes_2024": 28141,
       "race_margin": -0.0463,
-      "race_label": "+4.6D"
+      "race_label": "+4.6D",
+      "margin_2026_primary": -0.2437,
+      "label_2026_primary": "+24.4D",
+      "r_votes_2026_primary": 4535,
+      "d_votes_2026_primary": 7457
     },
     {
       "district": 5,
@@ -272,7 +324,11 @@
       "r_votes_2024": 41804,
       "d_votes_2024": 23772,
       "race_margin": 0.3197,
-      "race_label": "+32R"
+      "race_label": "+32R",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 6,
@@ -290,7 +346,11 @@
       "r_votes_2024": 46625,
       "d_votes_2024": 21754,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": 0.3679,
+      "label_2026_primary": "+36.8R",
+      "r_votes_2026_primary": 11308,
+      "d_votes_2026_primary": 5225
     },
     {
       "district": 7,
@@ -308,7 +368,11 @@
       "r_votes_2024": 43682,
       "d_votes_2024": 20349,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 8,
@@ -326,7 +390,11 @@
       "r_votes_2024": 41637,
       "d_votes_2024": 19097,
       "race_margin": 0.4343,
-      "race_label": "+43.4R"
+      "race_label": "+43.4R",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 9,
@@ -344,7 +412,11 @@
       "r_votes_2024": 37162,
       "d_votes_2024": 16640,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 10,
@@ -362,7 +434,11 @@
       "r_votes_2024": 20065,
       "d_votes_2024": 27669,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 11,
@@ -380,7 +456,11 @@
       "r_votes_2024": 31584,
       "d_votes_2024": 23832,
       "race_margin": 0.2331,
-      "race_label": "+23.3R"
+      "race_label": "+23.3R",
+      "margin_2026_primary": 0.3705,
+      "label_2026_primary": "+37R",
+      "r_votes_2026_primary": 9964,
+      "d_votes_2026_primary": 4577
     },
     {
       "district": 12,
@@ -398,7 +478,11 @@
       "r_votes_2024": 27128,
       "d_votes_2024": 15643,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 13,
@@ -416,7 +500,11 @@
       "r_votes_2024": 37679,
       "d_votes_2024": 12639,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 14,
@@ -434,7 +522,11 @@
       "r_votes_2024": 30177,
       "d_votes_2024": 17617,
       "race_margin": 0.3026,
-      "race_label": "+30.3R"
+      "race_label": "+30.3R",
+      "margin_2026_primary": 0.3375,
+      "label_2026_primary": "+33.8R",
+      "r_votes_2026_primary": 5992,
+      "d_votes_2026_primary": 2968
     },
     {
       "district": 15,
@@ -452,7 +544,11 @@
       "r_votes_2024": 37930,
       "d_votes_2024": 26834,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": 0.3063,
+      "label_2026_primary": "+30.6R",
+      "r_votes_2026_primary": 10467,
+      "d_votes_2026_primary": 5558
     },
     {
       "district": 16,
@@ -470,7 +566,11 @@
       "r_votes_2024": 38414,
       "d_votes_2024": 25547,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 17,
@@ -488,7 +588,11 @@
       "r_votes_2024": 40995,
       "d_votes_2024": 14834,
       "race_margin": 0.501,
-      "race_label": "+50.1R"
+      "race_label": "+50.1R",
+      "margin_2026_primary": 0.6288,
+      "label_2026_primary": "+62.9R",
+      "r_votes_2026_primary": 12292,
+      "d_votes_2026_primary": 2801
     },
     {
       "district": 18,
@@ -506,7 +610,11 @@
       "r_votes_2024": 42855,
       "d_votes_2024": 12901,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 19,
@@ -524,7 +632,11 @@
       "r_votes_2024": 38910,
       "d_votes_2024": 16886,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": 0.6365,
+      "label_2026_primary": "+63.6R",
+      "r_votes_2026_primary": 14801,
+      "d_votes_2026_primary": 3288
     },
     {
       "district": 20,
@@ -542,7 +654,11 @@
       "r_votes_2024": 41363,
       "d_votes_2024": 33448,
       "race_margin": 0.198,
-      "race_label": "+19.8R"
+      "race_label": "+19.8R",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 21,
@@ -560,7 +676,11 @@
       "r_votes_2024": 44728,
       "d_votes_2024": 27229,
       "race_margin": 0.2795,
-      "race_label": "+27.9R"
+      "race_label": "+27.9R",
+      "margin_2026_primary": 0.3099,
+      "label_2026_primary": "+31R",
+      "r_votes_2026_primary": 13171,
+      "d_votes_2026_primary": 6939
     },
     {
       "district": 22,
@@ -578,7 +698,11 @@
       "r_votes_2024": 31184,
       "d_votes_2024": 23241,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": 0.2161,
+      "label_2026_primary": "+21.6R",
+      "r_votes_2026_primary": 8379,
+      "d_votes_2026_primary": 5401
     },
     {
       "district": 23,
@@ -596,7 +720,11 @@
       "r_votes_2024": 30751,
       "d_votes_2024": 17739,
       "race_margin": 0.2716,
-      "race_label": "+27.2R"
+      "race_label": "+27.2R",
+      "margin_2026_primary": 0.5428,
+      "label_2026_primary": "+54.3R",
+      "r_votes_2026_primary": 12666,
+      "d_votes_2026_primary": 3754
     },
     {
       "district": 24,
@@ -614,7 +742,11 @@
       "r_votes_2024": 38707,
       "d_votes_2024": 24116,
       "race_margin": 0.3113,
-      "race_label": "+31.1R"
+      "race_label": "+31.1R",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 25,
@@ -632,7 +764,11 @@
       "r_votes_2024": 37014,
       "d_votes_2024": 20444,
       "race_margin": 0.2812,
-      "race_label": "+28.1R"
+      "race_label": "+28.1R",
+      "margin_2026_primary": 0.1535,
+      "label_2026_primary": "+15.4R",
+      "r_votes_2026_primary": 9847,
+      "d_votes_2026_primary": 7226
     },
     {
       "district": 26,
@@ -650,7 +786,11 @@
       "r_votes_2024": 34075,
       "d_votes_2024": 21197,
       "race_margin": 0.2193,
-      "race_label": "+21.9R"
+      "race_label": "+21.9R",
+      "margin_2026_primary": 0.1779,
+      "label_2026_primary": "+17.8R",
+      "r_votes_2026_primary": 8772,
+      "d_votes_2026_primary": 6122
     },
     {
       "district": 27,
@@ -668,7 +808,11 @@
       "r_votes_2024": 40606,
       "d_votes_2024": 15774,
       "race_margin": 0.4232,
-      "race_label": "+42.3R"
+      "race_label": "+42.3R",
+      "margin_2026_primary": 0.5994,
+      "label_2026_primary": "+59.9R",
+      "r_votes_2026_primary": 13452,
+      "d_votes_2026_primary": 3369
     },
     {
       "district": 28,
@@ -686,7 +830,11 @@
       "r_votes_2024": 41997,
       "d_votes_2024": 23529,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 29,
@@ -704,7 +852,11 @@
       "r_votes_2024": 26879,
       "d_votes_2024": 36086,
       "race_margin": -0.0335,
-      "race_label": "+3.4D"
+      "race_label": "+3.4D",
+      "margin_2026_primary": -0.2157,
+      "label_2026_primary": "+21.6D",
+      "r_votes_2026_primary": 6792,
+      "d_votes_2026_primary": 10528
     },
     {
       "district": 30,
@@ -722,7 +874,11 @@
       "r_votes_2024": 16750,
       "d_votes_2024": 43047,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 31,
@@ -740,7 +896,11 @@
       "r_votes_2024": 35899,
       "d_votes_2024": 37870,
       "race_margin": 0.1085,
-      "race_label": "+10.8R"
+      "race_label": "+10.8R",
+      "margin_2026_primary": -0.0826,
+      "label_2026_primary": "+8.3D",
+      "r_votes_2026_primary": 9328,
+      "d_votes_2026_primary": 11008
     },
     {
       "district": 32,
@@ -758,7 +918,11 @@
       "r_votes_2024": 33435,
       "d_votes_2024": 23755,
       "race_margin": 0.2098,
-      "race_label": "+21R"
+      "race_label": "+21R",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 33,
@@ -776,7 +940,11 @@
       "r_votes_2024": 7983,
       "d_votes_2024": 38973,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 34,
@@ -794,7 +962,11 @@
       "r_votes_2024": 8288,
       "d_votes_2024": 33122,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 35,
@@ -812,7 +984,11 @@
       "r_votes_2024": 25132,
       "d_votes_2024": 18165,
       "race_margin": 0.1378,
-      "race_label": "+13.8R"
+      "race_label": "+13.8R",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 36,
@@ -830,7 +1006,11 @@
       "r_votes_2024": 29369,
       "d_votes_2024": 19263,
       "race_margin": 0.249,
-      "race_label": "+24.9R"
+      "race_label": "+24.9R",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 37,
@@ -848,7 +1028,11 @@
       "r_votes_2024": 50720,
       "d_votes_2024": 17357,
       "race_margin": 0.518,
-      "race_label": "+51.8R"
+      "race_label": "+51.8R",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 38,
@@ -866,7 +1050,11 @@
       "r_votes_2024": 34848,
       "d_votes_2024": 19348,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": 0.2568,
+      "label_2026_primary": "+25.7R",
+      "r_votes_2026_primary": 13349,
+      "d_votes_2026_primary": 7893
     },
     {
       "district": 39,
@@ -884,7 +1072,11 @@
       "r_votes_2024": 43698,
       "d_votes_2024": 12263,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": 0.6788,
+      "label_2026_primary": "+67.9R",
+      "r_votes_2026_primary": 17183,
+      "d_votes_2026_primary": 3288
     },
     {
       "district": 40,
@@ -902,7 +1094,11 @@
       "r_votes_2024": 19247,
       "d_votes_2024": 35111,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 41,
@@ -920,7 +1116,11 @@
       "r_votes_2024": 39944,
       "d_votes_2024": 20042,
       "race_margin": 0.356,
-      "race_label": "+35.6R"
+      "race_label": "+35.6R",
+      "margin_2026_primary": 0.5786,
+      "label_2026_primary": "+57.9R",
+      "r_votes_2026_primary": 12449,
+      "d_votes_2026_primary": 3323
     },
     {
       "district": 42,
@@ -938,7 +1138,11 @@
       "r_votes_2024": 49087,
       "d_votes_2024": 12659,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 43,
@@ -956,7 +1160,11 @@
       "r_votes_2024": 47773,
       "d_votes_2024": 14623,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": 0.5962,
+      "label_2026_primary": "+59.6R",
+      "r_votes_2026_primary": 13108,
+      "d_votes_2026_primary": 3316
     },
     {
       "district": 44,
@@ -974,7 +1182,11 @@
       "r_votes_2024": 44024,
       "d_votes_2024": 15947,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     },
     {
       "district": 45,
@@ -992,7 +1204,11 @@
       "r_votes_2024": 39214,
       "d_votes_2024": 26298,
       "race_margin": 0.2414,
-      "race_label": "+24.1R"
+      "race_label": "+24.1R",
+      "margin_2026_primary": 0.0432,
+      "label_2026_primary": "+4.3R",
+      "r_votes_2026_primary": 6981,
+      "d_votes_2026_primary": 6403
     },
     {
       "district": 46,
@@ -1010,7 +1226,11 @@
       "r_votes_2024": 12428,
       "d_votes_2024": 30691,
       "race_margin": -0.4587,
-      "race_label": "+45.9D"
+      "race_label": "+45.9D",
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 11489
     },
     {
       "district": 47,
@@ -1028,7 +1248,11 @@
       "r_votes_2024": 43497,
       "d_votes_2024": 21534,
       "race_margin": 0.3357,
-      "race_label": "+33.6R"
+      "race_label": "+33.6R",
+      "margin_2026_primary": 0.236,
+      "label_2026_primary": "+23.6R",
+      "r_votes_2026_primary": 9766,
+      "d_votes_2026_primary": 6037
     },
     {
       "district": 48,
@@ -1046,7 +1270,11 @@
       "r_votes_2024": 48071,
       "d_votes_2024": 18040,
       "race_margin": 0.4466,
-      "race_label": "+44.7R"
+      "race_label": "+44.7R",
+      "margin_2026_primary": 0.4557,
+      "label_2026_primary": "+45.6R",
+      "r_votes_2026_primary": 10997,
+      "d_votes_2026_primary": 4112
     },
     {
       "district": 49,
@@ -1064,7 +1292,11 @@
       "r_votes_2024": 33921,
       "d_votes_2024": 21619,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": -0.1781,
+      "label_2026_primary": "+17.8D",
+      "r_votes_2026_primary": 3091,
+      "d_votes_2026_primary": 4431
     },
     {
       "district": 50,
@@ -1082,7 +1314,11 @@
       "r_votes_2024": 37621,
       "d_votes_2024": 24972,
       "race_margin": null,
-      "race_label": "Unop."
+      "race_label": "Unop.",
+      "margin_2026_primary": null,
+      "label_2026_primary": "N/A",
+      "r_votes_2026_primary": null,
+      "d_votes_2026_primary": null
     }
   ],
   "house": [
@@ -1110,7 +1346,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 3820
     },
     {
       "district": 2,
@@ -1136,7 +1376,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 5063
     },
     {
       "district": 3,
@@ -1162,7 +1406,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 4943
     },
     {
       "district": 4,
@@ -1188,7 +1436,11 @@
       "r_votes_2020": 20072,
       "d_votes_2020": 16704,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -0.088,
+      "label_2026_primary": "+8.8D",
+      "r_votes_2026_primary": 3388,
+      "d_votes_2026_primary": 4042
     },
     {
       "district": 5,
@@ -1214,7 +1466,11 @@
       "r_votes_2020": 14617,
       "d_votes_2020": 14190,
       "r_votes_2022": 11738,
-      "d_votes_2022": 8966
+      "d_votes_2022": 8966,
+      "margin_2026_primary": 0.1678,
+      "label_2026_primary": "+16.8R",
+      "r_votes_2026_primary": 3337,
+      "d_votes_2026_primary": 2378
     },
     {
       "district": 6,
@@ -1240,7 +1496,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 3864
     },
     {
       "district": 7,
@@ -1266,7 +1526,11 @@
       "r_votes_2020": 14668,
       "d_votes_2020": 12498,
       "r_votes_2022": 11969,
-      "d_votes_2022": 7702
+      "d_votes_2022": 7702,
+      "margin_2026_primary": -0.0766,
+      "label_2026_primary": "+7.7D",
+      "r_votes_2026_primary": 2693,
+      "d_votes_2026_primary": 3140
     },
     {
       "district": 8,
@@ -1292,7 +1556,11 @@
       "r_votes_2020": 12568,
       "d_votes_2020": 16554,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 3839
     },
     {
       "district": 9,
@@ -1318,7 +1586,11 @@
       "r_votes_2020": 12096,
       "d_votes_2020": 15781,
       "r_votes_2022": 9576,
-      "d_votes_2022": 11645
+      "d_votes_2022": 11645,
+      "margin_2026_primary": -0.2864,
+      "label_2026_primary": "+28.6D",
+      "r_votes_2026_primary": 2319,
+      "d_votes_2026_primary": 4180
     },
     {
       "district": 10,
@@ -1344,7 +1616,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": 8977,
-      "d_votes_2022": 10043
+      "d_votes_2022": 10043,
+      "margin_2026_primary": -0.2783,
+      "label_2026_primary": "+27.8D",
+      "r_votes_2026_primary": 2020,
+      "d_votes_2026_primary": 3578
     },
     {
       "district": 11,
@@ -1370,7 +1646,11 @@
       "r_votes_2020": 25742,
       "d_votes_2020": 11697,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.4028,
+      "label_2026_primary": "+40.3R",
+      "r_votes_2026_primary": 4658,
+      "d_votes_2026_primary": 1983
     },
     {
       "district": 12,
@@ -1396,7 +1676,11 @@
       "r_votes_2020": 13730,
       "d_votes_2020": 18733,
       "r_votes_2022": 10031,
-      "d_votes_2022": 12556
+      "d_votes_2022": 12556,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 5145
     },
     {
       "district": 13,
@@ -1422,7 +1706,11 @@
       "r_votes_2020": 22080,
       "d_votes_2020": 8256,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.5812,
+      "label_2026_primary": "+58.1R",
+      "r_votes_2026_primary": 8030,
+      "d_votes_2026_primary": 2127
     },
     {
       "district": 14,
@@ -1448,7 +1736,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 5638
     },
     {
       "district": 15,
@@ -1474,7 +1766,11 @@
       "r_votes_2020": 17813,
       "d_votes_2020": 16751,
       "r_votes_2022": 16291,
-      "d_votes_2022": 9468
+      "d_votes_2022": 9468,
+      "margin_2026_primary": 0.1562,
+      "label_2026_primary": "+15.6R",
+      "r_votes_2026_primary": 5170,
+      "d_votes_2026_primary": 3773
     },
     {
       "district": 16,
@@ -1500,7 +1796,11 @@
       "r_votes_2020": 21686,
       "d_votes_2020": 7573,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.6522,
+      "label_2026_primary": "+65.2R",
+      "r_votes_2026_primary": 6683,
+      "d_votes_2026_primary": 1407
     },
     {
       "district": 17,
@@ -1526,7 +1826,11 @@
       "r_votes_2020": 19955,
       "d_votes_2020": 6748,
       "r_votes_2022": 13863,
-      "d_votes_2022": 4673
+      "d_votes_2022": 4673,
+      "margin_2026_primary": 0.5438,
+      "label_2026_primary": "+54.4R",
+      "r_votes_2026_primary": 4189,
+      "d_votes_2026_primary": 1238
     },
     {
       "district": 18,
@@ -1552,7 +1856,11 @@
       "r_votes_2020": 22637,
       "d_votes_2020": 6353,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 1.0,
+      "label_2026_primary": "+100R",
+      "r_votes_2026_primary": 5426,
+      "d_votes_2026_primary": 0
     },
     {
       "district": 19,
@@ -1578,7 +1886,11 @@
       "r_votes_2020": 19496,
       "d_votes_2020": 18135,
       "r_votes_2022": 13662,
-      "d_votes_2022": 9605
+      "d_votes_2022": 9605,
+      "margin_2026_primary": -0.0647,
+      "label_2026_primary": "+6.5D",
+      "r_votes_2026_primary": 3223,
+      "d_votes_2026_primary": 3669
     },
     {
       "district": 20,
@@ -1604,7 +1916,11 @@
       "r_votes_2020": 20028,
       "d_votes_2020": 9322,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.3407,
+      "label_2026_primary": "+34.1R",
+      "r_votes_2026_primary": 5210,
+      "d_votes_2026_primary": 2562
     },
     {
       "district": 21,
@@ -1630,7 +1946,11 @@
       "r_votes_2020": 15346,
       "d_votes_2020": 8446,
       "r_votes_2022": 9466,
-      "d_votes_2022": 3367
+      "d_votes_2022": 3367,
+      "margin_2026_primary": 0.414,
+      "label_2026_primary": "+41.4R",
+      "r_votes_2026_primary": 3096,
+      "d_votes_2026_primary": 1283
     },
     {
       "district": 22,
@@ -1656,7 +1976,11 @@
       "r_votes_2020": 20694,
       "d_votes_2020": 8003,
       "r_votes_2022": 14745,
-      "d_votes_2022": 3053
+      "d_votes_2022": 3053,
+      "margin_2026_primary": 1.0,
+      "label_2026_primary": "+100R",
+      "r_votes_2026_primary": 4545,
+      "d_votes_2026_primary": 0
     },
     {
       "district": 23,
@@ -1682,7 +2006,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.5807,
+      "label_2026_primary": "+58.1R",
+      "r_votes_2026_primary": 5066,
+      "d_votes_2026_primary": 1344
     },
     {
       "district": 24,
@@ -1708,7 +2036,11 @@
       "r_votes_2020": 30321,
       "d_votes_2020": 21853,
       "r_votes_2022": 14674,
-      "d_votes_2022": 10571
+      "d_votes_2022": 10571,
+      "margin_2026_primary": 0.0509,
+      "label_2026_primary": "+5.1R",
+      "r_votes_2026_primary": 4742,
+      "d_votes_2026_primary": 4283
     },
     {
       "district": 25,
@@ -1734,7 +2066,11 @@
       "r_votes_2020": 22475,
       "d_votes_2020": 9500,
       "r_votes_2022": 12370,
-      "d_votes_2022": 11097
+      "d_votes_2022": 11097,
+      "margin_2026_primary": -0.0213,
+      "label_2026_primary": "+2.1D",
+      "r_votes_2026_primary": 4004,
+      "d_votes_2026_primary": 4178
     },
     {
       "district": 26,
@@ -1760,7 +2096,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": 4828,
-      "d_votes_2022": 7201
+      "d_votes_2022": 7201,
+      "margin_2026_primary": -0.1036,
+      "label_2026_primary": "+10.4D",
+      "r_votes_2026_primary": 1878,
+      "d_votes_2026_primary": 2312
     },
     {
       "district": 27,
@@ -1786,7 +2126,11 @@
       "r_votes_2020": 8934,
       "d_votes_2020": 14631,
       "r_votes_2022": 4948,
-      "d_votes_2022": 7453
+      "d_votes_2022": 7453,
+      "margin_2026_primary": -0.0903,
+      "label_2026_primary": "+9D",
+      "r_votes_2026_primary": 2477,
+      "d_votes_2026_primary": 2969
     },
     {
       "district": 28,
@@ -1812,7 +2156,11 @@
       "r_votes_2020": 27826,
       "d_votes_2020": 11075,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.5806,
+      "label_2026_primary": "+58.1R",
+      "r_votes_2026_primary": 6745,
+      "d_votes_2026_primary": 1790
     },
     {
       "district": 29,
@@ -1838,7 +2186,11 @@
       "r_votes_2020": 27618,
       "d_votes_2020": 14228,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.1235,
+      "label_2026_primary": "+12.4R",
+      "r_votes_2026_primary": 4584,
+      "d_votes_2026_primary": 3576
     },
     {
       "district": 30,
@@ -1864,7 +2216,11 @@
       "r_votes_2020": 19226,
       "d_votes_2020": 9839,
       "r_votes_2022": 12235,
-      "d_votes_2022": 5885
+      "d_votes_2022": 5885,
+      "margin_2026_primary": 0.3688,
+      "label_2026_primary": "+36.9R",
+      "r_votes_2026_primary": 5057,
+      "d_votes_2026_primary": 2332
     },
     {
       "district": 31,
@@ -1890,7 +2246,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.5023,
+      "label_2026_primary": "+50.2R",
+      "r_votes_2026_primary": 4416,
+      "d_votes_2026_primary": 1463
     },
     {
       "district": 32,
@@ -1916,7 +2276,11 @@
       "r_votes_2020": 26430,
       "d_votes_2020": 8615,
       "r_votes_2022": 12260,
-      "d_votes_2022": 12508
+      "d_votes_2022": 12508,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 4997
     },
     {
       "district": 33,
@@ -1942,7 +2306,11 @@
       "r_votes_2020": 20198,
       "d_votes_2020": 7649,
       "r_votes_2022": 13979,
-      "d_votes_2022": 5882
+      "d_votes_2022": 5882,
+      "margin_2026_primary": 0.5705,
+      "label_2026_primary": "+57R",
+      "r_votes_2026_primary": 5945,
+      "d_votes_2026_primary": 1626
     },
     {
       "district": 34,
@@ -1968,7 +2336,11 @@
       "r_votes_2020": 8744,
       "d_votes_2020": 11293,
       "r_votes_2022": 6849,
-      "d_votes_2022": 7659
+      "d_votes_2022": 7659,
+      "margin_2026_primary": -0.1993,
+      "label_2026_primary": "+19.9D",
+      "r_votes_2026_primary": 2375,
+      "d_votes_2026_primary": 3557
     },
     {
       "district": 35,
@@ -1994,7 +2366,11 @@
       "r_votes_2020": 16767,
       "d_votes_2020": 13570,
       "r_votes_2022": 14948,
-      "d_votes_2022": 6393
+      "d_votes_2022": 6393,
+      "margin_2026_primary": 0.2522,
+      "label_2026_primary": "+25.2R",
+      "r_votes_2026_primary": 5147,
+      "d_votes_2026_primary": 3074
     },
     {
       "district": 36,
@@ -2020,7 +2396,11 @@
       "r_votes_2020": 11485,
       "d_votes_2020": 12951,
       "r_votes_2022": 8904,
-      "d_votes_2022": 8581
+      "d_votes_2022": 8581,
+      "margin_2026_primary": -0.0793,
+      "label_2026_primary": "+7.9D",
+      "r_votes_2026_primary": 3690,
+      "d_votes_2026_primary": 4326
     },
     {
       "district": 37,
@@ -2046,7 +2426,11 @@
       "r_votes_2020": 24591,
       "d_votes_2020": 19159,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.0609,
+      "label_2026_primary": "+6.1R",
+      "r_votes_2026_primary": 4433,
+      "d_votes_2026_primary": 3924
     },
     {
       "district": 38,
@@ -2072,7 +2456,11 @@
       "r_votes_2020": 20746,
       "d_votes_2020": 8272,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.6113,
+      "label_2026_primary": "+61.1R",
+      "r_votes_2026_primary": 7992,
+      "d_votes_2026_primary": 1928
     },
     {
       "district": 39,
@@ -2098,7 +2486,11 @@
       "r_votes_2020": 23396,
       "d_votes_2020": 20262,
       "r_votes_2022": 14757,
-      "d_votes_2022": 13430
+      "d_votes_2022": 13430,
+      "margin_2026_primary": 0.031,
+      "label_2026_primary": "+3.1R",
+      "r_votes_2026_primary": 4237,
+      "d_votes_2026_primary": 3982
     },
     {
       "district": 40,
@@ -2124,7 +2516,11 @@
       "r_votes_2020": 24004,
       "d_votes_2020": 15974,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.3707,
+      "label_2026_primary": "+37.1R",
+      "r_votes_2026_primary": 4696,
+      "d_votes_2026_primary": 2156
     },
     {
       "district": 41,
@@ -2150,7 +2546,11 @@
       "r_votes_2020": 22639,
       "d_votes_2020": 7407,
       "r_votes_2022": 12813,
-      "d_votes_2022": 4212
+      "d_votes_2022": 4212,
+      "margin_2026_primary": 0.5852,
+      "label_2026_primary": "+58.5R",
+      "r_votes_2026_primary": 5824,
+      "d_votes_2026_primary": 1524
     },
     {
       "district": 42,
@@ -2176,7 +2576,11 @@
       "r_votes_2020": 18945,
       "d_votes_2020": 9421,
       "r_votes_2022": 13800,
-      "d_votes_2022": 6379
+      "d_votes_2022": 6379,
+      "margin_2026_primary": 1.0,
+      "label_2026_primary": "+100R",
+      "r_votes_2026_primary": 7328,
+      "d_votes_2026_primary": 0
     },
     {
       "district": 43,
@@ -2202,7 +2606,11 @@
       "r_votes_2020": 9722,
       "d_votes_2020": 13172,
       "r_votes_2022": 6336,
-      "d_votes_2022": 8893
+      "d_votes_2022": 8893,
+      "margin_2026_primary": -0.1856,
+      "label_2026_primary": "+18.6D",
+      "r_votes_2026_primary": 3449,
+      "d_votes_2026_primary": 5021
     },
     {
       "district": 44,
@@ -2228,7 +2636,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.5375,
+      "label_2026_primary": "+53.8R",
+      "r_votes_2026_primary": 5642,
+      "d_votes_2026_primary": 1697
     },
     {
       "district": 45,
@@ -2254,7 +2666,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.6497,
+      "label_2026_primary": "+65R",
+      "r_votes_2026_primary": 9309,
+      "d_votes_2026_primary": 1977
     },
     {
       "district": 46,
@@ -2280,7 +2696,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": 13420,
-      "d_votes_2022": 6686
+      "d_votes_2022": 6686,
+      "margin_2026_primary": 0.3677,
+      "label_2026_primary": "+36.8R",
+      "r_votes_2026_primary": 6626,
+      "d_votes_2026_primary": 3063
     },
     {
       "district": 47,
@@ -2306,7 +2726,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.544,
+      "label_2026_primary": "+54.4R",
+      "r_votes_2026_primary": 5394,
+      "d_votes_2026_primary": 1593
     },
     {
       "district": 48,
@@ -2332,7 +2756,11 @@
       "r_votes_2020": 16430,
       "d_votes_2020": 9105,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.3861,
+      "label_2026_primary": "+38.6R",
+      "r_votes_2026_primary": 4211,
+      "d_votes_2026_primary": 1865
     },
     {
       "district": 49,
@@ -2358,7 +2786,11 @@
       "r_votes_2020": 16539,
       "d_votes_2020": 8341,
       "r_votes_2022": 10422,
-      "d_votes_2022": 5095
+      "d_votes_2022": 5095,
+      "margin_2026_primary": 0.2536,
+      "label_2026_primary": "+25.4R",
+      "r_votes_2026_primary": 3702,
+      "d_votes_2026_primary": 2204
     },
     {
       "district": 50,
@@ -2384,7 +2816,11 @@
       "r_votes_2020": 21418,
       "d_votes_2020": 8517,
       "r_votes_2022": 16417,
-      "d_votes_2022": 4739
+      "d_votes_2022": 4739,
+      "margin_2026_primary": 0.6583,
+      "label_2026_primary": "+65.8R",
+      "r_votes_2026_primary": 6513,
+      "d_votes_2026_primary": 1342
     },
     {
       "district": 51,
@@ -2410,7 +2846,11 @@
       "r_votes_2020": 17633,
       "d_votes_2020": 5250,
       "r_votes_2022": 10758,
-      "d_votes_2022": 3469
+      "d_votes_2022": 3469,
+      "margin_2026_primary": 0.7294,
+      "label_2026_primary": "+72.9R",
+      "r_votes_2026_primary": 5860,
+      "d_votes_2026_primary": 917
     },
     {
       "district": 52,
@@ -2436,7 +2876,11 @@
       "r_votes_2020": 24713,
       "d_votes_2020": 8322,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 1.0,
+      "label_2026_primary": "+100R",
+      "r_votes_2026_primary": 5982,
+      "d_votes_2026_primary": 0
     },
     {
       "district": 53,
@@ -2462,7 +2906,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.4969,
+      "label_2026_primary": "+49.7R",
+      "r_votes_2026_primary": 5974,
+      "d_votes_2026_primary": 2008
     },
     {
       "district": 54,
@@ -2488,7 +2936,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": 13886,
-      "d_votes_2022": 4955
+      "d_votes_2022": 4955,
+      "margin_2026_primary": 1.0,
+      "label_2026_primary": "+100R",
+      "r_votes_2026_primary": 7773,
+      "d_votes_2026_primary": 0
     },
     {
       "district": 55,
@@ -2514,7 +2966,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.6265,
+      "label_2026_primary": "+62.7R",
+      "r_votes_2026_primary": 5448,
+      "d_votes_2026_primary": 1251
     },
     {
       "district": 56,
@@ -2540,7 +2996,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": 11764,
-      "d_votes_2022": 5057
+      "d_votes_2022": 5057,
+      "margin_2026_primary": 0.5523,
+      "label_2026_primary": "+55.2R",
+      "r_votes_2026_primary": 6134,
+      "d_votes_2026_primary": 1769
     },
     {
       "district": 57,
@@ -2566,7 +3026,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.4663,
+      "label_2026_primary": "+46.6R",
+      "r_votes_2026_primary": 4608,
+      "d_votes_2026_primary": 1677
     },
     {
       "district": 58,
@@ -2592,7 +3056,11 @@
       "r_votes_2020": 22282,
       "d_votes_2020": 10664,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.3849,
+      "label_2026_primary": "+38.5R",
+      "r_votes_2026_primary": 3972,
+      "d_votes_2026_primary": 1764
     },
     {
       "district": 59,
@@ -2618,7 +3086,11 @@
       "r_votes_2020": 17729,
       "d_votes_2020": 11873,
       "r_votes_2022": 11019,
-      "d_votes_2022": 6949
+      "d_votes_2022": 6949,
+      "margin_2026_primary": 1.0,
+      "label_2026_primary": "+100R",
+      "r_votes_2026_primary": 4186,
+      "d_votes_2026_primary": 0
     },
     {
       "district": 60,
@@ -2644,7 +3116,11 @@
       "r_votes_2020": 21712,
       "d_votes_2020": 12484,
       "r_votes_2022": 16633,
-      "d_votes_2022": 5415
+      "d_votes_2022": 5415,
+      "margin_2026_primary": 0.6477,
+      "label_2026_primary": "+64.8R",
+      "r_votes_2026_primary": 7152,
+      "d_votes_2026_primary": 1529
     },
     {
       "district": 61,
@@ -2670,7 +3146,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 5699
     },
     {
       "district": 62,
@@ -2696,7 +3176,11 @@
       "r_votes_2020": 19036,
       "d_votes_2020": 12468,
       "r_votes_2022": 12990,
-      "d_votes_2022": 12950
+      "d_votes_2022": 12950,
+      "margin_2026_primary": -0.2429,
+      "label_2026_primary": "+24.3D",
+      "r_votes_2026_primary": 3469,
+      "d_votes_2026_primary": 5695
     },
     {
       "district": 63,
@@ -2722,7 +3206,11 @@
       "r_votes_2020": 21494,
       "d_votes_2020": 7626,
       "r_votes_2022": 14558,
-      "d_votes_2022": 4364
+      "d_votes_2022": 4364,
+      "margin_2026_primary": 0.6807,
+      "label_2026_primary": "+68.1R",
+      "r_votes_2026_primary": 8839,
+      "d_votes_2026_primary": 1679
     },
     {
       "district": 64,
@@ -2748,7 +3236,11 @@
       "r_votes_2020": 25191,
       "d_votes_2020": 7986,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.4528,
+      "label_2026_primary": "+45.3R",
+      "r_votes_2026_primary": 4649,
+      "d_votes_2026_primary": 1751
     },
     {
       "district": 65,
@@ -2774,7 +3266,11 @@
       "r_votes_2020": 23721,
       "d_votes_2020": 8803,
       "r_votes_2022": 14648,
-      "d_votes_2022": 4198
+      "d_votes_2022": 4198,
+      "margin_2026_primary": 1.0,
+      "label_2026_primary": "+100R",
+      "r_votes_2026_primary": 4368,
+      "d_votes_2026_primary": 0
     },
     {
       "district": 66,
@@ -2800,7 +3296,11 @@
       "r_votes_2020": 16588,
       "d_votes_2020": 13162,
       "r_votes_2022": 14565,
-      "d_votes_2022": 6260
+      "d_votes_2022": 6260,
+      "margin_2026_primary": 0.2755,
+      "label_2026_primary": "+27.6R",
+      "r_votes_2026_primary": 4287,
+      "d_votes_2026_primary": 2435
     },
     {
       "district": 67,
@@ -2826,7 +3326,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.6366,
+      "label_2026_primary": "+63.7R",
+      "r_votes_2026_primary": 6741,
+      "d_votes_2026_primary": 1497
     },
     {
       "district": 68,
@@ -2852,7 +3356,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.6813,
+      "label_2026_primary": "+68.1R",
+      "r_votes_2026_primary": 6890,
+      "d_votes_2026_primary": 1306
     },
     {
       "district": 69,
@@ -2878,7 +3386,11 @@
       "r_votes_2020": 18784,
       "d_votes_2020": 4924,
       "r_votes_2022": 12526,
-      "d_votes_2022": 4475
+      "d_votes_2022": 4475,
+      "margin_2026_primary": 0.6264,
+      "label_2026_primary": "+62.6R",
+      "r_votes_2026_primary": 5602,
+      "d_votes_2026_primary": 1287
     },
     {
       "district": 70,
@@ -2904,7 +3416,11 @@
       "r_votes_2020": 25166,
       "d_votes_2020": 10437,
       "r_votes_2022": 18018,
-      "d_votes_2022": 6014
+      "d_votes_2022": 6014,
+      "margin_2026_primary": 0.3446,
+      "label_2026_primary": "+34.5R",
+      "r_votes_2026_primary": 6073,
+      "d_votes_2026_primary": 2960
     },
     {
       "district": 71,
@@ -2930,7 +3446,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": 9076,
-      "d_votes_2022": 9302
+      "d_votes_2022": 9302,
+      "margin_2026_primary": -0.1856,
+      "label_2026_primary": "+18.6D",
+      "r_votes_2026_primary": 2427,
+      "d_votes_2026_primary": 3533
     },
     {
       "district": 72,
@@ -2956,7 +3476,11 @@
       "r_votes_2020": 20850,
       "d_votes_2020": 14275,
       "r_votes_2022": 13386,
-      "d_votes_2022": 8773
+      "d_votes_2022": 8773,
+      "margin_2026_primary": -0.0044,
+      "label_2026_primary": "+0.4D",
+      "r_votes_2026_primary": 4272,
+      "d_votes_2026_primary": 4310
     },
     {
       "district": 73,
@@ -2982,7 +3506,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": 13437,
-      "d_votes_2022": 3988
+      "d_votes_2022": 3988,
+      "margin_2026_primary": 0.6302,
+      "label_2026_primary": "+63R",
+      "r_votes_2026_primary": 5519,
+      "d_votes_2026_primary": 1252
     },
     {
       "district": 74,
@@ -3008,7 +3536,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 1.0,
+      "label_2026_primary": "+100R",
+      "r_votes_2026_primary": 4809,
+      "d_votes_2026_primary": 0
     },
     {
       "district": 75,
@@ -3034,7 +3566,11 @@
       "r_votes_2020": 20945,
       "d_votes_2020": 13306,
       "r_votes_2022": 14841,
-      "d_votes_2022": 6201
+      "d_votes_2022": 6201,
+      "margin_2026_primary": 1.0,
+      "label_2026_primary": "+100R",
+      "r_votes_2026_primary": 4645,
+      "d_votes_2026_primary": 0
     },
     {
       "district": 76,
@@ -3060,7 +3596,11 @@
       "r_votes_2020": 18507,
       "d_votes_2020": 10391,
       "r_votes_2022": 12577,
-      "d_votes_2022": 6460
+      "d_votes_2022": 6460,
+      "margin_2026_primary": -0.057,
+      "label_2026_primary": "+5.7D",
+      "r_votes_2026_primary": 1860,
+      "d_votes_2026_primary": 2085
     },
     {
       "district": 77,
@@ -3086,7 +3626,11 @@
       "r_votes_2020": 7975,
       "d_votes_2020": 13695,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 2656
     },
     {
       "district": 78,
@@ -3112,7 +3656,11 @@
       "r_votes_2020": 20273,
       "d_votes_2020": 11453,
       "r_votes_2022": 13143,
-      "d_votes_2022": 7818
+      "d_votes_2022": 7818,
+      "margin_2026_primary": -0.2287,
+      "label_2026_primary": "+22.9D",
+      "r_votes_2026_primary": 1609,
+      "d_votes_2026_primary": 2563
     },
     {
       "district": 79,
@@ -3138,7 +3686,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.7528,
+      "label_2026_primary": "+75.3R",
+      "r_votes_2026_primary": 7127,
+      "d_votes_2026_primary": 1005
     },
     {
       "district": 80,
@@ -3164,7 +3716,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 2820
     },
     {
       "district": 81,
@@ -3190,7 +3746,11 @@
       "r_votes_2020": 13725,
       "d_votes_2020": 12653,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.3518,
+      "label_2026_primary": "+35.2R",
+      "r_votes_2026_primary": 5051,
+      "d_votes_2026_primary": 2422
     },
     {
       "district": 82,
@@ -3216,7 +3776,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": 5625,
-      "d_votes_2022": 7270
+      "d_votes_2022": 7270,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 2894
     },
     {
       "district": 83,
@@ -3242,7 +3806,11 @@
       "r_votes_2020": 24783,
       "d_votes_2020": 11953,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.3292,
+      "label_2026_primary": "+32.9R",
+      "r_votes_2026_primary": 4403,
+      "d_votes_2026_primary": 2222
     },
     {
       "district": 84,
@@ -3268,7 +3836,11 @@
       "r_votes_2020": 21482,
       "d_votes_2020": 13670,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.2414,
+      "label_2026_primary": "+24.1R",
+      "r_votes_2026_primary": 4309,
+      "d_votes_2026_primary": 2633
     },
     {
       "district": 85,
@@ -3294,7 +3866,11 @@
       "r_votes_2020": 21238,
       "d_votes_2020": 8332,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 0.4658,
+      "label_2026_primary": "+46.6R",
+      "r_votes_2026_primary": 4599,
+      "d_votes_2026_primary": 1676
     },
     {
       "district": 86,
@@ -3320,7 +3896,11 @@
       "r_votes_2020": 11930,
       "d_votes_2020": 27901,
       "r_votes_2022": 7709,
-      "d_votes_2022": 19191
+      "d_votes_2022": 19191,
+      "margin_2026_primary": -0.7027,
+      "label_2026_primary": "+70.3D",
+      "r_votes_2026_primary": 1701,
+      "d_votes_2026_primary": 9741
     },
     {
       "district": 87,
@@ -3346,7 +3926,11 @@
       "r_votes_2020": 13549,
       "d_votes_2020": 22729,
       "r_votes_2022": 9124,
-      "d_votes_2022": 15477
+      "d_votes_2022": 15477,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 7483
     },
     {
       "district": 88,
@@ -3372,7 +3956,11 @@
       "r_votes_2020": 26659,
       "d_votes_2020": 18285,
       "r_votes_2022": 14707,
-      "d_votes_2022": 9866
+      "d_votes_2022": 9866,
+      "margin_2026_primary": -0.0187,
+      "label_2026_primary": "+1.9D",
+      "r_votes_2026_primary": 4328,
+      "d_votes_2026_primary": 4493
     },
     {
       "district": 89,
@@ -3398,7 +3986,11 @@
       "r_votes_2020": 13173,
       "d_votes_2020": 13898,
       "r_votes_2022": 6695,
-      "d_votes_2022": 6960
+      "d_votes_2022": 6960,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 3721
     },
     {
       "district": 90,
@@ -3424,7 +4016,11 @@
       "r_votes_2020": 22311,
       "d_votes_2020": 12584,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": 1.0,
+      "label_2026_primary": "+100R",
+      "r_votes_2026_primary": 2205,
+      "d_votes_2026_primary": 0
     },
     {
       "district": 91,
@@ -3450,7 +4046,11 @@
       "r_votes_2020": 16113,
       "d_votes_2020": 9300,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -0.1369,
+      "label_2026_primary": "+13.7D",
+      "r_votes_2026_primary": 1535,
+      "d_votes_2026_primary": 2022
     },
     {
       "district": 92,
@@ -3476,7 +4076,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": 6135,
-      "d_votes_2022": 7824
+      "d_votes_2022": 7824,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 4094
     },
     {
       "district": 93,
@@ -3502,7 +4106,11 @@
       "r_votes_2020": 18485,
       "d_votes_2020": 11806,
       "r_votes_2022": 7959,
-      "d_votes_2022": 4965
+      "d_votes_2022": 4965,
+      "margin_2026_primary": -0.1535,
+      "label_2026_primary": "+15.3D",
+      "r_votes_2026_primary": 1630,
+      "d_votes_2026_primary": 2221
     },
     {
       "district": 94,
@@ -3528,7 +4136,11 @@
       "r_votes_2020": 3629,
       "d_votes_2020": 21430,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 6805
     },
     {
       "district": 95,
@@ -3554,7 +4166,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 6238
     },
     {
       "district": 96,
@@ -3580,7 +4196,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 9501
     },
     {
       "district": 97,
@@ -3606,7 +4226,11 @@
       "r_votes_2020": 6962,
       "d_votes_2020": 9707,
       "r_votes_2022": 3333,
-      "d_votes_2022": 5103
+      "d_votes_2022": 5103,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 2706
     },
     {
       "district": 98,
@@ -3632,7 +4256,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 4795
     },
     {
       "district": 99,
@@ -3658,7 +4286,11 @@
       "r_votes_2020": null,
       "d_votes_2020": null,
       "r_votes_2022": 1800,
-      "d_votes_2022": 8539
+      "d_votes_2022": 8539,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 4796
     },
     {
       "district": 100,
@@ -3684,7 +4316,11 @@
       "r_votes_2020": 8037,
       "d_votes_2020": 16353,
       "r_votes_2022": null,
-      "d_votes_2022": null
+      "d_votes_2022": null,
+      "margin_2026_primary": -1.0,
+      "label_2026_primary": "+100D",
+      "r_votes_2026_primary": 0,
+      "d_votes_2026_primary": 6201
     }
   ]
 }

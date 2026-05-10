@@ -400,13 +400,73 @@ def load_representatives(geojson_path, chamber):
     return reps
 
 
+def compute_primary_lean(csv_path):
+    """
+    Parse AllOfficeResults CSV and return per-chamber primary turnout lean.
+
+    For each district, sums all R primary votes and all D primary votes across
+    all precincts and candidates, then computes (R-D)/(R+D). This measures
+    relative partisan primary participation — not a general-election head-to-head.
+
+    Returns {chamber: {dist_str: (margin, label, r_votes, d_votes)}}
+    where chamber is 'congressional', 'senate', or 'house'.
+    """
+    ORDINALS = {
+        'First': 1, 'Second': 2, 'Third': 3, 'Fourth': 4, 'Fifth': 5,
+        'Sixth': 6, 'Seventh': 7, 'Eighth': 8, 'Ninth': 9,
+    }
+    PARTY_MAP = {'Democratic': 'D', 'Republican': 'R'}
+    CHAMBER_MAP = {'cd': 'congressional', 'sd': 'senate', 'hd': 'house'}
+
+    totals = {ch: defaultdict(lambda: {'R': 0, 'D': 0})
+              for ch in CHAMBER_MAP.values()}
+
+    with open(csv_path, newline='') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            office = row.get('Office', '')
+            party = PARTY_MAP.get(row.get('PoliticalParty', ''))
+            if not party:
+                continue
+            try:
+                votes = int(row.get('TotalVotes', 0) or 0)
+            except ValueError:
+                votes = 0
+
+            if office.startswith('United States Representative,'):
+                word = office.split(',')[1].strip().split()[0]
+                dist = ORDINALS.get(word)
+                if dist:
+                    totals['congressional'][str(dist)][party] += votes
+            elif office.startswith('State Senator,'):
+                dist = int(office.split()[-1])
+                totals['senate'][str(dist)][party] += votes
+            elif office.startswith('State Representative,'):
+                dist = int(office.split()[-1])
+                totals['house'][str(dist)][party] += votes
+
+    result = {}
+    for chamber, districts in totals.items():
+        result[chamber] = {}
+        for dist_str, pv in districts.items():
+            r, d = pv['R'], pv['D']
+            tp = r + d
+            if tp > 0:
+                margin = (r - d) / tp
+                result[chamber][dist_str] = (round(margin, 4), format_index(margin), r, d)
+
+    return result
+
+
 def merge_data(in_index, margins_2020, margins_2022, margins_2024, reps,
-               votes_2024=None, race_margins=None, votes_2020=None, votes_2022=None):
+               votes_2024=None, race_margins=None, votes_2020=None, votes_2022=None,
+               primary_lean=None):
     """Combine index, margins, rep info, vote totals for all years, and race results into district dicts."""
     votes_2024 = votes_2024 or {}
     votes_2020 = votes_2020 or {}
     votes_2022 = votes_2022 or {}
     race_margins = race_margins or {}
+    primary_lean = primary_lean or {}
     districts = []
     for dist_str in sorted(reps.keys(), key=lambda x: int(x)):
         rep = reps[dist_str]
@@ -418,6 +478,11 @@ def merge_data(in_index, margins_2020, margins_2022, margins_2024, reps,
         r20, d20 = votes_2020.get(dist_str, (None, None))
         r22, d22 = votes_2022.get(dist_str, (None, None))
         race_m, race_label = race_margins.get(dist_str, (None, 'N/A'))
+        prim = primary_lean.get(dist_str)
+        prim_m = prim[0] if prim else None
+        prim_label = prim[1] if prim else 'N/A'
+        prim_r = prim[2] if prim else None
+        prim_d = prim[3] if prim else None
 
         districts.append({
             'district': int(dist_str),
@@ -440,6 +505,10 @@ def merge_data(in_index, margins_2020, margins_2022, margins_2024, reps,
             'd_votes_2024': d24,
             'race_margin': round(race_m, 4) if race_m is not None else None,
             'race_label': race_label,
+            'margin_2026_primary': prim_m,
+            'label_2026_primary': prim_label,
+            'r_votes_2026_primary': prim_r,
+            'd_votes_2026_primary': prim_d,
         })
 
     return districts
@@ -622,6 +691,11 @@ def generate_table_rows(districts, prefix):
             cls_race = get_color_class(d['race_margin'])
             sort_race = d['race_margin'] if d['race_margin'] is not None else 999
 
+        prim_m = d.get('margin_2026_primary')
+        prim_label = d.get('label_2026_primary', 'N/A')
+        cls_prim = get_color_class(prim_m)
+        sort_prim = prim_m if prim_m is not None else 999
+
         name_html = d['representative']
         if d.get('url'):
             name_html = f'<a href="{d["url"]}" target="_blank" rel="noopener">{d["representative"]}</a>'
@@ -631,6 +705,7 @@ def generate_table_rows(districts, prefix):
           <td class="{cls_2022}" data-sort-value="{sort_2022}">{l2022}</td>
           <td class="{cls_2024}" data-sort-value="{sort_2024}">{d['label_2024']}</td>
           <td class="{cls_race}" data-sort-value="{sort_race}">{race_display}</td>
+          <td class="{cls_prim}" data-sort-value="{sort_prim}">{prim_label}</td>
           <td class="{cls_avg} col-avg" data-sort-value="{sort_avg}">{d['in_index_label']}</td>
           <td class="col-dist" data-sort-value="{d['district']}">{prefix}-{d['district']}</td>
           <td class="col-rep" data-sort-value="{d['representative']}">{name_html}</td>
@@ -1194,10 +1269,11 @@ tbody tr.map-locked {{
               <th onclick="sortTable('table-congressional', 1, 'num')" title="2022 US House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
               <th onclick="sortTable('table-congressional', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
               <th onclick="sortTable('table-congressional', 3, 'num')" title="2024 US House race result">Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 4, 'num')" title="IN-Index: average partisan lean">IN-Idx <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 5, 'num')" title="Congressional District">Dist <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 6, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-congressional', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 5, 'num')" title="IN-Index: average partisan lean">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 6, 'num')" title="Congressional District">Dist <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 7, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-congressional', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
             </tr>
           </thead>
           <tbody>
@@ -1218,10 +1294,11 @@ tbody tr.map-locked {{
             <th onclick="sortTable('table-senate', 1, 'num')" title="2022 State Senate race (2022-cycle SDs only; N/A for 2024-cycle)">'22 Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-senate', 2, 'num')" title="2024 Presidential margin for this district">'24 Pres <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-senate', 3, 'num')" title="Most recent State Senate race result (2022 or 2024 depending on cycle)">Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 4, 'num')" title="IN-Index: average of actual race margins + 2024 presidential">IN-Idx <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 5, 'num')" title="Senate District">Dist <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 6, 'alpha')" title="Current Senator">Sen. <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 5, 'num')" title="IN-Index: average of actual race margins + 2024 presidential">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 6, 'num')" title="Senate District">Dist <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 7, 'alpha')" title="Current Senator">Sen. <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
           </tr>
         </thead>
         <tbody>
@@ -1246,10 +1323,11 @@ tbody tr.map-locked {{
               <th onclick="sortTable('table-house', 1, 'num')" title="2022 State House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
               <th onclick="sortTable('table-house', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
               <th onclick="sortTable('table-house', 3, 'num')" title="2024 State House race result">Race <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 4, 'num')" title="IN-Index: 2024 presidential lean (adjusted for unopposed races)">IN-Idx <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 5, 'num')" title="House District">Dist <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 6, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
-              <th onclick="sortTable('table-house', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 5, 'num')" title="IN-Index: 2024 presidential lean (adjusted for unopposed races)">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 6, 'num')" title="House District">Dist <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 7, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
+              <th onclick="sortTable('table-house', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
             </tr>
           </thead>
           <tbody>
@@ -1540,9 +1618,10 @@ loadMap('congressional', boundaryView);
     print(f"Wrote {filepath}")
 
 
-def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
+def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json,
+                          primary_csv_path=None):
     """
-    Patch existing data.json with race margin data and regenerate index.html.
+    Patch existing data.json with race margin data and regenerate lean-index.html.
     Used when the original source CSVs are unavailable.
     """
     with open(data_json_path) as f:
@@ -1637,6 +1716,34 @@ def rebuild_from_existing(data_json_path, race_json_path, out_html, out_json):
                 district['in_index'] = round(idx, 4)
                 district['in_index_label'] = format_index(idx)
 
+    # Apply 2026 primary lean to all chambers
+    if primary_csv_path and os.path.exists(primary_csv_path):
+        print("Loading 2026 primary results...")
+        primary_lean = compute_primary_lean(primary_csv_path)
+        chamber_map_primary = {
+            'congressional': 'congressional',
+            'senate': 'senate',
+            'house': 'house',
+        }
+        for data_key, prim_key in chamber_map_primary.items():
+            prim_districts = primary_lean.get(prim_key, {})
+            for district in data[data_key]:
+                dist_str = str(district['district'])
+                prim = prim_districts.get(dist_str)
+                district['margin_2026_primary'] = prim[0] if prim else None
+                district['label_2026_primary'] = prim[1] if prim else 'N/A'
+                district['r_votes_2026_primary'] = prim[2] if prim else None
+                district['d_votes_2026_primary'] = prim[3] if prim else None
+        total_covered = sum(len(v) for v in primary_lean.values())
+        print(f"Applied 2026 primary lean to {total_covered} district/chamber entries.")
+    else:
+        for chamber_key in ('congressional', 'senate', 'house'):
+            for district in data[chamber_key]:
+                district.setdefault('margin_2026_primary', None)
+                district.setdefault('label_2026_primary', 'N/A')
+                district.setdefault('r_votes_2026_primary', None)
+                district.setdefault('d_votes_2026_primary', None)
+
     data['methodology'] = (
         'Election results from Indiana Secretary of State: https://indianavoters.in.gov/ENRHistorical/ElectionResults. '
         '2024 Pres: precinct-level presidential results aggregated directly by district. '
@@ -1669,10 +1776,11 @@ def main():
         rebuild_from_existing(
             os.path.join(DATA_DIR, 'data.json'),
             os.path.join(DATA_DIR, 'Indiana_Election_Results_2020-2024.json'),
-            os.path.join(ROOT_DIR, 'index.html'),
+            os.path.join(ROOT_DIR, 'lean-index.html'),
             os.path.join(DATA_DIR, 'data.json'),
+            primary_csv_path=os.path.join(ROOT_DIR, 'AllOfficeResults(3).csv'),
         )
-        print("Done! Open index.html in a browser to view the table.")
+        print("Done! Open lean-index.html in a browser to view the table.")
         return
 
     results = load_presidential_results(pres_csv)
@@ -1790,7 +1898,7 @@ def main():
 
     # Write outputs
     write_data_json(os.path.join(DATA_DIR, 'data.json'), congressional, senate, house)
-    generate_html(os.path.join(ROOT_DIR, 'index.html'), congressional, senate, house, data_2010)
+    generate_html(os.path.join(ROOT_DIR, 'lean-index.html'), congressional, senate, house, data_2010)
 
     print("\nDone! Open index.html in a browser to view the table.")
 
