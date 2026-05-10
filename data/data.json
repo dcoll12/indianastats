@@ -1228,7 +1228,7 @@
       "race_margin": -0.4587,
       "race_label": "+45.9D",
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 11489
     },
@@ -1348,7 +1348,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 3820
     },
@@ -1378,7 +1378,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 5063
     },
@@ -1408,7 +1408,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 4943
     },
@@ -1498,7 +1498,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 3864
     },
@@ -1558,7 +1558,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 3839
     },
@@ -1678,7 +1678,7 @@
       "r_votes_2022": 10031,
       "d_votes_2022": 12556,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 5145
     },
@@ -1738,7 +1738,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 5638
     },
@@ -1858,7 +1858,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": 1.0,
-      "label_2026_primary": "+100R",
+      "label_2026_primary": "R only",
       "r_votes_2026_primary": 5426,
       "d_votes_2026_primary": 0
     },
@@ -1978,7 +1978,7 @@
       "r_votes_2022": 14745,
       "d_votes_2022": 3053,
       "margin_2026_primary": 1.0,
-      "label_2026_primary": "+100R",
+      "label_2026_primary": "R only",
       "r_votes_2026_primary": 4545,
       "d_votes_2026_primary": 0
     },
@@ -2278,7 +2278,7 @@
       "r_votes_2022": 12260,
       "d_votes_2022": 12508,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 4997
     },
@@ -2578,7 +2578,7 @@
       "r_votes_2022": 13800,
       "d_votes_2022": 6379,
       "margin_2026_primary": 1.0,
-      "label_2026_primary": "+100R",
+      "label_2026_primary": "R only",
       "r_votes_2026_primary": 7328,
       "d_votes_2026_primary": 0
     },
@@ -2878,7 +2878,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": 1.0,
-      "label_2026_primary": "+100R",
+      "label_2026_primary": "R only",
       "r_votes_2026_primary": 5982,
       "d_votes_2026_primary": 0
     },
@@ -2938,7 +2938,7 @@
       "r_votes_2022": 13886,
       "d_votes_2022": 4955,
       "margin_2026_primary": 1.0,
-      "label_2026_primary": "+100R",
+      "label_2026_primary": "R only",
       "r_votes_2026_primary": 7773,
       "d_votes_2026_primary": 0
     },
@@ -3088,7 +3088,7 @@
       "r_votes_2022": 11019,
       "d_votes_2022": 6949,
       "margin_2026_primary": 1.0,
-      "label_2026_primary": "+100R",
+      "label_2026_primary": "R only",
       "r_votes_2026_primary": 4186,
       "d_votes_2026_primary": 0
     },
@@ -3148,7 +3148,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 5699
     },
@@ -3268,7 +3268,7 @@
       "r_votes_2022": 14648,
       "d_votes_2022": 4198,
       "margin_2026_primary": 1.0,
-      "label_2026_primary": "+100R",
+      "label_2026_primary": "R only",
       "r_votes_2026_primary": 4368,
       "d_votes_2026_primary": 0
     },
@@ -3538,7 +3538,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": 1.0,
-      "label_2026_primary": "+100R",
+      "label_2026_primary": "R only",
       "r_votes_2026_primary": 4809,
       "d_votes_2026_primary": 0
     },
@@ -3568,7 +3568,7 @@
       "r_votes_2022": 14841,
       "d_votes_2022": 6201,
       "margin_2026_primary": 1.0,
-      "label_2026_primary": "+100R",
+      "label_2026_primary": "R only",
       "r_votes_2026_primary": 4645,
       "d_votes_2026_primary": 0
     },
@@ -3628,7 +3628,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 2656
     },
@@ -3718,7 +3718,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 2820
     },
@@ -3778,7 +3778,7 @@
       "r_votes_2022": 5625,
       "d_votes_2022": 7270,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 2894
     },
@@ -3928,7 +3928,7 @@
       "r_votes_2022": 9124,
       "d_votes_2022": 15477,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 7483
     },
@@ -3988,7 +3988,7 @@
       "r_votes_2022": 6695,
       "d_votes_2022": 6960,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 3721
     },
@@ -4018,7 +4018,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": 1.0,
-      "label_2026_primary": "+100R",
+      "label_2026_primary": "R only",
       "r_votes_2026_primary": 2205,
       "d_votes_2026_primary": 0
     },
@@ -4078,7 +4078,7 @@
       "r_votes_2022": 6135,
       "d_votes_2022": 7824,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 4094
     },
@@ -4138,7 +4138,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 6805
     },
@@ -4168,7 +4168,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 6238
     },
@@ -4198,7 +4198,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 9501
     },
@@ -4228,7 +4228,7 @@
       "r_votes_2022": 3333,
       "d_votes_2022": 5103,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 2706
     },
@@ -4258,7 +4258,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 4795
     },
@@ -4288,7 +4288,7 @@
       "r_votes_2022": 1800,
       "d_votes_2022": 8539,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 4796
     },
@@ -4318,7 +4318,7 @@
       "r_votes_2022": null,
       "d_votes_2022": null,
       "margin_2026_primary": -1.0,
-      "label_2026_primary": "+100D",
+      "label_2026_primary": "D only",
       "r_votes_2026_primary": 0,
       "d_votes_2026_primary": 6201
     }
