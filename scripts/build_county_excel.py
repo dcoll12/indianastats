@@ -201,7 +201,9 @@ ws["B4"].alignment = Alignment(horizontal="right", vertical="center")
 # County count (spans C4:E4 for visual width, actual formula in C4)
 ws.merge_cells("C4:E4")
 ws["C4"].value = (
-    "=LET(n,COUNTIF(C6:C51,TRUE)+COUNTIF(E6:E51,TRUE),"
+    # COUNTIF(...,TRUE) + COUNTIF(...,"TRUE") catches both boolean and text forms
+    "=LET(n,COUNTIF(C6:C51,TRUE)+COUNTIF(C6:C51,\"TRUE\")"
+    "+COUNTIF(E6:E51,TRUE)+COUNTIF(E6:E51,\"TRUE\"),"
     'IF(n=0,"All 92 counties — click to filter",n&" of 92 selected"))'
 )
 ws["C4"].font      = Font(bold=True, size=11, color=BLUE_DARK)
@@ -238,7 +240,7 @@ ws["L4"].alignment = Alignment(horizontal="center", vertical="center")
 ws["L4"].border    = thin()
 
 # Showing count (G4)
-ws["G4"].value     = '=IFERROR("Showing "&COUNTA(J6:J5000)&" candidates","")'
+ws["G4"].value     = '=IFERROR(IF(COUNTA(G6:G5000)=0,"","Showing "&COUNTA(G6:G5000)&" candidates"),"")'
 ws["G4"].font      = Font(bold=True, size=10, color=BLUE_DARK)
 ws["G4"].alignment = Alignment(horizontal="center", vertical="center")
 
@@ -292,10 +294,12 @@ for row in range(CB_START, CB_END + 1):
     ws.row_dimensions[row].height = 18
 
 # ---- Conditional formatting: selected counties light up gold ----
+# Use OR of boolean TRUE and text "TRUE" — Google Sheets imports booleans
+# from xlsx but Apps Script setValue() always writes booleans going forward.
 ws.conditional_formatting.add(
     f"B{CB_START}:B{CB_END}",
     FormulaRule(
-        formula=[f"$C6=TRUE"],
+        formula=["($C6=TRUE)+($C6=\"TRUE\")>0"],
         fill=PatternFill("solid", fgColor=GOLD_LIGHT),
         font=Font(color=BLUE_DARK, bold=True, size=10),
     ),
@@ -303,51 +307,54 @@ ws.conditional_formatting.add(
 ws.conditional_formatting.add(
     f"D{CB_START}:D{CB_END}",
     FormulaRule(
-        formula=[f"$E6=TRUE"],
+        formula=["($E6=TRUE)+($E6=\"TRUE\")>0"],
         fill=PatternFill("solid", fgColor=GOLD_LIGHT),
         font=Font(color=BLUE_DARK, bold=True, size=10),
     ),
 )
 
-# ---- QUERY formula in G6 ----
-# Dynamic WHERE clause built with TEXTJOIN so all three filters compose.
-# All Data columns: A=County B=SortOrder C=Type D=Num E=District
-#                   F=Candidate G=Party H=Result I=ResultSort J=Votes
+# ---- FILTER formula in G6 ----
+# Replaces the broken QUERY approach.
 #
-# county_part  →  "A MATCHES 'Adams|Allen|…' AND "  (empty when all unchecked)
-# type_part    →  "C = 'House' AND "                 (empty when All Types)
-# num_part     →  "D = 47 AND "                      (empty when blank)
-# Strip trailing " AND " from concatenation, wrap in WHERE if non-empty.
+# Why FILTER instead of QUERY:
+#   - QUERY with a dynamically-built WHERE string inside LET is unreliable
+#     in Google Sheets and was returning only headers with no data rows.
+#   - FILTER + REGEXMATCH handles the multi-county OR condition cleanly.
+#   - Google Sheets SORT() accepts array columns; MATCH maps chamber names
+#     to 1/2/3 so House sorts first, Senate second, Congressional third.
 #
-# ORDER BY B (chamber order), D (district number), I (result sort).
-
-query_formula = (
+# Handles text "TRUE"/"FALSE" (xlsx import) AND boolean true/false
+# (written by Apps Script) by checking both forms in lsel/rsel.
+#
+# All Data rows 2:{L}: A=County C=Type D=Num E=District F=Candidate
+#                      G=Party  H=Result J=Votes
+L = last_data_row
+filter_formula = (
     "=IFERROR("
     "LET("
-    # county filter part
-    "n,COUNTIF(C6:C51,TRUE)+COUNTIF(E6:E51,TRUE),"
-    "county_part,IF(n=0,\"\","
-    "\"A MATCHES '\"&TEXTJOIN(\"|\",TRUE,"
-    "IF(C6:C51,B6:B51,\"\"),"
-    "IF(E6:E51,D6:D51,\"\"))&\"' AND \"),"
-    # district type filter part
-    "type_part,IF(I4=\"All Types\",\"\",\"C = '\"&I4&\"' AND \"),"
-    # district number filter part
-    "num_part,IF(LEN(TRIM(L4))=0,\"\",\"D = \"&IFERROR(VALUE(L4),0)&\" AND \"),"
-    # combine and strip trailing " AND "
-    "all_parts,county_part&type_part&num_part,"
-    "where_str,IF(LEN(all_parts)=0,\"\","
-    "\"WHERE \"&LEFT(all_parts,LEN(all_parts)-5)),"
-    # build and run the query
-    "QUERY('All Data'!A:J,"
-    "\"SELECT E,C,D,F,G,H,J \"&where_str&"
-    "\" ORDER BY B ASC,D ASC,I ASC\","
-    "1)"
+    # detect which state cells are selected — handle text AND boolean TRUE
+    f"lsel,(C{CB_START}:C{CB_END}=TRUE)+(C{CB_START}:C{CB_END}=\"TRUE\"),"
+    f"rsel,(E{CB_START}:E{CB_END}=TRUE)+(E{CB_START}:E{CB_END}=\"TRUE\"),"
+    # build regex pattern: "^(Adams|Allen|...)$" or ".*" when none selected
+    "any,SUMPRODUCT(lsel)+SUMPRODUCT(rsel)>0,"
+    f"pat,IF(any,\"^(\"&TEXTJOIN(\"|\",TRUE,IF(lsel,B{CB_START}:B{CB_END},\"\"),IF(rsel,D{CB_START}:D{CB_END},\"\"))&\")$\",\".*\"),"
+    # per-row conditions (all return arrays matching All Data height)
+    f"cm,REGEXMATCH('All Data'!A2:A{L},pat),"
+    f"tm,(I4=\"All Types\")+('All Data'!C2:C{L}=I4)>0,"
+    f"nm,(LEN(TRIM(L4))=0)+('All Data'!D2:D{L}=IFERROR(VALUE(L4),0))>0,"
+    # filter to matching rows; output cols: District,Type,Num,Candidate,Party,Result,Votes
+    f"src,FILTER({{'All Data'!E2:E{L},'All Data'!C2:C{L},'All Data'!D2:D{L},"
+    f"'All Data'!F2:F{L},'All Data'!G2:G{L},'All Data'!H2:H{L},'All Data'!J2:J{L}}},"
+    "cm*tm*nm),"
+    # sort: col2=Type mapped to 1/2/3 (House→Senate→Congressional), then col3=Num
+    "SORT(src,"
+    "MATCH(INDEX(src,0,2),{\"House\",\"Senate\",\"Congressional\"},0),TRUE,"
+    "INDEX(src,0,3),TRUE)"
     "),"
     "\"No candidates match the selected filters.\""
     ")"
 )
-ws["G6"].value = query_formula
+ws["G6"].value = filter_formula
 
 # ---- Conditional formatting: right panel ----
 ws.conditional_formatting.add("K6:K5000",
@@ -511,7 +518,10 @@ function onSelectionChange(e) {
   if (!stateCol) return;
 
   const stateCell = sheet.getRange(row, stateCol);
-  stateCell.setValue(!stateCell.getValue());
+  const cur = stateCell.getValue();
+  // Handle both boolean true AND text "TRUE" (xlsx import stores text)
+  const isSelected = (cur === true || cur === 'TRUE');
+  stateCell.setValue(!isSelected);  // always write boolean
 }
 
 // ---- Toast feedback when filters change ----
@@ -525,8 +535,9 @@ function onEdit(e) {
 
   // State cells (C or E, rows 6-51) updated by onSelectionChange
   if ((col === 3 || col === 5) && row >= 6 && row <= 51) {
-    const n = sheet.getRange('C6:C51').getValues().flat().filter(Boolean).length
-            + sheet.getRange('E6:E51').getValues().flat().filter(Boolean).length;
+    const isSel = v => v === true || v === 'TRUE';
+    const n = sheet.getRange('C6:C51').getValues().flat().filter(isSel).length
+            + sheet.getRange('E6:E51').getValues().flat().filter(isSel).length;
     ss.toast(
       n === 0 ? 'All 92 counties shown.' : n + ' ' + (n === 1 ? 'county' : 'counties') + ' selected.',
       'County Filter', 3
