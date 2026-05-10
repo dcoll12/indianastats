@@ -83,9 +83,8 @@ header p {
   background: #e2e8f0;
   border-radius: 10px;
   padding: 4px;
-  position: sticky;
-  top: 0;
-  z-index: 30;
+  position: relative;
+  z-index: 20;
 }
 
 .tab-btn {
@@ -149,7 +148,7 @@ thead th {
   user-select: none;
   white-space: nowrap;
   position: sticky;
-  top: 72px;
+  top: 0;
   z-index: 10;
 }
 
@@ -215,7 +214,7 @@ tbody td {
   padding: 16px 20px;
   background: #fffbeb;
   border-left: 4px solid #f59e0b;
-  margin: 0 0 16px;
+  margin: 16px 0 0;
   border-radius: 0 8px 8px 0;
   font-size: 13px;
   color: #92400e;
@@ -352,13 +351,12 @@ tbody tr.map-locked {
 }
 @media (max-width: 768px) {
   header h1 { font-size: 22px; }
-  .tabs { flex-direction: column; position: static; }
+  .tabs { flex-direction: column; }
   .tab-btn { padding: 10px; }
   .boundary-toggle { width: 100%; }
   .boundary-btn { flex: 1; }
   table { font-size: 13px; }
   thead th, tbody td { padding: 8px 10px; }
-  thead th { top: 0; }
 }
 </style>
 </head>
@@ -518,9 +516,6 @@ tbody tr.map-locked {
   </div>
 
   <div class="tab-content" id="tab-senate">
-    <div class="table-note">
-      <strong>Note:</strong> '20 and '22 Race columns show actual State Senate race results (not presidential); each district only has one of the two available depending on its election cycle. When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index averages available race margins with the 2024 presidential margin</strong>.
-    </div>
     <div class="table-wrap">
       <table id="table-senate">
         <thead>
@@ -1091,13 +1086,13 @@ tbody tr.map-locked {
         </table>
       </div>
     </div>
+    <div class="table-note">
+      <strong>Note:</strong> '20 and '22 Race columns show actual State Senate race results (not presidential); each district only has one of the two available depending on its election cycle. When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index averages available race margins with the 2024 presidential margin</strong>.
+    </div>
 
   </div>
 
   <div class="tab-content" id="tab-house">
-    <div class="table-note">
-      <strong>Note:</strong> '20, '22, and Race columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
-    </div>
     <div class="table-wrap">
       <table id="table-house">
         <thead>
@@ -2216,6 +2211,9 @@ tbody tr.map-locked {
         </tr>
         </tbody>
       </table>
+    </div>
+    <div class="table-note">
+      <strong>Note:</strong> '20, '22, and Race columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
     </div>
   </div>
 
