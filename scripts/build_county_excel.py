@@ -338,18 +338,19 @@ CB_E = CB_END             # 51
 filter_formula = (
     "=IFERROR("
     "LET("
-    # ls/rs: 46×1 numeric — 1 if selected (text OR boolean TRUE), else 0
-    f"ls,(C{CB_S}:C{CB_E}=TRUE)+(C{CB_S}:C{CB_E}=\"TRUE\"),"
-    f"rs,(E{CB_S}:E{CB_E}=TRUE)+(E{CB_S}:E{CB_E}=\"TRUE\"),"
-    "n,SUMPRODUCT(ls)+SUMPRODUCT(rs),"
-    # sl/sr: replace unselected county names with sentinel "~~~" so they never match
-    f"sl,IF(ls>0,B{CB_S}:B{CB_E},\"~~~\"),"
-    f"sr,IF(rs>0,D{CB_S}:D{CB_E},\"~~~\"),"
-    # co: 736×1 county match — BYROW checks each data row's county against selected lists
-    # BYROW+SUMPRODUCT is more reliable in Google Sheets than MMULT 2-D broadcasting
+    # n: count selected counties — COUNTIF handles both boolean TRUE and text "TRUE"
+    f"n,COUNTIF(C{CB_S}:C{CB_E},TRUE)+COUNTIF(C{CB_S}:C{CB_E},\"TRUE\")"
+    f"+COUNTIF(E{CB_S}:E{CB_E},TRUE)+COUNTIF(E{CB_S}:E{CB_E},\"TRUE\"),"
+    # co: 736×1 county match
+    # Use selection flags as SUMPRODUCT weights — avoids IF(array,…) collapsing to
+    # first element inside BYROW LAMBDA (a Google Sheets array-context bug).
+    # (C6:C51=TRUE)+(C6:C51="TRUE") is 46×1: 1 where selected, 0 where not.
+    # (x=B6:B51) is 46×1: 1 where county matches, 0 where not.
+    # Element-wise product → sum > 0 iff row's county is in selected list.
     f"co,IF(n=0,SEQUENCE({L-1})>0,"
     f"BYROW('All Data'!A2:A{L},LAMBDA(x,"
-    "SUMPRODUCT(--(x=sl))+SUMPRODUCT(--(x=sr))>0))),"
+    f"SUMPRODUCT(((C{CB_S}:C{CB_E}=TRUE)+(C{CB_S}:C{CB_E}=\"TRUE\"))*(x=B{CB_S}:B{CB_E}))+"
+    f"SUMPRODUCT(((E{CB_S}:E{CB_E}=TRUE)+(E{CB_S}:E{CB_E}=\"TRUE\"))*(x=D{CB_S}:D{CB_E}))>0))),"
     # to: 736×1 type filter
     f"to,(I4=\"All Types\")+('All Data'!C2:C{L}=I4)>0,"
     # do: 736×1 district-number filter
