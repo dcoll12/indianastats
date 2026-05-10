@@ -453,7 +453,13 @@ def compute_primary_lean(csv_path):
             tp = r + d
             if tp > 0:
                 margin = (r - d) / tp
-                result[chamber][dist_str] = (round(margin, 4), format_index(margin), r, d)
+                if r == 0:
+                    label = 'D only'
+                elif d == 0:
+                    label = 'R only'
+                else:
+                    label = format_index(margin)
+                result[chamber][dist_str] = (round(margin, 4), label, r, d)
 
     return result
 
