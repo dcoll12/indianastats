@@ -130,6 +130,7 @@ header p {
 
 .table-wrap {
   overflow-x: auto;
+  overflow-y: clip;
 }
 
 table {
@@ -148,6 +149,9 @@ thead th {
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
+  position: sticky;
+  top: 73px;
+  z-index: 15;
 }
 
 thead th:hover {
@@ -355,6 +359,7 @@ tbody tr.map-locked {
   .boundary-btn { flex: 1; }
   table { font-size: 13px; }
   thead th, tbody td { padding: 8px 10px; }
+  thead th { top: 0; }
 }
 </style>
 </head>
