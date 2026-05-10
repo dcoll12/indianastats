@@ -1146,20 +1146,6 @@ footer .sources {{
   min-width: 0;
 }}
 
-.tab-content {{
-  display: none;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  overflow: hidden;
-  max-height: calc(100vh - 260px);
-  overflow-y: auto;
-}}
-
-.tab-content.active {{
-  display: block;
-}}
-
 tbody tr {{
   border-bottom: 1px solid #f1f5f9;
   transition: background 0.1s;
@@ -1219,7 +1205,6 @@ tbody tr.map-locked {{
   .main-layout {{ flex-direction: column; }}
   .map-panel {{ width: 100%; position: static; }}
   #indiana-map {{ height: 300px; }}
-  .tab-content {{ max-height: none; }}
 }}
 @media (max-width: 768px) {{
   header h1 {{ font-size: 22px; }}
@@ -1386,14 +1371,14 @@ tbody tr.map-locked {{
 // ── Map setup ──────────────────────────────────────────────────────────────
 const GEO_SOURCES = {{
   current: {{
-    congressional: 'Congressional_District_Boundaries_Current.geojson',
-    senate:        'General_Assembly_Senate_Districts_Current.geojson',
-    house:         'General_Assembly_House_Districts_Current(1).geojson',
+    congressional: 'data/Congressional_District_Boundaries_Current.geojson',
+    senate:        'data/General_Assembly_Senate_Districts_Current.geojson',
+    house:         'data/General_Assembly_House_Districts_Current(1).geojson',
   }},
   '2010': {{
-    congressional: 'Congressional_District_Boundaries_2009-2011(1).geojson',
-    senate:        'Indiana_General_Assembly_Senate_Districts_2009-2011.geojson',
-    house:         'Indiana_General_Assembly_House_Districts_2009-2011.geojson',
+    congressional: 'data/Congressional_District_Boundaries_2009-2011(1).geojson',
+    senate:        'data/Indiana_General_Assembly_Senate_Districts_2009-2011.geojson',
+    house:         'data/Indiana_General_Assembly_House_Districts_2009-2011.geojson',
   }},
 }};
 
