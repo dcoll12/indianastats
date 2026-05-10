@@ -130,8 +130,6 @@ header p {
 
 .table-wrap {
   overflow-x: auto;
-  overflow-y: auto;
-  max-height: calc(100vh - 160px);
 }
 
 table {
@@ -151,7 +149,7 @@ thead th {
   user-select: none;
   white-space: nowrap;
   position: sticky;
-  top: 0;
+  top: 73px;
   z-index: 15;
 }
 
@@ -289,6 +287,8 @@ footer .sources {
 .content-side {
   flex: 1;
   min-width: 0;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
 }
 
 
@@ -351,6 +351,7 @@ tbody tr.map-locked {
   .main-layout { flex-direction: column; }
   .map-panel { width: 100%; position: static; }
   #indiana-map { height: 300px; }
+  .content-side { max-height: none; overflow-y: visible; }
 }
 @media (max-width: 768px) {
   header h1 { font-size: 22px; }
@@ -360,6 +361,7 @@ tbody tr.map-locked {
   .boundary-btn { flex: 1; }
   table { font-size: 13px; }
   thead th, tbody td { padding: 8px 10px; }
+  thead th { top: 0; }
 }
 </style>
 </head>
