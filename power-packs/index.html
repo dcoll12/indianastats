@@ -1028,15 +1028,18 @@ var PP = (function() {
   }
 
   // ── Focus Packs ──────────────────────────────────────────────────────
-  // Each candidate appears exactly once. House districts are assigned to
-  // their single most competitive overlapping SD that has a Senate candidate
-  // (competitive = smallest |in_index|, i.e. closest to a tossup).
+  // Candidate-centric: the most competitive candidate (highest polar power),
+  // regardless of chamber, becomes the gravitational center of each pack.
+  // All candidates whose districts geographically overlap with the anchor's
+  // district are grouped into the pack. Each candidate appears exactly once.
   function buildFocusPacks() {
     var search = (($$(  'pp-search') || {}).value || '').trim().toLowerCase();
     var dd = state.districtData;
     var ll = state.leanLookup;
 
     var senateBySD = {}, houseByHD = {}, otherEntries = [];
+    var allCandEntries = [];
+
     state.rows.forEach(function(row) {
       var role = clean(row, 'Role').toLowerCase();
       if (!role.includes('candidate') || role.includes('former')) return;
@@ -1046,181 +1049,109 @@ var PP = (function() {
       if (race.dtype === 'senate') {
         if (!senateBySD[race.dnum]) senateBySD[race.dnum] = [];
         senateBySD[race.dnum].push(entry);
+        allCandEntries.push(entry);
       } else if (race.dtype === 'house') {
         if (!houseByHD[race.dnum]) houseByHD[race.dnum] = [];
         houseByHD[race.dnum].push(entry);
+        allCandEntries.push(entry);
       } else {
         otherEntries.push(entry);
       }
     });
 
-    // One pack per SD that has a filed Senate candidate
-    var packBySD = {};
-    Object.keys(senateBySD).forEach(function(sdNum) {
-      sdNum = Number(sdNum);
-      var sdLean = (ll.senate || {})[sdNum] || null;
-      packBySD[sdNum] = {
-        sdNum: sdNum,
-        sdLean: sdLean,
-        tier: sdTier(sdNum),
-        counties: (dd.sd_to_counties || {})[String(sdNum)] || [],
-        cdNum: Number((dd.sd_to_cd || {})[String(sdNum)] || 0),
-        senateCandidates: senateBySD[sdNum],
-        houseMembers: []
-      };
+    // Tag each candidate with a unique index for O(1) assignment tracking
+    allCandEntries.forEach(function(e, i) { e._focusIdx = i; });
+    var assigned = new Uint8Array(allCandEntries.length);
+
+    // Sort all candidates by polar power descending: most competitive anchors first
+    var sorted = allCandEntries.slice().sort(function(a, b) {
+      return polarPower(b.lean) - polarPower(a.lean);
     });
 
-    // Assign each House candidate to the single most competitive SD pack it overlaps.
-    // Competitiveness = smallest |in_index| (closest to a tossup).
-    // Only SDs with filed Senate candidates are eligible anchors.
-    var orphanHouse = [];
-    Object.keys(houseByHD).forEach(function(hdNum) {
-      hdNum = Number(hdNum);
-      var overlappingSDs = ((dd.hd_to_sds || {})[String(hdNum)] || [])
-        .map(Number)
-        .filter(function(sd) { return !!packBySD[sd]; });
+    // Tier based on anchor's lean — using Senate thresholds for both chambers
+    function candidateTier(lean) {
+      var m = (lean && lean.in_index !== null && lean.in_index !== undefined) ? lean.in_index : 0.5;
+      if (lean && lean.party === 'Democratic' && m < -0.15) return 0;
+      if (m <= 0.15) return 1;
+      if (m <= 0.30) return 2;
+      return 3;
+    }
 
-      if (!overlappingSDs.length) { houseByHD[hdNum].forEach(function(e) { orphanHouse.push(e); }); return; }
-
-      overlappingSDs.sort(function(a, b) {
-        var la = (ll.senate || {})[a], lb = (ll.senate || {})[b];
-        // Virginia model: prefer R-held seats (the flip targets) over D-held safe seats
-        var aIsR = !la || la.party === 'Republican';
-        var bIsR = !lb || lb.party === 'Republican';
-        if (aIsR !== bIsR) return aIsR ? -1 : 1;
-        // Within same party type, prefer most competitive (closest to 0)
-        var ma = (la && la.in_index !== null) ? Math.abs(la.in_index) : 1;
-        var mb = (lb && lb.in_index !== null) ? Math.abs(lb.in_index) : 1;
-        return ma - mb;
-      });
-      houseByHD[hdNum].forEach(function(e) { packBySD[overlappingSDs[0]].houseMembers.push(e); });
-    });
-
-    // Group orphan HD candidates into HD-only packs by their most competitive overlapping SD
-    // (using all SDs, even those without a filed Senate candidate). HD candidates with no SD
-    // overlap at all remain truly unassigned.
-    var hdOnlyPackBySD = {};
-    var trulyOrphanHouse = [];
-    orphanHouse.forEach(function(e) {
-      var allSDs = ((dd.hd_to_sds || {})[String(e.dnum)] || []).map(Number);
-      if (!allSDs.length) { trulyOrphanHouse.push(e); return; }
-      allSDs.sort(function(a, b) {
-        var la = (ll.senate || {})[a], lb = (ll.senate || {})[b];
-        var aIsR = !la || la.party === 'Republican';
-        var bIsR = !lb || lb.party === 'Republican';
-        if (aIsR !== bIsR) return aIsR ? -1 : 1;
-        var ma = (la && la.in_index !== null) ? Math.abs(la.in_index) : 1;
-        var mb = (lb && lb.in_index !== null) ? Math.abs(lb.in_index) : 1;
-        return ma - mb;
-      });
-      var bestSD = allSDs[0];
-      if (!hdOnlyPackBySD[bestSD]) {
-        var sdLeanHO = (ll.senate || {})[bestSD] || null;
-        hdOnlyPackBySD[bestSD] = {
-          sdNum: bestSD, sdLean: sdLeanHO,
-          tier: 3,
-          counties: (dd.sd_to_counties || {})[String(bestSD)] || [],
-          cdNum: Number((dd.sd_to_cd || {})[String(bestSD)] || 0),
-          senateCandidates: [], houseMembers: [],
-          neighboringSenate: [], neighboringHouse: [], isHDOnly: true
-        };
+    // Geographic overlap for a given district: returns sets of neighboring SD/HD numbers
+    function getOverlapDistricts(dtype, dnum) {
+      var sds = {}, hds = {};
+      if (dtype === 'senate') {
+        ((dd.sd_to_hds || {})[String(dnum)] || []).map(Number).forEach(function(hd) {
+          hds[hd] = true;
+          ((dd.hd_to_sds || {})[String(hd)] || []).map(Number).forEach(function(sd) {
+            if (sd !== dnum) sds[sd] = true;
+          });
+        });
+      } else if (dtype === 'house') {
+        ((dd.hd_to_sds || {})[String(dnum)] || []).map(Number).forEach(function(sd) {
+          sds[sd] = true;
+          ((dd.sd_to_hds || {})[String(sd)] || []).map(Number).forEach(function(hd) {
+            if (hd !== dnum) hds[hd] = true;
+          });
+        });
       }
-      hdOnlyPackBySD[bestSD].houseMembers.push(e);
-    });
-    orphanHouse = trulyOrphanHouse;
+      return { sds: sds, hds: hds };
+    }
 
-    // Sort house members within each pack by in_index ascending (most D-favorable first)
-    Object.values(packBySD).forEach(function(pack) {
-      pack.houseMembers.sort(function(a, b) {
-        var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
-        var mb = (b.lean && b.lean.in_index !== null) ? b.lean.in_index : 0.5;
-        return ma - mb;
+    var packs = [];
+
+    sorted.forEach(function(anchorEntry) {
+      if (assigned[anchorEntry._focusIdx]) return;
+      assigned[anchorEntry._focusIdx] = 1;
+
+      var overlap = getOverlapDistricts(anchorEntry.dtype, anchorEntry.dnum);
+      var members = [];
+
+      Object.keys(overlap.sds).forEach(function(sd) {
+        (senateBySD[Number(sd)] || []).forEach(function(e) {
+          if (!assigned[e._focusIdx]) { assigned[e._focusIdx] = 1; members.push(e); }
+        });
       });
-    });
-
-    // Compute polar anchor: if an HD candidate has higher polar power than the SD,
-    // they become the gravitational center of the pack.
-    Object.values(packBySD).forEach(function(pack) {
-      var sdPP = polarPower(pack.sdLean);
-      var bestHD = null, bestHDPP = 0;
-      pack.houseMembers.forEach(function(m) {
-        var pp = polarPower(m.lean);
-        if (pp > bestHDPP) { bestHDPP = pp; bestHD = m; }
-      });
-      pack.hdPolarAnchor = (bestHD && bestHDPP > sdPP) ? bestHD : null;
-      pack.maxPolarPower = Math.max(sdPP, bestHDPP);
-    });
-
-    // Add neighboring SD senate candidates and competitive neighboring HD candidates to each pack
-    Object.values(packBySD).forEach(function(pack) {
-      var allSDHDs = ((dd.sd_to_hds || {})[String(pack.sdNum)] || []).map(Number);
-      var sharedHDSDs = new Set();
-      allSDHDs.forEach(function(hd) {
-        ((dd.hd_to_sds || {})[String(hd)] || []).map(Number).forEach(function(s) {
-          if (s !== pack.sdNum) sharedHDSDs.add(s);
+      Object.keys(overlap.hds).forEach(function(hd) {
+        (houseByHD[Number(hd)] || []).forEach(function(e) {
+          if (!assigned[e._focusIdx]) { assigned[e._focusIdx] = 1; members.push(e); }
         });
       });
 
-      var neighboringSenate = [];
-      sharedHDSDs.forEach(function(s) {
-        (senateBySD[s] || []).forEach(function(e) { neighboringSenate.push(e); });
-      });
-      neighboringSenate.sort(function(a, b) {
-        var ma = (a.lean && a.lean.in_index !== null) ? Math.abs(a.lean.in_index) : 1;
-        var mb = (b.lean && b.lean.in_index !== null) ? Math.abs(b.lean.in_index) : 1;
-        return ma - mb;
-      });
-      pack.neighboringSenate = neighboringSenate;
+      // Sort members by polar power descending
+      members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
 
-      var packHDSet = new Set(allSDHDs);
-      var neighboringHouseByHD = {};
-      sharedHDSDs.forEach(function(s) {
-        ((dd.sd_to_hds || {})[String(s)] || []).map(Number).forEach(function(hd) {
-          if (!packHDSet.has(hd) && houseByHD[hd] && !neighboringHouseByHD[hd]) {
-            var lean = (ll.house || {})[hd] || null;
-            var idx = (lean && lean.in_index !== null) ? lean.in_index : 1;
-            if (idx <= 0.25) neighboringHouseByHD[hd] = houseByHD[hd];
-          }
-        });
+      // CD hint: senate anchor uses sd_to_cd; house anchor derives from first overlapping SD
+      var cdNum = 0;
+      if (anchorEntry.dtype === 'senate') {
+        cdNum = Number((dd.sd_to_cd || {})[String(anchorEntry.dnum)] || 0);
+      } else {
+        var sdKeys = Object.keys(overlap.sds);
+        if (sdKeys.length) cdNum = Number((dd.sd_to_cd || {})[sdKeys[0]] || 0);
+      }
+
+      // Counties covered by the anchor's own district
+      var counties = anchorEntry.dtype === 'senate'
+        ? ((dd.sd_to_counties || {})[String(anchorEntry.dnum)] || [])
+        : ((dd.hd_to_counties || {})[String(anchorEntry.dnum)] || []);
+
+      packs.push({
+        anchor: anchorEntry,
+        members: members,
+        tier: candidateTier(anchorEntry.lean),
+        maxPolarPower: polarPower(anchorEntry.lean),
+        cdNum: cdNum,
+        counties: counties
       });
-      var neighboringHouse = [];
-      Object.keys(neighboringHouseByHD).forEach(function(hd) {
-        neighboringHouseByHD[hd].forEach(function(e) { neighboringHouse.push(e); });
-      });
-      neighboringHouse.sort(function(a, b) {
-        var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
-        var mb = (b.lean && b.lean.in_index !== null) ? b.lean.in_index : 0.5;
-        return ma - mb;
-      });
-      pack.neighboringHouse = neighboringHouse;
     });
 
-    var focusPackList = Object.values(packBySD);
-
-    // Add HD-only packs: set tier from most competitive HD member, sort members, then add
-    Object.values(hdOnlyPackBySD).forEach(function(pack) {
-      pack.houseMembers.sort(function(a, b) {
-        var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
-        var mb = (b.lean && b.lean.in_index !== null) ? b.lean.in_index : 0.5;
-        return ma - mb;
-      });
-      pack.tier = pack.houseMembers.reduce(function(best, m) {
-        return Math.min(best, hdTier(m.dnum));
-      }, 3);
-      focusPackList.push(pack);
-    });
-
-    // Collect, sort: TARGET → OPPORTUNITY → TURNOUT → HOLD (Tier 1→2→3→0)
-    // HOLD packs (safe D incumbents) sort last — they don't need heavy volunteer focus.
-    // Within each tier, sort by max polar power (strongest candidate in pack leads).
+    // Sort: TARGET → OPPORTUNITY → TURNOUT → HOLD, then anchor polar power desc
     var FOCUS_TIER_ORDER = { 1: 1, 2: 2, 3: 3, 0: 4 };
-    var packs = focusPackList.sort(function(a, b) {
+    packs.sort(function(a, b) {
       var oa = FOCUS_TIER_ORDER[a.tier] !== undefined ? FOCUS_TIER_ORDER[a.tier] : 99;
       var ob = FOCUS_TIER_ORDER[b.tier] !== undefined ? FOCUS_TIER_ORDER[b.tier] : 99;
       if (oa !== ob) return oa - ob;
-      var pa = a.maxPolarPower !== undefined ? a.maxPolarPower : polarPower(a.sdLean);
-      var pb = b.maxPolarPower !== undefined ? b.maxPolarPower : polarPower(b.sdLean);
-      return pb - pa; // descending: highest polar power first
+      return b.maxPolarPower - a.maxPolarPower; // descending: highest polar power first
     });
 
     function matches(entry) {
@@ -1228,13 +1159,11 @@ var PP = (function() {
     }
     if (search) {
       packs = packs.filter(function(pack) {
-        var all = pack.senateCandidates.concat(pack.houseMembers);
-        return all.some(matches);
+        return matches(pack.anchor) || pack.members.some(matches);
       });
     }
-    var unassigned = otherEntries.concat(orphanHouse).filter(matches);
 
-    return { packs: packs, unassigned: unassigned };
+    return { packs: packs, unassigned: otherEntries.filter(matches) };
   }
 
   function buildPacks() {
@@ -1789,9 +1718,98 @@ var PP = (function() {
     return parts.join('');
   }
 
+  function renderFocusPackCard(pack, packNum) {
+    var anchor = pack.anchor;
+    var anchorLean = anchor.lean;
+    var isSenateAnchor = anchor.dtype === 'senate';
+    var distLabel = isSenateAnchor ? 'SD-' + anchor.dnum : 'HD-' + anchor.dnum;
+    var indexLabel = anchorLean ? (anchorLean.in_index_label || '—') : '—';
+    var party = anchorLean ? (anchorLean.party || '') : '';
+
+    var tc = {
+      0: { border: '#0891b2', bg: '#f0f9ff', badgeClass: 'pp-tier-0', label: '🏠 HOLD',
+           mission: 'Your incumbency is the anchor. Your organizational strength lifts every candidate in this pack.' },
+      1: { border: '#dc2626', bg: '#fff5f5', badgeClass: 'pp-tier-1', label: '🎯 TARGET',
+           mission: 'This race is winnable. You are the gravitational center of this regional wave — winning here lifts every race in the pack.' },
+      2: { border: '#7c3aed', bg: '#faf5ff', badgeClass: 'pp-tier-2', label: '📈 OPPORTUNITY',
+           mission: 'Contest hard. Narrow the margin, force Republicans to spend here, and lift the candidates in your pack. Close races become wins in a wave.' },
+      3: { border: '#16a34a', bg: '#f0fdf4', badgeClass: 'pp-tier-3', label: '🌱 TURNOUT',
+           mission: 'Every competitive district was once a long-shot. Your race builds the voter file, trains volunteers, and moves the margin — every candidate in this pack is counting on that infrastructure.' }
+    }[pack.tier] || { border: '#94a3b8', bg: 'white', badgeClass: '', label: 'PACK', mission: '' };
+
+    var holderHtml = party === 'Republican'
+      ? '<span class="pp-holder-badge pp-holder-r">Held by Republican</span>'
+      : party === 'Democratic'
+        ? '<span class="pp-holder-badge pp-holder-d">Held by Democrat</span>'
+        : '';
+
+    var cdHint = pack.cdNum ? '<span class="pp-pack-lean" style="margin-left:6px;opacity:0.6">CD-' + pack.cdNum + '</span>' : '';
+    var numBadge = packNum ? '<span class="pp-focus-badge">' + packNum + '</span>' : '';
+    var totalCands = 1 + pack.members.length;
+
+    var parts = [];
+    parts.push('<div class="pp-pack-card" data-dtype="' + anchor.dtype + '" data-dnum="' + anchor.dnum + '" style="border-left:4px solid ' + tc.border + ';background:' + tc.bg + '">');
+
+    // Pack header
+    parts.push('<div class="pp-pack-head">');
+    parts.push('<div class="pp-pack-head-left">');
+    parts.push('<div class="pp-pack-title">');
+    parts.push(numBadge);
+    parts.push('<span class="pp-tier-badge ' + tc.badgeClass + '">' + tc.label + '</span>');
+    parts.push(' <strong>' + distLabel + '</strong>');
+    parts.push('<span class="pp-pack-lean">&nbsp;' + esc(indexLabel) + '</span>');
+    parts.push(holderHtml);
+    parts.push(cdHint);
+    parts.push('</div>');
+    if (pack.counties && pack.counties.length) parts.push('<div class="pp-pack-counties">counties covered: ' + esc(pack.counties.join(' · ')) + '</div>');
+    if (tc.mission) parts.push('<div class="pp-pack-mission">' + tc.mission + '</div>');
+    parts.push('</div>');
+    parts.push('<div class="pp-pack-count">' + totalCands + ' candidate' + (totalCands !== 1 ? 's' : '') + '</div>');
+    parts.push('</div>');
+
+    // Gravitational center — the anchor candidate
+    parts.push('<div class="pp-section-label pp-section-polar-anchor">⭐ Polar Anchor · ' + distLabel + ' · ' + esc(indexLabel) + '</div>');
+    parts.push('<div class="pp-wrapper"><table class="pp-table">' + PP_THEAD + '<tbody>');
+    parts.push(renderEntry(anchor, {
+      isSenate: isSenateAnchor, isHouse: !isSenateAnchor,
+      noOverlaps: true, roleLabel: '⭐ Polar Anchor', roleCls: 'polar-anchor'
+    }));
+    parts.push('</tbody></table></div>');
+
+    // Pack members — senate and house shown in separate sections, each sorted by polar power
+    var senateMembers = pack.members.filter(function(m) { return m.dtype === 'senate'; });
+    var houseMembers  = pack.members.filter(function(m) { return m.dtype === 'house'; });
+
+    if (senateMembers.length) {
+      parts.push('<div class="pp-section-label pp-section-senate">⚡ Senate (' + senateMembers.length + ')</div>');
+      parts.push('<div class="pp-wrapper"><table class="pp-table">' + PP_THEAD + '<tbody>');
+      senateMembers.forEach(function(m) {
+        parts.push(renderEntry(m, { isSenate: true, noOverlaps: true }));
+      });
+      parts.push('</tbody></table></div>');
+    }
+
+    if (houseMembers.length) {
+      parts.push('<div class="pp-section-label pp-section-house">House Districts (' + houseMembers.length + ')</div>');
+      parts.push('<div class="pp-wrapper"><table class="pp-table">' + PP_THEAD + '<tbody>');
+      houseMembers.forEach(function(member) {
+        var hdm = (member.lean && member.lean.in_index !== null) ? member.lean.in_index : 0.5;
+        var roleLabel, roleCls;
+        if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
+        else if (hdm <= 0.25) { roleLabel = '📊 Challenge';   roleCls = 'challenge'; }
+        else                   { roleLabel = '🗳️ Turnout';     roleCls = 'turnout'; }
+        parts.push(renderEntry(member, { isHouse: true, roleLabel: roleLabel, roleCls: roleCls }));
+      });
+      parts.push('</tbody></table></div>');
+    }
+
+    parts.push('</div>');
+    return parts.join('');
+  }
+
   function renderFocusPacks(result) {
     var packs = result.packs, unassigned = result.unassigned;
-    var totalCands = packs.reduce(function(n, p) { return n + p.senateCandidates.length + p.houseMembers.length; }, 0)
+    var totalCands = packs.reduce(function(n, p) { return n + 1 + p.members.length; }, 0)
       + unassigned.length;
 
     if (!totalCands) {
@@ -1802,30 +1820,26 @@ var PP = (function() {
 
     // Focus-mode legend
     parts.push('<div class="pp-legend" style="background:#f0fdf4;border-color:#bbf7d0;color:#14532d">');
-    parts.push('<strong>⚡ Focus Packs</strong> — each candidate appears exactly once, assigned to their single most '
-      + 'competitive Senate pack (R-held races preferred per Virginia model). '
-      + 'Packs are sorted by <strong>polar power</strong> — the strongest candidate in a pack (highest competitiveness) '
-      + 'is the gravitational center: if that\'s an HD candidate, they lead the pack display. '
-      + 'HD candidates not connected to a Senate pack appear as standalone House Districts Packs. '
-      + 'TARGET → OPPORTUNITY → TURNOUT → HOLD.<br>');
+    parts.push('<strong>⚡ Focus Packs</strong> — each candidate appears exactly once. '
+      + 'The most competitive candidate overall (highest <strong>polar power</strong>) is the gravitational center of their pack — '
+      + 'Senate or House. All geographically overlapping candidates are grouped into that pack regardless of chamber. '
+      + 'Packs are sorted TARGET → OPPORTUNITY → TURNOUT → HOLD, then by polar power within each tier.<br>');
     parts.push('<span style="font-size:0.77rem;line-height:2.2">');
-    parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> Competitive flip or critical D defense &nbsp;');
-    parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
-    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district — contest the Senate seat to build infrastructure &amp; move the margin; House races are the near-term prize &nbsp;');
-    parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat; incumbent drives House turnout wave &nbsp;&nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-polar-anchor">⭐ Polar Anchor</span> most competitive candidate in pack — gravitational center &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> Most competitive race (≤ R+15%) — gravitational center of a regional wave &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> Competitive but leans R (R+15–30%) — contest hard, force GOP spending &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district (R+30%+) — build infrastructure, move the margin &nbsp;');
+    parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat — incumbent drives wave turnout for the pack &nbsp;&nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-polar-anchor">⭐ Polar Anchor</span> most competitive candidate — gravitational center &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future &nbsp;&nbsp;');
-    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
     parts.push('</span></div>');
 
     var tierInfo = {
-      1: { label: '🎯 TARGET PACKS', desc: 'Competitive flips or critical D defenses (≤ R+15%) — maximum volunteer energy' },
-      2: { label: '📈 OPPORTUNITY PACKS', desc: 'R-leaning Senate (R+15–30%) — contest hard, raise turnout across the pack' },
-      3: { label: '🌱 TURNOUT PACKS', desc: 'Pioneer districts (R+30%+) — contest the Senate seat to build infrastructure, move the margin, and anchor the House races' },
-      0: { label: '🏠 HOLD PACKS', desc: 'Safe Democratic seats — incumbent organizes and drives wave turnout for surrounding House races' }
+      1: { label: '🎯 TARGET PACKS', desc: 'Most competitive races (≤ R+15%) — the gravitational centers of the regional wave; maximum volunteer energy' },
+      2: { label: '📈 OPPORTUNITY PACKS', desc: 'Competitive but R-leaning (R+15–30%) — contest hard, narrow the margin, force Republican spending' },
+      3: { label: '🌱 TURNOUT PACKS', desc: 'Pioneer districts (R+30%+) — build the voter file, train volunteers, lay groundwork for future cycles' },
+      0: { label: '🏠 HOLD PACKS', desc: 'Safe Democratic seats — incumbents organize and drive wave turnout across the region' }
     };
 
     var packNum = 0, currentTier = -1, packInTier = 0;
@@ -1836,7 +1850,7 @@ var PP = (function() {
         packInTier = 0;
         var ti = tierInfo[currentTier] || { label: 'PACKS', desc: '' };
         var tierPacks = packs.filter(function(p) { return p.tier === currentTier; });
-        var tierCands = tierPacks.reduce(function(n, p) { return n + p.senateCandidates.length + p.houseMembers.length; }, 0);
+        var tierCands = tierPacks.reduce(function(n, p) { return n + 1 + p.members.length; }, 0);
         parts.push('<div class="pp-tier-section">');
         parts.push('<div class="pp-tier-group-header">');
         parts.push('<span class="pp-tier-label">'+ti.label+'</span>');
@@ -1847,7 +1861,7 @@ var PP = (function() {
       if (packInTier > 0) parts.push('<div class="pp-pack-divider"></div>');
       packInTier++;
       packNum++;
-      parts.push(renderPackCard(pack, packNum));
+      parts.push(renderFocusPackCard(pack, packNum));
     });
     if (currentTier !== -1) parts.push('</div>');
 
