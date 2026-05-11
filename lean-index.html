@@ -375,7 +375,7 @@ tbody tr.map-locked {
 <div class="container">
   <header>
     <h1>Indiana Partisan Lean Index (IN-Index)</h1>
-    <p>How far each district leans Republican or Democratic, based on the average of 2020 and 2024 presidential results and the 2022 race result, apportioned to districts using census block assignments.</p>
+    <p>How far each district leans Republican or Democratic, based on recent election results apportioned to districts using census block assignments. Methodology varies by chamber — see note at bottom.</p>
     <nav class="site-nav">
       <a href="power-packs/">Power Packs</a>
       <a href="index.html">My Pack</a>
@@ -414,7 +414,7 @@ tbody tr.map-locked {
             <th onclick="sortTable('table-congressional', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 3, 'num')" title="2024 US House race result">Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 5, 'num')" title="IN-Index: average partisan lean">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 5, 'num')" title="IN-Index: average of 2020 presidential, 2022 US House race, and 2024 presidential margins">IN-Idx <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 6, 'num')" title="Congressional District">Dist <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 7, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
@@ -2233,11 +2233,14 @@ tbody tr.map-locked {
     <h3>Methodology</h3>
     <p>
       The <strong>IN-Index</strong> measures partisan lean for each Indiana legislative and congressional
-      district. For Senate districts it is the average of all available actual race margins plus the
-      2024 presidential margin (Indiana Senate is staggered: even-cycle SDs ran in 2020 &amp; 2024;
-      odd-cycle SDs ran in 2022). For Congressional districts it averages actual 2020/2022/2024 race
-      margins plus the 2024 presidential. For House districts it equals the 2024 presidential margin;
-      for unopposed 2024 seats, available 2020/2022 race results are also averaged in.
+      district using a consistent two-party margin formula: <code>(R votes &minus; D votes) / (R votes + D votes)</code>.
+      Positive values lean Republican, negative values lean Democratic.
+      <br><br>
+      <strong>Congressional districts:</strong> average of the 2020 presidential margin, the 2022 US House race result, and the 2024 presidential margin (three inputs).
+      <br>
+      <strong>State Senate districts:</strong> average of the available actual Senate race margin (2020 <em>or</em> 2022, depending on staggered cycle) plus the 2024 presidential margin (two inputs per district). Even-cycle SDs ran in 2020 &amp; 2024; odd-cycle SDs ran in 2022.
+      <br>
+      <strong>State House districts:</strong> 2024 presidential margin alone for opposed 2024 seats; for unopposed 2024 seats, averages the 2024 presidential margin with available 2020/2022 State House race results.
     </p>
     <p>
       <strong>'24 Pres</strong> uses precinct-level results aggregated directly by district —
