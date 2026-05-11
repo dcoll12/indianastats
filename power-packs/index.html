@@ -109,7 +109,6 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
   text-align: center; font-weight: 700; font-size: 0.88rem;
   padding: 12px 6px; white-space: nowrap; min-width: 66px;
 }
-.pp-lean-left { text-align: left; }
 .pp-dist { text-align: center; padding: 10px 8px; }
 .pp-badge {
   display: inline-flex; align-items: center; justify-content: center;
@@ -697,14 +696,13 @@ var PP = (function() {
     return { bg: '#1E3A8A', fg: 'white' };
   }
 
-  function leanCell(margin, label, subLabel, extraClass) {
+  function leanCell(margin, label, subLabel) {
     var c = getLeanColor(margin);
     var content = esc(label || '—');
     if (subLabel && subLabel !== '—') {
       content += '<br><span style="font-size:0.7em;opacity:0.8;font-weight:600">' + esc(subLabel) + '</span>';
     }
-    var cls = 'pp-lean' + (extraClass ? ' ' + extraClass : '');
-    return '<td class="' + cls + '" style="background:' + c.bg + ';color:' + c.fg + ';">' + content + '</td>';
+    return '<td class="pp-lean" style="background:' + c.bg + ';color:' + c.fg + ';">' + content + '</td>';
   }
 
   function determinePrimaryRace(row) {
@@ -1446,7 +1444,7 @@ var PP = (function() {
 
     return '<tr class="'+rowCls+'"'+rowAttrs+'>'
       + '<td class="pp-candidate"><div class="pp-cand-inner">'+photoHtml+'<div class="pp-cand-name">'+esc(name)+'</div>'+(opts.isPrimary?'<span class="pp-primary-badge">P</span>':'')+'</div></td>'
-      + leanCell(m2020, l2020, sub2020, 'pp-lean-left')
+      + leanCell(m2020, l2020, sub2020)
       + leanCell(m2022, l2022, sub2022)
       + leanCell(m2024, l2024, sub2024)
       + leanCell(midx,  lidx)
@@ -1458,7 +1456,7 @@ var PP = (function() {
       + '</tr>';
   }
 
-  var PP_THEAD = '<thead><tr><th>Dem Candidate</th><th style="text-align:left">2020 Pres</th><th>2022 Senate</th><th>2024 Pres</th><th>IN-Index</th>'
+  var PP_THEAD = '<thead><tr><th>Dem Candidate</th><th>2020 Pres</th><th>2022 Senate</th><th>2024 Pres</th><th>IN-Index</th>'
     + '<th>District</th><th>Location</th><th>Holds Seat</th>'
     + '<th>Website</th><th>Social</th></tr></thead>';
 
