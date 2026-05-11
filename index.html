@@ -249,6 +249,19 @@ header p {
 .pp-party-r { color: #b91c1c; }
 .pp-party-d { color: #1d4ed8; }
 .pp-party-rep { font-weight: 400; font-size: 0.72rem; color: #475569; margin-top: 3px; white-space: normal; }
+
+footer {
+  margin-top: 32px;
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  font-size: 13px;
+  color: #64748b;
+}
+footer h3 { font-size: 15px; color: #1e293b; margin-bottom: 12px; }
+footer p { margin-bottom: 10px; line-height: 1.7; }
+footer .sources { margin-top: 16px; padding-top: 12px; border-top: 1px solid #e2e8f0; }
 </style>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1257,5 +1270,32 @@ var DMT = (function() {
 
 window.addEventListener('load', function() { DMT.init(); });
 </script>
+
+<footer>
+  <h3>About the IN-Index</h3>
+  <p>
+    The <strong>IN-Index</strong> (Indiana Partisan Lean Index) shown next to each district measures
+    how far that district leans Republican or Democratic. The two-party margin formula is
+    <code>(R votes &minus; D votes) / (R votes + D votes)</code> — a positive result means Republican
+    lean (e.g., "+10R"), negative means Democratic lean (e.g., "+6D").
+  </p>
+  <p>
+    <strong>Congressional districts</strong> average the 2020 presidential margin, the 2022 US House
+    race result, and the 2024 presidential margin (three inputs).
+    <strong>State Senate districts</strong> average the available actual Senate race margin (2020 or
+    2022, depending on the staggered cycle) with the 2024 presidential margin.
+    <strong>State House districts</strong> use the 2024 presidential margin; for unopposed 2024 seats,
+    available 2020/2022 State House race results are also averaged in.
+  </p>
+  <div class="sources">
+    <strong>Data Sources:</strong>
+    Election results: Indiana Secretary of State —
+    <a href="https://indianavoters.in.gov/ENRHistorical/ElectionResults" target="_blank" rel="noopener">
+      indianavoters.in.gov/ENRHistorical/ElectionResults</a>.
+    District boundaries:
+    <a href="https://www.indianamap.org/" target="_blank" rel="noopener">IndianaMap (indianamap.org)</a>.
+    Full methodology: <a href="lean-index.html">IN Partisan Lean Index page</a>.
+  </div>
+</footer>
 </body>
 </html>

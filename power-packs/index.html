@@ -86,6 +86,8 @@ footer {
   font-size: 13px;
   color: #64748b;
 }
+footer h3 { font-size: 15px; color: #1e293b; margin-bottom: 12px; }
+footer p { margin-bottom: 10px; line-height: 1.7; }
 
 /* ── Power Packs table ──────────────────────────────────────────────── */
 .pp-wrapper { width: 100%; overflow-x: auto; margin-top: 6px; }
@@ -577,6 +579,33 @@ footer {
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdB3WPT2o6AZ9gqiio0OPMzbyUiSAv6qm7Q2l1W3wVlOLK9zw/viewform?usp=header" target="_blank" rel="noopener">📝 Submit Your Info</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSfU8KkjPEUUT_AF-DERaV5lfP1leZsIoFOWyp5E2uPZcp7M4Q/viewform?usp=header" target="_blank" rel="noopener">✏️ Update/Correct Info</a>
   </div>
+
+  <footer>
+    <h3>About the IN-Index</h3>
+    <p>
+      The <strong>IN-Index</strong> (Indiana Partisan Lean Index) shown on each district card measures
+      how far that district leans Republican or Democratic. The two-party margin formula is
+      <code>(R votes &minus; D votes) / (R votes + D votes)</code> — positive means Republican lean
+      (e.g., "+10R"), negative means Democratic lean (e.g., "+6D").
+    </p>
+    <p>
+      <strong>Congressional districts</strong> average the 2020 presidential margin, the 2022 US House
+      race result, and the 2024 presidential margin (three inputs).
+      <strong>State Senate districts</strong> average the available actual Senate race margin (2020 or
+      2022, depending on the staggered cycle) with the 2024 presidential margin.
+      <strong>State House districts</strong> use the 2024 presidential margin; for unopposed 2024 seats,
+      available 2020/2022 State House race results are also averaged in.
+    </p>
+    <p style="margin-bottom:0">
+      <strong>Data Sources:</strong>
+      Election results: Indiana Secretary of State —
+      <a href="https://indianavoters.in.gov/ENRHistorical/ElectionResults" target="_blank" rel="noopener">
+        indianavoters.in.gov/ENRHistorical/ElectionResults</a>.
+      District boundaries:
+      <a href="https://www.indianamap.org/" target="_blank" rel="noopener">IndianaMap (indianamap.org)</a>.
+      Full methodology: <a href="../lean-index.html">IN Partisan Lean Index page</a>.
+    </p>
+  </footer>
 </div>
 
 <script>
