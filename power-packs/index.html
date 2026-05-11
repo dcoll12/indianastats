@@ -1319,7 +1319,7 @@ var PP = (function() {
           houseMembers: houseMembers,
           neighboringSenate: neighboringSenate,
           neighboringHouse: neighboringHouse,
-          isUncontested: senateCandidates.length < 2 && _raceLabel === 'Unop.'
+          isUncontested: senateCandidates.length === 0 && _raceLabel === 'Unop.'
         });
       });
 
@@ -2024,7 +2024,7 @@ var PP = (function() {
         senateCandidates: senateCandidates,
         houseMembers: houseMembers,
         cdNum: Number((dd.sd_to_cd || {})[String(sdNum)] || 0),
-        isUncontested: senateCandidates.length < 2 && _ctyRaceLabel === 'Unop.'
+        isUncontested: senateCandidates.length === 0 && _ctyRaceLabel === 'Unop.'
       });
     });
 
@@ -2585,7 +2585,7 @@ var PP = (function() {
 
         // Determine uncontested status from lean data race_label
         var raceLabel = sdLean ? (sdLean.race_label || '') : '';
-        var isUncontested = sdCandidates.length < 2 && raceLabel === 'Unop.';
+        var isUncontested = sdCandidates.length === 0 && raceLabel === 'Unop.';
 
         var clusterSDs = clusters[find(sdNum)] || [sdNum];
 
