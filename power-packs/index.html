@@ -2215,7 +2215,7 @@ var PP = (function() {
       if (cdWrap)     cdWrap.style.display     = 'none';
       if (countyWrap) countyWrap.style.display = 'none';
       var result = buildFocusPacks();
-      var totalCands = result.packs.reduce(function(n, p){ return n + 1 + p.houseMembers.length; }, 0)
+      var totalCands = result.packs.reduce(function(n, p){ return n + 1 + p.members.length; }, 0)
         + result.unassigned.length;
       if (statsEl) statsEl.textContent = totalCands + ' candidate' + (totalCands !== 1 ? 's' : '')
         + ' in ' + result.packs.length + ' focused pack' + (result.packs.length !== 1 ? 's' : '')
