@@ -91,7 +91,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
 
 /* ── Power Packs table ──────────────────────────────────────────────── */
 .pp-wrapper { width: 100%; overflow-x: auto; margin-top: 6px; }
-.pp-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 900px; background: white; }
+.pp-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 900px; background: white; table-layout: fixed; }
 .pp-table thead th {
   background: #1e3a5f; color: white; font-weight: 700;
   font-size: 0.78rem; padding: 10px 8px; text-align: center;
@@ -1456,9 +1456,18 @@ var PP = (function() {
       + '</tr>';
   }
 
-  var PP_THEAD = '<thead><tr><th>Dem Candidate</th><th>2020 Pres</th><th>2022 Senate</th><th>2024 Pres</th><th>IN-Index</th>'
-    + '<th>District</th><th>Location</th><th>Holds Seat</th>'
-    + '<th>Website</th><th>Social</th></tr></thead>';
+  var PP_THEAD = '<thead><tr>'
+    + '<th style="width:200px">Dem Candidate</th>'
+    + '<th style="width:90px">2020 Pres</th>'
+    + '<th style="width:90px">2022 Senate</th>'
+    + '<th style="width:90px">2024 Pres</th>'
+    + '<th style="width:90px">IN-Index</th>'
+    + '<th style="width:130px">District</th>'
+    + '<th style="width:100px">Location</th>'
+    + '<th style="width:140px">Holds Seat</th>'
+    + '<th style="width:80px">Website</th>'
+    + '<th style="width:80px">Social</th>'
+    + '</tr></thead>';
 
   function renderNeighborTile(entry) {
     var row = entry.row, dtype = entry.dtype, dnum = entry.dnum, lean = entry.lean;
