@@ -823,7 +823,6 @@ var PP = (function() {
       if (!senateCandidates.concat(houseMembers).some(matches)) return;
 
       var sdLean = (ll.senate || {})[sdNum] || null;
-      var raceLabel = sdLean ? (sdLean.race_label || '') : '';
       packs.push({
         sdNum: sdNum,
         sdLean: sdLean,
@@ -833,7 +832,7 @@ var PP = (function() {
         houseMembers: houseMembers,
         neighboringSenate: [],
         neighboringHouse: [],
-        isUncontested: senateCandidates.length < 2 && raceLabel === 'Unop.'
+        isUncontested: false
       });
     });
 
