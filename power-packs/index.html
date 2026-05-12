@@ -1309,6 +1309,25 @@ var PP = (function() {
       });
     })();
 
+    // Explicit forced pack merges — entire source pack folds into target pack
+    var FORCED_MERGES = [
+      { srcDtype: 'house', srcDnum: 4, intoDtype: 'senate', intoDnum: 22 }, // HD-4 pack → SD-22 (Natasha Baker)
+    ];
+    (function() {
+      FORCED_MERGES.forEach(function(fm) {
+        var targetPack = null, srcIdx = -1;
+        for (var i = 0; i < packs.length; i++) {
+          if (packs[i].anchor.dtype === fm.intoDtype && packs[i].anchor.dnum === fm.intoDnum) targetPack = packs[i];
+          if (packs[i].anchor.dtype === fm.srcDtype  && packs[i].anchor.dnum === fm.srcDnum)  srcIdx = i;
+        }
+        if (!targetPack || srcIdx === -1) return;
+        var src = packs.splice(srcIdx, 1)[0];
+        targetPack.members.push(src.anchor);
+        src.members.forEach(function(m) { targetPack.members.push(m); });
+        targetPack.members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
+      });
+    })();
+
     function matches(entry) {
       return !search || getSearchText(entry.row).includes(search);
     }
