@@ -1096,6 +1096,11 @@ var PP = (function() {
       49: [63],  // HD-63 bridges into SD-49 via SD-48
     };
 
+    // HDs to exclude from a senate district's geographic pull (redirected to another pack)
+    var SD_EXCLUDED_HDS = {
+      43: [69],  // HD-69 → HD-62 pack (shared via SD-44)
+    };
+
     // Extra SDs to include in a house district's pack overlap (beyond what geography derives)
     var HD_EXTRA_SDS = {
       62: [41],  // Ross Thomas (SD-41) pulled into HD-62 pack
@@ -1105,8 +1110,9 @@ var PP = (function() {
     function getOverlapDistricts(dtype, dnum) {
       var sds = {}, hds = {};
       if (dtype === 'senate') {
+        var sdExcluded = new Set((SD_EXCLUDED_HDS[dnum] || []).map(Number));
         var directHDs = ((dd.sd_to_hds || {})[String(dnum)] || []).concat(SD_EXTRA_HDS[dnum] || []);
-        directHDs.map(Number).forEach(function(hd) {
+        directHDs.map(Number).filter(function(hd) { return !sdExcluded.has(hd); }).forEach(function(hd) {
           hds[hd] = true;
           ((dd.hd_to_sds || {})[String(hd)] || []).map(Number).forEach(function(sd) {
             if (sd !== dnum) sds[sd] = true;
@@ -1125,7 +1131,7 @@ var PP = (function() {
     }
 
     // HDs that should never anchor — their parent SD will claim them naturally
-    var MEMBER_ONLY_HDS = { 55: true, 68: true, 73: true }; // HD-55, HD-73 → SD-43 pack; HD-68 (Hunter Collins) → SD-43 is the anchor
+    var MEMBER_ONLY_HDS = { 38: true, 55: true, 68: true, 73: true }; // HD-38 → SD-22; HD-55, HD-73 → SD-43; HD-68 → SD-43 anchor
 
     var packs = [];
 
