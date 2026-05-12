@@ -1251,6 +1251,31 @@ var PP = (function() {
       packs = keepPacks;
     })();
 
+    // Force-group: merge packs containing specific HD pairs regardless of geography
+    (function() {
+      var FORCE_SAME_PACK_HDS = [[55, 68]]; // Victoria Martz (HD55) + Hunter Collins (HD68)
+      FORCE_SAME_PACK_HDS.forEach(function(pair) {
+        var hda = pair[0], hdb = pair[1];
+        var pa = null, pb = null;
+        packs.forEach(function(p) {
+          var all = [p.anchor].concat(p.members);
+          if (all.some(function(e) { return e.dtype === 'house' && e.dnum === hda; })) pa = p;
+          if (all.some(function(e) { return e.dtype === 'house' && e.dnum === hdb; })) pb = p;
+        });
+        if (!pa || !pb || pa === pb) return;
+        var target = pa.maxPolarPower >= pb.maxPolarPower ? pa : pb;
+        var src    = target === pa ? pb : pa;
+        target.members = target.members.concat([src.anchor]).concat(src.members);
+        target.members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
+        src.counties.forEach(function(c) {
+          if (!target.counties.some(function(x) { return x.toLowerCase() === c.toLowerCase(); })) {
+            target.counties.push(c);
+          }
+        });
+        packs = packs.filter(function(p) { return p !== src; });
+      });
+    })();
+
     function matches(entry) {
       return !search || getSearchText(entry.row).includes(search);
     }
