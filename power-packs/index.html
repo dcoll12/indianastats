@@ -3376,6 +3376,22 @@ var MAP = (function() {
       });
     });
 
+    // Focus mode pack cards: highlight anchor district
+    document.querySelectorAll('.pp-pack-card[data-dtype][data-dnum]').forEach(function(card) {
+      var dtype = card.getAttribute('data-dtype');
+      var dnum = parseInt(card.getAttribute('data-dnum'), 10);
+      var prefix = { house: 'HD', senate: 'SD', congressional: 'CD' }[dtype] || dtype.toUpperCase();
+      function highlightFocusPack() {
+        var counties = window.PP_getCounties ? window.PP_getCounties(dtype, dnum) : [];
+        highlight(dtype, dnum, [], prefix + '-' + dnum, counties);
+      }
+      card.addEventListener('mouseenter', highlightFocusPack);
+      card.addEventListener('mouseleave', function(e) {
+        if (!card.contains(e.relatedTarget)) revertToPinned();
+      });
+      card.querySelector('.pp-pack-head').addEventListener('mouseenter', highlightFocusPack);
+    });
+
     // Pack header row: hovering the header re-applies the full region highlight
     document.querySelectorAll('.pp-pack-card[data-sdnum] .pp-pack-head').forEach(function(head) {
       var card = head.closest('.pp-pack-card');
@@ -3414,6 +3430,7 @@ var MAP = (function() {
         // When leaving a row but staying inside a pack card, revert to pack highlight
         var sdCard = row.closest('.pp-pack-card[data-sdnum]');
         var hdCard = row.closest('.pp-pack-card[data-hdnum]');
+        var focusCard = row.closest('.pp-pack-card[data-dtype][data-dnum]');
         if (sdCard && sdCard.contains(e.relatedTarget)) {
           var sdNum = parseInt(sdCard.getAttribute('data-sdnum'), 10);
           var hdNums = (sdCard.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
@@ -3426,6 +3443,12 @@ var MAP = (function() {
           var secondary = sdNums.map(function(sd) { return { dtype: 'senate', dnum: sd }; });
           var hdCounties = window.PP_getCounties ? window.PP_getCounties('house', hdNum) : [];
           highlight('house', hdNum, secondary, 'HD-' + hdNum + (sdNums.length ? ' + ' + sdNums.length + ' SD' + (sdNums.length !== 1 ? 's' : '') : ''), hdCounties);
+        } else if (focusCard && focusCard.contains(e.relatedTarget)) {
+          var fDtype = focusCard.getAttribute('data-dtype');
+          var fDnum = parseInt(focusCard.getAttribute('data-dnum'), 10);
+          var fPrefix = { house: 'HD', senate: 'SD', congressional: 'CD' }[fDtype] || fDtype.toUpperCase();
+          var fCounties = window.PP_getCounties ? window.PP_getCounties(fDtype, fDnum) : [];
+          highlight(fDtype, fDnum, [], fPrefix + '-' + fDnum, fCounties);
         } else {
           revertToPinned();
         }
