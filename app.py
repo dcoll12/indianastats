@@ -87,13 +87,13 @@ st.markdown("""
         flex-shrink: 0;
     }
     .contact-photo {
-        width: 72px; height: 72px;
-        border-radius: 8px; object-fit: cover;
+        width: 90px; height: 90px;
+        border-radius: 8px; object-fit: cover; object-position: top;
         border: 3px solid white;
         box-shadow: 0 3px 10px rgba(0,0,0,0.15);
     }
     .photo-placeholder {
-        width: 72px; height: 72px;
+        width: 90px; height: 90px;
         border-radius: 8px;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         display: flex; align-items: center; justify-content: center;
@@ -641,7 +641,7 @@ GRASSROOTS_CSS = """
 }
 @media (max-width: 900px) {
     .gt-table { font-size: 0.8rem; }
-    .gt-photo, .gt-photo-placeholder { width: 44px; height: 44px; }
+    .gt-photo, .gt-photo-placeholder { width: 54px; height: 54px; }
     .gt-badge { width: 48px; height: 48px; font-size: 0.7rem; }
 }
 .gt-row { border-bottom: 1px solid #e2e8f0; background: white; }
@@ -667,11 +667,11 @@ GRASSROOTS_CSS = """
 .gt-candidate { padding: 8px 10px; min-width: 200px; }
 .gt-cand-inner { display: flex; align-items: center; gap: 10px; }
 .gt-photo {
-    width: 54px; height: 54px; border-radius: 6px; object-fit: cover;
+    width: 64px; height: 64px; border-radius: 6px; object-fit: cover; object-position: top;
     flex-shrink: 0; border: 2px solid #e2e8f0;
 }
 .gt-photo-placeholder {
-    width: 54px; height: 54px; border-radius: 6px;
+    width: 64px; height: 64px; border-radius: 6px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     display: flex; align-items: center; justify-content: center;
     font-size: 1rem; font-weight: 700; color: white; flex-shrink: 0;
@@ -1713,8 +1713,8 @@ body{{font-family:system-ui,sans-serif;overflow:hidden;background:#f8fafc;}}
 .dm-cands-hdr{{font-weight:700;color:#1e293b;margin:14px 0 10px;padding-top:14px;border-top:1px solid #e2e8f0;font-size:.95rem;}}
 .dm-card-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}}
 .dm-card{{background:white;border:1px solid #e2e8f0;border-radius:8px;padding:12px;display:flex;align-items:flex-start;gap:10px;}}
-.dm-photo{{width:48px;height:48px;border-radius:7px;object-fit:cover;flex-shrink:0;border:1px solid #e2e8f0;}}
-.dm-initial{{width:48px;height:48px;border-radius:7px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:.95rem;flex-shrink:0;}}
+.dm-photo{{width:60px;height:60px;border-radius:7px;object-fit:cover;object-position:top;flex-shrink:0;border:1px solid #e2e8f0;}}
+.dm-initial{{width:60px;height:60px;border-radius:7px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:.95rem;flex-shrink:0;}}
 .dm-cname{{font-weight:700;color:#1e293b;font-size:.88rem;}}
 .dm-cmeta{{font-size:.73rem;color:#64748b;margin-top:2px;}}
 .dm-clinks{{margin-top:5px;display:flex;gap:4px;flex-wrap:wrap;}}
