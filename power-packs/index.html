@@ -1170,6 +1170,35 @@ var PP = (function() {
       return b.maxPolarPower - a.maxPolarPower; // descending: highest polar power first
     });
 
+    // Merge packs in the same CD that share at least one county — greedy, first pack wins
+    (function() {
+      var merged = new Array(packs.length).fill(false);
+      for (var i = 0; i < packs.length; i++) {
+        if (merged[i]) continue;
+        var pi = packs[i];
+        if (!pi.cdNum) continue;
+        var piCounties = new Set(pi.counties.map(function(c) { return c.toLowerCase(); }));
+        for (var j = i + 1; j < packs.length; j++) {
+          if (merged[j]) continue;
+          var pj = packs[j];
+          if (pj.cdNum !== pi.cdNum) continue;
+          var shared = pj.counties.some(function(c) { return piCounties.has(c.toLowerCase()); });
+          if (!shared) continue;
+          // Absorb pj into pi: pj's anchor becomes a member, pj's members join
+          pi.members = pi.members.concat([pj.anchor]).concat(pj.members);
+          pi.members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
+          // Merge counties
+          pj.counties.forEach(function(c) {
+            if (!pi.counties.some(function(x) { return x.toLowerCase() === c.toLowerCase(); })) {
+              pi.counties.push(c);
+            }
+          });
+          merged[j] = true;
+        }
+      }
+      packs = packs.filter(function(_, idx) { return !merged[idx]; });
+    })();
+
     function matches(entry) {
       return !search || getSearchText(entry.row).includes(search);
     }
