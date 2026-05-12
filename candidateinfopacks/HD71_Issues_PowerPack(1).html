@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HD-71 Candidate Power Pack — Top Issues</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --blue: #2a4fa8;
+    --blue-mid: #3d6abf;
+    --gold: #c8921a;
+    --gold-light: #f5c842;
+    --cream: #faf7f2;
+    --text: #1c1c1c;
+    --muted: #5a6173;
+    --red-tag: #b03030;
+    --green-tag: #2a7a4a;
+    --border: #ddd5c8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    padding: 36px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 320px; height: 100%;
+    background: linear-gradient(135deg, transparent 40%, rgba(200,146,26,0.12) 100%);
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .badge-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .badge-district {
+    background: var(--blue);
+    color: #fff;
+    font-size: 13px;
+    padding: 5px 14px;
+  }
+  .badge-held {
+    background: rgba(42,74,168,0.25);
+    border: 1px solid rgba(100,140,220,0.4);
+    color: #a8c4ff;
+  }
+  .badge-cd {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.55);
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    color: #fff;
+    font-size: 32px;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .header-sub {
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .county-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .county-tag {
+    background: rgba(200,146,26,0.15);
+    border: 1px solid rgba(200,146,26,0.35);
+    color: var(--gold-light);
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .meta-item {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.05em;
+  }
+  .meta-item strong {
+    color: rgba(255,255,255,0.8);
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin-bottom: 1px;
+  }
+
+  /* INTRO BAND */
+  .intro-band {
+    background: #fff;
+    border-bottom: 3px solid var(--gold);
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .intro-band .label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .intro-band p {
+    font-size: 14px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* MAIN */
+  .main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 48px 64px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ISSUE CARDS */
+  .issue-grid {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .issue-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blue);
+    border-radius: 4px;
+    padding: 24px 28px;
+    position: relative;
+  }
+  .issue-card.priority-1 { border-left-color: #b03030; }
+  .issue-card.priority-2 { border-left-color: #c8921a; }
+  .issue-card.priority-3 { border-left-color: #2a7a4a; }
+
+  .issue-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .issue-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .issue-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .issue-card.priority-1 .issue-number { background: #b03030; }
+  .issue-card.priority-2 .issue-number { background: #c8921a; }
+  .issue-card.priority-3 .issue-number { background: #2a7a4a; }
+
+  .issue-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--navy);
+    line-height: 1.25;
+  }
+  .issue-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+  .tag-hot { background: #fde8e8; color: #8b1c1c; }
+  .tag-local { background: #e8f0ff; color: #1c3a8b; }
+  .tag-state { background: #fff3e0; color: #7a4500; }
+  .tag-fed { background: #e8f5e9; color: #1b4d2e; }
+
+  .issue-summary {
+    font-size: 14.5px;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.65;
+  }
+
+  .stat-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .stat-box {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px 14px;
+    flex: 1;
+    min-width: 150px;
+  }
+  .stat-box .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .stat-box .stat-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+
+  .talking-points {
+    background: var(--cream);
+    border-radius: 3px;
+    padding: 14px 18px;
+    margin-top: 4px;
+  }
+  .talking-points .tp-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .talking-points ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .talking-points ul li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .talking-points ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--blue);
+    font-size: 12px;
+  }
+
+  .source-line {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 12px;
+    font-style: italic;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+
+  /* OPPOSITION CONTEXT */
+  .context-box {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px 28px;
+    margin-bottom: 48px;
+  }
+  .context-box h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+  .context-box p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+  .context-box p:last-child { margin-bottom: 0; }
+
+  /* FOOTER */
+  .footer {
+    background: var(--navy);
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .footer p {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.04em;
+  }
+
+  @media print {
+    .header { padding: 24px 32px; }
+    .main { padding: 24px 32px 40px; }
+    .intro-band { padding: 16px 32px; }
+    .footer { padding: 16px 32px; }
+  }
+  @media (max-width: 680px) {
+    .header { padding: 24px 20px; }
+    .main { padding: 24px 20px 40px; }
+    .intro-band { padding: 16px 20px; flex-direction: column; gap: 6px; }
+    .footer { padding: 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="badge-row" style="margin-bottom:12px;">
+        <span class="badge badge-district">HD 71</span>
+        <span class="badge badge-held">Held by Democrat</span>
+        <span class="badge badge-cd">CD-9</span>
+      </div>
+      <h1>Top Issues Research<br><em style="font-style:italic; color:rgba(255,255,255,0.6); font-size:22px;">Candidate Power Pack</em></h1>
+      <div class="county-tags">
+        <span class="county-tag">Clark County</span>
+        <span class="county-tag">Floyd County</span>
+      </div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="meta-item"><strong>Candidate</strong>Wendy Dant Chesser (D)</div>
+    <div class="meta-item"><strong>IN-Index</strong>+0.3R (Polar Anchor — most competitive seat in region)</div>
+    <div class="meta-item"><strong>Key Cities</strong>New Albany · Jeffersonville · Clarksville</div>
+    <div class="meta-item"><strong>Research Date</strong>May 2026</div>
+  </div>
+</div>
+
+<!-- INTRO BAND -->
+<div class="intro-band">
+  <span class="label">Research Note</span>
+  <p>Issues sourced from community needs assessments, local news, state agency reports, and candidate statements. All statistics are from named local or state sources. Prepared for ARa / 9th District Democratic Party candidate support.</p>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <div class="section-label">Priority Issues — Clark &amp; Floyd Counties</div>
+
+  <div class="issue-grid">
+
+    <!-- ISSUE 1: HOUSING -->
+    <div class="issue-card priority-1">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">1</div>
+            <div class="issue-title">Housing Affordability &amp; Access</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-hot">🔥 Top Local Priority</span>
+            <span class="tag tag-local">Local</span>
+            <span class="tag tag-state">State</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">A 2025 Community Foundation of Southern Indiana (CFSI) study — the most comprehensive local needs assessment in years — found housing affordability to be the <strong>single greatest concern</strong> for Clark and Floyd County residents. Rising costs are outpacing incomes at every level: rental, ownership, and new construction. The district sits at the center of a growing regional housing crisis driven by low vacancy rates, gentrification pressure from Louisville metro spillover, and a shortage of units affordable to working families.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">52%</div>
+          <div class="stat-desc">Clark County renters spending 30%+ of income on housing (cost-burdened)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">42%</div>
+          <div class="stat-desc">Floyd County renters who are housing cost-burdened</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">1 in 3</div>
+          <div class="stat-desc">Clark &amp; Floyd households earn under $50,000/year — most likely to struggle with housing costs</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">20.5%</div>
+          <div class="stat-desc">Clark County homeowners spending 30%+ of income on housing costs (vs. 15.3% Floyd)</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Working families in Clark and Floyd counties are being priced out — over half of renters in Clark County spend more than 30% of their paycheck just on rent, with nothing left for savings or emergencies.</li>
+          <li>New development is happening, but without policy guardrails it's driving up prices for existing residents rather than adding affordable options.</li>
+          <li>Short-term rentals and gentrification near the Louisville metro are compressing supply at the lower end of the market — we need local tools like community land trusts and land banks to protect working families.</li>
+          <li>Black, Hispanic/Latine, and single-mother households are disproportionately impacted — housing is a racial and economic justice issue for this district.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Community Foundation of Southern Indiana, "Housing: The Affordability Challenge in a Growing Region" (Jan. 2025); CFSI "Priorities for Progress 2025 Update" (Sept. 2025); News &amp; Tribune, Jan. 2025.</div>
+    </div>
+
+    <!-- ISSUE 2: CHILDCARE -->
+    <div class="issue-card priority-1">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">2</div>
+            <div class="issue-title">Child Care Crisis &amp; Working Family Support</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-hot">🔥 Active Crisis</span>
+            <span class="tag tag-state">State</span>
+            <span class="tag tag-fed">Federal</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">Indiana's child care funding crisis has hit Clark and Floyd County providers directly and hard. State CCDF reimbursement rates were cut up to 35% for school-age care in fall 2025. New vouchers were frozen through at least 2026. The On My Way Pre-K program was cut by more than half statewide — and Greater Clark County Schools Superintendent Mark Laughner confirmed enrollment in his district dropped from roughly 200 families to under 100. Rep. Wendy Dant Chesser has already gone on record calling this "a big concern" for working families — making this a natural issue for her to own and amplify.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">35%</div>
+          <div class="stat-desc">State cut to CCDF reimbursement rates for school-age childcare (Oct. 2025)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">~100</div>
+          <div class="stat-desc">Families in Greater Clark County Schools still enrolled in On My Way Pre-K — down from ~200</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">Frozen</div>
+          <div class="stat-desc">New CCDF voucher enrollment — no new low-income families added through 2026; 35,000+ on statewide waitlist</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>A daycare owner in Clark County told the state she hasn't raised rates since 2012 — and now, through no fault of her own, families are being asked to pay more because the state slashed what providers get reimbursed.</li>
+          <li>Childcare isn't a luxury — it's workforce infrastructure. When parents can't find or afford care, they can't go to work. That hurts families and hurts our local economy.</li>
+          <li>Indiana cut pre-K slots in half statewide, and Greater Clark County felt it directly. We went from 200 kids getting help to under 100 — that's not fiscal responsibility, that's abandoning working parents.</li>
+          <li>Wendy has spoken out on this already and is a known advocate — she should make this a signature issue heading into the general.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Indiana Capital Chronicle, Oct. 2025 &amp; Apr. 2026; WAVE3 News, Jun. 2025; WFYI, Apr. 2026; Indiana AEYC CCDF testimony (Floyd &amp; Clark County providers).</div>
+    </div>
+
+    <!-- ISSUE 3: SUBSTANCE USE / PUBLIC HEALTH -->
+    <div class="issue-card priority-2">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">3</div>
+            <div class="issue-title">Substance Use, Recovery &amp; Public Health</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-local">Local</span>
+            <span class="tag tag-state">State</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">Clark and Floyd counties carry a deep opioid history — Clark County's overdose deaths peaked at 89 in 2016 and were identified as highly vulnerable in statewide assessments. Recent data shows improvement: Clark County deaths dropped roughly 18% from 2023 levels, and local health officials credit expanded Narcan access, problem-solving courts, and law enforcement-to-treatment pipelines. However, the crisis is evolving — stimulant use is rising — and community investment in prevention infrastructure must be sustained. The district is ground zero for what works when government acts.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">89</div>
+          <div class="stat-desc">Clark County overdose deaths at 2016 peak — one of Indiana's highest per capita</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">↓18%</div>
+          <div class="stat-desc">Projected drop in overdose deaths in Clark County by end of 2024 — a result of community investment</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$2.2B</div>
+          <div class="stat-desc">Combined opioid crisis cost to Clark ($1.2B) and Floyd ($1B) counties, 2003–2017 (IU study)</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Clark County's overdose death rate has fallen by nearly 20% — that's what happens when you invest in people. Problem-solving courts, Narcan access, and treatment pipelines work.</li>
+          <li>The opioid crisis cost Clark and Floyd counties over $2 billion in lost productivity and public costs over 15 years. Prevention and treatment aren't a budget expense — they're the budget savings.</li>
+          <li>Stimulant drug use is the next wave — we need to stay ahead of it, not defund the community health infrastructure we built to address the last one.</li>
+          <li>IU Southeast and the county health departments are doing critical work expanding Narcan training — that's state-university-community partnership at its best, and it deserves continued support.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: LPM News/WFPL, Dec. 2025; IU Citizen Opioid Responders Program, 2024; News &amp; Tribune opioid cost study (IU research).</div>
+    </div>
+
+    <!-- ISSUE 4: WORKFORCE/ECONOMY -->
+    <div class="issue-card priority-2">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">4</div>
+            <div class="issue-title">Workforce Development &amp; Economic Opportunity</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-local">Local</span>
+            <span class="tag tag-state">State</span>
+            <span class="tag tag-fed">Federal</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">The 2025 CFSI needs assessment ranked <strong>education and job preparation</strong> among the top community priorities — specifically noting the need for accessible adult training for a changing economy. Southern Indiana sits at the Louisville metro edge, creating both opportunity (cross-river employers, Amazon, logistics) and risk (cost spillover, wage competition). Tariff uncertainty and a weakening national manufacturing sector in 2025–2026 add economic anxiety. For HD-71 voters, this connects to schools, job training, and whether their kids can afford to stay in the community where they grew up.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">#1</div>
+          <div class="stat-desc">Education &amp; job prep ranked as a top 2025 priority by Clark &amp; Floyd County residents (CFSI survey)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">~400</div>
+          <div class="stat-desc">Tariff adjustments in 2025 alone — creating business and employment uncertainty across Indiana manufacturing</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Southern Indiana families want their kids to be able to stay — to find good jobs and afford to live here. Right now, housing costs and workforce mismatches are working against that.</li>
+          <li>We're seeing the Louisville economy grow across the river, but too many of the benefits are landing on the Kentucky side. We need workforce investment that ensures Clark and Floyd residents get those jobs.</li>
+          <li>Adult retraining programs are essential — the people hit hardest by economic shifts are often mid-career workers who need accessible, affordable pathways to new skills, not just programs designed for 18-year-olds.</li>
+          <li>Federal tariff chaos in 2025 hurt Indiana manufacturers. We need state and local leaders who protect workers from volatility they didn't create.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: CFSI "Priorities for Progress 2025 Update"; Indiana Economic Outlook, Ball State CBER 2026; Grant County Economic Growth Council summary, Feb. 2026.</div>
+    </div>
+
+    <!-- ISSUE 5: HEALTHCARE/MEDICAID -->
+    <div class="issue-card priority-3">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">5</div>
+            <div class="issue-title">Healthcare Access &amp; Medicaid Stability</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-state">State</span>
+            <span class="tag tag-fed">Federal</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">Indiana's Medicaid system — covering over 1.4 million Hoosiers through HIP, Hoosier Healthwise, Hoosier Care Connect, and Pathways for Aging — is undergoing significant disruption. The state is bidding out $68 billion in managed care contracts simultaneously (the "Mother of All Procurements"), with new contracts not effective until 2029. Disability service waivers hit capacity; Family Supports and CIH waivers were frozen for new slots through at least July 2026. Federal H.R. 1 Medicaid cuts add pressure to rural hospitals statewide. For HD-71, with its share of working-poor, elderly, and disabled residents, stability in Medicaid is a direct quality-of-life issue.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">1.4M+</div>
+          <div class="stat-desc">Hoosiers covered by Indiana Medicaid programs at risk from simultaneous contract rebid</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">Frozen</div>
+          <div class="stat-desc">Family Supports &amp; CIH disability waivers — no new capacity through at least July 2026</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Indiana is re-bidding $68 billion in Medicaid contracts all at once — even the Republican rep from New Albany called it "a recipe for disaster" for kids, seniors, and people with disabilities.</li>
+          <li>Families waiting for disability services in Clark and Floyd counties are being told to keep waiting — waivers are frozen and the backlog is growing.</li>
+          <li>Federal Medicaid cuts in H.R. 1 will hit rural and community hospitals hardest. Southern Indiana can't afford to lose hospital capacity.</li>
+          <li>Healthcare is a kitchen table issue — when Medicaid is disrupted, it's not abstract. It's families scrambling to figure out who will take care of their child or parent tomorrow.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Indiana Capital Chronicle, Feb. 2026 (Medicaid rebid); Arc of Indiana Medicaid Waiver updates, Feb. 2026; Georgetown CCF, H.R.1 state impact, Mar. 2026.</div>
+    </div>
+
+    <!-- ISSUE 6: PUBLIC SAFETY/SHERIFF SCANDAL -->
+    <div class="issue-card priority-3">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">6</div>
+            <div class="issue-title">Public Safety &amp; Accountability in Government</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-hot">📍 Local Context</span>
+            <span class="tag tag-local">Local</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">The 2026 primary was notably shaped by the first Clark County Sheriff's race since former Sheriff Jamey Noel was convicted of multiple felonies. This has elevated public trust, accountability in government, and public safety as live issues in the district — and creates an opening for Democratic candidates to draw a clear contrast between accountability-focused governance and a local Republican establishment that shielded misconduct. Voters in the district are paying attention to who they can trust with public institutions.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">First</div>
+          <div class="stat-desc">Clark County Sheriff's race since former Sheriff Noel's felony convictions — major local voter motivation in 2026</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">4</div>
+          <div class="stat-desc">Candidates (R &amp; D) competing for Clark County Sheriff seat in May 2026 primary</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Clark County voters are rightfully asking: who do we trust to run our public institutions? After what happened with the Sheriff's office, that's not an abstract question — it's about accountability.</li>
+          <li>Democrats offer a clear alternative: government that serves everyone, not just the well-connected. Real public safety means accountable leadership at every level.</li>
+          <li>Community-based approaches to public safety — treatment courts, mental health diversion, violence prevention — work. The evidence is right here in Clark and Floyd counties.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: LPM News / WFPL, Apr. 2026 (Southern Indiana primary overview); News &amp; Tribune 2026 election coverage.</div>
+    </div>
+
+  </div><!-- end issue-grid -->
+
+  <!-- DISTRICT CONTEXT BOX -->
+  <div class="section-label">District &amp; Race Context</div>
+  <div class="context-box">
+    <h3>What Makes HD-71 the "Polar Anchor"</h3>
+    <p>HD-71 carries a +0.3R IN-Index — the closest to parity of any seat in the southern Indiana region. Wendy Dant Chesser currently holds it for Democrats. The surrounding legislative environment is deeply Republican (SD-45 at +21.9R, SD-47 at +33.7R; HD-66 at +40.8R), making HD-71 the only realistic Democratic hold — and a symbolic anchor for the region's entire legislative effort.</p>
+    <p>The district is suburban-urban in character, straddling the Ohio River communities of New Albany (Floyd County) and Jeffersonville/Clarksville (Clark County). It benefits from Louisville metro economic dynamics while feeling the squeeze of rising housing costs and service sector instability. Voters here are the persuadable middle — working families, homeowners with tight margins, healthcare workers, parents with kids in public schools. Issues that speak to economic dignity and government accountability land here.</p>
+    <p>The HD-72 open seat (Ed Clere not running) and competitive 2026 primary environment in both counties suggest elevated voter engagement this cycle — an opportunity if Democrats are organized and candidate-ready.</p>
+  </div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  <p>HD-71 Candidate Power Pack — Issues Research · Indiana Rural Summit · May 2026</p>
+  <p>For internal planning use. All data cited to public sources.</p>
+</div>
+
+</body>
+</html>

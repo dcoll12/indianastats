@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HD-81 + SD-14 Combined Power Pack — Top Issues · Allen &amp; DeKalb Counties</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --steel: #1c2f44;
+    --steel-mid: #2c4a68;
+    --steel-light: #4272a0;
+    --amber: #a06020;
+    --amber-light: #d08840;
+    --gold: #b89018;
+    --gold-light: #e0b840;
+    --cream: #f4f1ea;
+    --warm-white: #fdfcf8;
+    --text: #1a1a16;
+    --muted: #585448;
+    --border: #d8d2c0;
+    --red: #8b2020;
+    --rust: #9c3820;
+    --olive: #3c5820;
+    --opportunity: #4a2070;
+    --opp-light: #8860b8;
+    --opp-bg: rgba(74,32,112,0.07);
+    --hd81: #1c4a80;
+    --sd14: #6a1c40;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'IBM Plex Sans', sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; }
+
+  /* TOP BANNER */
+  .top-banner { background: var(--opportunity); padding: 9px 52px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .tb-label { font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.95); }
+  .tb-sep { color: rgba(255,255,255,0.3); }
+  .tb-desc { font-size: 12px; color: rgba(255,255,255,0.6); font-style: italic; }
+
+  /* HEADER */
+  .header { background: var(--steel); padding: 34px 52px 26px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--hd81), var(--amber-light), var(--sd14)); }
+  .header::before { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 250px; background: linear-gradient(90deg, transparent, rgba(74,32,112,0.12)); }
+
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .badge-combined { background: var(--opp-light); color: #fff; font-size: 12px; padding: 5px 14px; letter-spacing: 0.05em; }
+  .badge-opp { background: var(--opportunity); color: rgba(255,255,255,0.9); border: 1px solid rgba(136,96,184,0.5); }
+  .badge-cd { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.45); }
+  .badge-held { background: rgba(160,48,32,0.25); border: 1px solid rgba(210,90,60,0.4); color: #f0a882; }
+
+  .header h1 { font-family: 'Merriweather', serif; color: #fff; font-size: 27px; line-height: 1.2; margin-bottom: 5px; }
+  .header h1 em { font-style: italic; color: rgba(255,255,255,0.48); font-size: 19px; display: block; margin-top: 3px; }
+  .county-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .county-tag { display: inline-block; padding: 4px 12px; border-radius: 3px; font-size: 12px; font-weight: 500; letter-spacing: 0.05em; }
+  .ctag-allen { background: rgba(66,114,160,0.3); border: 1px solid rgba(100,150,200,0.4); color: #90c0f0; }
+  .ctag-dekalb { background: rgba(184,144,24,0.2); border: 1px solid rgba(184,144,24,0.4); color: var(--gold-light); }
+  .header-stats { display: flex; gap: 22px; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; }
+  .hstat { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .hstat strong { display: block; color: rgba(255,255,255,0.82); font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+
+  /* DISTRICT STRIP */
+  .district-strip { display: grid; grid-template-columns: 1fr 1fr; }
+  .ds-hd81 { background: #162840; border-bottom: 3px solid var(--hd81); padding: 12px 52px 12px 52px; }
+  .ds-sd14 { background: #1e1020; border-bottom: 3px solid var(--sd14); padding: 12px 52px; }
+  .ds-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+  .ds-content { font-size: 13px; color: rgba(255,255,255,0.8); }
+  .ds-content span { font-weight: 600; }
+
+  /* FRAMING BAND */
+  .framing-band { background: var(--opp-bg); border-left: 4px solid var(--opportunity); border-bottom: 1px solid var(--border); padding: 15px 52px; display: flex; gap: 14px; align-items: flex-start; }
+  .fb-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--opportunity); white-space: nowrap; padding-top: 2px; }
+  .framing-band p { font-size: 13px; color: var(--muted); font-style: italic; line-height: 1.5; }
+
+  /* COUNTY PROFILES */
+  .county-band { background: var(--warm-white); border-bottom: 2px solid var(--border); padding: 20px 52px; }
+  .county-band-label { font-size: 10px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--steel-mid); margin-bottom: 14px; }
+  .county-profiles { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+  .county-profile { border-radius: 4px; padding: 14px 16px; border: 1px solid var(--border); }
+  .cp-allen { background: #f0f4f9; border-left: 4px solid var(--hd81); }
+  .cp-dekalb { background: #fdf8f0; border-left: 4px solid var(--amber); }
+  .cp-name { font-weight: 700; font-size: 13px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .cp-allen .cp-name { color: var(--steel-mid); }
+  .cp-dekalb .cp-name { color: var(--amber); }
+  .cp-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+  /* MAIN */
+  .main { max-width: 1020px; margin: 0 auto; padding: 36px 52px 64px; }
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--steel-mid); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* CANDIDATE TABLE */
+  .candidate-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; font-size: 13px; margin-bottom: 40px; }
+  .candidate-table thead { background: var(--steel); color: rgba(255,255,255,0.75); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .candidate-table thead th { padding: 10px 14px; text-align: left; }
+  .candidate-table tbody tr { border-bottom: 1px solid var(--border); }
+  .candidate-table tbody tr:last-child { border-bottom: none; }
+  .candidate-table tbody td { padding: 10px 14px; vertical-align: middle; color: var(--text); }
+  .row-hd81 { background: rgba(28,74,128,0.04); border-left: 3px solid var(--hd81); }
+  .row-sd14 { background: rgba(106,28,64,0.04); border-left: 3px solid var(--sd14); }
+  .row-sd19 { background: rgba(60,88,32,0.04); border-left: 3px solid var(--olive); }
+  .anchor-badge { display: inline-block; background: rgba(184,144,24,0.15); border: 1px solid rgba(184,144,24,0.4); color: #7a5a00; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; margin-left: 6px; }
+  .in-index-r { color: #8b2020; font-weight: 600; }
+  .type-label { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 6px; border-radius: 2px; }
+  .type-house-81 { background: rgba(28,74,128,0.12); color: var(--hd81); }
+  .type-senate-14 { background: rgba(106,28,64,0.12); color: var(--sd14); }
+  .type-senate-19 { background: rgba(60,88,32,0.12); color: var(--olive); }
+
+  /* SNAPSHOT */
+  .snapshot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 14px; margin-bottom: 40px; }
+  .snap-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; text-align: center; }
+  .snap-num { font-family: 'Merriweather', serif; font-size: 24px; color: var(--steel); line-height: 1; margin-bottom: 4px; }
+  .snap-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  /* PACK DIVIDER */
+  .pack-divider { display: flex; align-items: center; gap: 16px; margin: 40px 0 24px; }
+  .pack-divider-line { flex: 1; height: 2px; }
+  .pack-divider-line.hd81 { background: linear-gradient(90deg, var(--hd81), transparent); }
+  .pack-divider-line.sd14 { background: linear-gradient(270deg, var(--sd14), transparent); }
+  .pack-divider-title { font-family: 'Merriweather', serif; font-size: 15px; font-weight: 700; color: #fff; padding: 6px 18px; border-radius: 3px; white-space: nowrap; }
+  .pack-divider-title.hd81 { background: var(--hd81); }
+  .pack-divider-title.sd14 { background: var(--sd14); }
+
+  /* ISSUE CARDS */
+  .issue-grid { display: grid; gap: 20px; margin-bottom: 40px; }
+  .issue-card { background: var(--warm-white); border: 1px solid var(--border); border-left: 4px solid var(--steel-light); border-radius: 4px; padding: 24px 28px; }
+  .issue-card.p1 { border-left-color: var(--red); }
+  .issue-card.p2 { border-left-color: var(--amber); }
+  .issue-card.p3 { border-left-color: var(--gold); }
+  .issue-card.p4 { border-left-color: var(--olive); }
+  .issue-card.p-hd81 { border-left-color: var(--hd81); }
+  .issue-card.p-sd14 { border-left-color: var(--sd14); }
+  .issue-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
+  .issue-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .p1 .issue-num { background: var(--red); }
+  .p2 .issue-num { background: var(--amber); }
+  .p3 .issue-num { background: var(--gold); }
+  .p4 .issue-num { background: var(--olive); }
+  .p-hd81 .issue-num { background: var(--hd81); }
+  .p-sd14 .issue-num { background: var(--sd14); }
+  .issue-title { font-family: 'Merriweather', serif; font-size: 19px; color: var(--steel); line-height: 1.25; }
+  .issue-sub { font-size: 13px; color: var(--muted); padding-left: 40px; font-style: italic; margin-bottom: 8px; }
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; padding-left: 40px; margin-bottom: 12px; }
+  .tag { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; }
+  .tag-hot { background: #fde8e8; color: #8b1c1c; }
+  .tag-local { background: #e8f0ff; color: #1c3a8b; }
+  .tag-state { background: #fff3e0; color: #7a4500; }
+  .tag-fed { background: #e8f5e9; color: #1b4d2e; }
+  .tag-shared { background: rgba(74,32,112,0.1); color: var(--opportunity); }
+  .county-context { display: flex; gap: 8px; flex-wrap: wrap; padding-left: 40px; margin-bottom: 12px; }
+  .cc-pill { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+  .cc-allen { background: rgba(28,74,128,0.1); border: 1px solid rgba(28,74,128,0.25); color: var(--hd81); }
+  .cc-dekalb { background: rgba(160,96,32,0.1); border: 1px solid rgba(160,96,32,0.25); color: var(--amber); }
+  .issue-summary { font-size: 13.5px; color: var(--text); margin-bottom: 14px; line-height: 1.65; }
+  .stat-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+  .stat-box { background: var(--cream); border: 1px solid var(--border); border-radius: 3px; padding: 10px 14px; flex: 1; min-width: 145px; }
+  .stat-num { font-family: 'Merriweather', serif; font-size: 21px; color: var(--steel); line-height: 1; margin-bottom: 3px; }
+  .stat-desc { font-size: 11px; color: var(--muted); line-height: 1.3; }
+  .tp-box { background: var(--cream); border-radius: 3px; padding: 13px 16px; margin-top: 4px; }
+  .tp-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .tp-box ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .tp-box ul li { font-size: 13px; color: var(--text); padding-left: 16px; position: relative; line-height: 1.5; }
+  .tp-box ul li::before { content: '→'; position: absolute; left: 0; color: var(--steel-light); font-size: 12px; }
+  .source-line { font-size: 11px; color: var(--muted); margin-top: 12px; font-style: italic; border-top: 1px solid var(--border); padding-top: 10px; }
+
+  /* CONTEXT */
+  .context-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 4px; padding: 24px 28px; margin-bottom: 40px; }
+  .context-card h3 { font-family: 'Merriweather', serif; font-size: 17px; color: var(--steel); margin-bottom: 10px; }
+  .context-card p { font-size: 13.5px; color: var(--muted); line-height: 1.65; margin-bottom: 8px; }
+  .context-card p:last-child { margin-bottom: 0; }
+
+  /* FOOTER */
+  .footer { background: var(--steel); padding: 18px 52px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer p { font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; }
+
+  @media (max-width: 680px) { .header, .main, .county-band, .framing-band, .top-banner { padding-left: 20px; padding-right: 20px; } .county-profiles, .district-strip { grid-template-columns: 1fr; } .footer { padding: 16px 20px; } .ds-hd81, .ds-sd14 { padding: 10px 20px; } }
+</style>
+</head>
+<body>
+
+<!-- TOP BANNER -->
+<div class="top-banner">
+  <span class="tb-label">✦ Opportunity Packs #9 &amp; #10 — Combined</span>
+  <span class="tb-sep">·</span>
+  <span class="tb-desc">R+15–30% terrain — contest hard, narrow the margin, force Republican spending, lift the wave · CD-3</span>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="badge-row">
+    <span class="badge badge-combined">HD-81 + SD-14 Combined Pack</span>
+    <span class="badge badge-opp">✦ Opportunity</span>
+    <span class="badge badge-held">Held by Republicans</span>
+    <span class="badge badge-cd">CD-3</span>
+  </div>
+  <h1>Top Issues Research<em>Combined Candidate Power Pack</em></h1>
+  <div class="county-tags">
+    <span class="county-tag ctag-allen">Allen County (Fort Wayne)</span>
+    <span class="county-tag ctag-dekalb">DeKalb County (Auburn)</span>
+  </div>
+  <div class="header-stats">
+    <div class="hstat"><strong>HD-81 Candidate</strong>Sharon Wight (D) — Allen County · Polar Anchor</div>
+    <div class="hstat"><strong>SD-14 Candidate</strong>Blaine Sefton (D) — Fort Wayne · Polar Anchor</div>
+    <div class="hstat"><strong>SD-19 Candidate</strong>Timothy Murphy (D) — Alliance</div>
+    <div class="hstat"><strong>Region</strong>Northeast Indiana · Fort Wayne MSA</div>
+    <div class="hstat"><strong>Research Date</strong>May 2026</div>
+  </div>
+</div>
+
+<!-- DISTRICT STRIP -->
+<div class="district-strip">
+  <div class="ds-hd81">
+    <div class="ds-label">Pack 9 · House District</div>
+    <div class="ds-content"><span>HD-81 · +24.2R</span> · Sharon Wight vs. Martin Carbaugh · Allen County</div>
+  </div>
+  <div class="ds-sd14">
+    <div class="ds-label">Pack 10 · Senate District</div>
+    <div class="ds-content"><span>SD-14 · +28.3R</span> · Blaine Sefton vs. Dr. Tyler Johnson · Allen &amp; DeKalb · Fort Wayne</div>
+  </div>
+</div>
+
+<!-- FRAMING BAND -->
+<div class="framing-band">
+  <span class="fb-label">Combined Strategy</span>
+  <p>These two Opportunity Packs share overlapping geography — both anchored in Allen County (Fort Wayne), with SD-14 also covering DeKalb County. Combining them creates a unified research resource and reinforces that every candidate contesting this terrain forces Republican spending, builds organizing infrastructure, and lifts Timothy Murphy's SD-19 campaign alongside the broader Northeast Indiana wave. Issues sourced from IBRC/PFW economic forecasts, Journal Gazette, WANE 15, state agency reports, and Allen County public filings. Prepared for Indiana Rural Summit Power Pack series · May 2026.</p>
+</div>
+
+<!-- COUNTY PROFILES -->
+<div class="county-band">
+  <div class="county-band-label">District County Profiles</div>
+  <div class="county-profiles">
+    <div class="county-profile cp-allen">
+      <div class="cp-name">Allen County — Fort Wayne</div>
+      <div class="cp-desc">Indiana's 3rd-largest county (402,329 residents as of July 2025); growing at 4.4% since 2020 — 9th fastest in the state. Fort Wayne is the state's 2nd-largest city. Nearly 38,000 manufacturing jobs; 3 Amazon warehouses; major employers include Parkview Health, Sweetwater, Do It Best, Fort Wayne Metals, General Motors (supplier network). Democratic Mayor Sharon Tucker. Home median price hit $258,661 in mid-2025 — up 115% since 2015. SEA 1 cut $25M from Fort Wayne city revenue; Fort Wayne Community Schools faces $10.7M–$11M annual property tax loss. Rents crossed $1,000/month for the first time in 2024. Wages lag state and national averages in inflation-adjusted terms.</div>
+    </div>
+    <div class="county-profile cp-dekalb">
+      <div class="cp-name">DeKalb County — Auburn / Garrett / Butler</div>
+      <div class="cp-desc">~44,000 residents. Named top 10 Micropolitan in the U.S. by Site Selection Magazine four of the past five years. Record $760M in private investment in 2024. County seat: Auburn (pop. 13,412). Key employers: Continental (tech center consolidation), Walmart distribution center in Garrett, manufacturing pipeline projects. Rural connectivity (broadband) remains a top priority — fiber installation ongoing. READI investment secured. School construction underway in all three major districts. Population declined between 2024–2025 — one of 26 Indiana counties losing residents year-over-year.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- CANDIDATE TABLE -->
+  <div class="section-label">All Candidates — Northeast Indiana Wave</div>
+  <table class="candidate-table">
+    <thead>
+      <tr><th>Type</th><th>Candidate</th><th>District</th><th>IN-Index</th><th>Counties</th><th>Incumbent (R)</th></tr>
+    </thead>
+    <tbody>
+      <tr class="row-hd81">
+        <td><span class="type-label type-house-81">House</span></td>
+        <td><strong>Sharon Wight</strong> <span class="anchor-badge">Polar Anchor</span></td>
+        <td>HD-81</td>
+        <td class="in-index-r">+24.2R</td>
+        <td>Allen</td>
+        <td>Martin Carbaugh</td>
+      </tr>
+      <tr class="row-sd14">
+        <td><span class="type-label type-senate-14">Senate</span></td>
+        <td><strong>Blaine Sefton</strong> <span class="anchor-badge">Polar Anchor</span></td>
+        <td>SD-14</td>
+        <td class="in-index-r">+28.3R</td>
+        <td>Allen · DeKalb</td>
+        <td>Dr. Tyler Johnson</td>
+      </tr>
+      <tr class="row-sd19">
+        <td><span class="type-label type-senate-19">Senate</span></td>
+        <td><strong>Timothy Murphy</strong></td>
+        <td>SD-19</td>
+        <td class="in-index-r">+39.5R</td>
+        <td>NE Indiana</td>
+        <td>Travis Holdman</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SNAPSHOT -->
+  <div class="section-label">Region at a Glance</div>
+  <div class="snapshot-grid">
+    <div class="snap-card">
+      <div class="snap-num">38K</div>
+      <div class="snap-desc">Fort Wayne MSA manufacturing jobs — directly exposed to tariff uncertainty and auto supply chain disruption</div>
+    </div>
+    <div class="snap-card">
+      <div class="snap-num">$25M</div>
+      <div class="snap-desc">Fort Wayne city revenue lost to SEA 1 property tax reform — police, fire, and city services at stake</div>
+    </div>
+    <div class="snap-card">
+      <div class="snap-num">$11M</div>
+      <div class="snap-desc">Fort Wayne Community Schools annual property tax loss from SEA 1 — Indiana's largest school district by enrollment</div>
+    </div>
+    <div class="snap-card">
+      <div class="snap-num">$258K</div>
+      <div class="snap-desc">Allen County median home price in mid-2025 — up 115% since 2015; wages haven't kept pace</div>
+    </div>
+    <div class="snap-card">
+      <div class="snap-num">$1,000+</div>
+      <div class="snap-desc">Allen County median rent crossed $1,000/month for the first time in 2024 — up $200 in just 3 years</div>
+    </div>
+    <div class="snap-card">
+      <div class="snap-num">+4.4%</div>
+      <div class="snap-desc">Allen County population growth since 2020 — 9th fastest in Indiana; growth creates infrastructure and housing pressure</div>
+    </div>
+  </div>
+
+  <!-- SHARED ISSUES HEADER -->
+  <div class="pack-divider">
+    <div class="pack-divider-line hd81"></div>
+    <div class="pack-divider-title hd81">Shared Issues · Both Packs</div>
+    <div class="pack-divider-line" style="background: linear-gradient(90deg, transparent, var(--sd14));"></div>
+  </div>
+  <p style="font-size:13px; color:var(--muted); margin-bottom:24px; font-style:italic;">These issues are documented across Allen and DeKalb counties and are directly relevant to all three candidates. Each candidate should localize and adapt talking points to their specific district geography.</p>
+
+  <div class="issue-grid">
+
+    <!-- SHARED ISSUE 1: SEA 1 / LOCAL GOV BUDGET SQUEEZE -->
+    <div class="issue-card p1">
+      <div class="issue-title-row"><div class="issue-num">1</div><div class="issue-title">Local Government Budget Squeeze &amp; Public Safety</div></div>
+      <div class="issue-sub">SEA 1 cut $25M from Fort Wayne city revenue and $11M from Fort Wayne Community Schools — Fort Wayne's Democratic mayor testified against it at the Statehouse.</div>
+      <div class="tag-row">
+        <span class="tag tag-hot">🔥 Critical Local Issue</span>
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-local">Local</span>
+        <span class="tag tag-shared">Both Packs</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-allen">Allen County: $25M city cut; $11M FWCS school cut</span>
+        <span class="cc-pill cc-dekalb">DeKalb: All school districts engaged legislators on SB 1</span>
+      </div>
+      <p class="issue-summary">Gov. Braun's Senate Enrolled Act 1 (2025) is delivering documented, concrete budget damage to Fort Wayne and Allen County. Fort Wayne Mayor Sharon Tucker — a Democrat — testified before the Statehouse House Ways and Means Committee in March 2025 about the harm to her city's budget and then created an "SB1 Fiscal Task Force" to manage the multi-year fallout. The bottom line she presented: Fort Wayne will receive <strong>$25 million less in property tax revenue</strong> due to property tax caps, with further losses expected as later elements of SEA 1 phase in through 2031. "About half of our general fund revenue comes from property taxes," Tucker said. "Between 50 to 60 percent is for public safety. Our police officers, our firefighters. There would be some tough decisions that would have to be made." Fort Wayne Community Schools — Indiana's largest school district by enrollment — faces an <strong>$10.7–$11 million annual property tax shortfall</strong> from SEA 1, following a $5 million cut the previous year that already forced the elimination of ~20 central office positions. All four Allen County school districts (FWCS, NACS, SACS, EACS) publicly engaged their state legislators about the harm. The same pattern plays out in DeKalb County, where all three school districts were tracking SB 1 impacts. Northeast Indiana mayors gathered in November 2025 to collectively warn residents to "get used to fewer services."</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$25M</div>
+          <div class="stat-desc">Fort Wayne city annual property tax revenue loss from SEA 1 — police, fire, and city services directly at risk</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$11M</div>
+          <div class="stat-desc">Fort Wayne Community Schools annual property tax loss — after the prior year's $5M cut already forced staff reductions</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">2031</div>
+          <div class="stat-desc">Year when the full impact of SEA 1 phases in — mayors warned residents they'll get fewer services for years to come</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Fort Wayne's mayor — a Democrat, yes, but also the mayor of Indiana's second-largest city — went to the Statehouse and told legislators that their property tax bill would force impossible choices between police officers and sidewalks. The Statehouse passed it anyway. That's what it looks like when state government stops listening to its own cities.</li>
+          <li>Fort Wayne Community Schools — the largest school district in the state by enrollment — is looking at an $11 million annual hole. They already cut 20 positions the year before from a $5 million shortfall. Our kids in Allen County are paying for this "tax relief" with larger class sizes and eliminated programs.</li>
+          <li>This isn't over. The full impact of SEA 1 doesn't hit until 2031. Northeast Indiana mayors told residents in November 2025 to prepare to get used to fewer services. That's not a good government outcome — that's a slow-motion defunding of local public services, dressed up as property tax relief.</li>
+          <li>The $300 in annual savings for the average homeowner doesn't offset the cost when the fire station takes longer to respond, the school lays off teachers, or the road crew gets cut from three trucks to one. Somebody always pays — the question is who.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Fort Wayne Business Journal, "Taxpayers will have to get used to fewer services" (Nov. 19, 2025); WANE 15, "Fort Wayne Community Schools urging legislators to revise proposed budget cuts" (Mar. 4, 2025); WANE 15, "Mayor Tucker testifies on Indiana bill" (Mar. 5, 2025); Journal Gazette, "Indiana's new property tax law squeezes Fort Wayne Community Schools' budget" (Sept. 23, 2025); Allen County, "2026 Tax Bill FAQ"; Accelerate Indiana Municipalities (AIM), property tax newsroom archive.</div>
+    </div>
+
+    <!-- SHARED ISSUE 2: HOUSING & HOME PRICES -->
+    <div class="issue-card p1">
+      <div class="issue-title-row"><div class="issue-num">2</div><div class="issue-title">Housing Affordability — A Decade of Price Surge</div></div>
+      <div class="issue-sub">Allen County home prices are up 115% since 2015. Wages haven't kept pace in real terms. Rent crossed $1,000/month for the first time in 2024. First-time buyers are squeezed.</div>
+      <div class="tag-row">
+        <span class="tag tag-hot">🔥 Documented — PFW Research</span>
+        <span class="tag tag-local">Local</span>
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-fed">Federal</span>
+        <span class="tag tag-shared">Both Packs</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-allen">Allen County: Median home $258K — up 115% since 2015</span>
+        <span class="cc-pill cc-dekalb">DeKalb: Auburn named 10th most affordable U.S. city — but rural housing stock aging</span>
+      </div>
+      <p class="issue-summary">Purdue University Fort Wayne's Community Research Institute has tracked Allen County's housing market comprehensively. The findings are stark: the median home sales price reached <strong>$258,661 in mid-2025</strong>, up from $120,000 in 2015 — a 115% increase in unadjusted terms, or 64% when adjusted for inflation. Either way, it far outpaces the 32% rise in the Consumer Price Index. Allen County rent crossed the $1,000/month threshold for the first time in 2024, having jumped $90 between 2019 and 2021 and another $111 between 2021 and 2022. Wages, when adjusted for inflation, peaked in 2021 and then declined in 2022 and 2023, only partially recovering in 2024. The result: first-time homebuyers face a market where prices have doubled while their real wages have not. The rental vacancy rate in Fort Wayne is 6% — below average — which keeps competition for units high and prices elevated. Fort Wayne has 47 affordable housing properties, with Section 8 vouchers covering a maximum of $980–$1,198 for a two-bedroom — barely enough in a rising market. Federal proposals to cut HUD funding nearly in half would further diminish what little affordable housing infrastructure exists. Allen County is growing — it added 3,235 residents in the past year alone — which adds demand without necessarily adding affordable supply.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$258K</div>
+          <div class="stat-desc">Allen County median home price, mid-2025 — up from $120,000 in 2015; wages haven't kept pace in real terms</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">+$200</div>
+          <div class="stat-desc">Median rent increase in Allen County since 2019 — crossed $1,000/month in 2024 for the first time</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">6%</div>
+          <div class="stat-desc">Rental vacancy rate in Fort Wayne — below average; tight supply keeps rents rising as population grows</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Home prices in Allen County have doubled since 2015. Wages, adjusted for inflation, peaked in 2021 and fell. That gap — between what houses cost and what workers earn — is the housing affordability crisis. It's not caused by government overregulation; it's caused by a decade of underinvestment in affordable supply while demand surged.</li>
+          <li>Fort Wayne is growing. That's great news. But growth without housing policy isn't an opportunity — it's a displacement machine. We're adding 3,000 residents a year and building very few units working families can afford to buy or rent. Someone has to build a policy around that reality.</li>
+          <li>Rent crossed $1,000 a month in Fort Wayne for the first time ever in 2024. For a manufacturing worker or healthcare aide making $18 an hour, that's 30%+ of their income before utilities, groceries, or childcare. That is the definition of cost-burdened, and it describes thousands of families in this district.</li>
+          <li>The Trump administration wants to cut HUD funding nearly in half. Fort Wayne has 47 affordable housing properties. If Section 8 vouchers shrink and LIHTC programs are cut, those properties can't be maintained or expanded. This isn't abstract federal policy — it's the housing safety net that working Fort Wayne families depend on.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: IBRC/PFW, "Fort Wayne forecast 2026" (Indiana Business Review); IBRC, Fort Wayne 2025 and 2026 metro projections; Affordable Housing Hub, Allen County data; Allen County 2026 Tax Bill FAQ; Fort Wayne Business Journal, population estimates (March 26, 2026).</div>
+    </div>
+
+    <!-- SHARED ISSUE 3: MANUFACTURING & TARIFFS -->
+    <div class="issue-card p2">
+      <div class="issue-title-row"><div class="issue-num">3</div><div class="issue-title">Manufacturing Economy &amp; Tariff Uncertainty</div></div>
+      <div class="issue-sub">Fort Wayne's nearly 38,000 manufacturing jobs — heavy in auto supply chain and logistics — are directly in the crosshairs of 2025–2026 tariff chaos and consumer slowdown.</div>
+      <div class="tag-row">
+        <span class="tag tag-fed">Federal</span>
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-shared">Both Packs</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-allen">Allen County: 37,829 manufacturing jobs; GM supplier network; Amazon logistics</span>
+        <span class="cc-pill cc-dekalb">DeKalb: Continental, Walmart DC; manufacturing pipeline</span>
+      </div>
+      <p class="issue-summary">The Fort Wayne MSA's economy rests substantially on manufacturing and logistics. As of March 2025, the metro had <strong>37,829 manufacturing jobs</strong> — a cornerstone of working-class employment in Allen County. The PFW 2026 forecast explicitly warned that this base is vulnerable: "An economic downturn could negatively affect the Fort Wayne metro's nearly 38,000 manufacturing jobs. A spending slowdown creates a double whammy for manufacturing because consumers pull back on spending for durable goods, such as vehicles, and the wage premium manufacturing employees enjoy dissipates with layoffs or elimination of overtime." Fort Wayne is heavily embedded in the auto supply chain — General Motors, its suppliers, and adjacent manufacturers form a significant cluster. The 2025 tariffs on Canada and Mexico specifically targeted the North American automotive supply chain; automakers are "rearranging supply chains and production decisions" according to Indiana's own economic forecast. Three Amazon warehouses in Fort Wayne add logistics dependency — a sector sensitive to consumer spending slowdowns. DeKalb County's Continental tech center consolidation in Auburn adds a white-collar manufacturing technology dimension. Statewide, nearly 400 tariff adjustments in 2025 alone created business planning chaos, and Ball State's CBER projected "mild stagflation" — slower growth with elevated prices — as the base case for 2026. Indiana's own forecast projected unemployment rising from 3.6% to 4.4% statewide.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">37,829</div>
+          <div class="stat-desc">Manufacturing jobs in Fort Wayne MSA (March 2025) — auto supply chain and durable goods at highest risk from tariffs</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">~400</div>
+          <div class="stat-desc">Tariff adjustments in 2025 alone — planning chaos for Indiana manufacturers reliant on Canada and Mexico supply chains</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">4.4%</div>
+          <div class="stat-desc">Indiana unemployment projected in 2026 — up from 3.6% in 2025; Fort Wayne expected to feel labor market softening</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Fort Wayne built its economy on making things — and we're good at it. Nearly 38,000 manufacturing jobs are the backbone of working-class life in Allen County. Those jobs are exactly what gets hit when tariff chaos disrupts supply chains and consumer spending drops. Workers deserve federal trade policy that treats them as assets to protect, not costs to externalize.</li>
+          <li>The auto supply chain runs through Fort Wayne. When the Trump administration put tariffs on Canada and Mexico — our top trading partners, and the heart of North American auto manufacturing — and then threatened to change them 400 times in a year, every parts supplier in Allen County had to hold its breath. That uncertainty doesn't create jobs. It freezes hiring.</li>
+          <li>DeKalb County just landed Continental's consolidated tech center. That's exactly the kind of advanced manufacturing investment we want. But companies like Continental need stable trade relationships and a predictable business environment to keep investing here. Tariff chaos works against that.</li>
+          <li>Three Amazon warehouses in Fort Wayne sounds like economic strength — and it is. But logistics jobs are directly tied to consumer spending. When tariff-driven inflation squeezes household budgets and people buy less, those warehouses slow down. Fort Wayne's growth needs to be built on a broader base of stable, well-paying jobs — and that requires a different approach from Washington.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: IBRC/PFW, "Fort Wayne forecast 2026"; BLS/QCEW, Fort Wayne MSA manufacturing employment (March 2025); Indiana Capital Chronicle, "Federal tariffs will negatively impact Hoosier manufacturing" (Mar. 2025); IBRC, Indiana Economic Outlook 2026; Grant County Economic Growth Council, Indiana Economic Roadmap 2026 (Feb. 2026); DeKalb EDP, 2025 Mid-Year Update.</div>
+    </div>
+
+    <!-- SHARED ISSUE 4: WAGES & COST OF LIVING -->
+    <div class="issue-card p2">
+      <div class="issue-title-row"><div class="issue-num">4</div><div class="issue-title">Wages, Inflation &amp; the Cost-of-Living Squeeze</div></div>
+      <div class="issue-sub">Allen County wages lag behind the state and nation in inflation-adjusted terms. Residents are "upset by higher prices on basic needs" according to PFW's own economic analysis heading into 2026.</div>
+      <div class="tag-row">
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-fed">Federal</span>
+        <span class="tag tag-shared">Both Packs</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-allen">Allen County: Wages lagged nation &amp; state for decades; real peak was 2021</span>
+        <span class="cc-pill cc-dekalb">DeKalb: Rural wages; commuter economy to Fort Wayne</span>
+      </div>
+      <p class="issue-summary">Purdue Fort Wayne's 2026 economic forecast opens with a striking observation: "Heading into 2026, Fort Wayne-area residents are upset by higher prices on basic needs. Their frustration lines up with the data." Allen County's average private sector wage has lagged behind the nation and state for <em>decades</em>. When adjusted for inflation, wages peaked in 2021 at $61,737, declined in 2022 and 2023, then partially recovered in 2024 — but the 2024 average still lags the adjusted wage of 2020 and 2021. Indiana overall ranked 36th nationally in per capita real income in 2024, consistently at the bottom among Midwestern peers. The squeeze is multidimensional: groceries, rent, and home prices have all risen faster than wages for most of the past decade. PFW's analysis notes that while Allen County's unadjusted wages appear to have risen 41.8% since 2015, in inflation-adjusted terms the gain is only 10.1% — a crucial distinction. Food costs doubled between 2020 and 2022 (in unadjusted dollars) and have flatlined at those high levels since. Workers in Fort Wayne are making more nominal dollars but buying less. That mismatch between economic optimism in headline statistics and daily cost-of-living strain is the political reality of this district.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">+10.1%</div>
+          <div class="stat-desc">Real (inflation-adjusted) Allen County wage growth since 2015 — far less than the 41.8% unadjusted headline figure</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">2021</div>
+          <div class="stat-desc">Peak year for inflation-adjusted Allen County wages — real wages declined in 2022 and 2023, only partially recovering</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">36th</div>
+          <div class="stat-desc">Indiana's ranking for per capita real income nationally in 2024 — consistently at the bottom among Midwestern peers</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Purdue Fort Wayne's own economists said it plainly: residents heading into 2026 are upset by higher prices on basic needs, and the data backs them up. Groceries cost twice what they did in 2020. Rent crossed $1,000 for the first time. Home prices doubled in a decade. But real wages? Up only 10% since 2015 when you account for inflation. That's the squeeze families are living.</li>
+          <li>Indiana ranks 36th in the country for per capita income. We're one of the most productive manufacturing states in the Midwest — and our workers take home less than almost anyone else in the region. That's not an accident. It's decades of policy choices that favor employers over employees and tax cuts over worker investment.</li>
+          <li>Allen County wages lag behind the nation and the state — not just in a given year, but across decades. The people who build Fort Wayne's economy, stock its shelves, and care for its sick deserve wages that keep up with the actual cost of living, not just headline numbers that sound better than they are.</li>
+          <li>The family making $55,000 in Fort Wayne isn't worried about the state's GDP growth rate. They're worried about their rent, their groceries, and whether they can afford childcare. That's who this election is about — and that's what our policies have to be designed around.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: IBRC/PFW, "Fort Wayne forecast 2026"; IBRC/PFW, "Fort Wayne forecast 2025"; Indiana Capital Chronicle, "Low wages, personal income dampen strength of Hoosier economy" (Feb. 24, 2026); BLS, Allen County wage data; Indiana Business Research Center, Indiana Outlook 2026.</div>
+    </div>
+
+    <!-- SHARED ISSUE 5: MEDICAID & HEALTHCARE -->
+    <div class="issue-card p3">
+      <div class="issue-title-row"><div class="issue-num">5</div><div class="issue-title">Healthcare Access &amp; Medicaid Stability</div></div>
+      <div class="issue-sub">H.R. 1's $23B in Indiana Medicaid cuts threatens Parkview and Lutheran Health — Fort Wayne's two dominant healthcare employers — and eliminates coverage for thousands of Allen and DeKalb County residents.</div>
+      <div class="tag-row">
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-fed">Federal</span>
+        <span class="tag tag-shared">Both Packs</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-allen">Allen County: Parkview Health, Lutheran Health — major employers dependent on Medicaid reimbursement</span>
+        <span class="cc-pill cc-dekalb">DeKalb: Rural access; limited providers; Medicaid essential</span>
+      </div>
+      <p class="issue-summary">Fort Wayne's healthcare sector is one of its largest employers — anchored by Parkview Health and Lutheran Health, both of which receive significant Medicaid reimbursement. H.R. 1, signed July 4, 2025, is projected by KFF to cut Indiana's federal Medicaid funding by <strong>15%, or approximately $23 billion over 2027–2036</strong>. This is the largest Medicaid cut in the history of the program. Indiana's Sens. Young and Banks both voted for it. Simultaneously, the state is rebidding $68 billion in Medicaid managed care contracts (the "Mother of All Procurements"), with 300,000 Hoosiers given less than 60 days to change insurers after MDwise was removed from the program in November 2025. New HIP work requirements take effect July 1, 2026, adding more coverage risk. Disability waivers — partially reopened July 2025 — still cover only one-third of the 13,000 people on the waitlist for home-and-community-based services. For DeKalb County's rural communities, Medicaid is often the only affordable pathway to healthcare access given limited provider options and distance to major medical centers.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$23B</div>
+          <div class="stat-desc">Projected Indiana Medicaid funding loss from H.R. 1 (2027–2036) — largest Medicaid cut in program history</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">300K</div>
+          <div class="stat-desc">Hoosiers told to find new Medicaid insurer in under 60 days after MDwise removed (Nov. 2025)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">1 in 3</div>
+          <div class="stat-desc">Fraction of Indiana's 13,000-person disability services waitlist covered when slots reopened in July 2025</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Parkview and Lutheran Health are two of Fort Wayne's largest employers. They depend on Medicaid reimbursement to pay nurses, technicians, and support staff. When the federal government cuts $23 billion from Indiana Medicaid, it doesn't just hurt patients — it hits the payroll of hospitals and clinics across Allen County.</li>
+          <li>Indiana's senators voted to cut Medicaid by $23 billion over ten years while promising no cuts to healthcare. Someone has to represent the Hoosiers who will lose coverage — the working poor, the disabled, rural DeKalb County residents with no other insurance options. That's what this race is about.</li>
+          <li>The state kicked 300,000 Hoosiers off their Medicaid insurer and gave them 60 days to find a new one. In rural DeKalb County, where providers are already scarce, that disruption isn't an inconvenience — it's a gap in care that can lead to real health consequences.</li>
+          <li>There are 13,000 Hoosiers waiting for disability home services in Indiana. The state opened enough slots to cover a third of them. That means roughly 9,000 people — across Allen and DeKalb counties and the rest of the state — are still waiting to live independently. They need a senator who shows up for them.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: KFF, Indiana H.R. 1 Medicaid impact analysis (July 2025); WFYI, MDwise removal (Nov. 2025); Indiana Capital Chronicle, Medicaid rebid (Feb. 2026); Indiana House Democrats, "The Big Ugly Betrayal's Impact on Indiana"; WFYI, disability waiver slots reopened (July 2025).</div>
+    </div>
+
+    <!-- SHARED ISSUE 6: CHILDCARE & EDUCATION -->
+    <div class="issue-card p3">
+      <div class="issue-title-row"><div class="issue-num">6</div><div class="issue-title">Child Care Crisis &amp; School Funding Stability</div></div>
+      <div class="issue-sub">Indiana froze childcare vouchers and cut reimbursement rates 35% while simultaneously stripping $11M from FWCS — a double squeeze on Allen County's working families from both ends.</div>
+      <div class="tag-row">
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-fed">Federal</span>
+        <span class="tag tag-local">Local</span>
+        <span class="tag tag-shared">Both Packs</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-allen">Allen County: FWCS $11M school hit; childcare desert in some neighborhoods</span>
+        <span class="cc-pill cc-dekalb">DeKalb: Rural districts; fewer providers; school construction underway despite budget pressure</span>
+      </div>
+      <p class="issue-summary">Indiana's childcare crisis intersects directly with Fort Wayne's cost-of-living squeeze. State CCDF reimbursement rates were cut up to 35% for school-age childcare in fall 2025. New low-income vouchers were frozen — no new families added through 2026, with more than 35,000 statewide on the waitlist. On My Way Pre-K was cut by more than half statewide. In a city where manufacturing and healthcare workers often work non-standard shifts, access to reliable and affordable childcare is essential to workforce participation. Without it, parents — disproportionately women and single parents — drop out of the labor force, reducing household income and increasing economic vulnerability. Meanwhile, Fort Wayne Community Schools faces an $11 million annual shortfall from SEA 1 on top of a previous $5 million cut that forced position eliminations. All four Allen County school districts are in active dialogue with legislators about impacts. In DeKalb County, all three school districts (DeKalb Eastern, DeKalb Central, Garrett-Keyser-Butler) are proceeding with capital improvements — but under financial pressure that the property tax reform exacerbates. School construction in progress signals community commitment; state funding policy working against it signals Statehouse disconnect.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">35%</div>
+          <div class="stat-desc">State cut to CCDF school-age childcare reimbursement rates (Oct. 2025) — hitting Fort Wayne's working-class families</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">35,000+</div>
+          <div class="stat-desc">Indiana families on statewide childcare voucher waitlist — no new enrollment through 2026</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">4 of 4</div>
+          <div class="stat-desc">Allen County school districts that publicly engaged legislators on SB 1 school funding harm — unanimous local concern</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>If you work a night shift at a Fort Wayne factory or a weekend shift at the hospital and you can't find childcare, you can't go to work. The state just cut reimbursement rates by 35% and froze new vouchers. For working families in Allen County, that's not a policy abstraction — that's the difference between keeping your job and losing it.</li>
+          <li>Fort Wayne Community Schools is the largest school district in Indiana by enrollment. It's already absorbed a $5 million cut that forced staff reductions. Now it's facing another $11 million annual shortfall from Braun's property tax reform. Every dollar they don't have is a class size that goes up, a program that gets cut, or a teacher who leaves for a district that can pay more.</li>
+          <li>All four Allen County school districts went to the Statehouse and told legislators this bill would hurt their students. All four. And the Statehouse passed it anyway. When every school in a county says the same thing and gets ignored, that's a representation failure — and it should be a campaign issue.</li>
+          <li>DeKalb County's school districts are building new facilities right now — stands, activity centers, elementary buildings. That's community investment in the future. But state policy is making the financial environment harder, not easier. Local communities are doing their part; the Statehouse needs to do its part too.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: WANE 15, Fort Wayne Community Schools SB 1 testimony (Mar. 2025); Journal Gazette, FWCS school budget reporting (Sept. 2025); Indiana Capital Chronicle, CCDF reimbursement cuts (Oct. 2025); WFYI, On My Way Pre-K cuts, 2025; DeKalb EDP, 2025 Mid-Year Update (school construction projects).</div>
+    </div>
+
+  </div><!-- end shared issue grid -->
+
+  <!-- SD-14 SPECIFIC HEADER -->
+  <div class="pack-divider">
+    <div class="pack-divider-line" style="background: linear-gradient(90deg, var(--sd14), transparent);"></div>
+    <div class="pack-divider-title sd14">SD-14 Specific · DeKalb County Context</div>
+    <div class="pack-divider-line" style="background: linear-gradient(270deg, var(--sd14), transparent);"></div>
+  </div>
+
+  <div class="issue-grid">
+    <!-- SD-14 SPECIFIC: RURAL INVESTMENT & DEKALB -->
+    <div class="issue-card p-sd14">
+      <div class="issue-title-row"><div class="issue-num">+</div><div class="issue-title">DeKalb County: Rural Investment, Broadband &amp; Population Decline</div></div>
+      <div class="issue-sub">SD-14 spans Allen and DeKalb — two different worlds. DeKalb saw record private investment in 2024 but lost population year-over-year. Rural broadband and sustained investment are essential to keeping it competitive.</div>
+      <div class="tag-row">
+        <span class="tag tag-hot">📍 SD-14 Specific</span>
+        <span class="tag tag-local">Local</span>
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-fed">Federal</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-dekalb">DeKalb: Population declined 2024–2025; $760M investment record but rural gaps persist</span>
+      </div>
+      <p class="issue-summary">DeKalb County presents a paradox: it recorded a <strong>record $760 million in private investment in 2024</strong> — named a top-10 U.S. Micropolitan by Site Selection Magazine four of the past five years — yet it was one of 26 Indiana counties that lost population between 2024 and 2025. The county is actively working to address this: READI funding secured for two projects (The Auburn mixed-use development and the Bohn Redevelopment in Butler), an EPA brownfield assessment grant, new housing construction in all three cities, and agricultural expansions at multiple farms. Rural broadband ("rural connectivity") remains explicitly identified as a top priority, with Surf Internet and other providers making progress on fiber — essential both for quality of life and for attracting employers. The Continental tech center consolidation in Auburn brought white-collar jobs. The Walmart distribution center expansion in Garrett added logistics employment. But population decline is a warning signal: if people can't afford to stay, or don't find services adequate, the investment story stalls. Federal cuts to HUD, USDA rural programs, and Medicaid compound the challenge of sustaining rural community viability.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$760M</div>
+          <div class="stat-desc">Record private investment in DeKalb County in 2024 — yet population still declined year-over-year in 2024–2025</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">Top 10</div>
+          <div class="stat-desc">U.S. Micropolitan ranking for DeKalb County/Auburn — 4 of the last 5 years per Site Selection Magazine</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">Priority 1</div>
+          <div class="stat-desc">Rural broadband — DeKalb EDP's top infrastructure priority; fiber installation ongoing in underserved areas</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points (SD-14 / DeKalb emphasis)</div>
+        <ul>
+          <li>DeKalb County attracted $760 million in private investment in a single year. That's not a struggling community — that's a community that knows how to grow. But investment and population are going in opposite directions, and that's a warning sign. People need more than jobs — they need affordable places to live, accessible healthcare, and reliable internet. That's where state policy comes in.</li>
+          <li>Rural broadband isn't a nice-to-have in 2026 — it's economic infrastructure. A student who can't do homework online, a family that can't access telehealth, a farmer who can't monitor equipment remotely: all of them are falling behind because fiber hasn't reached them yet. DeKalb County is making progress, but it needs a senator in Indianapolis fighting for rural connectivity investment, not taking it for granted.</li>
+          <li>Auburn's been named a top-10 U.S. Micropolitan four of the last five years. That's a remarkable achievement for a small Indiana city. It happened because of intentional investment — READI funds, local leadership, public-private partnership. That model works. It needs a state senator who will fight to extend it, not a Statehouse that thinks rural communities can fend for themselves.</li>
+          <li>When 26 Indiana counties are losing population, the state has to ask: what are we doing to make rural life viable? Cutting Medicaid, freezing childcare vouchers, and stripping school funding are all policies that make it harder to attract and retain young families in places like DeKalb County. We need a senator who connects those dots.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: DeKalb Economic Development Partnership, 2025 Mid-Year Update; Fort Wayne Business Journal, "Allen County's 2025 population grows 4.4% since 2020, while DeKalb and Steuben see declines" (April 1, 2026); Auburn city profile / Businesses page; IBRC, Indiana 2026 population and metro projections.</div>
+    </div>
+  </div>
+
+  <!-- DISTRICT CONTEXT -->
+  <div class="section-label">District &amp; Race Context</div>
+  <div class="context-card">
+    <h3>Why These Packs Are Combined — And How They Work Together</h3>
+    <p>HD-81 and SD-14 share the same core geography (Allen County, Fort Wayne), the same economic story (manufacturing, housing costs, SEA 1 budget impacts, wages lagging prices), and the same strategic purpose: contest hard in R+24 and R+28 terrain to force Republican spending, demonstrate Democratic viability in northeast Indiana, and lift SD-19's Timothy Murphy in the wider regional wave. Combining them into one research document means candidates and organizers have a unified, referenced issue base rather than duplicated work — with the DeKalb-specific section giving Blaine Sefton additional material tailored to his district's rural geography.</p>
+    <p><strong>HD-81 (Sharon Wight, +24.2R)</strong> is the nearer seat. Allen County is growing, has a Democratic mayor who has publicly and vocally pushed back against state Statehouse overreach on property taxes, and has a manufacturing/working-class base that has tangible grievances around wages, housing costs, school funding, and childcare. The issues are documented, local, and concrete. The district covers the western portion of Fort Wayne and Allen County where these economic realities land hardest on working families.</p>
+    <p><strong>SD-14 (Blaine Sefton, +28.3R)</strong> spans both Allen and DeKalb counties. Fort Wayne anchors the population, but DeKalb's rural community — with its paradox of strong investment and persistent population loss — is where the candidate can demonstrate a different Democratic vision: one that shows up for rural communities, fights for broadband, and connects federal and state policy failures to everyday rural life. Incumbent Dr. Tyler Johnson is a relatively new senator; a credible, well-resourced challenger running on concrete local issues forces real political investment.</p>
+    <p><strong>SD-19 (Timothy Murphy, +39.5R, Travis Holdman incumbent)</strong> benefits from the organizing activity and Democratic presence created by the other two races. Holdman is the author of Senate Bill 1 — the same law that cut $25M from Fort Wayne's budget, $11M from Fort Wayne Community Schools, and created budget freezes across northeast Indiana. That's a direct, documented, local connection between the SD-19 race and the issues every other candidate in this pack is running on. Murphy doesn't need to win to matter — he needs to run hard, make Holdman spend, and put the author of SEA 1 on defense in his home region.</p>
+  </div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  <p>HD-81 + SD-14 Combined Power Pack — Issues Research · Indiana Rural Summit · May 2026</p>
+  <p>For internal planning use. All data cited to public sources.</p>
+</div>
+
+</body>
+</html>

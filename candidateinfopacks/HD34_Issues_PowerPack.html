@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HD-34 Candidate Power Pack — Top Issues</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,700;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --midnight: #1a1f3a; --indigo: #2d3a7c; --indigo-mid: #3d50b0;
+    --steel: #4a6080; --steel-light: #7a9ab8;
+    --amber: #b87a18; --amber-light: #e8a832;
+    --brick: #8b2a20; --brick-light: #c04030;
+    --cream: #f4f2ef; --warm-white: #fdfcfa;
+    --text: #1a1a1a; --muted: #555560; --border: #d6d2ca;
+    --green: #1e5c38; --orange: #9a4810;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'IBM Plex Sans', sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; }
+
+  .header { background: var(--midnight); padding: 38px 52px 28px; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: 0; right: 0; width: 280px; height: 100%; background: linear-gradient(135deg, transparent 40%, rgba(45,58,124,0.2) 100%); }
+  .header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--brick-light), var(--amber-light), var(--indigo-mid)); }
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .badge-district { background: var(--indigo-mid); color: #fff; font-size: 13px; padding: 5px 16px; }
+  .badge-held { background: rgba(45,58,124,0.3); border: 1px solid rgba(100,130,200,0.4); color: #a0b8ff; }
+  .badge-anchor { background: rgba(184,122,24,0.2); border: 1px solid rgba(184,122,24,0.4); color: var(--amber-light); }
+  .badge-cd { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.45); }
+  .header h1 { font-family: 'Merriweather', serif; color: #fff; font-size: 28px; line-height: 1.2; margin-bottom: 6px; }
+  .header h1 em { font-style: italic; color: rgba(255,255,255,0.5); font-size: 20px; display: block; margin-top: 3px; }
+  .county-tag { display: inline-block; background: rgba(45,58,124,0.3); border: 1px solid rgba(100,130,200,0.4); color: #a8c0ff; padding: 4px 14px; border-radius: 3px; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; margin-top: 12px; }
+  .header-stats { display: flex; gap: 24px; margin-top: 20px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; }
+  .hstat { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .hstat strong { display: block; color: rgba(255,255,255,0.82); font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+
+  /* CONTEXT BAND */
+  .context-band { background: var(--indigo); padding: 16px 52px; display: flex; gap: 14px; align-items: flex-start; }
+  .cb-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--steel-light); white-space: nowrap; padding-top: 2px; }
+  .context-band p { font-size: 13.5px; color: rgba(255,255,255,0.72); line-height: 1.55; }
+  .context-band strong { color: #fff; }
+
+  /* NOTE BAND */
+  .note-band { background: #fff; border-left: 4px solid var(--amber); border-bottom: 1px solid var(--border); padding: 14px 52px; display: flex; gap: 14px; align-items: flex-start; }
+  .nb-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--amber); white-space: nowrap; padding-top: 2px; }
+  .note-band p { font-size: 13.5px; color: var(--muted); font-style: italic; line-height: 1.5; }
+
+  .main { max-width: 1020px; margin: 0 auto; padding: 38px 52px 64px; }
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--indigo); margin-bottom: 22px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* SNAPSHOT */
+  .snapshot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 14px; margin-bottom: 40px; }
+  .snap-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 4px; padding: 16px 18px; text-align: center; }
+  .snap-num { font-family: 'Merriweather', serif; font-size: 26px; color: var(--midnight); line-height: 1; margin-bottom: 4px; }
+  .snap-desc { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+
+  /* ISSUE CARDS */
+  .issue-grid { display: grid; gap: 22px; margin-bottom: 48px; }
+  .issue-card { background: var(--warm-white); border: 1px solid var(--border); border-left: 4px solid var(--indigo-mid); border-radius: 4px; padding: 26px 30px; }
+  .issue-card.p1 { border-left-color: var(--brick); }
+  .issue-card.p2 { border-left-color: var(--orange); }
+  .issue-card.p3 { border-left-color: var(--amber); }
+  .issue-card.p4 { border-left-color: var(--indigo-mid); }
+
+  .issue-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
+  .issue-num { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; background: var(--midnight); }
+  .p1 .issue-num { background: var(--brick); }
+  .p2 .issue-num { background: var(--orange); }
+  .p3 .issue-num { background: var(--amber); }
+  .p4 .issue-num { background: var(--indigo-mid); }
+
+  .issue-title { font-family: 'Merriweather', serif; font-size: 20px; color: var(--midnight); line-height: 1.2; }
+  .issue-sub { font-size: 13px; color: var(--muted); padding-left: 42px; font-style: italic; margin-bottom: 8px; }
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; padding-left: 42px; margin-bottom: 14px; }
+  .tag { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; }
+  .tag-hot { background: #fde8e8; color: #7a1c1c; }
+  .tag-local { background: #e8ecff; color: #1a2a7c; }
+  .tag-state { background: #fff4e0; color: #6d3b00; }
+  .tag-fed { background: #e8f0f8; color: #1a3a5c; }
+
+  .issue-summary { font-size: 14.5px; color: var(--text); line-height: 1.68; margin-bottom: 16px; }
+
+  .stat-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+  .stat-box { background: var(--cream); border: 1px solid var(--border); border-radius: 3px; padding: 12px 16px; flex: 1; min-width: 140px; }
+  .stat-num { font-family: 'Merriweather', serif; font-size: 22px; color: var(--midnight); line-height: 1; margin-bottom: 4px; }
+  .stat-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  .tp-box { background: #eef0fa; border-left: 3px solid var(--indigo-mid); border-radius: 0 3px 3px 0; padding: 14px 18px; margin-top: 4px; }
+  .p1 .tp-box { background: #fdf2f0; border-left-color: var(--brick); }
+  .p2 .tp-box { background: #fdf5ef; border-left-color: var(--orange); }
+  .p3 .tp-box { background: #fdf8ee; border-left-color: var(--amber); }
+  .tp-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--indigo); margin-bottom: 10px; }
+  .p1 .tp-label { color: var(--brick); }
+  .p2 .tp-label { color: var(--orange); }
+  .p3 .tp-label { color: var(--amber); }
+  .tp-box ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .tp-box ul li { font-size: 13.5px; color: var(--text); padding-left: 18px; position: relative; line-height: 1.5; }
+  .tp-box ul li::before { content: '→'; position: absolute; left: 0; color: var(--indigo-mid); font-size: 12px; }
+  .p1 .tp-box ul li::before { color: var(--brick); }
+  .p2 .tp-box ul li::before { color: var(--orange); }
+  .p3 .tp-box ul li::before { color: var(--amber); }
+  .source-line { font-size: 11px; color: var(--muted); margin-top: 12px; font-style: italic; border-top: 1px solid var(--border); padding-top: 10px; }
+
+  .context-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 4px; padding: 26px 30px; margin-bottom: 48px; }
+  .context-card h3 { font-family: 'Merriweather', serif; font-size: 18px; color: var(--midnight); margin-bottom: 14px; }
+  .context-card p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 10px; }
+  .context-card p:last-child { margin-bottom: 0; }
+  .context-card strong { color: var(--text); }
+
+  .footer { background: var(--midnight); padding: 20px 52px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer p { font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; }
+
+  @media (max-width: 700px) {
+    .header, .main, .context-band, .note-band, .footer { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge-row">
+    <span class="badge badge-district">HD 34</span>
+    <span class="badge badge-held">Held by Democrat</span>
+    <span class="badge badge-anchor">⭐ Polar Anchor</span>
+    <span class="badge badge-cd">CD-5</span>
+  </div>
+  <h1>Top Issues Research<em>Candidate Power Pack</em></h1>
+  <div class="county-tag">Delaware County — Muncie, Indiana</div>
+  <div class="header-stats">
+    <div class="hstat"><strong>Candidate</strong>Sara Gullion (D)</div>
+    <div class="hstat"><strong>IN-Index</strong>+3.9D (Dem-favorable; seat to defend)</div>
+    <div class="hstat"><strong>Incumbent</strong>Sue Errington (D) — retiring</div>
+    <div class="hstat"><strong>Research Date</strong>May 2026</div>
+  </div>
+</div>
+
+<div class="context-band">
+  <span class="cb-label">District Identity</span>
+  <p>Muncie is post-industrial Indiana at its most unvarnished: a former manufacturing powerhouse reshaped by decades of factory closures, now anchored by <strong>Ball State University</strong> and <strong>IU Health Ball Memorial Hospital</strong>. Delaware County carries deep poverty, a severe opioid crisis, housing blight, and food insecurity — alongside a genuine community revitalization story being built through universities, land banks, and local philanthropy. <strong>This is a seat Democrats must hold</strong> — and the issues here are about economic dignity, safety net protection, and whether government shows up for struggling communities.</p>
+</div>
+
+<div class="note-band">
+  <span class="nb-label">Research Note</span>
+  <p>Issues sourced from Muncie Annual Action Plan 2026, Ball State CBER economic research, Ball Brothers Foundation, YWCA Central Indiana, Ball State Daily, Indiana Capital Chronicle, Indiana Rural Health Association, and local news archives. HD-34 is a defense seat with +3.9D index — the challenge is turnout and enthusiasm, not persuasion.</p>
+</div>
+
+<div class="main">
+
+  <div class="section-label">District Voter Snapshot</div>
+  <div class="snapshot-grid">
+    <div class="snap-card"><div class="snap-num">+3.9D</div><div class="snap-desc">IN-Index — Dem-favorable; this is a defense seat requiring strong turnout, not persuasion</div></div>
+    <div class="snap-card"><div class="snap-num">22.1%</div><div class="snap-desc">Muncie residents on Medicaid — more than double the national average; safety net cuts land hard here</div></div>
+    <div class="snap-card"><div class="snap-num">1 in 4</div><div class="snap-desc">Muncie children under 18 living in poverty and experiencing food insecurity</div></div>
+    <div class="snap-card"><div class="snap-num">41.6</div><div class="snap-desc">Delaware County fatal drug overdose rate per 100,000 — vs. 26.6 statewide (2019 data, among worst in Indiana)</div></div>
+    <div class="snap-card"><div class="snap-num">$6.75M</div><div class="snap-desc">READI 2.0 award for Muncie housing revitalization — 88 new/rehabbed units in Old West End and downtown</div></div>
+    <div class="snap-card"><div class="snap-num">65%</div><div class="snap-desc">Of Muncie's homeless population addicted to substances — 46% require mental health treatment (City Annual Plan data)</div></div>
+  </div>
+
+  <div class="section-label">Priority Issues — Delaware County / Muncie</div>
+  <div class="issue-grid">
+
+    <!-- ISSUE 1: SNAP / FOOD INSECURITY / FEDERAL CUTS -->
+    <div class="issue-card p1">
+      <div class="issue-title-row"><div class="issue-num">1</div><div class="issue-title">Food Security, SNAP Cuts &amp; Federal Safety Net Dismantling</div></div>
+      <div class="issue-sub">One in four Muncie children lives in poverty. SNAP cuts enacted in H.R. 1 are already shrinking benefits and removing people from rolls.</div>
+      <div class="tag-row"><span class="tag tag-hot">🔥 Immediate Impact</span><span class="tag tag-fed">Federal</span><span class="tag tag-state">State</span></div>
+      <p class="issue-summary">Delaware County is one of Indiana's most food-insecure communities. One in four Muncie children under 18 lives in poverty and experiences food insecurity — and more than half of young adults ages 18–24 face the same. Indiana had 588,184 SNAP beneficiaries as of April 2025. The Trump administration's H.R. 1, signed July 4, 2025, enacted $187 billion in SNAP cuts nationally — reducing benefits, tightening work requirements, adding asset limits, and restricting immigration eligibility. During the 2025 government shutdown, Indiana SNAP benefits were cut to 50% for November — and Ball State researchers confirmed Delaware County food pantries immediately absorbed the overflow. Indiana also opted out of the SUN Bucks summer food program for children, leaving approximately 669,000 Hoosier school-age children without summer food assistance. By October 2026, states will shoulder 75% of SNAP administration costs — a $37M+ hit to Indiana's budget that will further squeeze the program. In Muncie, where grocery access is limited in lower-income neighborhoods, SNAP cuts also threaten local retailers whose customers depend on benefits.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">1 in 4</div><div class="stat-desc">Muncie children in poverty and food insecurity — among the most severe rates of any Indiana city</div></div>
+        <div class="stat-box"><div class="stat-num">$187B</div><div class="stat-desc">National SNAP cuts in H.R. 1 (signed July 4, 2025) — CBO projects 2.4 million people removed from program monthly</div></div>
+        <div class="stat-box"><div class="stat-num">50%</div><div class="stat-desc">SNAP benefit cut during Nov. 2025 government shutdown — Delaware County food pantries absorbed the immediate surge</div></div>
+        <div class="stat-box"><div class="stat-num">669K</div><div class="stat-desc">Hoosier school-age children who lost SUN Bucks summer food assistance when Indiana opted out</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>One in four kids in Muncie goes to bed hungry. That's not a statistic — that's a classroom, a neighborhood, a family that our community knows. Cutting SNAP doesn't balance a budget; it takes food off those tables.</li>
+          <li>During the government shutdown, Delaware County families had their food benefits cut in half overnight. Local food pantries stepped up — but they can't absorb the scale of what H.R. 1 demands. The federal government has shifted the burden to communities that can least afford it.</li>
+          <li>Indiana opted out of SUN Bucks — the summer food program for kids — while 669,000 Hoosier children lost their only reliable summer meals. That's a choice. Democrats would make a different one.</li>
+          <li>SNAP doesn't just feed families — it feeds local economies. Every dollar in benefits generates up to $1.80 in local economic activity. In Muncie, cutting SNAP means cutting revenue for grocery stores, corner markets, and small retailers in already-struggling neighborhoods.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Ball State Daily, "What SNAP funding cuts will look like for Indiana residents" (Nov. 2025); Indiana Capital Chronicle, SNAP cuts and food insecurity (Jul. 2025 &amp; Jan. 2026); FRAC, H.R. 1 analysis (2026); Addiction Rehab Centers, Delaware County poverty data.</div>
+    </div>
+
+    <!-- ISSUE 2: OPIOID / SUBSTANCE USE -->
+    <div class="issue-card p1">
+      <div class="issue-title-row"><div class="issue-num">2</div><div class="issue-title">Opioid Crisis, Addiction &amp; Recovery Infrastructure</div></div>
+      <div class="issue-sub">Delaware County's overdose rate is 56% higher than the state average — and fentanyl has made the crisis deadlier.</div>
+      <div class="tag-row"><span class="tag tag-hot">🔥 Severe Local Crisis</span><span class="tag tag-local">Local</span><span class="tag tag-state">State</span><span class="tag tag-fed">Federal</span></div>
+      <p class="issue-summary">Delaware County's opioid crisis is among the worst in Indiana by the numbers. The county recorded a fatal drug overdose rate of 41.6 per 100,000 residents — compared to 26.6 statewide — and ranked 4th worst in Indiana for fatal overdoses involving opioids. In 2019, Delaware County recorded 260 opioid prescriptions per 1,000 residents versus 200.4 statewide. Delaware County Jail alone had an estimated 252 prisoners in need of addiction treatment as of 2021. The City of Muncie's own Annual Action Plan documented that 65% of the homeless population is addicted to substances and 46% require mental health treatment. Fentanyl and synthetic opioids have accelerated the crisis. A weakened economy, high unemployment, and entrenched poverty are structural drivers. Indiana's $46M opioid abatement spending plan and the national settlement represent critical resources — but Medicaid cuts and federal behavioral health funding reductions threaten the treatment infrastructure that treatment-first strategies depend on.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">41.6</div><div class="stat-desc">Delaware County fatal overdose rate per 100,000 — vs. 26.6 statewide; 56% worse than Indiana average</div></div>
+        <div class="stat-box"><div class="stat-num">4th</div><div class="stat-desc">Delaware County ranking among Indiana's worst counties for fatal opioid overdoses</div></div>
+        <div class="stat-box"><div class="stat-num">65%</div><div class="stat-desc">Muncie homeless population with substance addiction, per City of Muncie Annual Action Plan</div></div>
+        <div class="stat-box"><div class="stat-num">252</div><div class="stat-desc">Delaware County Jail prisoners estimated to need addiction treatment (2021) — connecting jail to treatment is critical</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Delaware County's overdose death rate is 56% worse than the state average. This is not a future problem — it is happening right now, in our neighborhoods, to our families. Muncie deserves a legislator who treats this as the public health emergency it is.</li>
+          <li>65% of homeless people in Muncie are struggling with addiction. You cannot address homelessness without addressing addiction — and you cannot address addiction without housing, treatment, and behavioral health services. These are one crisis, not three.</li>
+          <li>Indiana received over $1 billion in opioid settlement funds — those dollars need to go to treatment, recovery coaches, and transitional housing, not get swallowed by bureaucracy or diverted. We should be watching every dollar and demanding it goes to the people it was meant to help.</li>
+          <li>Medicaid cuts and behavioral health defunding are pulling the rug out from under the recovery infrastructure we've been building. You can't fund recovery with one hand and cut Medicaid with the other. That math doesn't work — and people die when it fails.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Addiction Rehab Centers, Delaware County data; City of Muncie Annual Action Plan 2026; Indiana opioid settlement reporting; Indiana Capital Chronicle, opioid abatement spending plan.</div>
+    </div>
+
+    <!-- ISSUE 3: HOUSING / BLIGHT / REVITALIZATION -->
+    <div class="issue-card p2">
+      <div class="issue-title-row"><div class="issue-num">3</div><div class="issue-title">Housing, Blight, Homelessness &amp; Neighborhood Revitalization</div></div>
+      <div class="issue-sub">Muncie is fighting back against decades of housing disinvestment — with a Land Bank, a READI 2.0 award, and a coalition committed to ending family homelessness.</div>
+      <div class="tag-row"><span class="tag tag-hot">📍 Active Investment Underway</span><span class="tag tag-local">Local</span><span class="tag tag-state">State</span><span class="tag tag-fed">Federal</span></div>
+      <p class="issue-summary">Muncie's housing crisis has two faces: the ongoing damage of disinvestment — vacancy, blight, deteriorating stock — and a community fighting back with real tools. The Muncie Land Bank (MLB) has been operating since 2022, one of only four in Indiana, working to return vacant and blighted properties to productive use. In October 2025, Governor Braun and Mayor Ridenour announced a $6.75 million READI 2.0 award for Muncie housing — supporting 54 new downtown apartments plus 34 homes in the historic Old West End neighborhood, rooted in Ball State University urban planning research. The City's 2026 Annual Action Plan (CDBG/HOME) prioritizes affordable housing development, blight removal, home rehabilitation, down payment assistance, and permanent supportive housing for homeless individuals. Youth homelessness has surged post-COVID — YWCA Muncie reports 1 in 4 youth ages 14–24 have no stable place to live. The Delaware County Housing Consortium has set a bold goal: end family and youth homelessness in three years. That ambition needs state-level backup, not cuts.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">$6.75M</div><div class="stat-desc">READI 2.0 award for Muncie housing (Oct. 2025) — 88 units downtown and Old West End; rooted in BSU planning research</div></div>
+        <div class="stat-box"><div class="stat-num">1 in 4</div><div class="stat-desc">Muncie youth ages 14–24 without stable housing — youth homelessness at all-time high per YWCA Central Indiana</div></div>
+        <div class="stat-box"><div class="stat-num">53.8%</div><div class="stat-desc">Delaware County children facing housing insecurity in 2019 (IYI) — parents spending 30%+ of income on rent</div></div>
+        <div class="stat-box"><div class="stat-num">Goal: 3 yrs</div><div class="stat-desc">Delaware County Housing Consortium target to end family and youth homelessness — bold community commitment needing state support</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Muncie is fighting back. The Land Bank, the READI investment, the Old West End revitalization — these are real, community-rooted efforts to reclaim neighborhoods that disinvestment left behind. A legislator from this district needs to protect and expand that momentum.</li>
+          <li>One in four young people in Muncie doesn't have a stable place to sleep. The face of homelessness here isn't a stranger on a park bench — it's a single mother with kids, or a young person aging out of foster care. The Housing Consortium's goal to end family homelessness in three years deserves state partnership, not indifference.</li>
+          <li>More than half of Delaware County children face housing insecurity. When kids don't have a stable home, they can't learn, can't sleep, can't thrive. Housing instability is an education issue, a health issue, and an economic issue — all at once.</li>
+          <li>Ball State's urban planning students and the Muncie Land Bank turned research into a $6.75M state investment. That's what university-community partnership looks like at its best. We need legislators who show up to those partnerships, not ones who cut the programs that make them possible.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Ball State University Blog, READI 2.0 announcement (Oct. 2025); City of Muncie Annual Action Plan 2026; YWCA Central Indiana newsletter (Oct. 2025); Indiana Youth Institute Delaware County housing insecurity data.</div>
+    </div>
+
+    <!-- ISSUE 4: ECONOMIC REVITALIZATION / WORKFORCE / MANUFACTURING -->
+    <div class="issue-card p2">
+      <div class="issue-title-row"><div class="issue-num">4</div><div class="issue-title">Economic Revitalization, Workforce &amp; Post-Industrial Recovery</div></div>
+      <div class="issue-sub">Muncie lost its manufacturing identity decades ago. Healthcare and education now anchor the economy — but poverty, tariff uncertainty, and federal funding cuts threaten the recovery.</div>
+      <div class="tag-row"><span class="tag tag-local">Local</span><span class="tag tag-state">State</span><span class="tag tag-fed">Federal</span></div>
+      <p class="issue-summary">Muncie Community Schools' enrollment peaked at 19,808 in 1967 — when manufacturing was at its apex. Today, 5,000 students remain. That demographic story mirrors the city's economic arc: factory jobs moved away, population fell, poverty deepened. Delaware County's 2025 Target Industry Study identified healthcare services and metals manufacturing as its two specialized growing clusters. The county's largest employment sectors are now healthcare and education — anchored by IU Health Ball Memorial Hospital and Ball State University. Local grantmakers invested $21.5 million in Muncie and Delaware County in recent years. A new $71M INOX Market Service headquarters and Balance Holdings' 33-acre I-69/SR-67 acquisition signal some investment momentum. But tariff volatility — the U.S. tariff rate hit 22.5% in 2025, the highest since 1909 — threatens the metals manufacturing cluster that Delaware County is counting on to grow. Federal workforce development funding cuts compound the challenge for a community still rebuilding its economic identity.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">2</div><div class="stat-desc">Delaware County's growing industry clusters: healthcare services and metals manufacturing (2025 Target Industry Study)</div></div>
+        <div class="stat-box"><div class="stat-num">$21.5M</div><div class="stat-desc">Local grantmaker investment in Muncie and Delaware County in recent years — showing philanthropic confidence in the community</div></div>
+        <div class="stat-box"><div class="stat-num">22.5%</div><div class="stat-desc">U.S. average tariff rate in 2025 — highest since 1909; threatens Delaware County's metals manufacturing growth cluster</div></div>
+        <div class="stat-box"><div class="stat-num">16%</div><div class="stat-desc">Delaware County households receiving food stamps — approximately 16% of county households, reflecting deep poverty baseline</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Muncie didn't lose its manufacturing jobs overnight — it happened over decades of disinvestment and policy failures. Now Delaware County is building a new economy around healthcare and metals manufacturing. The last thing we need is tariff chaos that undercuts the manufacturing growth we're finally seeing.</li>
+          <li>Ball State and IU Health are Muncie's economic anchors — and they're doing real work in the community. We need legislators who fight to protect NIH research funding, federal education dollars, and the healthcare reimbursements that make these institutions viable employers.</li>
+          <li>Local grantmakers and foundations have invested $21.5 million in Muncie. That kind of philanthropic confidence is meaningful — but private investment can't substitute for public investment in workforce development, infrastructure, and safety net programs that give workers a foundation to build on.</li>
+          <li>Workforce development is economic development. Ivy Tech Muncie, the Muncie Area Career Center, and Ball State's community programs are building pipelines to good jobs. Those programs depend on federal and state funding that is now under threat — and a cut to Ivy Tech is a cut to Muncie's future.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Economic Development Alliance of Muncie-Delaware County, Key Industries (2025); Muncie Journal, local grantmaker investment; Ball State CBER, Indiana Economic Outlook 2026; Yale Budget Lab tariff data.</div>
+    </div>
+
+    <!-- ISSUE 5: MCS / EDUCATION / CHILDCARE -->
+    <div class="issue-card p3">
+      <div class="issue-title-row"><div class="issue-num">5</div><div class="issue-title">Public Schools, Education Funding &amp; the MCS Transformation</div></div>
+      <div class="issue-sub">Muncie Community Schools went through a nationally watched crisis and turnaround — and its fragile recovery is now vulnerable to federal funding cuts.</div>
+      <div class="tag-row"><span class="tag tag-local">Local</span><span class="tag tag-state">State</span><span class="tag tag-fed">Federal</span></div>
+      <p class="issue-summary">Muncie Community Schools' story is one of the most unusual in American public education: after a financial crisis and state takeover, Ball State University became the governing authority — a national model. Under that partnership, enrollment stabilized around 5,000 students after decades of steep decline. Balanced budgets were achieved, $42 million was invested in capital improvements, teacher salaries were raised in the district's largest such action in its history, and new programs including Montessori, robotics, eSports, and career pathways were added. But this recovery is fragile. Federal education funding — the $1.8 billion Indiana receives annually — is under threat from Trump administration DEI compliance requirements. Muncie Community Schools serves a high-poverty, majority-minority student body that depends on Title I funding, special education support, and after-school programs. Statewide, Indiana's childcare voucher freeze and CCDF cuts squeeze working families in Delaware County — one of Indiana's highest-poverty communities. School meals funding cuts (Indiana opted out of SUN Bucks) hit MCS students especially hard.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">$42M</div><div class="stat-desc">Capital improvements invested in MCS facilities since BSU partnership — Muncie Central renovation, new turf, eSports facility</div></div>
+        <div class="stat-box"><div class="stat-num">~5,000</div><div class="stat-desc">MCS enrollment — stabilized after decades of steep decline from a 1967 peak of 19,808</div></div>
+        <div class="stat-box"><div class="stat-num">$1.8B</div><div class="stat-desc">Federal education funding Indiana receives annually — at risk from Trump DEI compliance requirements affecting high-poverty districts most</div></div>
+        <div class="stat-box"><div class="stat-num">Frozen</div><div class="stat-desc">Indiana CCDF childcare vouchers — no new low-income enrollment through 2026; 35,000+ statewide on waitlist</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Muncie Community Schools went through one of the most dramatic turnarounds in American public education. Enrollment stabilized. Budgets balanced. $42 million invested in facilities. Teacher pay raised for the first time in years. That progress is real — and it is fragile. We cannot let federal cuts undo it.</li>
+          <li>MCS serves a high-poverty, high-need student body. Title I funds, special education support, after-school programs — these aren't extras. They're the margin between a student succeeding and a student falling through. Threatening those funds with political compliance requirements is an attack on Muncie's kids.</li>
+          <li>Indiana opted out of SUN Bucks — the summer food program. In a city where one in four children faces food insecurity, that's not an administrative decision. That's a moral failure that lands on Delaware County children every summer.</li>
+          <li>The childcare voucher freeze is squeezing Delaware County families who are already stretched. "No voucher" in a high-poverty community often means a parent — usually a mother — has to stop working. That's not economic policy. That's economic punishment.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Ball Brothers Foundation, MCS transformation; Muncie Journal, "State of the Schools" (May 2024) and CEO Q&amp;A (Jan. 2025); Indiana Capital Chronicle, CCDF freeze and federal education funding threat; Chalkbeat Indiana.</div>
+    </div>
+
+    <!-- ISSUE 6: MEDICAID / HEALTHCARE ACCESS -->
+    <div class="issue-card p4">
+      <div class="issue-title-row"><div class="issue-num">6</div><div class="issue-title">Medicaid, Healthcare Access &amp; the Safety Net Under Siege</div></div>
+      <div class="issue-sub">22% of Muncie residents depend on Medicaid. Indiana's $68B contract rebid and H.R. 1 cuts threaten the system they rely on.</div>
+      <div class="tag-row"><span class="tag tag-state">State</span><span class="tag tag-fed">Federal</span></div>
+      <p class="issue-summary">Muncie's healthcare economy is anchored by IU Health Ball Memorial Hospital — a major employer and critical community resource. But 22.1% of Muncie residents are on Medicaid, more than double the national average, making disruptions to the program an immediate community crisis. Indiana is simultaneously managing H.R. 1 Medicaid work requirements, a $68 billion managed care contract rebid (described by even Republican Rep. Ed Clere as "a recipe for disaster"), frozen disability waiver slots, and new immigration verification requirements that advocates say may be illegal. Federal and state budget pressure on Medicaid will fall hardest on Delaware County — where the population is older, poorer, and sicker than the state average. IU Health Ball Memorial, as the community's anchor hospital, is highly exposed to any reduction in Medicaid reimbursement. Muncie's recovery depends on healthcare jobs and services staying strong.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">22.1%</div><div class="stat-desc">Muncie residents on Medicaid — more than double the national average; any disruption is a local crisis</div></div>
+        <div class="stat-box"><div class="stat-num">$68B</div><div class="stat-desc">Indiana's simultaneous Medicaid managed care contract rebid — covering 1.4M Hoosiers; described as "recipe for disaster"</div></div>
+        <div class="stat-box"><div class="stat-num">Frozen</div><div class="stat-desc">Family Supports and CIH disability waivers — no new slots through July 2026; hits Delaware County's disabled residents directly</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>More than one in five Muncie residents is on Medicaid. This isn't an abstraction about federal policy — it's our neighbors, our family members, people who work at every business in this city. When Medicaid is disrupted, it's felt immediately and painfully in Delaware County.</li>
+          <li>IU Health Ball Memorial is one of the largest employers in Muncie and one of the most important institutions in this community. Its financial health depends on Medicaid reimbursement. Cut Medicaid — and you cut a hospital that Delaware County can't afford to lose.</li>
+          <li>Indiana is rebidding $68 billion in Medicaid contracts all at once. Even a Republican legislator from New Albany called it a recipe for disaster. For Delaware County residents with disabilities who depend on managed care, or seniors in Pathways for Aging, that chaos is not a policy debate — it's their healthcare.</li>
+          <li>Healthcare is Muncie's anchor economy. Protecting Medicaid isn't just a moral argument — it's an economic development argument for Delaware County. Every Medicaid dollar that flows through IU Health Ball Memorial supports good jobs in our community.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Data USA, Muncie health coverage profile; Indiana Capital Chronicle, Medicaid rebid (Feb. 2026); Arc of Indiana, Medicaid Waiver updates (2026); Georgetown CCF, H.R. 1 Medicaid state impact.</div>
+    </div>
+
+  </div>
+
+  <div class="section-label">District &amp; Race Context</div>
+  <div class="context-card">
+    <h3>What Makes HD-34 the Delaware County Polar Anchor</h3>
+    <p>HD-34 is a <strong>defense seat</strong> — Sue Errington is retiring, and Sara Gullion must hold a +3.9D district against a Republican challenge. The Democratic advantage is real, but open-seat races always carry risk, especially in a midterm cycle where base turnout requires active cultivation. The challenge here is not persuasion — it is <strong>mobilizing a base that has reason to be angry and reason to show up</strong>.</p>
+    <p>Muncie is a community that has absorbed decades of hard news: factory closures, school crises, poverty, an opioid epidemic. But it is also a community that has demonstrated extraordinary resilience — the Ball State-MCS partnership is a national model, the Land Bank is doing real work, local philanthropy is investing $21.5 million, and a READI award just came through for 88 housing units. <strong>The Democratic frame in HD-34 is not despair — it is that government investment works, and Republicans in Washington are actively trying to cut it.</strong></p>
+    <p>SNAP cuts, Medicaid disruption, education funding threats, federal behavioral health defunding — every one of these hits Delaware County harder than most Indiana communities, because the county's poverty rate, Medicaid dependency, and food insecurity are all well above state averages. The candidate who can connect those federal policy decisions to the daily lived experience of Muncie families — and who can demonstrate they will fight back — has a winning message.</p>
+    <p><strong>The key voter in HD-34</strong> is a Muncie resident who has seen their community struggle and is tired of being left behind. They may be skeptical about whether government works — but they're also directly affected by the programs being cut. They need a candidate who is local, credible, and clearly on their side. The institutions that anchor Muncie (Ball State, IU Health, Muncie Mission, YWCA) have deep community trust — a candidate who activates those networks has a strong ground game built in.</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>HD-34 Candidate Power Pack — Issues Research · Indiana Rural Summit · May 2026</p>
+  <p>For internal planning use. All data cited to public sources.</p>
+</div>
+
+</body>
+</html>

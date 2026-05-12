@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SD-49 Candidate Power Pack — Top Issues</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --river: #1a3050;
+    --river-mid: #254875;
+    --river-light: #3a6899;
+    --copper: #a05c20;
+    --copper-light: #d4884a;
+    --gold: #b89020;
+    --gold-light: #e8c050;
+    --sand: #f6f2ea;
+    --warm-white: #fdfcf8;
+    --text: #1c1a14;
+    --muted: #5c5848;
+    --border: #dad5c5;
+    --red: #8b2020;
+    --rust: #a03020;
+    --olive: #4a6030;
+    --opportunity: #5a2880;
+    --opportunity-light: #9b68c8;
+    --opportunity-bg: rgba(90,40,128,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Sans 3', sans-serif; background: var(--sand); color: var(--text); line-height: 1.6; }
+
+  /* OPPORTUNITY BANNER */
+  .opportunity-banner {
+    background: var(--opportunity);
+    padding: 10px 52px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .opp-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+  }
+  .opp-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    font-style: italic;
+  }
+  .opp-sep { color: rgba(255,255,255,0.3); font-size: 14px; }
+
+  /* HEADER */
+  .header { background: var(--river); padding: 36px 52px 28px; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 200px; background: linear-gradient(90deg, transparent, rgba(90,40,128,0.15)); }
+  .header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--copper-light), var(--gold-light), var(--opportunity-light)); }
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .badge-district { background: var(--river-light); color: #fff; font-size: 13px; padding: 5px 16px; }
+  .badge-opp { background: var(--opportunity); color: #fff; border: 1px solid rgba(155,104,200,0.5); }
+  .badge-senate { background: rgba(155,104,200,0.2); border: 1px solid rgba(155,104,200,0.4); color: var(--opportunity-light); }
+  .badge-held { background: rgba(160,48,32,0.25); border: 1px solid rgba(210,90,60,0.4); color: #f0a882; }
+  .badge-anchor { background: rgba(184,144,32,0.2); border: 1px solid rgba(184,144,32,0.4); color: var(--gold-light); }
+  .badge-cd { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.45); }
+  .header h1 { font-family: 'Playfair Display', serif; color: #fff; font-size: 29px; line-height: 1.2; margin-bottom: 6px; }
+  .header h1 em { font-style: italic; color: rgba(255,255,255,0.5); font-size: 20px; display: block; margin-top: 3px; }
+  .county-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .county-tag { display: inline-block; padding: 4px 12px; border-radius: 3px; font-size: 12px; font-weight: 500; letter-spacing: 0.05em; }
+  .ctag-vanderburgh { background: rgba(58,104,153,0.3); border: 1px solid rgba(90,140,185,0.4); color: #8cc8f8; }
+  .ctag-posey { background: rgba(184,144,32,0.2); border: 1px solid rgba(184,144,32,0.4); color: var(--gold-light); }
+  .header-stats { display: flex; gap: 24px; margin-top: 20px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; }
+  .hstat { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .hstat strong { display: block; color: rgba(255,255,255,0.82); font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+
+  /* OPPORTUNITY FRAMING BAND */
+  .framing-band { background: var(--opportunity-bg); border-left: 4px solid var(--opportunity); border-bottom: 1px solid var(--border); padding: 16px 52px; display: flex; gap: 14px; align-items: flex-start; }
+  .fb-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--opportunity); white-space: nowrap; padding-top: 2px; }
+  .framing-band p { font-size: 13.5px; color: var(--muted); font-style: italic; line-height: 1.5; }
+
+  /* COUNTY PROFILES */
+  .county-band { background: var(--warm-white); border-bottom: 2px solid var(--border); padding: 20px 52px; }
+  .county-band-label { font-size: 10px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--river-mid); margin-bottom: 14px; }
+  .county-profiles { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; }
+  .county-profile { border-radius: 4px; padding: 14px 16px; border: 1px solid var(--border); }
+  .cp-vanderburgh { background: #f0f4f9; border-left: 4px solid var(--river-light); }
+  .cp-posey { background: #fdf8f0; border-left: 4px solid var(--gold); }
+  .cp-name { font-weight: 700; font-size: 13px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .cp-vanderburgh .cp-name { color: var(--river-mid); }
+  .cp-posey .cp-name { color: #7a5a00; }
+  .cp-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+
+  /* MAIN */
+  .main { max-width: 1020px; margin: 0 auto; padding: 38px 52px 64px; }
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--river-mid); margin-bottom: 22px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* CANDIDATE TABLE */
+  .candidate-table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; font-size: 13px; margin-bottom: 40px; }
+  .candidate-table thead { background: var(--river); color: rgba(255,255,255,0.75); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  .candidate-table thead th { padding: 10px 14px; text-align: left; }
+  .candidate-table tbody tr { border-bottom: 1px solid var(--border); }
+  .candidate-table tbody tr:last-child { border-bottom: none; }
+  .candidate-table tbody td { padding: 10px 14px; vertical-align: middle; color: var(--text); }
+  .candidate-table .anchor-row { background: rgba(184,144,32,0.06); border-left: 3px solid var(--gold); }
+  .candidate-table .senate-row { background: rgba(90,40,128,0.04); border-left: 3px solid var(--opportunity); }
+  .candidate-table .house-row { background: #fafafa; }
+  .anchor-badge { display: inline-block; background: rgba(184,144,32,0.15); border: 1px solid rgba(184,144,32,0.4); color: #7a5a00; font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; margin-left: 6px; }
+  .challenge-badge { display: inline-block; background: rgba(90,40,128,0.12); border: 1px solid rgba(90,40,128,0.3); color: var(--opportunity); font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; margin-left: 6px; }
+  .in-index-r { color: #8b2020; font-weight: 600; }
+  .type-label { font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 2px 6px; border-radius: 2px; }
+  .type-senate { background: rgba(90,40,128,0.12); color: var(--opportunity); }
+  .type-house { background: rgba(26,48,80,0.1); color: var(--river-mid); }
+
+  /* SNAPSHOT */
+  .snapshot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 40px; }
+  .snap-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 4px; padding: 16px 18px; text-align: center; }
+  .snap-num { font-family: 'Playfair Display', serif; font-size: 26px; color: var(--river); line-height: 1; margin-bottom: 4px; }
+  .snap-desc { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+
+  /* ISSUE CARDS */
+  .issue-grid { display: grid; gap: 22px; margin-bottom: 48px; }
+  .issue-card { background: var(--warm-white); border: 1px solid var(--border); border-left: 4px solid var(--river-light); border-radius: 4px; padding: 26px 30px; }
+  .issue-card.p1 { border-left-color: var(--red); }
+  .issue-card.p2 { border-left-color: var(--copper); }
+  .issue-card.p3 { border-left-color: var(--gold); }
+  .issue-card.p4 { border-left-color: var(--olive); }
+  .issue-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
+  .issue-num { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .p1 .issue-num { background: var(--red); }
+  .p2 .issue-num { background: var(--copper); }
+  .p3 .issue-num { background: var(--gold); }
+  .p4 .issue-num { background: var(--olive); }
+  .issue-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--river); line-height: 1.2; }
+  .issue-sub { font-size: 13px; color: var(--muted); padding-left: 42px; font-style: italic; margin-bottom: 8px; }
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; padding-left: 42px; margin-bottom: 12px; }
+  .tag { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; }
+  .tag-hot { background: #fde8e8; color: #8b1c1c; }
+  .tag-local { background: #e8f0ff; color: #1c3a8b; }
+  .tag-state { background: #fff3e0; color: #7a4500; }
+  .tag-fed { background: #e8f5e9; color: #1b4d2e; }
+  .tag-opp { background: rgba(90,40,128,0.1); color: var(--opportunity); }
+  .county-context { display: flex; gap: 8px; flex-wrap: wrap; padding-left: 42px; margin-bottom: 12px; }
+  .cc-pill { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+  .cc-vanderburgh { background: rgba(58,104,153,0.12); border: 1px solid rgba(58,104,153,0.3); color: var(--river-mid); }
+  .cc-posey { background: rgba(184,144,32,0.1); border: 1px solid rgba(184,144,32,0.3); color: #7a5a00; }
+  .issue-summary { font-size: 14px; color: var(--text); margin-bottom: 14px; line-height: 1.65; }
+  .stat-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+  .stat-box { background: var(--sand); border: 1px solid var(--border); border-radius: 3px; padding: 10px 14px; flex: 1; min-width: 150px; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--river); line-height: 1; margin-bottom: 3px; }
+  .stat-desc { font-size: 11px; color: var(--muted); line-height: 1.3; }
+  .tp-box { background: var(--sand); border-radius: 3px; padding: 14px 18px; margin-top: 4px; }
+  .tp-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .tp-box ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .tp-box ul li { font-size: 13px; color: var(--text); padding-left: 16px; position: relative; line-height: 1.5; }
+  .tp-box ul li::before { content: '→'; position: absolute; left: 0; color: var(--river-light); font-size: 12px; }
+  .source-line { font-size: 11px; color: var(--muted); margin-top: 12px; font-style: italic; border-top: 1px solid var(--border); padding-top: 10px; }
+
+  /* CONTEXT */
+  .context-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 4px; padding: 26px 30px; margin-bottom: 48px; }
+  .context-card h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--river); margin-bottom: 12px; }
+  .context-card p { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 8px; }
+  .context-card p:last-child { margin-bottom: 0; }
+
+  /* FOOTER */
+  .footer { background: var(--river); padding: 20px 52px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer p { font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; }
+
+  @media (max-width: 680px) { .header { padding: 24px 20px; } .main { padding: 24px 20px 40px; } .framing-band { padding: 14px 20px; flex-direction: column; } .county-band { padding: 16px 20px; } .footer { padding: 16px 20px; } .county-profiles { grid-template-columns: 1fr; } .opportunity-banner { padding: 10px 20px; flex-direction: column; } }
+</style>
+</head>
+<body>
+
+<!-- OPPORTUNITY BANNER -->
+<div class="opportunity-banner">
+  <span class="opp-label">✦ Opportunity Pack</span>
+  <span class="opp-sep">·</span>
+  <span class="opp-desc">R+15–30% terrain — contest hard, narrow the margin, force Republican spending, lift every candidate in the wave</span>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="badge-row">
+    <span class="badge badge-district">SD-49</span>
+    <span class="badge badge-opp">✦ Opportunity</span>
+    <span class="badge badge-senate">⚡ Senate District</span>
+    <span class="badge badge-held">Held by Republican</span>
+    <span class="badge badge-anchor">⭐ Polar Anchor</span>
+    <span class="badge badge-cd">CD-8</span>
+  </div>
+  <h1>Top Issues Research<em>Candidate Power Pack</em></h1>
+  <div class="county-tags">
+    <span class="county-tag ctag-vanderburgh">Vanderburgh County</span>
+    <span class="county-tag ctag-posey">Posey County</span>
+  </div>
+  <div class="header-stats">
+    <div class="hstat"><strong>SD-49 Candidate</strong>Cindi Clayton (D) — Evansville · Polar Anchor</div>
+    <div class="hstat"><strong>IN-Index</strong>+22.1R — Opportunity terrain; contest hard</div>
+    <div class="hstat"><strong>Incumbent</strong>Jim Tomes (R)</div>
+    <div class="hstat"><strong>Key Cities</strong>Evansville · Mount Vernon</div>
+    <div class="hstat"><strong>Research Date</strong>May 2026</div>
+  </div>
+</div>
+
+<!-- FRAMING BAND -->
+<div class="framing-band">
+  <span class="fb-label">Pack Strategy</span>
+  <p>This is Opportunity Pack terrain: R+15–30%. The goal is not just to win — it's to contest hard, force Republican resource allocation, prove a candidate can run in tough terrain, and lift the other candidates in the wave. Close races here become wins when the wave is strong. Issues sourced from local government reporting, state agency data, economic forecasts, and community health assessments. Prepared for Indiana Rural Summit Power Pack series · May 2026.</p>
+</div>
+
+<!-- COUNTY PROFILES -->
+<div class="county-band">
+  <div class="county-band-label">District County Profiles</div>
+  <div class="county-profiles">
+    <div class="county-profile cp-vanderburgh">
+      <div class="cp-name">Vanderburgh County (Evansville)</div>
+      <div class="cp-desc">~232,000 residents. Evansville is the commercial, medical, and educational hub of the Indiana-Kentucky-Illinois tristate region. Manufacturing powerhouse — 17.8% of workforce, 236% above national concentration. Major employers: Deaconess Health System, Toyota (regional), Berry Global, Alcoa. University of Southern Indiana and University of Evansville add higher ed backbone. Democratic Mayor Stephanie Terry leads the city. SB 1 cut $4M from city revenue and froze county department budgets. Evansville Vanderburgh School Corporation faces ~$20M in projected property tax revenue losses.</div>
+    </div>
+    <div class="county-profile cp-posey">
+      <div class="cp-name">Posey County (Mt. Vernon)</div>
+      <div class="cp-desc">~25,000 residents. Deeply rural, overwhelmingly agricultural — Ohio and Wabash River borders. Home to the 7th largest inland port complex in the U.S. at Mt. Vernon (4M+ tons annually). Key industries: CountryMark refinery ($100M expansion, 2025), GAF roofing manufacturing. Rural services under pressure. 70.4% of residents live in rural areas. Agriculture is core economy.</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- PACK OVERVIEW -->
+  <div class="section-label">Opportunity Pack — All 5 Candidates</div>
+  <table class="candidate-table">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Candidate</th>
+        <th>District</th>
+        <th>IN-Index</th>
+        <th>Location</th>
+        <th>Incumbent (R)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="anchor-row">
+        <td><span class="type-label type-senate">Senate</span></td>
+        <td><strong>Cindi Clayton</strong> <span class="anchor-badge">Polar Anchor</span></td>
+        <td>SD-49</td>
+        <td class="in-index-r">+22.1R</td>
+        <td>Evansville (Vanderburgh)</td>
+        <td>Jim Tomes</td>
+      </tr>
+      <tr class="senate-row">
+        <td><span class="type-label type-senate">Senate</span></td>
+        <td><strong>Brad Hochgesang</strong></td>
+        <td>SD-48</td>
+        <td class="in-index-r">+45R</td>
+        <td>Jasper (Dubois Co.)</td>
+        <td>Daryl Schmitt</td>
+      </tr>
+      <tr class="house-row">
+        <td><span class="type-label type-house">House</span></td>
+        <td><strong>Sally Busby</strong> <span class="challenge-badge">Challenge</span></td>
+        <td>HD-78</td>
+        <td class="in-index-r">+23.5R</td>
+        <td>Vanderburgh Co.</td>
+        <td>Tim O'Brien</td>
+      </tr>
+      <tr class="house-row">
+        <td><span class="type-label type-house">House</span></td>
+        <td><strong>Logan Patberg</strong></td>
+        <td>HD-76</td>
+        <td class="in-index-r">+31.1R</td>
+        <td>Vanderburgh Co.</td>
+        <td>Wendy McNamara</td>
+      </tr>
+      <tr class="house-row">
+        <td><span class="type-label type-house">House</span></td>
+        <td><strong>Candace "Candy" Greer</strong></td>
+        <td>HD-64</td>
+        <td class="in-index-r">+50R</td>
+        <td>Posey/Dubois/Vanderburgh</td>
+        <td>Matt Hostettler</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- DISTRICT SNAPSHOT -->
+  <div class="section-label">District at a Glance</div>
+  <div class="snapshot-grid">
+    <div class="snap-card">
+      <div class="snap-num">17.8%</div>
+      <div class="snap-desc">Evansville MSA workforce in manufacturing — 236% above national concentration; tariffs hit hard</div>
+    </div>
+    <div class="snap-card">
+      <div class="snap-num">$20M</div>
+      <div class="snap-desc">Projected EVSC school district property tax revenue loss from SEA 1 (2025–2028)</div>
+    </div>
+    <div class="snap-card">
+      <div class="snap-num">7th</div>
+      <div class="snap-desc">Largest inland port complex in the U.S. — Ports of Indiana at Mt. Vernon; 4M+ tons annually</div>
+    </div>
+    <div class="snap-card">
+      <div class="snap-num">$4M</div>
+      <div class="snap-desc">Evansville city revenue loss from SEA 1 in 2026 alone — police, fire, and services at risk</div>
+    </div>
+    <div class="snap-card">
+      <div class="snap-num">$7.5M</div>
+      <div class="snap-desc">Projected Evansville city loss in 2026 under original Braun SB 1 proposal — mayor called it "devastating"</div>
+    </div>
+  </div>
+
+  <!-- ISSUES -->
+  <div class="section-label">Priority Issues — Vanderburgh &amp; Posey Counties</div>
+  <div class="issue-grid">
+
+    <!-- ISSUE 1: LOCAL GOVERNMENT BUDGET SQUEEZE (SB 1) -->
+    <div class="issue-card p1">
+      <div class="issue-title-row"><div class="issue-num">1</div><div class="issue-title">Local Government Budget Cuts &amp; Public Safety</div></div>
+      <div class="issue-sub">SEA 1's property tax reform is squeezing Evansville's budget, county services, and schools — with police, fire, and jails on the cutting room floor.</div>
+      <div class="tag-row">
+        <span class="tag tag-hot">🔥 Hot Local Issue</span>
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-local">Local</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-vanderburgh">Vanderburgh: City &amp; county budgets frozen</span>
+        <span class="cc-pill cc-posey">Posey: Rural services at risk</span>
+      </div>
+      <p class="issue-summary">Gov. Braun's Senate Bill 1 (SEA 1, 2025) is directly squeezing Evansville, Vanderburgh County, and the school district in ways that have alarmed both Democratic and Republican local officials. The city of Evansville faces approximately <strong>$4 million in property tax revenue reductions in 2026</strong> from the new law — with Mayor Stephanie Terry warning the original Braun proposal would have been "devastating," costing the city $7.5 million in year one alone. Evansville's general fund is 50–60% property tax revenue, and that money goes directly to police, firefighters, and emergency services. Police Chief Philip Smith publicly stated: "I want my kids to be safe walking down the street — diminishing the budgets for law enforcement is not a step in that direction." Vanderburgh County took it further: all department heads were formally notified in May 2025 that budget increase requests for 2026 will not be considered — a direct result of SEA 1. The Sheriff's Office — already overflowing its jail and paying to house inmates in other counties — faces the hardest cut. The Evansville Vanderburgh School Corporation (EVSC) is projected to lose approximately <strong>$20 million in property tax revenue over three years</strong>. A united coalition of local leaders — city council, county commission, schools, libraries — drafted a joint letter to Gov. Braun demanding reform and balance. EVSC's superintendent pointed out the district already receives $25 million less annually than it did in 2009 in inflation-adjusted terms.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$4M</div>
+          <div class="stat-desc">Evansville city property tax revenue loss in 2026 from SEA 1 — 50–60% of general fund is property tax</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$20M</div>
+          <div class="stat-desc">EVSC school district projected property tax loss 2025–2028 from Braun property tax reform</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">Frozen</div>
+          <div class="stat-desc">All Vanderburgh County 2026 budget increase requests — county formally halted spending growth due to SEA 1</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>The Evansville Police Chief and the Mayor — from different parties — both said the same thing: you can't cut police funding and expect the same level of safety. Braun's property tax reform is forcing exactly that choice. That's not tax relief. That's a trade-off families in Vanderburgh County didn't agree to.</li>
+          <li>Vanderburgh County froze every department's budget. The Sheriff's Office is already outsourcing jail beds to other counties because the jail is full. Taking more money out of that system isn't reform — it's pushing a crisis further down the road until someone gets hurt.</li>
+          <li>EVSC is already $25 million below its 2009 inflation-adjusted funding level. Now it's being asked to absorb another $20 million in losses over three years. That's not accountability — that's systematically defunding the public schools our kids depend on.</li>
+          <li>Local elected officials from both parties — city, county, schools, libraries — came together to say this bill goes too far. When Republicans and Democrats in Evansville agree that Statehouse Republicans went too far, that's something voters should hear about.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: WFIE/14News, "2026 Vanderburgh County budget to have limitations, thanks to Senate Bill 1" (May 15, 2025); WNIN, "New proposed Evansville City Budget: maintaining the essentials" (Sept. 9, 2025); WEHT/Eyewitness News, "Evansville leaders voice their concerns over property tax bill" (Feb. 2025); WEHT, "Gov. Braun brings property tax bill discussion to Evansville" (Feb. 8, 2025).</div>
+    </div>
+
+    <!-- ISSUE 2: MANUFACTURING, TARIFFS & ECONOMIC ANXIETY -->
+    <div class="issue-card p1">
+      <div class="issue-title-row"><div class="issue-num">2</div><div class="issue-title">Manufacturing Economy, Tariffs &amp; Worker Stability</div></div>
+      <div class="issue-sub">The Evansville region's manufacturing-heavy economy — 236% more concentrated than the national average — is directly in the crosshairs of 2025 tariff chaos.</div>
+      <div class="tag-row">
+        <span class="tag tag-fed">Federal</span>
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-local">Local</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-vanderburgh">Vanderburgh: Manufacturing hub — 17.8% of workforce</span>
+        <span class="cc-pill cc-posey">Posey: Port, refinery, agriculture exports</span>
+      </div>
+      <p class="issue-summary">The Evansville MSA — covering Gibson, Posey, Vanderburgh, and Warrick counties — has a manufacturing concentration 236% above the national average. Major employers include Toyota Motor Manufacturing (regional), Berry Global Group, Alcoa, and dozens of smaller industrial operations. This is the economy of this district: working-class, industrial, skilled-trade, and unionized in parts. The 2025 tariff cycle created direct, documented harm to this sector. Indiana manufacturers exported $53.4 billion in goods in 2023 — with Canada and Mexico (now tariff targets) representing the top two markets. Retaliatory tariffs on U.S. agricultural products hit farmers in Posey County specifically: the county's grain, soybean, and agricultural output flows through the Ports of Indiana at Mt. Vernon — the 7th largest inland port in the U.S. The $100 million CountryMark refinery expansion at Mt. Vernon, which produces renewable diesel from soybean oil, connects agricultural and industrial economies in a visible way. Ball State's CBER projected "mild stagflation" for 2026 — slower growth with elevated prices — largely driven by trade policy uncertainty. Indiana's own economic forecast expected unemployment to rise from 3.6% to 4.4% in 2026. For workers in Vanderburgh County's factories and Posey County's port operations, this volatility isn't abstract: it affects hiring, hours, and wages.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">236%</div>
+          <div class="stat-desc">Evansville MSA manufacturing concentration above national average — one of Indiana's top industrial regions</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$53.4B</div>
+          <div class="stat-desc">Indiana manufactured goods exported annually — Canada and Mexico (now tariff targets) are top two markets</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">7th</div>
+          <div class="stat-desc">Largest inland U.S. port at Mt. Vernon, Posey County — handles grain, fertilizer, fuel; vulnerable to trade disruption</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Evansville is a manufacturing city. Our workers build things — plastics, aluminum, auto parts, chemicals. When 400 tariff changes hit in a single year and our top two export markets face new duties, those workers feel it. Uncertainty on the production line means slower hiring, frozen wages, and deferred investment.</li>
+          <li>Posey County's port handles four million tons of cargo annually — grain, fertilizer, fuel. That's Indiana agriculture meeting Indiana industry at the Ohio River. Tariffs that disrupt commodity markets and raise input costs hit both sides of that equation at once.</li>
+          <li>CountryMark just invested $100 million to make renewable diesel from Indiana soybean oil. That's exactly the kind of smart, forward-looking investment this region needs. But it only works if soybean markets are stable and trading partners aren't at war with American agriculture.</li>
+          <li>Indiana manufacturers' top two export markets are Canada and Mexico — the targets of the 2025 tariff campaign. The workers in Vanderburgh County's factories are paying for a trade war that was sold to them as protecting jobs. It's time for honesty about who's actually paying.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: IBRC/IU, "Evansville forecast 2025"; Hoosiers by the Numbers, EGR 11 Regional Profile (updated July 2025); Indiana Capital Chronicle, "Federal tariffs will negatively impact Hoosier manufacturing, agriculture" (Mar. 2025); Hoosier Ag Today, "CountryMark Mt. Vernon expansion" (July 22, 2025); Grant County Economic Growth Council, Indiana Economic Roadmap 2026 (Feb. 2026).</div>
+    </div>
+
+    <!-- ISSUE 3: HOUSING & HOMELESSNESS -->
+    <div class="issue-card p2">
+      <div class="issue-title-row"><div class="issue-num">3</div><div class="issue-title">Housing Affordability, Homelessness &amp; HUD Cuts</div></div>
+      <div class="issue-sub">The region's homelessness count documents rising costs and barriers — and proposed federal HUD cuts threaten the housing safety net across a 10-county southern Indiana region.</div>
+      <div class="tag-row">
+        <span class="tag tag-local">Local</span>
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-fed">Federal</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-vanderburgh">Vanderburgh: Evansville documented housing crisis</span>
+        <span class="cc-pill cc-posey">Posey: Rural housing access gaps</span>
+      </div>
+      <p class="issue-summary">Evansville's 2025 Point-in-Time homeless count specifically identified "lack of affordable housing" and "higher cost of living having a greater impact on those with existing barriers" as the defining drivers of homelessness across Vanderburgh and the surrounding nine-county Region 12. Evansville has 43 affordable housing properties serving a population of 232,000 — with HUD Fair Market Rents for a 2-bedroom apartment at $1,070/month. The city's HOUSE program runs an Affordable Housing Fund targeting households at or below 80% of median income, and the city has an active strategic housing plan through 2026. But that infrastructure is threatened by federal budget proposals to cut HUD funding by nearly half — which would gut Section 8 vouchers, CDBG funding, and the HOME program. Evansville's manufacturing and service worker base skews toward lower-and-middle incomes; housing cost pressures are a direct quality-of-life issue. The READI 2.0 program has invested $45 million in the region (2024), including workforce housing projects in Gibson County — demonstrating that intentional regional investment works. The question is whether federal and state partners sustain that investment or gut it.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$1,070</div>
+          <div class="stat-desc">HUD Fair Market Rent for a 2-bedroom in Vanderburgh County — unaffordable for many service and manufacturing workers</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">43</div>
+          <div class="stat-desc">Affordable housing properties in Vanderburgh County serving 232,000 residents — far below need</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">10</div>
+          <div class="stat-desc">Counties in Region 12 — Vanderburgh, Posey, Warrick, Gibson, Daviess, Dubois, Knox, Pike, Perry, Spencer — sharing coordinated homeless services now threatened by federal cuts</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>The homeless count in Evansville didn't mince words: lack of affordable housing and rising costs are driving more of our neighbors onto the street. That's not a character failure — it's an economic failure. And it has policy solutions if the right people are in the room.</li>
+          <li>The Trump administration's proposed HUD cuts would eliminate the HOME program and cut Section 8 rental assistance by 40%. In a city where 43 affordable housing properties serve 232,000 people, we don't have room to absorb those cuts. Real families — veterans, seniors, working parents — would lose their housing.</li>
+          <li>The READI program has invested $95 million in this region over two rounds. Workforce housing in Princeton, a JA Discovery Center in Evansville — that's what intentional regional investment looks like. That's the opposite of what Washington is proposing.</li>
+          <li>A manufacturing worker making $20 an hour can't afford a $1,070 two-bedroom in Evansville and still pay for childcare, utilities, and groceries. Housing isn't a social issue — it's an economic one. When workers can't afford to live near their jobs, employers can't hire and communities can't grow.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Evansville Commission on Homelessness, 2024/2025 PIT Count findings; Affordable Housing Hub, Vanderburgh County data; Evansville HOUSE program, 2022–2026 Strategic Plan; State of Aging in Central Indiana, HUD federal budget impact report (Feb. 2026); Evansville Regional Economic Partnership, READI 2.0 announcements (2024–2026).</div>
+    </div>
+
+    <!-- ISSUE 4: MEDICAID & HEALTHCARE -->
+    <div class="issue-card p2">
+      <div class="issue-title-row"><div class="issue-num">4</div><div class="issue-title">Healthcare Access, Substance Use &amp; Medicaid Stability</div></div>
+      <div class="issue-sub">Evansville is among Indiana's hardest-hit cities for opioid and substance use — and the H.R. 1 Medicaid cuts directly threaten the treatment and recovery infrastructure that's been built here.</div>
+      <div class="tag-row">
+        <span class="tag tag-hot">📍 Local Context</span>
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-fed">Federal</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-vanderburgh">Vanderburgh: 76 overdose deaths (2021); active recovery infrastructure</span>
+        <span class="cc-pill cc-posey">Posey: Rural access gaps, limited providers</span>
+      </div>
+      <p class="issue-summary">Vanderburgh County recorded 76 overdose deaths in 2021 — identifying Evansville as one of Indiana's hardest-hit cities for heroin, fentanyl, and methamphetamine. The region's community health infrastructure — Deaconess Health System (the MSA's largest employer), Ascension St. Vincent, ECHO Community Healthcare, and a network of recovery and social service organizations — has built meaningful capacity over years. That infrastructure is now under direct threat. H.R. 1 (signed July 4, 2025) is projected to cut Indiana's Medicaid funding by <strong>$23 billion over 2027–2036</strong> — Medicaid is the primary payer for substance use treatment, mental health services, and recovery housing in low-income communities. Indiana is simultaneously re-bidding its entire $68 billion managed care contract, leaving 300,000 Hoosiers scrambling to change insurers with less than 60 days notice after MDwise was removed from the program. Disability waiver slots remain inadequate — just one-third of those on the waitlist for home-and-community-based services received a slot when they partially reopened. New HIP work requirements (July 2026) add another layer of coverage risk. In rural Posey County, healthcare access is structurally constrained by distance; Medicaid stability is essential to any healthcare access whatsoever.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">76</div>
+          <div class="stat-desc">Vanderburgh County overdose deaths in 2021 — one of Indiana's hardest-hit cities; recovery infrastructure under funding threat</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$23B</div>
+          <div class="stat-desc">Projected Indiana Medicaid funding loss from H.R. 1 over ten years — primary payer for SUD treatment</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">#1</div>
+          <div class="stat-desc">Deaconess Health System — Evansville MSA's largest employer; regional health anchor at risk from funding disruption</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Evansville lost 76 people to overdoses in one year. Our community has spent years building the treatment courts, recovery housing, and outpatient services that are starting to turn those numbers around. H.R. 1 doesn't just cut Medicaid — it cuts the funding that makes all of that work possible.</li>
+          <li>Deaconess is the biggest employer in this region. When Medicaid is disrupted — contracts re-bid, coverage frozen, work requirements added all at once — it doesn't just hurt patients. It destabilizes the workforce and the revenue that keeps our hospitals running.</li>
+          <li>In Posey County, if you need behavioral health services or substance use treatment, you're already looking at distance and access gaps. Take away the Medicaid coverage that makes it financially possible to get care, and you've made a rural healthcare desert even drier.</li>
+          <li>Indiana's senators voted to cut $23 billion from Medicaid over ten years while promising no cuts to healthcare. Vanderburgh County deserves a representative who will tell the truth about what that vote means for real people in our community — and fight to restore what we're losing.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Indiana Treatment Centers, Vanderburgh County overdose data (2021); Vanderburgh County CHNA 2022–2025; Hoosiers by the Numbers, EGR 11 Regional Profile; KFF, Indiana H.R. 1 Medicaid impact analysis (July 2025); WFYI, MDwise removal (Nov. 2025); Indiana Capital Chronicle, Medicaid rebid (Feb. 2026).</div>
+    </div>
+
+    <!-- ISSUE 5: SCHOOLS, CHILDCARE & WORKING FAMILIES -->
+    <div class="issue-card p3">
+      <div class="issue-title-row"><div class="issue-num">5</div><div class="issue-title">Public Schools, Childcare &amp; Working Family Investment</div></div>
+      <div class="issue-sub">EVSC faces a $20M revenue hit from property tax reform while childcare vouchers remain frozen — squeezing working families from both ends.</div>
+      <div class="tag-row">
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-fed">Federal</span>
+        <span class="tag tag-local">Local</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-vanderburgh">Vanderburgh: EVSC $20M hit; working-parent childcare squeeze</span>
+        <span class="cc-pill cc-posey">Posey: Rural school districts; limited childcare providers</span>
+      </div>
+      <p class="issue-summary">The Evansville Vanderburgh School Corporation — one of the region's anchor institutions — faces an estimated $20 million in property tax revenue losses over three years under Gov. Braun's SEA 1. The district's superintendent publicly noted that EVSC already receives $25 million less per year in inflation-adjusted dollars than it did in 2009. The new law further restricts referendum timing, limiting when districts can ask voters to compensate for state-imposed funding gaps. Statewide, the childcare crisis compounds the pressure on working families in Vanderburgh County's manufacturing and service economy. Indiana cut CCDF reimbursement rates for school-age childcare by up to 35% in fall 2025. New childcare vouchers were frozen — 35,000+ families statewide on the waitlist — with On My Way Pre-K cut by more than half. For Evansville's working-class families, where both parents often work shifts in manufacturing or healthcare, affordable childcare isn't a nice-to-have — it's what makes employment possible. In Posey County's rural communities, the provider base is even thinner: when the reimbursement drops and the voucher freezes, there simply isn't another option nearby.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$20M</div>
+          <div class="stat-desc">EVSC projected property tax revenue loss from SEA 1 (2025–2028) — on top of 15 years of inflation-adjusted underfunding</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">35%</div>
+          <div class="stat-desc">State cut to CCDF school-age childcare reimbursement rates in Oct. 2025 — hitting working-class Evansville families</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$25M</div>
+          <div class="stat-desc">EVSC's annual funding gap vs. 2009 inflation-adjusted levels — before the new property tax cuts</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>EVSC is already $25 million behind where it was in 2009 in real terms. Now it's facing another $20 million in losses from property tax reform. Our kids in Evansville are being asked to do more with less year after year — and the Statehouse calls it fiscal responsibility.</li>
+          <li>Evansville's economy runs on working families — factory workers, healthcare workers, service workers — who need childcare to keep their jobs. The state just cut reimbursement rates by 35% and froze new vouchers. That's not policy. That's pulling the rug out from under working parents.</li>
+          <li>In Posey County, there may be one or two childcare providers for an entire township. When the state cuts the reimbursement rate, that provider closes. "Voucher frozen" in rural Posey County doesn't mean "find another option" — it means one parent stops working.</li>
+          <li>We're making policy choices that defund the systems families depend on — schools, childcare, public services — while telling people they're getting tax relief. The $300 they save on property taxes won't cover the cost when the school lays off teachers, the childcare center closes, or the fire station cuts response times.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: WEHT, "Evansville leaders voice their concerns over property tax bill" (Feb. 2025); Indiana Capital Chronicle, CCDF reimbursement cuts (Oct. 2025); WFYI, school property tax reform impact (Apr.–May 2025); WNIN, Evansville 2026 budget presentation (Sept. 2025).</div>
+    </div>
+
+    <!-- ISSUE 6: POSEY COUNTY RURAL INFRASTRUCTURE & INVESTMENT -->
+    <div class="issue-card p4">
+      <div class="issue-title-row"><div class="issue-num">6</div><div class="issue-title">Rural Investment, Infrastructure &amp; Posey County's Future</div></div>
+      <div class="issue-sub">Posey County's port, agricultural economy, and rural communities need sustained state and federal investment — not budget freezes and program cuts.</div>
+      <div class="tag-row">
+        <span class="tag tag-opp">📍 Posey Focus</span>
+        <span class="tag tag-local">Local</span>
+        <span class="tag tag-state">State</span>
+        <span class="tag tag-fed">Federal</span>
+      </div>
+      <div class="county-context">
+        <span class="cc-pill cc-posey">Posey: Core — rural infrastructure, port economy, ag investment</span>
+        <span class="cc-pill cc-vanderburgh">Vanderburgh: Regional economic partner</span>
+      </div>
+      <p class="issue-summary">Posey County is Indiana's southwesternmost county — bordered by both the Wabash and Ohio Rivers, home to the 7th largest inland port complex in the U.S. at Mt. Vernon. This port handles more than 4 million tons of cargo annually: grain, grain products, coal, fertilizer, cement, and minerals. It is an irreplaceable piece of Indiana's agricultural export infrastructure. In 2025, CountryMark completed a more than <strong>$100 million expansion</strong> of its Mt. Vernon refinery to produce renewable diesel from soybean oil — a direct link between Indiana farm production and energy innovation. The Posey County Western Bypass (Phase 1 completed 2025, Phase 2 expected 2026) addresses long-standing freight truck congestion through Mt. Vernon's downtown — a $7 million project to protect road infrastructure while enabling industrial and housing growth to the northeast. American Industrial Group announced a $1.25 million expansion and 11 new high-wage jobs (avg. $42/hour) in Posey County in December 2025. These are promising signs of investment. But Posey County is 70.4% rural, with limited healthcare access, a thin childcare provider base, and service delivery gaps typical of rural Indiana. Sustained state and federal investment — in infrastructure, healthcare, rural broadband, and agricultural market stability — is what keeps a rural county viable. Budget freezes, Medicaid cuts, and tariff disruption to agricultural commodity markets work in the opposite direction.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">4M+</div>
+          <div class="stat-desc">Tons of cargo handled annually at Ports of Indiana–Mt. Vernon — Indiana's agricultural export lifeline</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$100M+</div>
+          <div class="stat-desc">CountryMark refinery expansion at Mt. Vernon — renewable diesel from Indiana soybean oil, completed 2025</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">70.4%</div>
+          <div class="stat-desc">Posey County residents living in rural areas — dependent on state investment for healthcare, services, and infrastructure</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Posey County's port moves four million tons of Indiana grain, fuel, and materials every year. That's not a rural backwater — that's critical infrastructure for the entire state. It deserves a state Senate representative who fights for it in Indianapolis, not one who goes along with budget cuts that starve rural counties of services and investment.</li>
+          <li>CountryMark's $100 million expansion takes Indiana soybeans and turns them into renewable diesel — sold back to Indiana farmers. That's a circular economy, that's innovation, and that's exactly what rural economic development should look like. But it needs stable soybean markets and stable energy policy to work. Both are under threat from federal trade and regulatory chaos.</li>
+          <li>Rural Posey County has limited healthcare providers, thin childcare options, and road infrastructure under constant pressure from industrial truck traffic. When the state freezes budgets and the federal government cuts HUD and Medicaid, those gaps get wider. A representative who shows up and fights for rural investment makes a real difference here.</li>
+          <li>New jobs are coming to Posey County — $42 an hour for skilled manufacturing work. That's worth celebrating. But good jobs need good communities around them: affordable housing, functioning schools, accessible healthcare. You can't recruit and retain workers in a county the state is slowly defunding.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Wikipedia / Hoosiers by the Numbers, Posey County profile; Hoosier Ag Today, CountryMark Mt. Vernon expansion (July 22, 2025); Building Indiana, Posey County Western Bypass (Dec. 2024); Evansville Regional Economic Partnership, AIG expansion (Dec. 16, 2025); Purdue Extension Posey County; Ports of Indiana–Mt. Vernon official data.</div>
+    </div>
+
+  </div><!-- end issue-grid -->
+
+  <!-- DISTRICT CONTEXT -->
+  <div class="section-label">District &amp; Race Context</div>
+  <div class="context-card">
+    <h3>Why Contest SD-49: Opportunity Framing for Vanderburgh &amp; Posey Counties</h3>
+    <p>SD-49 at <strong>+22.1R</strong> is Opportunity Pack terrain — meaning the strategic goal is not simply to win (though wins can happen in strong wave years), but to force Republican resource allocation to this district, demonstrate Democratic relevance in southwest Indiana, and build the organizing infrastructure and candidate credibility that makes the region more competitive in future cycles. Cindi Clayton, running against incumbent Jim Tomes from Evansville, is the Polar Anchor of this five-candidate pack — the most reachable seat, and the one where a strong Democratic showing has the most amplifying effect.</p>
+    <p>The district has genuine structural advantages for a Democratic candidate willing to run on economic dignity and local government investment. Evansville has a Democratic mayor (Stephanie Terry) who has been publicly and vocally critical of the state property tax reform that cut city revenue. The local budget squeeze created by SEA 1 is a documented, concrete, bipartisan concern — with Republican county commissioners and the police chief on record saying the cuts go too far. That's rare terrain that a skilled candidate can exploit.</p>
+    <p>The Evansville economy is built on manufacturing and healthcare — two sectors that are directly affected by federal tariff chaos and Medicaid disruption in ways that working-class voters understand and feel. A candidate who connects federal and state policy failures to daily economic life in Vanderburgh County — rising costs, frozen budgets, stagnant wages, school funding cuts — is speaking to real experience, not political abstraction.</p>
+    <p>Posey County is deeply rural and deeply Republican, but it is also the home of an irreplaceable piece of state infrastructure (the Mt. Vernon port), a growing energy and manufacturing investment story (CountryMark), and communities that depend on rural healthcare, broadband, and agricultural market stability that are all under threat. A candidate who shows up in Posey County — at the port, at the farm bureau, at the county fair — signals seriousness and earns respect even without winning the vote. Presence matters in rural counties where Democrats often go invisible.</p>
+    <p>The full Opportunity Pack — Cindi Clayton (SD-49), Brad Hochgesang (SD-48), Sally Busby (HD-78), Logan Patberg (HD-76), and Candace "Candy" Greer (HD-64) — spans a region where Democratic infrastructure is thin but the issues are real. Every candidate who runs hard, communicates clearly, and forces Republican spending creates space for the others. This is coordinated political pressure, and it starts with the best candidate in the best seat: SD-49.</p>
+  </div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  <p>SD-49 Candidate Power Pack — Issues Research · Indiana Rural Summit · May 2026</p>
+  <p>For internal planning use. All data cited to public sources.</p>
+</div>
+
+</body>
+</html>

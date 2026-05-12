@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HD-39 Candidate Power Pack — Top Issues</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2240;
+    --teal: #1a6b72;
+    --teal-light: #28a5af;
+    --gold: #d4a020;
+    --gold-light: #f2c94c;
+    --cream: #f8f6f2;
+    --white: #ffffff;
+    --text: #1a1a1a;
+    --muted: #5c6575;
+    --border: #dcd8d0;
+    --red: #a82828;
+    --green: #246b40;
+    --orange: #c46a00;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0f2240 0%, #1a3a60 100%);
+    padding: 40px 52px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--teal-light), var(--gold), var(--teal-light));
+  }
+  .header-grid {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: start;
+  }
+  .badge-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+    align-items: center;
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .badge-district {
+    background: var(--teal);
+    color: #fff;
+    font-size: 13px;
+    padding: 5px 16px;
+  }
+  .badge-held {
+    background: rgba(168,40,40,0.2);
+    border: 1px solid rgba(200,80,80,0.4);
+    color: #ff9a9a;
+  }
+  .badge-cd {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.5);
+  }
+  .badge-anchor {
+    background: rgba(212,160,32,0.2);
+    border: 1px solid rgba(212,160,32,0.4);
+    color: var(--gold-light);
+  }
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-size: 30px;
+    line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .header h1 em {
+    font-style: italic;
+    color: rgba(255,255,255,0.55);
+    font-size: 21px;
+    display: block;
+    margin-top: 2px;
+  }
+  .county-tag {
+    display: inline-block;
+    background: rgba(26,107,114,0.3);
+    border: 1px solid rgba(40,165,175,0.4);
+    color: var(--teal-light);
+    padding: 4px 14px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    margin-top: 12px;
+  }
+  .header-stats {
+    display: flex;
+    gap: 28px;
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    flex-wrap: wrap;
+  }
+  .hstat { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .hstat strong { display: block; color: rgba(255,255,255,0.82); font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+
+  .district-flag {
+    text-align: right;
+  }
+  .district-flag .big-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    line-height: 1;
+    color: rgba(255,255,255,0.06);
+    letter-spacing: -2px;
+    user-select: none;
+  }
+
+  /* ALERT BAND */
+  .alert-band {
+    background: #fff;
+    border-left: 4px solid var(--teal);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 52px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .alert-band .ab-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+  .alert-band p {
+    font-size: 13.5px;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  /* CONTEXT BANNER */
+  .context-banner {
+    background: linear-gradient(135deg, #1a3a60 0%, #1a6b72 100%);
+    padding: 18px 52px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .context-banner .cb-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal-light);
+    white-space: nowrap;
+  }
+  .context-banner p {
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.5;
+  }
+  .context-banner strong { color: #fff; }
+
+  /* MAIN */
+  .main {
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 40px 52px 64px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ISSUE CARDS */
+  .issue-grid {
+    display: grid;
+    gap: 22px;
+    margin-bottom: 48px;
+  }
+
+  .issue-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--teal);
+    border-radius: 4px;
+    padding: 26px 30px;
+  }
+  .issue-card.p1 { border-left-color: var(--red); }
+  .issue-card.p2 { border-left-color: var(--orange); }
+  .issue-card.p3 { border-left-color: var(--green); }
+  .issue-card.p4 { border-left-color: var(--teal); }
+
+  .issue-header {
+    margin-bottom: 14px;
+  }
+  .issue-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .issue-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+    background: var(--navy);
+  }
+  .p1 .issue-num { background: var(--red); }
+  .p2 .issue-num { background: var(--orange); }
+  .p3 .issue-num { background: var(--green); }
+  .p4 .issue-num { background: var(--teal); }
+
+  .issue-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+  .issue-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+    padding-left: 42px;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .tag-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    padding-left: 42px;
+  }
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+  .tag-hot { background: #fde8e8; color: #7a1c1c; }
+  .tag-local { background: #e3f2fd; color: #0d47a1; }
+  .tag-state { background: #fff3e0; color: #6d3b00; }
+  .tag-fed { background: #e8f5e9; color: #1b4332; }
+  .tag-norms { background: #f3e5f5; color: #4a148c; }
+
+  .issue-summary {
+    font-size: 14.5px;
+    color: var(--text);
+    line-height: 1.68;
+    margin-bottom: 16px;
+  }
+
+  .stat-row {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .stat-box {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 12px 16px;
+    flex: 1;
+    min-width: 140px;
+  }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  .tp-box {
+    background: #f0f6f7;
+    border-left: 3px solid var(--teal-light);
+    border-radius: 0 3px 3px 0;
+    padding: 14px 18px;
+    margin-top: 4px;
+  }
+  .tp-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 10px;
+  }
+  .p1 .tp-box { background: #fdf2f2; border-left-color: var(--red); }
+  .p1 .tp-label { color: var(--red); }
+  .p2 .tp-box { background: #fdf6ee; border-left-color: var(--orange); }
+  .p2 .tp-label { color: var(--orange); }
+
+  .tp-box ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .tp-box ul li {
+    font-size: 13.5px;
+    color: var(--text);
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .tp-box ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--teal);
+    font-size: 12px;
+  }
+  .p1 .tp-box ul li::before { color: var(--red); }
+  .p2 .tp-box ul li::before { color: var(--orange); }
+
+  .source-line {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 12px;
+    font-style: italic;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+
+  /* DISTRICT CONTEXT */
+  .context-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 26px 30px;
+    margin-bottom: 48px;
+  }
+  .context-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    color: var(--navy);
+    margin-bottom: 14px;
+  }
+  .context-card p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 10px;
+  }
+  .context-card p:last-child { margin-bottom: 0; }
+  .context-card strong { color: var(--text); }
+
+  /* VOTER PROFILE */
+  .voter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 48px;
+  }
+  .voter-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px 20px;
+    text-align: center;
+  }
+  .voter-card .vnum {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .voter-card .vdesc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.4;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--navy);
+    padding: 20px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .footer p {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 700px) {
+    .header, .main, .alert-band, .context-banner, .footer { padding-left: 20px; padding-right: 20px; }
+    .header-grid { grid-template-columns: 1fr; }
+    .district-flag { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-grid">
+    <div>
+      <div class="badge-row">
+        <span class="badge badge-district">HD 39</span>
+        <span class="badge badge-held">Held by Republican</span>
+        <span class="badge badge-anchor">⭐ Polar Anchor</span>
+        <span class="badge badge-cd">CD-5</span>
+      </div>
+      <h1>Top Issues Research<em>Candidate Power Pack</em></h1>
+      <div class="county-tag">Hamilton County</div>
+      <div class="header-stats">
+        <div class="hstat"><strong>Candidate</strong>Lindsay Gramlich (D)</div>
+        <div class="hstat"><strong>IN-Index</strong>+0.4R (Most competitive seat in Hamilton Co.)</div>
+        <div class="hstat"><strong>Key Cities</strong>Noblesville · Carmel · Westfield · Fishers</div>
+        <div class="hstat"><strong>Incumbent</strong>Daniel Lopez (R)</div>
+        <div class="hstat"><strong>Research Date</strong>May 2026</div>
+      </div>
+    </div>
+    <div class="district-flag">
+      <div class="big-num">39</div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERT BAND -->
+<div class="alert-band">
+  <span class="ab-label">Research Note</span>
+  <p>HD-39 is fundamentally different from other targets in the region. Hamilton County is Indiana's highest-income county, with college-educated, rapidly growing suburbs. Voters here care deeply about quality of life, schools, managed growth, democratic norms, and fiscal integrity — not just cost-of-living survival. Issues are sourced from local government reports, Indiana Citizen, WRTV, IBJ, and state policy analysis.</p>
+</div>
+
+<!-- CONTEXT BANNER -->
+<div class="context-banner">
+  <span class="cb-label">District Context</span>
+  <p>Harris won <strong>46%</strong> of Hamilton County in 2024 — up from 37% for Clinton in 2016. <strong>Early voting in the 2026 primary surged past 2022 and 2024 levels.</strong> College-educated transplants from Indianapolis and other metros are reshaping the electorate. The redistricting fight at the Statehouse has further energized voters who feel their representation is being manipulated. <strong>This is persuadable suburban territory.</strong></p>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- VOTER SNAPSHOT -->
+  <div class="section-label">District Voter Snapshot</div>
+  <div class="voter-grid">
+    <div class="voter-card">
+      <div class="vnum">46%</div>
+      <div class="vdesc">Harris vote share in Hamilton County (2024) — up from 37% in 2016</div>
+    </div>
+    <div class="voter-card">
+      <div class="vnum">71%</div>
+      <div class="vdesc">Voter turnout in Hamilton County in 2024 — among the state's highest</div>
+    </div>
+    <div class="voter-card">
+      <div class="vnum">+60%</div>
+      <div class="vdesc">Westfield population growth since 2015 — over 20,000 new residents in one city alone</div>
+    </div>
+    <div class="voter-card">
+      <div class="vnum">$433K</div>
+      <div class="vdesc">Average home value in Hamilton County — highest-income county in Indiana</div>
+    </div>
+    <div class="voter-card">
+      <div class="vnum">8</div>
+      <div class="vdesc">Competitive 2026 legislative &amp; congressional primaries affecting Hamilton County</div>
+    </div>
+  </div>
+
+  <div class="section-label">Priority Issues — Hamilton County / HD-39</div>
+  <div class="issue-grid">
+
+    <!-- ISSUE 1: GROWTH / INFRASTRUCTURE / TRAFFIC -->
+    <div class="issue-card p1">
+      <div class="issue-header">
+        <div class="issue-title-row">
+          <div class="issue-num">1</div>
+          <div class="issue-title">Managed Growth, Infrastructure &amp; Traffic</div>
+        </div>
+        <div class="issue-subtitle">The defining tension of Hamilton County: growth is happening faster than roads, schools, and services can keep up.</div>
+        <div class="tag-row">
+          <span class="tag tag-hot">🔥 #1 Quality-of-Life Issue</span>
+          <span class="tag tag-local">Local</span>
+          <span class="tag tag-state">State</span>
+        </div>
+      </div>
+      <p class="issue-summary">Hamilton County is among the fastest-growing counties in the United States, and its infrastructure is running years behind. Westfield grew from 21,000 people in 2008 to over 54,000 today — and roads built for a rural county are now major commuter arteries. INDOT's own data shows the U.S. 31/Meridian St. interchange — originally projected to handle 92,930 vehicles per day by 2035 — <em>already exceeded 83,000 vehicles daily by 2023</em>. Traffic fatalities and rear-end crashes have risen sharply on key corridors. Westfield unveiled an 8-year, $186 million infrastructure plan — with half of the 52 projects still unfunded. This is not an abstract policy issue; it affects residents' daily lives and safety.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">83K+</div>
+          <div class="stat-desc">Daily vehicles through US-31/Meridian interchange in 2023 — a volume not projected until 2035</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$186M</div>
+          <div class="stat-desc">Westfield's 8-year infrastructure plan — with $93M still unfunded</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">110</div>
+          <div class="stat-desc">Annual crashes on SR-32 between Westfield and Noblesville — 70% are rear-end collisions from congestion</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$85M</div>
+          <div class="stat-desc">Hamilton County Public Safety Center under construction — driven by growth demands on emergency services</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Hamilton County's roads were designed for a rural county. They're not designed for what we've become — and the gap between our growth and our infrastructure is creating real safety hazards.</li>
+          <li>INDOT's own projections were wrong by more than a decade. Traffic on U.S. 31 hit 2035 levels in 2023. We can't keep planning for the past while residents sit in dangerous, gridlocked corridors.</li>
+          <li>Westfield has a $93 million hole in its infrastructure budget. Growth is good — but only if we build the plan to support it. Developers shouldn't profit while residents pay for the congestion they leave behind.</li>
+          <li>State investment in transportation infrastructure needs to keep pace with where Hoosiers actually live now — and Hamilton County is one of the fastest-growing places in the country.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: INDOT Level Up 31 project documentation (Sept. 2025); Improve to Move SR-32 project site; IBJ, Westfield $186M infrastructure plan (Jun. 2024); YouAreCurrent, Noblesville 2026 outlook (Dec. 2025).</div>
+    </div>
+
+    <!-- ISSUE 2: SCHOOL GROWTH / CHILDCARE / EDUCATION -->
+    <div class="issue-card p1">
+      <div class="issue-header">
+        <div class="issue-title-row">
+          <div class="issue-num">2</div>
+          <div class="issue-title">School Overcrowding, Education Funding &amp; Child Care</div>
+        </div>
+        <div class="issue-subtitle">The fastest-growing school district in Indiana is scrambling — and so are working parents.</div>
+        <div class="tag-row">
+          <span class="tag tag-hot">🔥 Active Local Conflict</span>
+          <span class="tag tag-local">Local</span>
+          <span class="tag tag-state">State</span>
+          <span class="tag tag-fed">Federal</span>
+        </div>
+      </div>
+      <p class="issue-summary">Westfield Washington Schools — <strong>the fastest-growing school district in Indiana</strong> — is already redrawing attendance boundaries to manage overcrowding, with enrollment in K-4 elementary schools growing by 660 students in five years. In November 2025, a proposed school rebalancing plan triggered a parent revolt, with hundreds of families upset that children would be moved to a school adjacent to a major highway. Statewide, Indiana's childcare funding crisis is landing hard in Hamilton County too: state CCDF voucher enrollment has been frozen, and Indiana will issue no new child care vouchers through at least 2026. Federal education funding — including $107 million for Indiana programs — has been threatened by the Trump administration's DEI compliance requirements.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">#1</div>
+          <div class="stat-desc">Westfield Washington Schools — the fastest-growing school district in Indiana</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">+660</div>
+          <div class="stat-desc">New K-4 students in Westfield Washington Schools over five years — driving boundary redraw conflicts</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$107M</div>
+          <div class="stat-desc">Federal education funding at risk for Indiana programs under Trump administration DEI requirements</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">Frozen</div>
+          <div class="stat-desc">Indiana CCDF childcare vouchers — no new enrollment through 2026; 35,000 statewide on waitlist</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Westfield Washington Schools is the fastest-growing district in Indiana — and it's running out of space. That's not a problem you can solve by just moving kids around. We need serious investment in school facilities that keeps pace with growth.</li>
+          <li>Parents in Westfield revolted over a boundary plan that would have put young children next to a highway. That's what happens when planning lags growth — families pay the cost of decisions made without them in mind.</li>
+          <li>The state cut childcare vouchers at the worst possible time for working families in a county where housing costs already strain household budgets. A frozen waitlist isn't a plan — it's an abdication.</li>
+          <li>Federal education funding — after-school programs, reading intervention, special services — is at risk because of political mandates from Washington. Hamilton County schools shouldn't be caught in that crossfire.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: WRTV, "Parents revolt against school boundary plan" (Nov. 2025); Indiana Capital Chronicle, CCDF freeze (Oct. 2025 &amp; Apr. 2026); Chalkbeat Indiana, federal education funding threat (Jul. 2025).</div>
+    </div>
+
+    <!-- ISSUE 3: PROPERTY TAXES / COST BURDEN -->
+    <div class="issue-card p2">
+      <div class="issue-header">
+        <div class="issue-title-row">
+          <div class="issue-num">3</div>
+          <div class="issue-title">Property Taxes, Home Costs &amp; SEA 1 Impact</div>
+        </div>
+        <div class="issue-subtitle">Indiana's new property tax law benefits higher-value homes disproportionately — and threatens local government revenue.</div>
+        <div class="tag-row">
+          <span class="tag tag-state">State</span>
+          <span class="tag tag-local">Local</span>
+        </div>
+      </div>
+      <p class="issue-summary">Indiana's Senate Enrolled Act 1 (SEA 1), signed as a signature Braun initiative in 2025, restructures homestead property tax deductions through 2031. While marketed as relief for homeowners, analysis shows the reform disproportionately benefits those with higher home values — and the break-even point is $102,740 in assessed value. With an average Hamilton County home valued at $433,528, high-value homeowners gain more. Meanwhile, assessed values in Hamilton County rose well above the 12% statewide average in 2025 — and the property tax freeze in SEA 1 reduces revenue local governments can collect for roads, schools, and emergency services. This creates a structural tension: growing communities need more revenue as they grow, but the new law caps what can be collected.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$433K</div>
+          <div class="stat-desc">Average Hamilton County home value — highest in Indiana, making property taxes a significant household cost</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$102K</div>
+          <div class="stat-desc">SEA 1 breakeven assessed value — homes below this threshold are worse off under the new law; Hamilton County avg. is 4x higher</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">12%+</div>
+          <div class="stat-desc">Hamilton County assessed value growth in 2025 — above statewide average, driven by continued residential development</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>The governor's property tax reform looks good on paper — but the fine print matters. In communities with modest home values, it actually makes things worse. It's tax relief for the wealthy disguised as help for everyone.</li>
+          <li>For Hamilton County specifically, the new law caps how much local governments can collect even as our population grows and demands for services increase. You can't fund a $186 million infrastructure backlog with a frozen levy.</li>
+          <li>Homeowners here have seen their assessed values surge 12% or more. That's real money — and people deserve a tax system that's transparent, fair, and actually funds the roads and schools they're paying for.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Hamilton County Democrats / HamcoDemsin, "Hoosier Property Tax Re-Re-Reform" (Dec. 2025); AribaTax, Indiana Assessed Values 2025 analysis (Apr. 2026); Indiana Fiscal Policy Institute SEA 1 analysis.</div>
+    </div>
+
+    <!-- ISSUE 4: MENTAL HEALTH -->
+    <div class="issue-card p2">
+      <div class="issue-header">
+        <div class="issue-title-row">
+          <div class="issue-num">4</div>
+          <div class="issue-title">Mental Health, Youth Wellbeing &amp; Behavioral Health Access</div>
+        </div>
+        <div class="issue-subtitle">Affluent suburbs are not immune — Hamilton County has invested in crisis services, and that investment must continue.</div>
+        <div class="tag-row">
+          <span class="tag tag-local">Local</span>
+          <span class="tag tag-state">State</span>
+        </div>
+      </div>
+      <p class="issue-summary">Hamilton County made a visible commitment to behavioral health in recent years — including opening the Rely Center, the county's first dedicated 24/7 mental health crisis facility, operated by Aspire Indiana Health in Noblesville. The county website prominently features "NavigateHC," a behavioral health and wellness support system for residents. A former county judge publicly noted the connection between untreated mental health needs and early criminal involvement among youth. Teen mental health and youth vaping have also been flagged as public health priorities by the county. This is an area where Democrats can affirm local investment while pushing back on state-level defunding of mental health and Medicaid services that support these systems.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">First</div>
+          <div class="stat-desc">Hamilton County crisis center (The Rely Center) — opened as county's first 24/7 mental health emergency facility</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">24/7</div>
+          <div class="stat-desc">Coverage at Rely Center for suicidal ideation, substance crisis, severe depression, psychotic episodes</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>A former Hamilton County judge said it plainly: when we don't catch mental health struggles early, we meet those kids later — with felony charges. The Rely Center is the right investment. We need to protect and expand it.</li>
+          <li>Mental health is not a "blue county" issue. Families in Noblesville, Westfield, and Carmel face anxiety, depression, teen substance use, and crisis — just like everywhere else. The question is whether their community is prepared to respond.</li>
+          <li>The state's Medicaid disruption — freezing disability waivers, rebidding $68 billion in managed care contracts — threatens the systems that behavioral health providers rely on. Local progress can be undone by Statehouse decisions.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: WRTV, Hamilton County opens first mental health crisis center in Noblesville; Hamilton County website (NavigateHC launch); Hamilton County Mental Health and Recovery Services Board.</div>
+    </div>
+
+    <!-- ISSUE 5: DEMOCRATIC NORMS / REDISTRICTING -->
+    <div class="issue-card p3">
+      <div class="issue-header">
+        <div class="issue-title-row">
+          <div class="issue-num">5</div>
+          <div class="issue-title">Democratic Norms, Redistricting &amp; Representation</div>
+        </div>
+        <div class="issue-subtitle">Hamilton County voters showed up to fight gerrymandering — and they're not done.</div>
+        <div class="tag-row">
+          <span class="tag tag-hot">📍 Local Voter Energy</span>
+          <span class="tag tag-norms">Governance</span>
+          <span class="tag tag-state">State</span>
+          <span class="tag tag-fed">Federal</span>
+        </div>
+      </div>
+      <p class="issue-summary">In November 2025, hundreds of Hamilton County residents — from both parties — turned out to a town hall in Fishers organized by ReCenter Indiana to voice concerns about Indiana's mid-decade congressional redistricting push. Attendees pushed back on the legislature prioritizing Trump's map-rigging request over actual constituent needs. The Indiana Senate ultimately voted 31-19 against the redrawn map, with 21 Republicans joining all 10 Democrats in opposition. That cross-partisan resistance is a signature Hamilton County political dynamic: college-educated voters who take democratic norms seriously, regardless of party. The redistricting controversy is energizing 2026 early voter turnout — already tracking above 2022 and 2024 levels in the primary.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">31–19</div>
+          <div class="stat-desc">Indiana Senate vote against Trump's redistricting map — 21 Republicans joined all Democrats in opposition</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">1,883</div>
+          <div class="stat-desc">Hamilton County early primary votes cast just 10 days in — outpacing 2022 and 2024 at same point</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">6+</div>
+          <div class="stat-desc">Competitive 2026 legislative &amp; congressional primaries affecting Hamilton County — sign of voter engagement surge</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Hamilton County voters from both parties showed up to say: stop playing games with our maps, and start doing your job. The legislature listened — but only because the public pushed. That's the kind of pressure we need to keep applying.</li>
+          <li>Redistricting was supposed to help Republicans. Instead, it revealed a fracture in the GOP — 21 Republican senators broke with the governor and the White House. That's a sign that voters here are ahead of their own party.</li>
+          <li>When the Statehouse focuses on map-drawing instead of schools, roads, and mental health — that's a values statement. Democrats need to be the party that says: we're here to govern, not to entrench.</li>
+          <li>Early voting in Hamilton County is up dramatically in 2026. That energy needs to be channeled into a November that reflects what this community actually stands for.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: WRTV, "Hamilton County voters voice concerns about mid-decade redistricting" (Nov. 2025); Indiana Citizen, "Early voting surges in Hamilton County" (Apr. 2026); Ballotpedia, Indiana redistricting 2026.</div>
+    </div>
+
+    <!-- ISSUE 6: ENVIRONMENT / WATER / LAND -->
+    <div class="issue-card p4">
+      <div class="issue-header">
+        <div class="issue-title-row">
+          <div class="issue-num">6</div>
+          <div class="issue-title">Environment, Open Space &amp; Quality of Life</div>
+        </div>
+        <div class="issue-subtitle">At the Fishers redistricting town hall, a resident named the environment as their top concern. Hamilton County voters notice what's disappearing.</div>
+        <div class="tag-row">
+          <span class="tag tag-local">Local</span>
+          <span class="tag tag-state">State</span>
+        </div>
+      </div>
+      <p class="issue-summary">At the November 2025 redistricting town hall in Fishers, attendee James Todd said his top concern was "the environment and the destruction of our natural world here in Indiana" — a signal that environmental issues register for Hamilton County's college-educated, quality-of-life-focused electorate. Rapid development is converting farmland and natural areas at a fast pace; Westfield's growth alone has transformed thousands of acres. Residents who moved to the suburbs for space, trails, and a certain quality of life are watching it be built over. The Noblesville Parks Department has a five-year master plan under state review. Trail connectivity, green infrastructure, and stormwater management are live local issues alongside land use and density debates.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">3.8M</div>
+          <div class="stat-desc">Annual visits to Grand Park Sports Campus in Westfield — traffic and land-use pressure point around major roads still being upgraded</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">5-yr</div>
+          <div class="stat-desc">Noblesville Parks master plan submitted for DNR review — implementation 2026–2031</div>
+        </div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>People moved to Hamilton County for a reason — good schools, open space, trails, a certain quality of life. Rapid development without planning degrades exactly what made these communities attractive.</li>
+          <li>Smart growth means protecting green space, managing stormwater, and building trails that connect communities — not just approving subdivisions and leaving roads and schools to catch up later.</li>
+          <li>When a Hamilton County voter stands up at a town hall about redistricting and says their top concern is the environment — that's a signal. Democrats need to hear it and respond with a serious land-use and conservation vision for growing suburban counties.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: WRTV, Hamilton County redistricting town hall (Nov. 2025); Westfield IBJ infrastructure plan; YouAreCurrent, Noblesville 2026 projects (Dec. 2025).</div>
+    </div>
+
+  </div><!-- end issue-grid -->
+
+  <!-- DISTRICT CONTEXT -->
+  <div class="section-label">District &amp; Race Context</div>
+  <div class="context-card">
+    <h3>What Makes HD-39 the Hamilton County Polar Anchor</h3>
+    <p>HD-39 is Indiana's second "Polar Anchor" — the most competitive seat in a county that is undergoing rapid political realignment. Hamilton County is the wealthiest county in Indiana, home to Carmel, Fishers, Noblesville, and the booming suburb of Westfield. It has historically been deep red — but <strong>the Dem presidential share grew from 37% in 2016 to 46% in 2024</strong>, a nine-point swing driven by college-educated transplants, demographic change, and issues that cross party lines.</p>
+    <p>Lindsay Gramlich is challenging Republican Daniel Lopez in a seat that is statistically the most winnable for Democrats in Hamilton County. The surrounding legislative environment includes SD-29, held by Democrat J.D. Ford (at +9D, one of the region's strongest Dem performing senate seats), creating a useful validation frame — Democrats can win here, and the evidence is right next door.</p>
+    <p><strong>The key voter in HD-39 is not a base Democrat.</strong> They're a college-educated homeowner, probably a transplant from another metro, who values good schools, functioning infrastructure, clean government, and fiscal responsibility. They may have voted Republican before, but they're increasingly uncomfortable. Issues that reinforce competence, quality of life, and democratic norms — rather than sharp ideological contrast — are most likely to move these voters.</p>
+    <p>The 2026 redistricting backlash, competitive primary environment, and surging early vote are all structural tailwinds. The race for Indiana's 5th Congressional District (CD-5) at the top of the ballot — with 7 Democrats competing, including J.D. Ford — also brings organizing infrastructure to the county that will benefit down-ballot candidates.</p>
+  </div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  <p>HD-39 Candidate Power Pack — Issues Research · Indiana Rural Summit · May 2026</p>
+  <p>For internal planning use. All data cited to public sources.</p>
+</div>
+
+</body>
+</html>

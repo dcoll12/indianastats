@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HD-4 Candidate Power Pack — Top Issues</title>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,700;1,400&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --lake: #0d3a5c; --lake-mid: #1a5c8a; --lake-light: #3a8ab8;
+    --dune: #8a6420; --dune-light: #c8921a; --dune-pale: #f0c84a;
+    --steel: #3a4a5a; --steel-light: #6a8aaa;
+    --rust: #7a2810; --rust-light: #b04020;
+    --green: #1e4a30; --green-light: #2e7a48;
+    --cream: #f3f1ed; --warm-white: #fdfcfa;
+    --text: #1a1a1a; --muted: #505560; --border: #d4d0c8;
+    --orange: #9a4010;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Work Sans', sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; }
+
+  .header { background: var(--lake); padding: 38px 52px 28px; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: 0; right: 0; width: 300px; height: 100%; background: linear-gradient(135deg, transparent 30%, rgba(26,92,138,0.2) 100%); }
+  .header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--rust-light), var(--dune-light), var(--lake-light)); }
+
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .badge-district { background: var(--lake-mid); color: #fff; font-size: 13px; padding: 5px 16px; }
+  .badge-held { background: rgba(122,40,16,0.25); border: 1px solid rgba(176,64,32,0.4); color: #f0a890; }
+  .badge-anchor { background: rgba(138,100,32,0.25); border: 1px solid rgba(138,100,32,0.4); color: var(--dune-pale); }
+  .badge-cd { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.45); }
+  .header h1 { font-family: 'Spectral', serif; color: #fff; font-size: 29px; line-height: 1.2; margin-bottom: 6px; }
+  .header h1 em { font-style: italic; color: rgba(255,255,255,0.5); font-size: 20px; display: block; margin-top: 3px; }
+  .county-tag { display: inline-block; background: rgba(26,92,138,0.3); border: 1px solid rgba(58,138,184,0.4); color: #90c8f0; padding: 4px 14px; border-radius: 3px; font-size: 12px; font-weight: 500; letter-spacing: 0.06em; margin-top: 12px; }
+  .header-stats { display: flex; gap: 24px; margin-top: 20px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; }
+  .hstat { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .hstat strong { display: block; color: rgba(255,255,255,0.82); font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+
+  /* CONTEXT BAND */
+  .context-band { background: var(--lake-mid); padding: 16px 52px; display: flex; gap: 14px; align-items: flex-start; }
+  .cb-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #90c8f0; white-space: nowrap; padding-top: 2px; }
+  .context-band p { font-size: 13.5px; color: rgba(255,255,255,0.75); line-height: 1.55; }
+  .context-band strong { color: #fff; }
+
+  /* NOTE BAND */
+  .note-band { background: #fff; border-left: 4px solid var(--dune-light); border-bottom: 1px solid var(--border); padding: 14px 52px; display: flex; gap: 14px; align-items: flex-start; }
+  .nb-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dune-light); white-space: nowrap; padding-top: 2px; }
+  .note-band p { font-size: 13.5px; color: var(--muted); font-style: italic; line-height: 1.5; }
+
+  .main { max-width: 1020px; margin: 0 auto; padding: 38px 52px 64px; }
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--lake-mid); margin-bottom: 22px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .snapshot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 14px; margin-bottom: 40px; }
+  .snap-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 4px; padding: 16px 18px; text-align: center; }
+  .snap-num { font-family: 'Spectral', serif; font-size: 26px; color: var(--lake); line-height: 1; margin-bottom: 4px; }
+  .snap-desc { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+
+  .issue-grid { display: grid; gap: 22px; margin-bottom: 48px; }
+  .issue-card { background: var(--warm-white); border: 1px solid var(--border); border-left: 4px solid var(--lake-mid); border-radius: 4px; padding: 26px 30px; }
+  .issue-card.p1 { border-left-color: var(--rust); }
+  .issue-card.p2 { border-left-color: var(--orange); }
+  .issue-card.p3 { border-left-color: var(--dune-light); }
+  .issue-card.p4 { border-left-color: var(--green-light); }
+  .issue-card.p5 { border-left-color: var(--lake-mid); }
+
+  .issue-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
+  .issue-num { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .p1 .issue-num { background: var(--rust); }
+  .p2 .issue-num { background: var(--orange); }
+  .p3 .issue-num { background: var(--dune-light); }
+  .p4 .issue-num { background: var(--green-light); }
+  .p5 .issue-num { background: var(--lake-mid); }
+
+  .issue-title { font-family: 'Spectral', serif; font-size: 20px; color: var(--lake); line-height: 1.2; }
+  .issue-sub { font-size: 13px; color: var(--muted); padding-left: 42px; font-style: italic; margin-bottom: 8px; }
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; padding-left: 42px; margin-bottom: 14px; }
+  .tag { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; }
+  .tag-hot { background: #fde8e8; color: #7a1c1c; }
+  .tag-local { background: #e3eef8; color: #0d3a5c; }
+  .tag-state { background: #fff4e0; color: #6d3b00; }
+  .tag-fed { background: #e8f0f8; color: #1a3a5c; }
+  .tag-norms { background: #f3ede8; color: #5a2010; }
+
+  .issue-summary { font-size: 14.5px; color: var(--text); line-height: 1.68; margin-bottom: 16px; }
+
+  .stat-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+  .stat-box { background: var(--cream); border: 1px solid var(--border); border-radius: 3px; padding: 12px 16px; flex: 1; min-width: 140px; }
+  .stat-num { font-family: 'Spectral', serif; font-size: 22px; color: var(--lake); line-height: 1; margin-bottom: 4px; }
+  .stat-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  .tp-box { background: #eaf2f8; border-left: 3px solid var(--lake-light); border-radius: 0 3px 3px 0; padding: 14px 18px; margin-top: 4px; }
+  .p1 .tp-box { background: #fdf2ef; border-left-color: var(--rust-light); }
+  .p2 .tp-box { background: #fdf6ef; border-left-color: var(--orange); }
+  .p3 .tp-box { background: #fdf8ee; border-left-color: var(--dune-light); }
+  .p4 .tp-box { background: #eef6f0; border-left-color: var(--green-light); }
+  .tp-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--lake-mid); margin-bottom: 10px; }
+  .p1 .tp-label { color: var(--rust); }
+  .p2 .tp-label { color: var(--orange); }
+  .p3 .tp-label { color: var(--dune-light); }
+  .p4 .tp-label { color: var(--green-light); }
+  .tp-box ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .tp-box ul li { font-size: 13.5px; color: var(--text); padding-left: 18px; position: relative; line-height: 1.5; }
+  .tp-box ul li::before { content: '→'; position: absolute; left: 0; color: var(--lake-light); font-size: 12px; }
+  .p1 .tp-box ul li::before { color: var(--rust-light); }
+  .p2 .tp-box ul li::before { color: var(--orange); }
+  .p3 .tp-box ul li::before { color: var(--dune-light); }
+  .p4 .tp-box ul li::before { color: var(--green-light); }
+  .source-line { font-size: 11px; color: var(--muted); margin-top: 12px; font-style: italic; border-top: 1px solid var(--border); padding-top: 10px; }
+
+  .context-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 4px; padding: 26px 30px; margin-bottom: 48px; }
+  .context-card h3 { font-family: 'Spectral', serif; font-size: 18px; color: var(--lake); margin-bottom: 14px; }
+  .context-card p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 10px; }
+  .context-card p:last-child { margin-bottom: 0; }
+  .context-card strong { color: var(--text); }
+
+  .footer { background: var(--lake); padding: 20px 52px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer p { font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; }
+
+  @media (max-width: 700px) {
+    .header, .main, .context-band, .note-band, .footer { padding-left: 20px; padding-right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge-row">
+    <span class="badge badge-district">HD 4</span>
+    <span class="badge badge-held">Held by Republican</span>
+    <span class="badge badge-anchor">⭐ Polar Anchor</span>
+    <span class="badge badge-cd">CD-1</span>
+  </div>
+  <h1>Top Issues Research<em>Candidate Power Pack</em></h1>
+  <div class="county-tag">Porter County — Valparaiso, Indiana</div>
+  <div class="header-stats">
+    <div class="hstat"><strong>Candidate</strong>Ryan Kominakis (D)</div>
+    <div class="hstat"><strong>IN-Index</strong>+10.1R (Hardest Polar Anchor; maximum persuasion challenge)</div>
+    <div class="hstat"><strong>Incumbent</strong>Ed Soliday (R) — Valparaiso</div>
+    <div class="hstat"><strong>Key Cities</strong>Valparaiso · Portage · Chesterton</div>
+    <div class="hstat"><strong>Research Date</strong>May 2026</div>
+  </div>
+</div>
+
+<div class="context-band">
+  <span class="cb-label">District Identity</span>
+  <p>Porter County is <strong>Chicago's Indiana backyard</strong> — a Lake Michigan shoreline county defined by steel industry roots, the Indiana Dunes National Park, commuter rail access to Chicago, and a rapidly growing suburban population. It sits at the intersection of blue-collar industrial heritage and white-collar professional exurban growth. <strong>At +10.1R, this is the biggest stretch in the pack</strong> — but Porter County's political identity is shifting, and real local tensions around land use, corporate development, housing costs, and working-class economic anxiety are creating genuine openings.</p>
+</div>
+
+<div class="note-band">
+  <span class="nb-label">Research Note</span>
+  <p>Issues sourced from NWI Times, IU Business Research Center NW Indiana Forecast, Indiana Capital Chronicle, NW Indiana Business Magazine, Data Center Dynamics, CitizenPortal coverage of the QTS data center battle, South Shore Line project documentation, and Porter County government records. At +10.1R, the strategy must be cross-persuasion — reaching culturally Republican but economically movable voters on kitchen-table issues.</p>
+</div>
+
+<div class="main">
+
+  <div class="section-label">District Voter Snapshot</div>
+  <div class="snapshot-grid">
+    <div class="snap-card"><div class="snap-num">+10.1R</div><div class="snap-desc">IN-Index — the most Republican-leaning Polar Anchor; requires cross-persuasion of culturally conservative but economically anxious voters</div></div>
+    <div class="snap-card"><div class="snap-num">1,000+</div><div class="snap-desc">Porter County residents who packed a public meeting to defeat a $2B QTS data center — "County, Not Corporate" became the local rallying cry</div></div>
+    <div class="snap-card"><div class="snap-num">50,000</div><div class="snap-desc">Additional homes Lake, Porter, and La Porte counties will need in the next 25 years (NIRPC NWI 2050+ plan)</div></div>
+    <div class="snap-card"><div class="snap-num">4.6M</div><div class="snap-desc">Annual visitors to Indiana Dunes — Porter County's premier natural asset and economic driver, now facing federal land management uncertainty</div></div>
+    <div class="snap-card"><div class="snap-num">22K+</div><div class="snap-desc">Indiana steel industry jobs — up from 18,100 in 2017 after targeted tariffs, but now exposed to broader tariff volatility affecting supply chains</div></div>
+    <div class="snap-card"><div class="snap-num">Mar. 2026</div><div class="snap-desc">South Shore Line Monon Corridor opened March 31, 2026 — connecting NW Indiana to Chicago; a regional transit milestone years in the making</div></div>
+  </div>
+
+  <div class="section-label">Priority Issues — Porter County / HD-4</div>
+  <div class="issue-grid">
+
+    <!-- ISSUE 1: DATA CENTERS / LAND USE / CORPORATE DEVELOPMENT -->
+    <div class="issue-card p1">
+      <div class="issue-title-row"><div class="issue-num">1</div><div class="issue-title">Corporate Land Grab, Data Centers &amp; Community Control</div></div>
+      <div class="issue-sub">Over 1,000 Porter County residents said "County, Not Corporate" and stopped a $2B data center on farmland near a school. The fight isn't over.</div>
+      <div class="tag-row"><span class="tag tag-hot">🔥 Live Local Conflict</span><span class="tag tag-local">Local</span><span class="tag tag-state">State</span><span class="tag tag-norms">Community Control</span></div>
+      <p class="issue-summary">In May 2025, more than 1,000 Union Township residents packed the Porter County Expo Center in Valparaiso to oppose a $2 billion data center campus proposed by QTS (Blackstone-owned) on nearly 800 acres of farmland near Wheeler High School. Residents raised concerns about energy usage, environmental impact, proximity to schools, and the lack of transparent communication from developers. They wore orange shirts with the slogan "Wheeler Country, Not Corporate." The Porter County commissioners ultimately moved away from the project. A separate Agincourt data center proposal in Valparaiso was also rejected earlier in the year. A 2,500-signature petition opposed another 467-acre data center proposal in Franklin Township. Porter County's Plan Commission and Board of Commissioners are still navigating ongoing pressure from hyperscale data center developers — and residents are watching closely. This is not anti-development sentiment; residents explicitly said the county wasn't "anti data center" — it was about <em>siting, transparency, and who benefits</em>.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">1,000+</div><div class="stat-desc">Residents who packed the Porter County Expo Center to oppose QTS data center — one of the largest local government meetings in recent county history</div></div>
+        <div class="stat-box"><div class="stat-num">800 acres</div><div class="stat-desc">Farmland near Wheeler High School targeted by QTS for a $2B data center campus — residents rejected the proposed rezoning</div></div>
+        <div class="stat-box"><div class="stat-num">2,500</div><div class="stat-desc">Petition signatures against a separate 467-acre data center proposal in Franklin Township — showing countywide pattern of resistance</div></div>
+        <div class="stat-box"><div class="stat-num">$2B</div><div class="stat-desc">Proposed QTS investment value — withdrawn after community opposition; developers cited "economically challenging conditions"</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>More than a thousand Porter County residents showed up on a Tuesday night to tell a billion-dollar corporation: not here, not like this. That's democracy working. The question is whether we have elected officials who will keep listening — or who will find ways to let developers back in through the side door.</li>
+          <li>Residents weren't against data centers. They were against 800 acres of farmland near a school being rezoned without transparency or community benefit. That's a reasonable ask — and it should be the standard, not the exception, for any large-scale development in this county.</li>
+          <li>Porter County's farmland, its open spaces, and its proximity to the Indiana Dunes are what make this place worth living in. Rezoning farmland for industrial-scale energy infrastructure is a one-way door — once it's gone, it's gone. We need a land-use framework that puts community character first.</li>
+          <li>The QTS parent company's financial ties to an Israeli firm added another layer of distrust. When corporate developers can't or won't answer basic questions about who they are and who benefits, communities are right to say no. Transparency isn't a luxury — it's the price of doing business here.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: NWI Times, data center opposition coverage (May 2025); Data Center Dynamics, "QTS cans data center scheme in Porter County" (Sept. 2025); CitizenPortal, QTS public meeting and commissioner response coverage (Aug. 2025); Data Center Watch Briefing (May 2025).</div>
+    </div>
+
+    <!-- ISSUE 2: STEEL / TARIFFS / WORKING-CLASS ECONOMY -->
+    <div class="issue-card p1">
+      <div class="issue-title-row"><div class="issue-num">2</div><div class="issue-title">Steel Industry, Tariffs &amp; Working-Class Economic Anxiety</div></div>
+      <div class="issue-sub">Targeted steel tariffs helped NW Indiana mills — but broader tariff volatility threatens the supply chains those same workers depend on.</div>
+      <div class="tag-row"><span class="tag tag-hot">📍 Core Identity Issue</span><span class="tag tag-local">Local</span><span class="tag tag-fed">Federal</span></div>
+      <p class="issue-summary">Northwest Indiana's steel mills ring Lake Michigan, and Porter County is part of that industrial landscape. Indiana's steel industry grew from roughly 18,100 workers in 2017 to 22,390 by 2023, partly thanks to targeted steel tariffs that boosted prices and stabilized employment. Union Steelworkers District 7's director acknowledged that the tariffs "brought back workers who were laid off and facilities that were idled." But the situation is more complex in 2025–2026. Broader tariffs — 25% on Canada and Mexico — are raising costs for the steel mills themselves, which depend on imported inputs. Economists at IU Northwest cautioned that while steel producers benefit temporarily from higher prices, the broader tariff package erodes economic confidence and hits downstream manufacturers that use steel. The region is navigating a tension between the identity politics of tariff support and the economic reality that 400 tariff adjustments in 2025 alone are creating business uncertainty and slowing hiring. NW Indiana's 2026 forecast projects 1.8% GRP growth — modest and uneven.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">22,390</div><div class="stat-desc">Indiana steel industry jobs at end of 2023 — up from 18,100 in 2017, partly due to targeted tariffs; now facing broader trade volatility</div></div>
+        <div class="stat-box"><div class="stat-num">400</div><div class="stat-desc">Tariff adjustments in 2025 alone — creating business planning uncertainty that slowed NW Indiana hiring by midyear</div></div>
+        <div class="stat-box"><div class="stat-num">1.8%</div><div class="stat-desc">NW Indiana projected GRP growth in 2026 — modest and uneven; strong in Porter County, weaker in outer rural counties</div></div>
+        <div class="stat-box"><div class="stat-num">22.5%</div><div class="stat-desc">Average U.S. effective tariff rate in 2025 — highest since 1909; affects steel inputs and downstream manufacturers simultaneously</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Porter County's working families built this region with their hands — in the mills, on the docks, in the warehouses. They deserve trade policy that actually protects their jobs, not trade policy that's really about political optics while their employers absorb uncertainty and slow down hiring.</li>
+          <li>Targeted steel tariffs helped NW Indiana mills and we should support them. But 400 tariff adjustments in a single year? That's not a trade policy — that's chaos. Businesses can't plan, workers can't count on stable employment, and the supply chain that feeds Porter County's manufacturers gets squeezed from both ends.</li>
+          <li>The steel industry is Porter County's economic backbone — but it's also transitioning. Logistics, healthcare, and professional services are growing. We need state-level workforce investment that helps steelworkers build new skills when automation changes the mills, not just trade rhetoric that promises to turn back the clock.</li>
+          <li>Working-class families in Portage and Chesterton deserve elected officials who tell them the truth about trade: some tariffs help, broad tariff chaos hurts, and no politician in Washington can promise to bring back exactly the jobs that left decades ago. The honest answer is workforce investment, not slogans.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: NWI Times, "Steel tariffs stabilized employment at mills but broader tariffs raise worries" (Mar. 2025); IU Business Research Center, NW Indiana 2026 Forecast; Ball State CBER Indiana Economic Outlook 2026.</div>
+    </div>
+
+    <!-- ISSUE 3: HOUSING AFFORDABILITY / GROWTH MANAGEMENT -->
+    <div class="issue-card p2">
+      <div class="issue-title-row"><div class="issue-num">3</div><div class="issue-title">Housing Affordability, Growth &amp; Community Character</div></div>
+      <div class="issue-sub">Porter County needs 50,000 more homes in 25 years — but residents are already pushing back on density, annexation, and sprawl. Smart growth or no growth is the tension.</div>
+      <div class="tag-row"><span class="tag tag-local">Local</span><span class="tag tag-state">State</span></div>
+      <p class="issue-summary">Porter County is a high-demand housing market straining under growth pressure from the Chicago metro. Residents in June 2025 packed Valparaiso City Hall to oppose annexation of 80 acres for 300-unit housing development — citing traffic density and infrastructure capacity. The NIRPC's NWI 2050+ plan projects Lake, Porter, and La Porte counties will need 50,000 more homes in the next 25 years. An IU Northwest housing study found that housing in the region is increasingly unaffordable: a household needs a median income of $83,000 to afford the median-priced home in Lake County (only 32% of households qualify), and similar dynamics apply across Porter County. A multi-faith Porter County Housing Assembly in May 2025 drew 200 residents focused on "Housing for All" — seniors, first-time buyers, renters, and the growing homeless population. One Valparaiso senior was on a waiting list for affordable independent senior housing for three years before finally getting in. The tension between affordable housing needs and neighborhood opposition to density is a defining local conflict.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">50,000</div><div class="stat-desc">Additional homes needed in Lake, Porter and La Porte counties in the next 25 years (NIRPC NWI 2050+ plan)</div></div>
+        <div class="stat-box"><div class="stat-num">$83K</div><div class="stat-desc">Median household income needed to afford the median-priced home in NW Indiana — only ~32% of households qualify</div></div>
+        <div class="stat-box"><div class="stat-num">3 years</div><div class="stat-desc">Wait time for a Valparaiso senior to get into affordable independent senior housing — illustrating the depth of the shortage for lower-income residents</div></div>
+        <div class="stat-box"><div class="stat-num">200</div><div class="stat-desc">Residents at Porter County Housing Assembly (May 2025) focused on "Housing for All" — senior, renter, first-time buyer, and homeless needs</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Porter County needs 50,000 more homes in the next 25 years. That's not a projectable future — that's the reality families are already living. Teachers, nurses, retail workers, the people who keep this community running cannot afford to live here. That's a problem for all of us.</li>
+          <li>A Valparaiso woman waited three years for affordable senior housing. Three years of uncertainty for someone who just wants independence and a safe place to live. We can do better — and it starts with treating affordable housing as infrastructure, not charity.</li>
+          <li>Residents have legitimate concerns about density, traffic, and neighborhood character. Smart growth means planning developments that actually work — with the roads, schools, and services to support new residents. Not just approving subdivisions and hoping the infrastructure catches up.</li>
+          <li>The Porter County Housing Assembly said it plainly: this is about housing for everyone — seniors, renters, first-time buyers, and people experiencing homelessness. A county with the Indiana Dunes on its doorstep should be a place where everyone who works here can afford to live here.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: NWI Times, Valparaiso annexation opposition (Jun. 2025); NW Indiana Business Magazine, "A Place to Call Home" (Oct. 2025); Indiana Capital Chronicle, "From waiting list to action" (Aug. 2025); NIRPC NWI 2050+ plan.</div>
+    </div>
+
+    <!-- ISSUE 4: INDIANA DUNES / ENVIRONMENT / FEDERAL LAND -->
+    <div class="issue-card p3">
+      <div class="issue-title-row"><div class="issue-num">4</div><div class="issue-title">Indiana Dunes, Environment &amp; Federal Land Management</div></div>
+      <div class="issue-sub">4.6 million visitors a year. A National Park on Porter County's doorstep. And a federal administration that has shown little interest in protecting public lands.</div>
+      <div class="tag-row"><span class="tag tag-local">Local</span><span class="tag tag-fed">Federal</span></div>
+      <p class="issue-summary">The Indiana Dunes National Park is Porter County's crown jewel — attracting 4.6 million annual visitors and driving the county's tourism economy. Indiana Dunes Tourism, under the leadership of Christine Livingston, has been building the Dunes brand as a regional connector across all of Porter County. The Dunes also represent an environmental heritage that shapes Porter County's identity — 16% of properties in Porter County face severe flood risk over the next 30 years, and proximity to Lake Michigan makes climate-related water level changes a long-term concern. Residents who packed the data center hearings cited "environment and quality of life" as their core concerns. At the federal level, the Trump administration's approach to national park staffing, land management, and environmental regulation has created anxiety among communities — like Porter County — where the federal public land is an economic and cultural anchor. Porter County's "smart growth" identity depends on the Dunes staying protected.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">4.6M</div><div class="stat-desc">Annual visitors to Indiana Dunes — driving Porter County tourism economy and defining the county's regional identity</div></div>
+        <div class="stat-box"><div class="stat-num">16%</div><div class="stat-desc">Porter County properties at risk of severe flooding over the next 30 years — environmental risk tied to Lake Michigan and climate change</div></div>
+        <div class="stat-box"><div class="stat-num">500 acres</div><div class="stat-desc">Indiana Dunes State Park woodlands, beaches, fens and bogs — plus the surrounding National Park; the county's ecological and economic foundation</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>The Indiana Dunes bring 4.6 million visitors to Porter County every year. That's not just beautiful scenery — that's economic lifeblood for hotels, restaurants, shops, and communities throughout the county. We need federal partners who treat the Dunes like the national treasure they are, not as a line item to cut.</li>
+          <li>Residents who fought the data center were fighting for the same thing Dunes visitors come for: a Porter County that hasn't been paved over. Environment isn't a special interest — it's the reason people want to live here, work here, and build a life here.</li>
+          <li>16% of Porter County properties face severe flood risk over the next 30 years. Lake Michigan water levels have fluctuated dramatically in recent years. These are real risks to real families' homes and investments — and they deserve real planning, not denial.</li>
+          <li>Federal public lands belong to the people. The Indiana Dunes National Park is ours — and it should be managed for the long-term benefit of the communities that border it, not defunded, understaffed, or opened to development to satisfy a political agenda in Washington.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Indiana Dunes Tourism / Duneland Chamber; Porter County CivicEngage, tourism leadership coverage; Redfin, Porter County flood risk data; Duneland Chamber Economic Development profile.</div>
+    </div>
+
+    <!-- ISSUE 5: SOUTH SHORE / TRANSIT / COMMUTER ECONOMY -->
+    <div class="issue-card p4">
+      <div class="issue-title-row"><div class="issue-num">5</div><div class="issue-title">South Shore Line, Transit Investment &amp; the Chicago Commuter Economy</div></div>
+      <div class="issue-sub">The South Shore Line double-track is complete. Chesterton has direct rail to Chicago. Now Porter County needs to grow around transit — not sprawl away from it.</div>
+      <div class="tag-row"><span class="tag tag-local">Local</span><span class="tag tag-state">State</span><span class="tag tag-fed">Federal</span></div>
+      <p class="issue-summary">The South Shore Line's double-track project, completed in May 2024, added 14 weekday trains for more frequent service and reduced travel times between Porter County's stations and Chicago's Millennium Station. This investment — built over years of federal, state, and local partnership — is now reshaping Porter County's housing and development dynamics. Chesterton, Porter, Ogden Dunes and other communities along the Lakeshore Corridor have become increasingly attractive to Chicago-area professionals seeking more affordable housing with transit access. The NIRPC's NWI 2050+ plan calls for transit-oriented development — compact, walkable, mixed-use neighborhoods centered around train stations — as the key to meeting housing demand without sprawl. A Valparaiso extension of the South Shore Line has been studied and proposed in the Regional Development Authority's 2025 strategic plan. Federal transit funding — which the Trump administration has shown interest in cutting — is what made the double-track and Monon Corridor possible.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">+14</div><div class="stat-desc">New weekday South Shore Line trains added after double-track completion (May 2024) — improving frequency and reliability for Porter County commuters</div></div>
+        <div class="stat-box"><div class="stat-num">Mar. 2026</div><div class="stat-desc">Monon Corridor (West Lake) opened March 31, 2026 — expanding South Shore system that serves Porter County's Lakeshore stations</div></div>
+        <div class="stat-box"><div class="stat-num">Proposed</div><div class="stat-desc">Valparaiso South Shore branch — included in RDA's 2025 strategic plan; could transform Valparaiso's connectivity to Chicago metro</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>The South Shore double-track is one of the best investments in Porter County in a generation. Fourteen more trains per day means more options for workers, less congestion on the highways, and more economic activity along the corridor. That's what public investment looks like when it works.</li>
+          <li>A Valparaiso South Shore branch is in the regional plan. That would transform downtown Valparaiso's connection to the Chicago economy — bringing jobs, investment, and housing demand that the city can shape through smart transit-oriented development. We should be fighting for that, not waiting.</li>
+          <li>Transit investment doesn't just help commuters. It catalyzes affordable housing development near stations, reduces car dependency for families who can't afford multiple vehicles, and makes communities more accessible for seniors and people with disabilities. It's economic development and quality-of-life investment in one.</li>
+          <li>Federal transit funding made the double-track possible. The same funding formula that built what we have is now under threat. Protecting that investment — and building on it — requires legislators who understand what it means to Porter County, not ones who go to Washington and vote to cut it.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: South Shore Line / NICTD, double-track and West Lake Corridor project documentation; NW Indiana Business Magazine, transit-oriented development coverage (Oct. 2025); Wikipedia, South Shore Line / West Lake Corridor; RDA 2025 strategic plan.</div>
+    </div>
+
+    <!-- ISSUE 6: PROPERTY TAXES / SEA 1 / OPIOID SETTLEMENT -->
+    <div class="issue-card p5">
+      <div class="issue-title-row"><div class="issue-num">6</div><div class="issue-title">Property Taxes, Opioid Recovery &amp; Local Government Capacity</div></div>
+      <div class="issue-sub">Property taxes are the #1 reason Porter County residents visit the county website. SEA 1's impacts are landing now — and opioid settlement funds need smart stewardship.</div>
+      <div class="tag-row"><span class="tag tag-state">State</span><span class="tag tag-local">Local</span></div>
+      <p class="issue-summary">Property tax issues are the single largest reason Porter County residents visit the county's website — nearly 60% of traffic. Indiana's SEA 1 (2025 property tax reform) is restructuring the homestead deduction framework through 2031, with complex implications for Porter County homeowners and the local government revenue that funds roads, schools, and emergency services. Porter County's own legislative brief from September 2025 laid out the impacts of SEA 1 on assessed values and tax revenue. Separately, Porter County has established an Opioid Crisis Committee to manage and distribute opioid settlement grant funds to local nonprofits, healthcare providers, and community coalitions — an active, community-led recovery investment. Porter County Prosecutor Gary Germann's office is explicitly centered on programs that "lift people up" beyond just convictions. These local government functions — property tax administration, recovery investment, public safety — are exactly what voters in a +10R district think about government doing well or poorly.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">~60%</div><div class="stat-desc">Share of Porter County website traffic driven by property tax questions — the single biggest issue residents bring to county government</div></div>
+        <div class="stat-box"><div class="stat-num">Active</div><div class="stat-desc">Porter County Opioid Crisis Committee — distributing settlement grant funds to local nonprofits and healthcare providers</div></div>
+        <div class="stat-box"><div class="stat-num">SEA 1</div><div class="stat-desc">Indiana's 2025 property tax reform — Porter County conducted its own legislative impact analysis in Sept. 2025; local government revenue implications are being tracked</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Property taxes are the most personal thing Porter County government does — nearly 60% of residents who visit the county website are there because of a tax question. When the state reforms the system, Porter County families and local government feel it directly. We need legislators who understand those downstream effects, not just the Statehouse politics.</li>
+          <li>Porter County's Opioid Crisis Committee is doing the right thing — getting settlement funds to local organizations that know this community. That community-first approach to recovery works. We should be protecting and expanding it, not creating bureaucratic barriers or diverting funds away from treatment.</li>
+          <li>SEA 1's property tax changes benefit higher-value properties more than modest homes. For families in Portage or Chesterton whose home values are below the statewide average, the math may not add up to the relief that was promised. They deserve honest answers about what the reform actually does for them.</li>
+          <li>Local government capacity — roads, emergency services, schools, public health — depends on revenue that is increasingly being constrained by state policy. When Porter County can't fund what its residents need, that's not a Porter County problem. That's a Statehouse priorities problem.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Porter County website ("Property Tax Portal" — 60% of traffic); Porter County CivicEngage, Opioid Crisis Committee launch; Porter County Legislative Updates and Impact Illustrations, Sept. 16, 2025; Porter County Prosecutor public communications.</div>
+    </div>
+
+  </div>
+
+  <div class="section-label">District &amp; Race Context</div>
+  <div class="context-card">
+    <h3>What Makes HD-4 the Northwest Indiana Polar Anchor</h3>
+    <p>At <strong>+10.1R</strong>, HD-4 is the hardest pickup in this pack. Ed Soliday (R) holds the seat from Valparaiso and has not faced a serious Democratic challenge in years. Ryan Kominakis is running as a Democrat in a district that voted 10 points more Republican than the state average. This race requires <strong>cross-persuasion of culturally Republican but economically and community-values-driven voters</strong> — not base mobilization.</p>
+    <p>The opening here is real, but narrow. Porter County's political identity is complex: it has steel union households that historically voted Dem and now lean Republican; it has college-educated Chicago transplants who lean Democratic; and it has a growing exurban population that is politically volatile on local issues. The QTS data center fight revealed something important: <strong>Porter County residents will organize and fight back against corporate overreach even in a deep-red county</strong>. That "County, Not Corporate" energy is politically untethered — it's neither Democrat nor Republican, it's communitarian. A candidate who can speak to that value authentically, and connect it to broader questions of economic dignity, housing, and environmental stewardship, can build a coalition.</p>
+    <p>The South Shore Line double-track is a tangible example of what public investment produces — and federal transit funding threats give a Democratic candidate a concrete contrast. Steel tariff complexity creates an opening to speak honestly to working-class voters about trade policy rather than just waving the flag. And the housing affordability crisis is affecting people across the political spectrum in Porter County — seniors who can't afford to age in place, young families priced out, renters paying too much.</p>
+    <p><strong>The key voter in HD-4</strong> is not a base Democrat. They're a Porter County homeowner — possibly a steelworker, a South Shore commuter, a Valparaiso small business owner, or a longtime resident who fought the data center — who is skeptical of both corporate power and government overreach, proud of their community, and worried about the direction of things. A candidate who listens, speaks plainly, and demonstrates they'll fight for Porter County's character — not for a party — has a path.</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>HD-4 Candidate Power Pack — Issues Research · Indiana Rural Summit · May 2026</p>
+  <p>For internal planning use. All data cited to public sources.</p>
+</div>
+
+</body>
+</html>

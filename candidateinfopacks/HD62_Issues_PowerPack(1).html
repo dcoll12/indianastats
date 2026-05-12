@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HD-62 Candidate Power Pack — Top Issues</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,700;1,400&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1e3d2f; --forest-mid: #2d5c42; --sage: #4a7c5e; --sage-light: #7ab394;
+    --rust: #8b3a1e; --rust-light: #c25a30; --gold: #b8891a; --gold-light: #e6b84a;
+    --cream: #f5f2ec; --warm-white: #fdfbf7; --text: #1a1a18; --muted: #5a5a50;
+    --border: #d8d3c8; --red: #8b2020; --orange: #a04a10; --blue-label: #1a3a5c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Karla', sans-serif; background: var(--cream); color: var(--text); line-height: 1.6; }
+  .header { background: var(--forest); padding: 38px 52px 28px; position: relative; overflow: hidden; }
+  .header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--rust-light), var(--gold-light), var(--sage-light)); }
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+  .badge { display: inline-block; padding: 4px 12px; border-radius: 3px; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .badge-district { background: var(--sage); color: #fff; font-size: 13px; padding: 5px 16px; }
+  .badge-held { background: rgba(139,58,30,0.25); border: 1px solid rgba(194,90,48,0.4); color: #f0a882; }
+  .badge-anchor { background: rgba(184,137,26,0.2); border: 1px solid rgba(184,137,26,0.4); color: var(--gold-light); }
+  .badge-cd { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.45); }
+  .header h1 { font-family: 'Libre Baskerville', serif; color: #fff; font-size: 29px; line-height: 1.2; margin-bottom: 6px; }
+  .header h1 em { font-style: italic; color: rgba(255,255,255,0.5); font-size: 20px; display: block; margin-top: 3px; }
+  .county-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .county-tag { display: inline-block; padding: 4px 12px; border-radius: 3px; font-size: 12px; font-weight: 500; letter-spacing: 0.05em; }
+  .ctag-brown { background: rgba(139,58,30,0.3); border: 1px solid rgba(194,90,48,0.4); color: #f0b090; }
+  .ctag-jackson { background: rgba(74,124,94,0.3); border: 1px solid rgba(122,179,148,0.4); color: var(--sage-light); }
+  .ctag-monroe { background: rgba(26,61,47,0.4); border: 1px solid rgba(74,124,94,0.4); color: #a0cdb5; }
+  .header-stats { display: flex; gap: 24px; margin-top: 20px; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; }
+  .hstat { font-size: 12px; color: rgba(255,255,255,0.4); }
+  .hstat strong { display: block; color: rgba(255,255,255,0.82); font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+  .county-band { background: var(--warm-white); border-bottom: 2px solid var(--border); padding: 20px 52px; }
+  .county-band-label { font-size: 10px; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--sage); margin-bottom: 14px; }
+  .county-profiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .county-profile { border-radius: 4px; padding: 14px 16px; border: 1px solid var(--border); }
+  .cp-brown { background: #fdf5f0; border-left: 4px solid var(--rust-light); }
+  .cp-jackson { background: #f0f7f3; border-left: 4px solid var(--sage); }
+  .cp-monroe { background: #f0f4f7; border-left: 4px solid var(--blue-label); }
+  .cp-name { font-weight: 700; font-size: 13px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .cp-brown .cp-name { color: var(--rust); }
+  .cp-jackson .cp-name { color: var(--forest-mid); }
+  .cp-monroe .cp-name { color: var(--blue-label); }
+  .cp-desc { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+  .note-band { background: #fff; border-left: 4px solid var(--gold); border-bottom: 1px solid var(--border); padding: 14px 52px; display: flex; gap: 14px; align-items: flex-start; }
+  .nb-label { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); white-space: nowrap; padding-top: 2px; }
+  .note-band p { font-size: 13.5px; color: var(--muted); font-style: italic; line-height: 1.5; }
+  .main { max-width: 1020px; margin: 0 auto; padding: 38px 52px 64px; }
+  .section-label { font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--forest-mid); margin-bottom: 22px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .snapshot-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 40px; }
+  .snap-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 4px; padding: 16px 18px; text-align: center; }
+  .snap-num { font-family: 'Libre Baskerville', serif; font-size: 26px; color: var(--forest); line-height: 1; margin-bottom: 4px; }
+  .snap-desc { font-size: 11.5px; color: var(--muted); line-height: 1.4; }
+  .issue-grid { display: grid; gap: 22px; margin-bottom: 48px; }
+  .issue-card { background: var(--warm-white); border: 1px solid var(--border); border-left: 4px solid var(--sage); border-radius: 4px; padding: 26px 30px; }
+  .issue-card.p1 { border-left-color: var(--red); }
+  .issue-card.p2 { border-left-color: var(--rust-light); }
+  .issue-card.p3 { border-left-color: var(--gold); }
+  .issue-card.p4 { border-left-color: var(--sage); }
+  .issue-title-row { display: flex; align-items: center; gap: 12px; margin-bottom: 5px; }
+  .issue-num { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .p1 .issue-num { background: var(--red); }
+  .p2 .issue-num { background: var(--rust-light); }
+  .p3 .issue-num { background: var(--gold); }
+  .p4 .issue-num { background: var(--sage); }
+  .issue-title { font-family: 'Libre Baskerville', serif; font-size: 20px; color: var(--forest); line-height: 1.2; }
+  .issue-sub { font-size: 13px; color: var(--muted); padding-left: 42px; font-style: italic; margin-bottom: 8px; }
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; padding-left: 42px; margin-bottom: 10px; }
+  .tag { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; }
+  .tag-hot { background: #fde8e8; color: #7a1c1c; }
+  .tag-local { background: #e8f4ee; color: #1a3d2f; }
+  .tag-state { background: #fff4e0; color: #6d3b00; }
+  .tag-fed { background: #eaf0f8; color: #1a3a5c; }
+  .county-context { display: flex; gap: 8px; flex-wrap: wrap; padding-left: 42px; margin-bottom: 14px; }
+  .cc-pill { font-size: 10.5px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .cc-brown { background: #fdf0ea; border: 1px solid #e8a888; color: var(--rust); }
+  .cc-jackson { background: #edf7f1; border: 1px solid #90c4a8; color: var(--forest-mid); }
+  .cc-monroe { background: #edf2f8; border: 1px solid #90aac8; color: var(--blue-label); }
+  .issue-summary { font-size: 14.5px; color: var(--text); line-height: 1.68; margin-bottom: 16px; }
+  .stat-row { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 16px; }
+  .stat-box { background: var(--cream); border: 1px solid var(--border); border-radius: 3px; padding: 12px 16px; flex: 1; min-width: 140px; }
+  .stat-num { font-family: 'Libre Baskerville', serif; font-size: 23px; color: var(--forest); line-height: 1; margin-bottom: 4px; }
+  .stat-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+  .tp-box { background: #eef4f0; border-left: 3px solid var(--sage-light); border-radius: 0 3px 3px 0; padding: 14px 18px; margin-top: 4px; }
+  .p1 .tp-box { background: #fdf2f2; border-left-color: var(--red); }
+  .p2 .tp-box { background: #fdf5ef; border-left-color: var(--rust-light); }
+  .p3 .tp-box { background: #fdf8ee; border-left-color: var(--gold); }
+  .tp-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage); margin-bottom: 10px; }
+  .p1 .tp-label { color: var(--red); }
+  .p2 .tp-label { color: var(--rust-light); }
+  .p3 .tp-label { color: var(--gold); }
+  .tp-box ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .tp-box ul li { font-size: 13.5px; color: var(--text); padding-left: 18px; position: relative; line-height: 1.5; }
+  .tp-box ul li::before { content: '→'; position: absolute; left: 0; color: var(--sage); font-size: 12px; }
+  .p1 .tp-box ul li::before { color: var(--red); }
+  .p2 .tp-box ul li::before { color: var(--rust-light); }
+  .p3 .tp-box ul li::before { color: var(--gold); }
+  .source-line { font-size: 11px; color: var(--muted); margin-top: 12px; font-style: italic; border-top: 1px solid var(--border); padding-top: 10px; }
+  .context-card { background: var(--warm-white); border: 1px solid var(--border); border-radius: 4px; padding: 26px 30px; margin-bottom: 48px; }
+  .context-card h3 { font-family: 'Libre Baskerville', serif; font-size: 18px; color: var(--forest); margin-bottom: 14px; }
+  .context-card p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 10px; }
+  .context-card p:last-child { margin-bottom: 0; }
+  .context-card strong { color: var(--text); }
+  .footer { background: var(--forest); padding: 20px 52px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .footer p { font-size: 11px; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; }
+  @media (max-width: 700px) {
+    .header, .main, .county-band, .note-band, .footer { padding-left: 20px; padding-right: 20px; }
+    .county-profiles { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge-row">
+    <span class="badge badge-district">HD 62</span>
+    <span class="badge badge-held">Held by Republican</span>
+    <span class="badge badge-anchor">⭐ Polar Anchor</span>
+    <span class="badge badge-cd">CD-9</span>
+  </div>
+  <h1>Top Issues Research<em>Candidate Power Pack</em></h1>
+  <div class="county-tags">
+    <span class="county-tag ctag-brown">Brown County</span>
+    <span class="county-tag ctag-jackson">Jackson County</span>
+    <span class="county-tag ctag-monroe">Monroe County</span>
+  </div>
+  <div class="header-stats">
+    <div class="hstat"><strong>Candidate</strong>Amy Huffman Oliver (D)</div>
+    <div class="hstat"><strong>IN-Index</strong>+1.4D (Most Dem-favorable Polar Anchor)</div>
+    <div class="hstat"><strong>Anchor City</strong>Nashville, IN (Brown County seat)</div>
+    <div class="hstat"><strong>Incumbent</strong>Dave Hall (R)</div>
+    <div class="hstat"><strong>Research Date</strong>May 2026</div>
+  </div>
+</div>
+
+<div class="county-band">
+  <div class="county-band-label">Three Very Different Counties — One District</div>
+  <div class="county-profiles">
+    <div class="county-profile cp-brown">
+      <div class="cp-name">Brown County</div>
+      <div class="cp-desc">~16,000 residents. Rural, heavily forested, no hospital. Tourism-driven (~$40M of $362M GDP). Aging — 25%+ age 65+. High homeownership. Bedroom/retirement community. 77% of resident income earned outside county. Declining school enrollment.</div>
+    </div>
+    <div class="county-profile cp-jackson">
+      <div class="cp-name">Jackson County</div>
+      <div class="cp-desc">~45,000 residents. Seymour is county seat on I-65. Manufacturing and logistics economy. Home of nationally recognized Schneck Medical Center. Active opioid recovery infrastructure. Receiving $1.67M in national opioid settlement funds through 2038.</div>
+    </div>
+    <div class="county-profile cp-monroe">
+      <div class="cp-name">Monroe County (portion)</div>
+      <div class="cp-desc">Bloomington orbit. IU anchor economy under stress in 2025: wages fell 6.5%, employment down 2.6%. Workers earn 11.9% less than avg. Hoosier but pay 18.1% more for housing. SD-40 held by Democrat Shelli Yoder (+29.2D) — strong base infrastructure.</div>
+    </div>
+  </div>
+</div>
+
+<div class="note-band">
+  <span class="nb-label">Research Note</span>
+  <p>HD-62 is the only Polar Anchor with a Dem-favorable IN-Index (+1.4D). Issues sourced from Brown County Democrat, Indiana Rural Health Association 2025 State Report, Indiana Capital Chronicle, IU Business Research Center Bloomington 2026 Forecast, Seymour Tribune, and Indiana Commission to Combat Drug Abuse county plan.</p>
+</div>
+
+<div class="main">
+
+  <div class="section-label">District Voter Snapshot</div>
+  <div class="snapshot-grid">
+    <div class="snap-card"><div class="snap-num">+1.4D</div><div class="snap-desc">IN-Index — the most Dem-favorable Polar Anchor in the regional pack; a winnable race</div></div>
+    <div class="snap-card"><div class="snap-num">25%+</div><div class="snap-desc">Brown County residents age 65+ — well above state average; healthcare access is existential</div></div>
+    <div class="snap-card"><div class="snap-num">0</div><div class="snap-desc">Hospitals in Brown County — the county has no hospital; aging residents must drive for emergency care</div></div>
+    <div class="snap-card"><div class="snap-num">$1.67M</div><div class="snap-desc">Jackson County opioid settlement funds — how they're spent is an active local debate through 2038</div></div>
+    <div class="snap-card"><div class="snap-num">+34%</div><div class="snap-desc">More days a Bloomington worker must work to afford a home vs. avg. Hoosier (2025, up from 21% in 2024)</div></div>
+    <div class="snap-card"><div class="snap-num">+29.2D</div><div class="snap-desc">SD-40 performance (Shelli Yoder, Monroe Co.) — strong Dem base infrastructure in district's Monroe portion</div></div>
+  </div>
+
+  <div class="section-label">Priority Issues — Brown, Jackson &amp; Monroe Counties</div>
+  <div class="issue-grid">
+
+    <div class="issue-card p1">
+      <div class="issue-title-row"><div class="issue-num">1</div><div class="issue-title">Rural Healthcare Access &amp; the Hospital Desert Crisis</div></div>
+      <div class="issue-sub">Brown County has no hospital. For its aging residents, getting care means driving — sometimes in emergencies.</div>
+      <div class="tag-row"><span class="tag tag-hot">🔥 Existential for Brown County</span><span class="tag tag-state">State</span><span class="tag tag-fed">Federal</span></div>
+      <div class="county-context">
+        <span class="cc-pill cc-brown">Brown County: No Hospital</span>
+        <span class="cc-pill cc-jackson">Jackson Co: Schneck Medical Center</span>
+        <span class="cc-pill cc-monroe">Monroe Co: IU Health Bloomington</span>
+      </div>
+      <p class="issue-summary">A November 2025 Brown County community health needs assessment — commissioned by local leaders and led by Indiana University — identified the county's aging population, lack of a hospital, and barriers to paying for care as its defining healthcare challenges. More than a quarter of residents are 65+, and there is no hospital. The IU team spotlighted community paramedicine as a promising solution: paramedics visiting elderly residents at home to manage chronic conditions before an emergency sends them to an ER miles away. Statewide, Indiana's 2025 Rural Health Report found that 25% of Indiana's 52 rural hospitals have already cut services and 15 have closed since 2010. EMS agencies in rural counties are understaffed and financially strained. Federal H.R. 1 Medicaid cuts and Indiana's $68B managed care contract rebid further threaten the rural health safety net.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">0</div><div class="stat-desc">Hospitals in Brown County — residents must drive to surrounding counties for emergency and hospital care</div></div>
+        <div class="stat-box"><div class="stat-num">25%+</div><div class="stat-desc">Brown County residents age 65+ — highest-need population; lowest-rated health scores were financial and social</div></div>
+        <div class="stat-box"><div class="stat-num">25%</div><div class="stat-desc">Indiana rural hospitals that have already cut services — 15 have closed since 2010 statewide</div></div>
+        <div class="stat-box"><div class="stat-num">#1</div><div class="stat-desc">Issue in Brown County's 2025 IU health needs assessment — getting care and paying for it</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Brown County has no hospital. For a county where one in four residents is 65 or older, that's not just an inconvenience — it's a public safety crisis. A heart attack doesn't wait for a 30-minute drive.</li>
+          <li>The community paramedicine model is exactly the kind of rural innovation we should be funding statewide: paramedics checking on elderly residents at home, managing chronic conditions before they become emergencies. Brown County is already exploring it. The Statehouse should be supporting it.</li>
+          <li>Indiana has lost 15 rural hospitals since 2010. Federal Medicaid cuts will accelerate closures. Communities like ours can't absorb another — and we need legislators who will fight to protect what remains.</li>
+          <li>The biggest healthcare concern Brown County residents cited wasn't finding a doctor. It was paying for care. That's a Medicaid and insurance access fight happening right now in Indianapolis and Washington, and it needs a champion from this district.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Brown County Democrat, "Health needs survey flags access, aging concerns" (Nov. 2025); Indiana Rural Health Association, 2025 State Rural Health Report; Indiana Capital Chronicle, Indiana rural health plan (Nov. 2025).</div>
+    </div>
+
+    <div class="issue-card p1">
+      <div class="issue-title-row"><div class="issue-num">2</div><div class="issue-title">Substance Use, Recovery &amp; Opioid Settlement Investment</div></div>
+      <div class="issue-sub">Jackson County received $1.67M in opioid settlement funds — and the debate over how to spend it is still live.</div>
+      <div class="tag-row"><span class="tag tag-hot">📍 Active in Jackson County</span><span class="tag tag-local">Local</span><span class="tag tag-state">State</span></div>
+      <div class="county-context">
+        <span class="cc-pill cc-jackson">Jackson County: Primary Issue</span>
+        <span class="cc-pill cc-brown">Brown County: Rural isolation risk factors</span>
+      </div>
+      <p class="issue-summary">Jackson County has built dedicated substance use infrastructure — alcohol and drug courts, a community coalition, Schneck Medical Center partnerships — and is now managing the distribution of $1,666,863 from the national opioid settlement. County commissioners have debated the use of funds, with Commissioner Markel stating: "I want the main focus to be treatment." Jackson County will receive $82,076 annually through 2038 — ongoing accountability funding. The Seymour Tribune published a 2026 special section on the county's opioid situation, signaling this is still high-visibility for local voters. Indiana's 2025 drug prevention plan identifies Jackson County specifically, with THC and other substances joining opioids as current concerns.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">$1.67M</div><div class="stat-desc">Jackson County opioid settlement total — $1.27M in restricted abatement funds for treatment and recovery</div></div>
+        <div class="stat-box"><div class="stat-num">Thru 2038</div><div class="stat-desc">Annual opioid settlement payments to Jackson County — $82,076/year provides sustained recovery infrastructure funding</div></div>
+        <div class="stat-box"><div class="stat-num">$46M</div><div class="stat-desc">Indiana's 2024–2026 statewide opioid abatement spending plan — treatment, transitional housing, and recovery programs</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Jackson County is getting over $1.6 million in opioid settlement funds, and the community has clearly said: put it toward treatment. Recovery coaches, transitional housing, treatment programs — those investments save lives and rebuild families. We shouldn't let that money get diluted.</li>
+          <li>Jackson County already has the infrastructure — drug courts, a coalition, Schneck Medical. What it needs is sustained political will and a legislator who shows up for the recovery community, not just at election time.</li>
+          <li>The opioid crisis didn't happen to Jackson County because of bad choices. It happened because of predatory pharmaceutical companies. The settlement money is accountability — let's use it to heal.</li>
+          <li>Brown County's rural isolation and aging population create real substance use vulnerabilities too. A regional approach connecting Brown, Jackson, and Monroe County recovery resources is smarter and more cost-effective than each county going it alone.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Seymour Tribune, Jackson County opioid settlement coverage; Indiana Commission to Combat Drug Abuse, Jackson County 2025 Community Coalition Plan; Indiana opioid settlement reporting portal; Seymour Tribune "2026 Opioid Special Section" (Jan. 2026).</div>
+    </div>
+
+    <div class="issue-card p2">
+      <div class="issue-title-row"><div class="issue-num">3</div><div class="issue-title">Housing Affordability &amp; Workforce Cost Burden</div></div>
+      <div class="issue-sub">Bloomington's housing costs are squeezing workers out; Brown County tourism is squeezing year-round residents out.</div>
+      <div class="tag-row"><span class="tag tag-state">State</span><span class="tag tag-local">Local</span></div>
+      <div class="county-context">
+        <span class="cc-pill cc-monroe">Monroe County: Wage-housing squeeze</span>
+        <span class="cc-pill cc-brown">Brown County: Tourism/rental pressure</span>
+        <span class="cc-pill cc-jackson">Jackson County: Workforce housing gap</span>
+      </div>
+      <p class="issue-summary">Monroe County's housing crisis sharpened in 2025. The IU Business Research Center found Bloomington metro workers earning 11.9% less than the average Hoosier while living in a market where homes list 18.1% above the state average. By August 2025, an average Bloomington worker had to work 34% more days of their life than the average Hoosier to afford a home — up from 21% just one year earlier. IU graduates leave because they can't afford to stay. Brown County faces a parallel but different squeeze: tourism and second-home demand is driving up values while limited buildable land (most is federally or state-owned) constrains supply, pricing out year-round residents at modest incomes. Cook Medical in Jackson County began building homes for its own employees — a sign of how acute the workforce housing shortage has become in the region.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">−11.9%</div><div class="stat-desc">Bloomington worker hourly earnings vs. state average — earning less in a market where homes cost 18% more</div></div>
+        <div class="stat-box"><div class="stat-num">+34%</div><div class="stat-desc">More days a Bloomington worker must work to buy a home vs. avg. Hoosier (Aug. 2025 — up from 21% in 2024)</div></div>
+        <div class="stat-box"><div class="stat-num">77%</div><div class="stat-desc">Brown County income earned outside county — short-term rentals compete with year-round housing supply</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>In Bloomington, workers earn less than the state average and pay more for a home than almost anywhere else in Indiana. Young people build careers there and leave because they can't afford to stay. That's an economic drain on the whole region.</li>
+          <li>Brown County's character — its forests, its art community, its small-town feel — is exactly what draws visitors. But when short-term rental demand prices out the people who actually live there year-round, we lose the community that makes the county worth visiting in the first place.</li>
+          <li>Cook Medical in Jackson County started building homes for their own employees. That's what happens when state policy fails — employers become housing developers. We need real policy solutions, not corporate workarounds.</li>
+          <li>Rural Indiana's housing problem isn't the same as the cities'. It needs rural-specific solutions: land bank tools, affordable housing trust funds that work in low-density markets, and policies that protect year-round residents from being outbid by second-home buyers.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: IU Business Research Center, Bloomington 2026 Forecast (Dec. 2025); Independent Voters of Brown County IN, Comprehensive Plan WIP Notes (Mar. 2025); IBRC, "Workforce and Housing Affordability" (2024).</div>
+    </div>
+
+    <div class="issue-card p2">
+      <div class="issue-title-row"><div class="issue-num">4</div><div class="issue-title">Rural Economic Vitality, Tourism &amp; Broadband</div></div>
+      <div class="issue-sub">Brown County's economy runs on tourism and remote workers. Jackson County runs on manufacturing. Both need connectivity and economic diversification to thrive.</div>
+      <div class="tag-row"><span class="tag tag-local">Local</span><span class="tag tag-state">State</span><span class="tag tag-fed">Federal</span></div>
+      <div class="county-context">
+        <span class="cc-pill cc-brown">Brown County: Tourism/remote work economy</span>
+        <span class="cc-pill cc-jackson">Jackson County: Manufacturing/I-65 corridor</span>
+        <span class="cc-pill cc-monroe">Monroe County: IU entrepreneurship growth</span>
+      </div>
+      <p class="issue-summary">Brown County is a textbook rural tourism economy — approximately 40% of its GDP comes from tourism, most land is federally or state-owned (limiting the tax base), and school enrollment has been declining. Its economic future depends on attracting remote workers and retirees — which requires reliable broadband. Fiber technically reaches 90% of Brown County, but adoption and affordability gaps remain. The Indiana Rural Health Association's 2025 report flagged broadband as a critical barrier to telehealth, education, and remote work across rural Indiana. Jackson County's manufacturing base is exposed to tariff volatility — the 2025 U.S. effective tariff rate hit 22.5%, the highest since 1909 — creating real uncertainty for employers along the I-65 corridor. Bloomington's entrepreneurship scene is a bright spot (private business up 4.6% in 2025) but the housing barrier is preventing talent retention.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">~40%</div><div class="stat-desc">Brown County GDP from tourism (~$40M of $362M total) — the county's economic foundation is visitor-dependent</div></div>
+        <div class="stat-box"><div class="stat-num">90%</div><div class="stat-desc">Brown County fiber broadband availability per FCC data — but adoption and affordability gaps persist for telehealth and remote work</div></div>
+        <div class="stat-box"><div class="stat-num">22.5%</div><div class="stat-desc">Average U.S. tariff rate in 2025 — highest since 1909; threatens Jackson County manufacturing employers on I-65</div></div>
+        <div class="stat-box"><div class="stat-num">4 stoplights</div><div class="stat-desc">Brown County — added its 4th in 2025; illustrates the rural scale of infrastructure that must support economic growth</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Brown County's economy depends on visitors — and visitors depend on the community being authentic and alive year-round. Declining school enrollment and rising housing costs are the slow erosion of exactly what makes this place worth coming to.</li>
+          <li>Broadband is rural infrastructure, the same as roads and water lines. Telehealth, remote work, small business — all of it runs on connectivity. The state has committed resources; we need to make sure Brown County sees real results, not just coverage maps.</li>
+          <li>Jackson County manufacturers are caught in tariff whiplash they didn't create. When Washington changes trade policy overnight, Seymour workers pay the price. We need state-level economic resilience planning and support — not just hoping the trade war settles down.</li>
+          <li>Bloomington's entrepreneurship scene is genuinely growing. We should be building the regional housing and infrastructure policy that lets those businesses — and their employees — put down roots in communities across Brown, Jackson, and Monroe Counties.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Independent Voters of Brown County IN, Comprehensive Plan WIP Notes (2025); Indiana Rural Health Association 2025 Report; IU Business Research Center, Bloomington 2026 Forecast; Yale Budget Lab tariff data via IBRC 2025.</div>
+    </div>
+
+    <div class="issue-card p3">
+      <div class="issue-title-row"><div class="issue-num">5</div><div class="issue-title">Aging Population, Senior Services &amp; Long-Term Care</div></div>
+      <div class="issue-sub">Brown County's electorate is older than the state average — and older rural voters experience healthcare, transportation, and financial isolation most acutely.</div>
+      <div class="tag-row"><span class="tag tag-local">Local</span><span class="tag tag-state">State</span></div>
+      <div class="county-context">
+        <span class="cc-pill cc-brown">Brown County: Core Issue — 25%+ 65+</span>
+        <span class="cc-pill cc-jackson">Jackson County: Rural senior access gaps</span>
+      </div>
+      <p class="issue-summary">Brown County's health needs survey found the lowest self-rated scores in financial and social health — especially among seniors and those with limited mobility. The survey skewed heavily female and 60+, reflecting the actual population. The IU assessment noted fewer multigenerational households and growing social isolation as compounding risk factors. There is no public transit in rural Brown County, leaving seniors completely dependent on others for appointments outside the county. Indiana's Medicaid disruptions — disability waiver freezes, Pathways for Aging managed care disruption — directly harm this population. Fifteen rural hospitals have closed in Indiana since 2010. The combination of no local hospital, no transit, and shrinking state services creates a layered crisis for Brown County's most vulnerable residents.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">25%+</div><div class="stat-desc">Brown County residents 65 or older — the county's dominant demographic and highest-need group</div></div>
+        <div class="stat-box"><div class="stat-num">Frozen</div><div class="stat-desc">Indiana Family Supports and CIH disability waivers — no new slots through July 2026; compounds rural senior isolation</div></div>
+        <div class="stat-box"><div class="stat-num">0</div><div class="stat-desc">Public transit options in rural Brown County — seniors without a driver face complete isolation from services</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Brown County is a retirement community in the best sense — people chose it for its beauty and its character. But we can't sustain those residents if there's no hospital, no transit, and no in-home services. A community that can't support its elders is a community in decline.</li>
+          <li>Community paramedicine could transform healthcare access for Brown County seniors — bringing care to people rather than forcing people to travel to care. That's the kind of rural innovation the Statehouse should be backing with real dollars.</li>
+          <li>Indiana froze disability waiver slots for adults who need home services to live independently. In a rural county with no hospital and no transit, that freeze isn't a line in a budget document — it's a crisis unfolding in real homes across Brown County.</li>
+          <li>Brown County's own health survey found seniors rating their financial and social health lowest. Those are solvable problems — with Medicaid expansion protection, home-based service investment, and legislators who actually show up.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Brown County Democrat, "Health needs survey flags access, aging concerns" (Nov. 2025); Indiana Rural Health Association 2025 Report; Arc of Indiana, Medicaid Waiver Updates (2026); Indiana Capital Chronicle, Medicaid rebid (Feb. 2026).</div>
+    </div>
+
+    <div class="issue-card p4">
+      <div class="issue-title-row"><div class="issue-num">6</div><div class="issue-title">Schools, Childcare &amp; Rural Education Investment</div></div>
+      <div class="issue-sub">Declining enrollment in Brown County and statewide childcare cuts are squeezing rural schools and working families from both ends.</div>
+      <div class="tag-row"><span class="tag tag-state">State</span><span class="tag tag-fed">Federal</span><span class="tag tag-local">Local</span></div>
+      <div class="county-context">
+        <span class="cc-pill cc-brown">Brown County: Systemic enrollment decline</span>
+        <span class="cc-pill cc-jackson">Jackson County: 4 K-12 public systems</span>
+        <span class="cc-pill cc-monroe">Monroe County: IU/higher ed stress</span>
+      </div>
+      <p class="issue-summary">Brown County's school enrollment has been declining systemically — a structural warning sign for any rural community. Statewide, Indiana's childcare crisis hits rural areas especially hard: CCDF voucher enrollment is frozen through 2026, On My Way Pre-K was cut by more than half, and no new vouchers will be issued until at least 2027. In rural communities with limited providers, the voucher freeze often means parents leave the workforce entirely. In Monroe County, IU faced economic stress in 2025 — wages fell, employment shrank — with downstream effects on K-12 pipelines and community programs across the region. A threatened $107 million in federal education funding under Trump administration DEI compliance requirements affects rural districts too: after-school programs, reading intervention, special services. Sprunica Elementary in Brown County has been winning statewide recognition for student innovation — that kind of success needs stable funding.</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-num">↓ Enrollment</div><div class="stat-desc">Brown County school enrollment declining systemically — a demographic warning for community long-term vitality</div></div>
+        <div class="stat-box"><div class="stat-num">Frozen</div><div class="stat-desc">CCDF childcare vouchers statewide — no new low-income enrollment through 2026; 35,000+ on waitlist</div></div>
+        <div class="stat-box"><div class="stat-num">$107M</div><div class="stat-desc">Federal Indiana education funding at risk from Trump DEI compliance requirements — affects after-school and intervention programs</div></div>
+      </div>
+      <div class="tp-box">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>When Brown County's schools lose enrollment year after year, it's not just an education metric — it's a signal that young families can't afford to stay, or don't see a future here. Reversing that trend starts with investing in schools and the communities around them.</li>
+          <li>Sprunica Elementary in Brown County has kids winning at the state invention convention. That's what rural schools can do when they're supported. We should be building on success like that, not squeezing budgets until the talent leaves.</li>
+          <li>The childcare voucher freeze hit rural families hardest. There are fewer providers to begin with, and the ones that exist are losing reimbursement. "No voucher" in Brown County doesn't mean find another provider — it means one parent stops working.</li>
+          <li>IU's economic stress in 2025 — wage cuts, shrinking employment — ripples through Monroe County schools, community colleges, and local nonprofits. When the anchor institution struggles, the whole community feels it. We need legislators who connect those dots.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Independent Voters of Brown County IN, Comprehensive Plan notes (2025); Brown County Democrat local news archive; Indiana Capital Chronicle, CCDF freeze (Oct. 2025 &amp; Apr. 2026); IU Business Research Center, Bloomington 2026 Forecast.</div>
+    </div>
+
+  </div>
+
+  <div class="section-label">District &amp; Race Context</div>
+  <div class="context-card">
+    <h3>What Makes HD-62 the Southern Rural Polar Anchor</h3>
+    <p>HD-62 is the most Dem-favorable of the three Polar Anchors at <strong>+1.4D</strong> — meaning Amy Huffman Oliver is running in terrain that is statistically tilted her way, with a clear path to victory if organized. Dave Hall (R) holds the seat from Nashville, the Brown County seat. The three-county district has genuinely distinct identities: Brown is rural/retirement/tourism; Jackson is manufacturing/Seymour/recovery; Monroe (portion) is Bloomington-adjacent and university-influenced.</p>
+    <p>The unifying frame across all three counties is <strong>rural communities being left behind by a Statehouse focused on suburban growth</strong>. Healthcare deserts in Brown County, opioid recovery funding debates in Jackson, the housing-wage squeeze in Monroe — residents across this district feel the gap between what state government delivers to Hamilton County and what reaches them.</p>
+    <p><strong>SD-40</strong>, covering Monroe County and held by Democrat Shelli Yoder at a <strong>+29.2D</strong> performance margin, demonstrates that strong Democratic infrastructure exists in the Monroe County portion of the district. That organizing base is a real structural asset for Huffman Oliver. The challenge is persuading Brown and Jackson County voters who may be culturally Republican but economically aligned with Democratic policies on healthcare, rural investment, and recovery.</p>
+    <p><strong>The key voter in HD-62</strong> is a rural resident — possibly a retiree in Nashville who can't get to a doctor, a manufacturing worker in Seymour watching trade policy whipsaw their employer, or a Bloomington-adjacent renter who can't afford to buy. A candidate who shows up, speaks plainly about economic dignity and healthcare access, and has genuine local roots can win here. The issues are real, the index favors Democrats, and the Bloomington base provides organizing infrastructure.</p>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>HD-62 Candidate Power Pack — Issues Research · Indiana Rural Summit · May 2026</p>
+  <p>For internal planning use. All data cited to public sources.</p>
+</div>
+
+</body>
+</html>

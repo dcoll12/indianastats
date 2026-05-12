@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HD-40 Candidate Power Pack — Top Issues</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --blue: #2a4fa8;
+    --blue-mid: #3d6abf;
+    --gold: #c8921a;
+    --gold-light: #f5c842;
+    --cream: #faf7f2;
+    --text: #1c1c1c;
+    --muted: #5a6173;
+    --red-tag: #b03030;
+    --green-tag: #2a7a4a;
+    --border: #ddd5c8;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    padding: 36px 48px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 320px; height: 100%;
+    background: linear-gradient(135deg, transparent 40%, rgba(200,146,26,0.12) 100%);
+  }
+  .header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .badge-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .badge-district {
+    background: var(--blue);
+    color: #fff;
+    font-size: 13px;
+    padding: 5px 14px;
+  }
+  .badge-held {
+    background: rgba(176,48,48,0.3);
+    border: 1px solid rgba(220,80,80,0.4);
+    color: #ffaaaa;
+  }
+  .badge-anchor {
+    background: rgba(200,146,26,0.2);
+    border: 1px solid rgba(200,146,26,0.4);
+    color: var(--gold-light);
+  }
+  .badge-cd {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.55);
+  }
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    color: #fff;
+    font-size: 32px;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .header-sub {
+    color: rgba(255,255,255,0.55);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .county-tags {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .county-tag {
+    background: rgba(200,146,26,0.15);
+    border: 1px solid rgba(200,146,26,0.35);
+    color: var(--gold-light);
+    padding: 4px 12px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .meta-item {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.05em;
+  }
+  .meta-item strong {
+    color: rgba(255,255,255,0.8);
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    margin-bottom: 1px;
+  }
+
+  /* INTRO BAND */
+  .intro-band {
+    background: #fff;
+    border-bottom: 3px solid var(--gold);
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .intro-band .label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+  .intro-band p {
+    font-size: 14px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* MAIN */
+  .main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 48px 64px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ISSUE CARDS */
+  .issue-grid {
+    display: grid;
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .issue-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--blue);
+    border-radius: 4px;
+    padding: 24px 28px;
+    position: relative;
+  }
+  .issue-card.priority-1 { border-left-color: #b03030; }
+  .issue-card.priority-2 { border-left-color: #c8921a; }
+  .issue-card.priority-3 { border-left-color: #2a7a4a; }
+
+  .issue-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .issue-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .issue-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .issue-card.priority-1 .issue-number { background: #b03030; }
+  .issue-card.priority-2 .issue-number { background: #c8921a; }
+  .issue-card.priority-3 .issue-number { background: #2a7a4a; }
+
+  .issue-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    color: var(--navy);
+    line-height: 1.25;
+  }
+  .issue-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 2px;
+  }
+  .tag-hot { background: #fde8e8; color: #8b1c1c; }
+  .tag-local { background: #e8f0ff; color: #1c3a8b; }
+  .tag-state { background: #fff3e0; color: #7a4500; }
+  .tag-fed { background: #e8f5e9; color: #1b4d2e; }
+
+  .issue-summary {
+    font-size: 14.5px;
+    color: var(--text);
+    margin-bottom: 14px;
+    line-height: 1.65;
+  }
+
+  .stat-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .stat-box {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px 14px;
+    flex: 1;
+    min-width: 150px;
+  }
+  .stat-box .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .stat-box .stat-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+
+  .talking-points {
+    background: var(--cream);
+    border-radius: 3px;
+    padding: 14px 18px;
+    margin-top: 4px;
+  }
+  .talking-points .tp-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .talking-points ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .talking-points ul li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .talking-points ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--blue);
+    font-size: 12px;
+  }
+
+  .source-line {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 12px;
+    font-style: italic;
+    border-top: 1px solid var(--border);
+    padding-top: 10px;
+  }
+
+  /* DISTRICT CONTEXT */
+  .context-box {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px 28px;
+    margin-bottom: 48px;
+  }
+  .context-box h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+  .context-box p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+  .context-box p:last-child { margin-bottom: 0; }
+
+  /* CANDIDATE TABLE */
+  .candidate-section {
+    margin-bottom: 48px;
+  }
+  .candidate-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    font-size: 13px;
+  }
+  .candidate-table thead {
+    background: var(--navy);
+    color: rgba(255,255,255,0.75);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .candidate-table thead th {
+    padding: 10px 14px;
+    text-align: left;
+  }
+  .candidate-table tbody tr {
+    border-bottom: 1px solid var(--border);
+  }
+  .candidate-table tbody tr:last-child {
+    border-bottom: none;
+  }
+  .candidate-table tbody td {
+    padding: 10px 14px;
+    vertical-align: middle;
+    color: var(--text);
+  }
+  .candidate-table .anchor-row {
+    background: rgba(200,146,26,0.06);
+    border-left: 3px solid var(--gold);
+  }
+  .anchor-badge {
+    display: inline-block;
+    background: rgba(200,146,26,0.15);
+    border: 1px solid rgba(200,146,26,0.4);
+    color: #7a5a00;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 2px;
+    margin-left: 6px;
+  }
+  .in-index-r {
+    color: #b03030;
+    font-weight: 600;
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--navy);
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .footer p {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.04em;
+  }
+
+  @media print {
+    .header { padding: 24px 32px; }
+    .main { padding: 24px 32px 40px; }
+    .intro-band { padding: 16px 32px; }
+    .footer { padding: 16px 32px; }
+  }
+  @media (max-width: 680px) {
+    .header { padding: 24px 20px; }
+    .main { padding: 24px 20px 40px; }
+    .intro-band { padding: 16px 20px; flex-direction: column; gap: 6px; }
+    .footer { padding: 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="badge-row" style="margin-bottom:12px;">
+        <span class="badge badge-district">HD-40</span>
+        <span class="badge badge-held">Held by Republican</span>
+        <span class="badge badge-anchor">⭐ Polar Anchor</span>
+        <span class="badge badge-cd">CD-4</span>
+      </div>
+      <h1>Top Issues Research<br><em style="font-style:italic; color:rgba(255,255,255,0.6); font-size:22px;">Candidate Power Pack</em></h1>
+      <div class="county-tags">
+        <span class="county-tag">Hendricks County</span>
+      </div>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div class="meta-item"><strong>Candidate</strong>Will Colteryahn (D) — Avon</div>
+    <div class="meta-item"><strong>IN-Index</strong>+12.4R — Target: Polar Anchor for regional wave</div>
+    <div class="meta-item"><strong>Incumbent</strong>Gregory Steuerwald (R)</div>
+    <div class="meta-item"><strong>Key Cities</strong>Avon · Brownsburg (portions)</div>
+    <div class="meta-item"><strong>Research Date</strong>May 2026</div>
+  </div>
+</div>
+
+<!-- INTRO BAND -->
+<div class="intro-band">
+  <span class="label">Research Note</span>
+  <p>Issues sourced from community assessments, local news, state agency reports, and public data. Hendricks County is Indiana's fastest-growing suburban county — issues here reflect rapid growth pressures, school funding battles, and economic anxiety as a commuter and logistics hub. Prepared for Indiana Rural Summit Power Pack series · May 2026.</p>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- PACK CANDIDATE OVERVIEW -->
+  <div class="section-label">Power Pack — All Candidates in Regional Wave</div>
+  <div class="candidate-section">
+    <table class="candidate-table">
+      <thead>
+        <tr>
+          <th>Candidate</th>
+          <th>District</th>
+          <th>IN-Index</th>
+          <th>Location</th>
+          <th>Incumbent (R)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="anchor-row">
+          <td><strong>Will Colteryahn</strong> <span class="anchor-badge">Polar Anchor</span></td>
+          <td>HD-40</td>
+          <td class="in-index-r">+12.4R</td>
+          <td>Avon (Hendricks Co.)</td>
+          <td>Gregory Steuerwald</td>
+        </tr>
+        <tr>
+          <td><strong>Jarren Hurt</strong></td>
+          <td>HD-91</td>
+          <td class="in-index-r">+20.8R</td>
+          <td>Johnson County</td>
+          <td>Robert Behning</td>
+        </tr>
+        <tr>
+          <td><strong>Suzanne Fortenberry</strong></td>
+          <td>HD-57</td>
+          <td class="in-index-r">+32.8R</td>
+          <td>Greenwood (Johnson Co.)</td>
+          <td>Craig Haggard</td>
+        </tr>
+        <tr>
+          <td><strong>Karen Whitney</strong></td>
+          <td>HD-28</td>
+          <td class="in-index-r">+40.5R</td>
+          <td>Hendricks/Putnam counties</td>
+          <td>Jeffrey Thompson</td>
+        </tr>
+        <tr>
+          <td><strong>Kelsey Kauffman</strong></td>
+          <td>HD-44</td>
+          <td class="in-index-r">+50.1R</td>
+          <td>Greencastle (Putnam Co.)</td>
+          <td>Beau Baird</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px; color:var(--muted); margin-top:10px; font-style:italic;">HD-40 at +12.4R is the Polar Anchor of this pack — the most reachable seat and the gravitational center of the regional wave. A competitive showing here lifts every candidate in the group.</p>
+  </div>
+
+  <!-- ISSUES SECTION -->
+  <div class="section-label">Priority Issues — Hendricks County / HD-40</div>
+
+  <div class="issue-grid">
+
+    <!-- ISSUE 1: SCHOOLS & PUBLIC EDUCATION FUNDING -->
+    <div class="issue-card priority-1">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">1</div>
+            <div class="issue-title">Public School Funding &amp; the Referendum Fight</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-hot">🔥 Hot Local Issue</span>
+            <span class="tag tag-local">Local</span>
+            <span class="tag tag-state">State</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">In November 2025, Avon Community School Corporation — with roughly 11,000 students and a heavily residential tax base — won a hard-fought referendum renewal battle that exposed a deep fault line in Hendricks County politics. Lt. Gov. Micah Beckwith personally door-knocked in Avon urging a "no" vote against the district's operating levy renewal. Avon voters rejected him: 65% voted yes. The referendum funds 170 teacher and staff positions, smaller class sizes, and competitive pay. Meanwhile, Gov. Mike Braun's property tax reform package (SEA 1, 2025) is projected to strip <strong>$744.4 million in total school property tax revenue statewide through 2028</strong> — with Avon Community School Corp. especially vulnerable because its tax base is overwhelmingly residential (capped at the lowest rate). School Superintendent Scott Wyndham explicitly warned that Avon faces "the most exposure" to the new law. A new state mandate also requires districts to share local property tax revenue with charter schools starting in 2028.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">65%</div>
+          <div class="stat-desc">Avon voters who approved school funding referendum in Nov. 2025 — defeating Lt. Gov. Beckwith's intervention</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">$744M</div>
+          <div class="stat-desc">Projected statewide school property tax revenue lost under SEA 1 (2025–2028) — Avon among most exposed</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">170</div>
+          <div class="stat-desc">Teacher and staff positions funded by Avon's operating levy — at ongoing risk from state funding squeeze</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Avon voters spoke clearly in November: 65% said yes to their schools when the Lt. Governor flew in to say no. Republicans at the Statehouse aren't listening to Hendricks County families — they're undermining them.</li>
+          <li>Gov. Braun's property tax reform will strip hundreds of millions from Indiana school districts over three years. Avon Community Schools — because its tax base is heavily residential — is among the most exposed in the state. That's a direct threat to class sizes, teacher pay, and the programs that make Avon schools worth living here for.</li>
+          <li>The new law also forces Avon to share local property tax revenue with charter schools starting in 2028 — money that Avon voters approved for Avon students, redirected without their consent.</li>
+          <li>Our kids deserve fully staffed classrooms and teachers who can afford to stay. That requires a Statehouse that treats public education as the investment it is, not a line item to squeeze.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: WFYI, "Avon voters approve school tax renewal despite Beckwith opposition" (Nov. 5, 2025); WFYI, "Indiana school districts say there's 'so much unknown' about property reform" (May 2, 2025); WBAA, SEA 1 school impact reporting, 2025; Chalkbeat Indiana, Feb. 2025.</div>
+    </div>
+
+    <!-- ISSUE 2: GROWTH, INFRASTRUCTURE & TRAFFIC -->
+    <div class="issue-card priority-1">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">2</div>
+            <div class="issue-title">Rapid Growth, Traffic Congestion &amp; Infrastructure</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-hot">📍 Local Context</span>
+            <span class="tag tag-local">Local</span>
+            <span class="tag tag-state">State</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">Hendricks County is among Indiana's fastest-growing counties, driven by Indianapolis suburban expansion, logistics industry growth (the Ronald Reagan Parkway corridor is a major warehousing and distribution hub), and residential development in Avon, Brownsburg, and Plainfield. The county is actively extending the Ronald Reagan Parkway — Phase 1A opened to CR 750N in November 2025 at a cost of nearly $38 million, with Phase 1B (to CR 1000N, approaching the Boone County line) beginning construction in winter 2025–26. Despite this investment, commuter congestion, freight truck traffic, road capacity, and neighborhood-level road safety remain daily concerns for residents in HD-40. The county's Plan Commission completed a 2025 Comprehensive Plan to guide growth. Residents are navigating a tension between welcoming economic opportunity and protecting quality of life, road safety, and community character in their fast-changing neighborhoods.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$38M</div>
+          <div class="stat-desc">Ronald Reagan Parkway Phase 1A construction cost — a 1.6-mile extension opened Nov. 2025</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">752 mi</div>
+          <div class="stat-desc">Hendricks County road miles maintained by the county highway department — under pressure from rapid development</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">Fastest</div>
+          <div class="stat-desc">Hendricks County among Indiana's fastest-growing counties — population approaching 200,000, up from ~130,000 in 2010</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Hendricks County is booming — and that's not all bad. But growth without planning is just sprawl. We need a Statehouse partner who will fund the infrastructure — roads, bridges, transit — that keeps our communities livable as they grow.</li>
+          <li>The Ronald Reagan Parkway expansion is happening because local leaders fought for it over years. That's what good government looks like. We should be doing more of it, not leaving communities to manage explosive growth on their own.</li>
+          <li>Truck traffic through residential neighborhoods, congested intersections, and aging bridges aren't abstract — they're daily frustrations for HD-40 families. Infrastructure investment is quality-of-life investment.</li>
+          <li>Smart growth means planned growth. The county's 2025 Comprehensive Plan is a good step, but the Statehouse has to follow with funding and tools — not unfunded mandates and budget squeezes that force communities to choose between roads and schools.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Hendricks County Engineering Dept. notice, Jan. 2026; Brownsburg Sentinel, "Ronald Reagan Parkway Opens to 750N" (Nov. 15, 2025); Hendricks County Highway Dept. / Road Closure archive, 2025; Planhendricks.com Comprehensive Plan, 2025; Hendricks County Economic Development Partnership, 2024.</div>
+    </div>
+
+    <!-- ISSUE 3: HOUSING AFFORDABILITY -->
+    <div class="issue-card priority-2">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">3</div>
+            <div class="issue-title">Housing Affordability &amp; Attainability</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-local">Local</span>
+            <span class="tag tag-state">State</span>
+            <span class="tag tag-fed">Federal</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">Hendricks County's rapid growth has come with rising housing costs. Estimated median home values in the county reached <strong>$338,100 in 2024</strong> — more than double the $132,100 recorded in 2000. The median monthly housing cost for homeowners with a mortgage now runs $1,832 per month. Avon has the highest property tax rate in the county at 1.13%, and with SEA 1 of 2025 reshaping how tax caps interact with assessed values, homeowners face continued uncertainty about their bills. Affordable rental housing is critically scarce: the county has only 288 income-based apartments for a population approaching 200,000, and rental vacancy rates are below average, pushing rents upward. Section 8 vouchers cover just a fraction of what's needed, and federal proposals to cut HUD funding by nearly half would further reduce affordable housing availability. First-time buyers — especially working families — are increasingly priced out of a market that was built on the premise of Indy-area affordability.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$338K</div>
+          <div class="stat-desc">Hendricks County median home value in 2024 — up from $132,100 in 2000, more than doubling in 24 years</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">288</div>
+          <div class="stat-desc">Income-based apartments in all of Hendricks County (pop. ~200,000) — far below regional need</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">5%</div>
+          <div class="stat-desc">Rental vacancy rate in Hendricks County — below average, fewer options, higher rents</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Hendricks County used to be a place where working families could afford to buy a home. A median home value over $338,000 is changing that — and we need state policies that support attainable housing, not just luxury development.</li>
+          <li>Young families, essential workers, teachers, and first responders are being priced out of the communities they serve. If we want to keep Hendricks County's workforce strong, we have to make it affordable to live here.</li>
+          <li>There are fewer than 300 income-based apartments for a county of 200,000 people. The gap between need and supply for affordable rentals is enormous — and federal cuts to HUD would make it catastrophically worse.</li>
+          <li>Property tax reform is a legitimate issue for homeowners worried about rising bills. But the answer isn't to defund schools or cut services — it's comprehensive housing policy that brings more supply onto the market at all price points.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: City-Data.com Hendricks County profile (2024 data); AffordableHousingOnline.com Hendricks County; Ownwell, Hendricks County and Avon property tax data, 2025; State of Aging in Central Indiana, HUD federal budget impact report, Feb. 2026.</div>
+    </div>
+
+    <!-- ISSUE 4: WAGES & ECONOMIC ANXIETY -->
+    <div class="issue-card priority-2">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">4</div>
+            <div class="issue-title">Wages, Economic Anxiety &amp; Tariff Uncertainty</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-state">State</span>
+            <span class="tag tag-fed">Federal</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">Hendricks County's average weekly wage of $1,061 in Q3 2025 ranked it among Indiana's larger counties — but still well below the national average of $1,459. Indiana as a whole ranked 36th in per capita real income in 2024, and the state's leading economic analysts have identified wages as Indiana's persistent weak point. The 2026 economic outlook for Indiana projects unemployment rising from 3.6% to 4.4%, as tariff-driven uncertainty slows manufacturing hiring. Nationally, nearly 400 tariff adjustments in 2025 alone created planning chaos for businesses, and Ball State's CBER economists warned of "mild stagflation" — slower growth with elevated prices. For Hendricks County's mix of logistics, warehousing, and commuter workers, this economic volatility lands directly on household budgets. The county's strong job market in logistics (Amazon, distribution centers) is partly offset by the fact that warehouse and logistics jobs often pay less and offer fewer benefits than the manufacturing jobs they replaced.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$1,061</div>
+          <div class="stat-desc">Hendricks County average weekly wage, Q3 2025 — well below the national average of $1,459</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">~400</div>
+          <div class="stat-desc">Tariff adjustments in 2025 alone — creating business uncertainty and slowing Indiana manufacturing hiring</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">4.4%</div>
+          <div class="stat-desc">Indiana unemployment projected to rise to 4.4% in 2026 — above the 3.6% rate of 2025</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Hendricks County workers are part of Indiana's economy, and Indiana's economy has a problem: we grow, but our wages lag. A state that doesn't pay its workers well can't afford the roads, schools, and services its families depend on.</li>
+          <li>Trade policy chaos in 2025 — nearly 400 tariff changes in a single year — hit Indiana manufacturers hard. The workers who absorbed that uncertainty deserve economic policies designed for their stability, not for corporate convenience.</li>
+          <li>Logistics and warehousing are booming along the Ronald Reagan Parkway corridor. That's real jobs. But we need to ask: are those jobs paying family-sustaining wages with benefits? Good economic development isn't just job creation — it's good job creation.</li>
+          <li>Indiana ranked 36th in per capita real income nationally in 2024. That's not a talking point — it's a policy failure. We can do better, and it starts with state leaders who take wages seriously.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: BLS, County Employment and Wages in Indiana — Q3 2025 (Mar. 2026); Indiana Capital Chronicle, "Low wages, personal income dampen strength of Hoosier economy" (Feb. 24, 2026); Grant County Economic Growth Council, Indiana Economic Roadmap 2026 (Feb. 2026); IBRC Indiana Outlook 2026.</div>
+    </div>
+
+    <!-- ISSUE 5: MEDICAID / HEALTHCARE -->
+    <div class="issue-card priority-2">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">5</div>
+            <div class="issue-title">Healthcare Access &amp; Medicaid Stability</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-state">State</span>
+            <span class="tag tag-fed">Federal</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">Indiana's Medicaid program — covering more than 1.4 million Hoosiers — is under simultaneous pressure from the state and federal level. The Healthy Indiana Plan (HIP), which covers low- to moderate-income adults, faces new work requirements effective July 1, 2026. The state is simultaneously re-bidding $68 billion in Medicaid managed care contracts (the "Mother of All Procurements"), with transitions not effective until 2029 and disruption already underway — 300,000 Hoosiers were told in November 2025 they had less than two months to switch insurers after MDwise was removed from the program. Federally, H.R. 1 (signed July 4, 2025) is projected to cut Indiana's Medicaid funding by 15% — an estimated $23 billion — between 2027 and 2036. Disability waiver slots, while partially reopened in July 2025, still cover only about one-third of the 13,000 Hoosiers on the waitlist for home- and community-based services. For HD-40 families with members who have disabilities, chronic illness, or limited income, Medicaid stability isn't an abstraction — it's the difference between independence and crisis.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">$23B</div>
+          <div class="stat-desc">Projected Indiana Medicaid funding loss under H.R. 1 (2027–2036) — 15% reduction per KFF analysis</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">300K</div>
+          <div class="stat-desc">Hoosiers told to change Medicaid insurers in under 60 days after MDwise removal (Nov. 2025)</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">13,000</div>
+          <div class="stat-desc">Hoosiers on waitlist for disability home-and-community-based services — only 1/3 covered by reopened slots</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Indiana just kicked 300,000 people off their Medicaid insurer and gave them less than two months to find a new one. That's not reform — that's chaos. HD-40 families with members on Medicaid deserve stability, not an annual insurance scramble.</li>
+          <li>H.R. 1 cuts Indiana's Medicaid funding by $23 billion over the next decade. Indiana's U.S. senators voted for it. Someone has to stand up for the Hoosiers who depend on that coverage — including the working poor, kids, seniors, and people with disabilities in Hendricks County.</li>
+          <li>There are 13,000 Hoosiers waiting for home and community-based disability services. Reopening some slots covered barely a third of them. For families with a child or loved one on that waitlist, this is a daily emergency, not a policy statistic.</li>
+          <li>Indiana's Medicaid rebid and work requirement changes are rolling out at the same time as federal cuts. That's a perfect storm for disruption — and the people who get hurt are among our most vulnerable neighbors.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: WFYI, MDwise removal and Medicaid news archive, Nov. 2025; Plain Dealer, "Indiana's rural hospitals gird for Medicaid cuts" (Aug. 2025); KFF, Indiana Medicaid H.R. 1 impact analysis, July 2025; WFYI, Medicaid waiver slots reopened (July 2025); Indiana Capital Chronicle, Medicaid rebid (Feb. 2026).</div>
+    </div>
+
+    <!-- ISSUE 6: CHILDCARE -->
+    <div class="issue-card priority-3">
+      <div class="issue-header">
+        <div>
+          <div class="issue-title-row">
+            <div class="issue-number">6</div>
+            <div class="issue-title">Child Care Crisis &amp; Working Family Stability</div>
+          </div>
+          <div class="issue-tags" style="margin-top:8px; padding-left:40px;">
+            <span class="tag tag-hot">🔥 Active Crisis</span>
+            <span class="tag tag-state">State</span>
+            <span class="tag tag-fed">Federal</span>
+          </div>
+        </div>
+      </div>
+      <p class="issue-summary">Indiana's childcare funding crisis hits working families in fast-growing suburban counties like Hendricks especially hard. State CCDF (Child Care and Development Fund) reimbursement rates were cut up to 35% for school-age care in fall 2025. New low-income childcare vouchers were frozen — no new families added through at least 2026 — with more than 35,000 families statewide on a waitlist. On My Way Pre-K slots were cut by more than half statewide. In Hendricks County, where younger working families are moving in rapidly, affordable childcare is a direct workforce and economic issue: without it, parents — disproportionately mothers — are forced out of the labor market. Federal proposals to cut HUD and related social programs compound the pressure. For a county that prides itself on attracting young families and a strong workforce, letting childcare collapse is self-defeating economic policy.</p>
+      <div class="stat-row">
+        <div class="stat-box">
+          <div class="stat-num">35%</div>
+          <div class="stat-desc">State cut to CCDF school-age childcare reimbursement rates — Oct. 2025, hitting providers statewide</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">35,000+</div>
+          <div class="stat-desc">Hoosier families on the statewide childcare voucher waitlist — new enrollment frozen through 2026</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">Halved</div>
+          <div class="stat-desc">On My Way Pre-K slots cut by more than half statewide — fewer children entering kindergarten ready to learn</div>
+        </div>
+      </div>
+      <div class="talking-points">
+        <div class="tp-label">Candidate Talking Points</div>
+        <ul>
+          <li>Hendricks County is one of the fastest-growing counties in Indiana because families want to be here. But a family can't thrive in Avon — or anywhere else — if they can't find or afford childcare. The state is making that harder, not easier.</li>
+          <li>Childcare is workforce infrastructure. When the state cuts reimbursement rates by 35% and freezes new vouchers, it's not saving money — it's forcing parents out of jobs, shrinking the labor pool, and hurting local businesses that need workers.</li>
+          <li>More than 35,000 Indiana families are on the waitlist for childcare assistance. In a county where young families are moving in every month, we can't afford to tell them the state's answer to affordable childcare is "wait in line."</li>
+          <li>Pre-K investment pays for itself — kids who are school-ready at five do better through their entire education. Cutting On My Way Pre-K in half is a false economy that costs us more down the road in remediation, special services, and lost potential.</li>
+        </ul>
+      </div>
+      <div class="source-line">Sources: Indiana Capital Chronicle, CCDF rate cuts (Oct. 2025) and voucher freeze (Apr. 2026); WFYI education reporting, 2025–2026; Indiana AEYC CCDF testimony; Indiana Capital Chronicle, On My Way Pre-K funding cuts, 2025.</div>
+    </div>
+
+  </div><!-- end issue-grid -->
+
+  <!-- DISTRICT CONTEXT BOX -->
+  <div class="section-label">District &amp; Race Context</div>
+  <div class="context-box">
+    <h3>What Makes HD-40 the Polar Anchor of This Regional Wave</h3>
+    <p>HD-40 covers Avon in Hendricks County — Indiana's fastest-growing suburban county and a bellwether for how Indianapolis's western exurban ring thinks and votes. At a +12.4R IN-Index, it is the most reachable seat in the five-candidate Power Pack regional wave, and a strong Democratic showing here — even a near-miss — creates political legitimacy and organizing infrastructure that lifts every other candidate in the group. The incumbent, Gregory Steuerwald, holds the seat from Avon and has been in the House since 2008. HD-40 is part of CD-4.</p>
+    <p>The district is classic outer-suburb: homeowner-heavy, younger working families, high education attainment (37%+ with bachelor's degrees countywide), employed in logistics, healthcare, and Indianapolis-area professional sectors. These are voters who care deeply about their kids' schools, their commute, their property values, and economic stability — and who demonstrated in November 2025 that they will push back when Statehouse Republicans overreach into local school funding. The Lt. Gov.'s failed anti-referendum campaign in Avon is a powerful piece of recent local evidence that Republican overreach alienates even suburban conservative-leaning voters.</p>
+    <p>The key voter in HD-40 is a Avon homeowner with school-age children: they voted for the school referendum in November, they're watching their property taxes and home values closely, they commute on increasingly crowded roads, and they're beginning to feel the squeeze of a state government that tells them to "do more with less" while cutting education and healthcare funding. A candidate who connects economic dignity, school investment, and government accountability to their daily experience can make this race competitive. The question is organizing, candidate quality, and whether the regional wave has enough momentum to pull voters across the +12.4R gap.</p>
+  </div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  <p>HD-40 Candidate Power Pack — Issues Research · Indiana Rural Summit · May 2026</p>
+  <p>For internal planning use. All data cited to public sources.</p>
+</div>
+
+</body>
+</html>
