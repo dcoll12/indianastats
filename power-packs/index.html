@@ -1274,6 +1274,41 @@ var PP = (function() {
       packs = keepPacks;
     })();
 
+    // Explicit forced pack assignments — overrides geographic routing entirely
+    var FORCED_MEMBERS = [
+      { dtype: 'house', dnum: 69, anchorDtype: 'house',  anchorDnum: 62 }, // Chris Bowen (HD-69) → Amy Oliver (HD-62)
+      { dtype: 'house', dnum: 38, anchorDtype: 'senate', anchorDnum: 22 }, // Nate Stout (HD-38) → Natasha Baker (SD-22)
+    ];
+    (function() {
+      FORCED_MEMBERS.forEach(function(fm) {
+        var targetPack = null;
+        for (var i = 0; i < packs.length; i++) {
+          if (packs[i].anchor.dtype === fm.anchorDtype && packs[i].anchor.dnum === fm.anchorDnum) {
+            targetPack = packs[i]; break;
+          }
+        }
+        if (!targetPack) return;
+        var movers = [];
+        var newPacks = [];
+        packs.forEach(function(p) {
+          if (p === targetPack) { newPacks.push(p); return; }
+          if (p.anchor.dtype === fm.dtype && p.anchor.dnum === fm.dnum) {
+            movers.push(p.anchor);
+            p.members.forEach(function(m) { movers.push(m); });
+          } else {
+            p.members = p.members.filter(function(m) {
+              if (m.dtype === fm.dtype && m.dnum === fm.dnum) { movers.push(m); return false; }
+              return true;
+            });
+            newPacks.push(p);
+          }
+        });
+        packs = newPacks;
+        movers.forEach(function(e) { targetPack.members.push(e); });
+        targetPack.members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
+      });
+    })();
+
     function matches(entry) {
       return !search || getSearchText(entry.row).includes(search);
     }
