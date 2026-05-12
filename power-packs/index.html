@@ -1091,7 +1091,10 @@ var PP = (function() {
     }
 
     // Extra HDs to include in a senate district's pack overlap (beyond what geography derives)
-    var SD_EXTRA_HDS = { 41: [68] }; // HD-68 (Hunter Collins) bridges into SD-41 via SD-43/HD-69
+    var SD_EXTRA_HDS = {
+      41: [68],  // HD-68 (Hunter Collins) bridges into SD-41 via SD-43/HD-69
+      49: [63],  // HD-63 bridges into SD-49 via SD-48
+    };
 
     // Geographic overlap for a given district: returns sets of neighboring SD/HD numbers
     function getOverlapDistricts(dtype, dnum) {
