@@ -1090,11 +1090,15 @@ var PP = (function() {
       return 3;
     }
 
+    // Extra HDs to include in a senate district's pack overlap (beyond what geography derives)
+    var SD_EXTRA_HDS = { 41: [68] }; // HD-68 (Hunter Collins) bridges into SD-41 via SD-43/HD-69
+
     // Geographic overlap for a given district: returns sets of neighboring SD/HD numbers
     function getOverlapDistricts(dtype, dnum) {
       var sds = {}, hds = {};
       if (dtype === 'senate') {
-        ((dd.sd_to_hds || {})[String(dnum)] || []).map(Number).forEach(function(hd) {
+        var directHDs = ((dd.sd_to_hds || {})[String(dnum)] || []).concat(SD_EXTRA_HDS[dnum] || []);
+        directHDs.map(Number).forEach(function(hd) {
           hds[hd] = true;
           ((dd.hd_to_sds || {})[String(hd)] || []).map(Number).forEach(function(sd) {
             if (sd !== dnum) sds[sd] = true;
