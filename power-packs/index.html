@@ -1199,6 +1199,61 @@ var PP = (function() {
       packs = packs.filter(function(_, idx) { return !merged[idx]; });
     })();
 
+    // Rehome lone house packs: a house anchor with no members gets folded into the best
+    // existing pack. Priority: (1) geographic overlap (shares an SD), (2) same CD,
+    // (3) shared county — tiebroken by highest anchor polar power.
+    (function() {
+      var lonePacks = [], keepPacks = [];
+      packs.forEach(function(p) {
+        if (p.anchor.dtype === 'house' && p.members.length === 0) lonePacks.push(p);
+        else keepPacks.push(p);
+      });
+      if (!lonePacks.length) return;
+
+      lonePacks.forEach(function(lp) {
+        var hdNum = lp.anchor.dnum;
+        var overlapSDs = new Set(((dd.hd_to_sds || {})[String(hdNum)] || []).map(Number));
+        var lpCounties = new Set(lp.counties.map(function(c) { return c.toLowerCase(); }));
+
+        var bestPack = null, bestScore = -Infinity;
+        keepPacks.forEach(function(kp) {
+          var score = -Infinity;
+          var allInPack = [kp.anchor].concat(kp.members);
+
+          var overlaps = allInPack.some(function(e) {
+            if (e.dtype === 'senate') return overlapSDs.has(e.dnum);
+            var otherSDs = ((dd.hd_to_sds || {})[String(e.dnum)] || []).map(Number);
+            return otherSDs.some(function(sd) { return overlapSDs.has(sd); });
+          });
+
+          if (overlaps) {
+            score = 1000 + kp.maxPolarPower;
+          } else if (kp.cdNum && kp.cdNum === lp.cdNum) {
+            score = 100 + kp.maxPolarPower;
+          } else {
+            var sharedCounty = kp.counties.some(function(c) { return lpCounties.has(c.toLowerCase()); });
+            if (sharedCounty) score = 50 + kp.maxPolarPower;
+          }
+
+          if (score > bestScore) { bestScore = score; bestPack = kp; }
+        });
+
+        if (bestPack) {
+          bestPack.members.push(lp.anchor);
+          bestPack.members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
+          lp.counties.forEach(function(c) {
+            if (!bestPack.counties.some(function(x) { return x.toLowerCase() === c.toLowerCase(); })) {
+              bestPack.counties.push(c);
+            }
+          });
+        } else {
+          keepPacks.push(lp); // no suitable pack — keep standalone
+        }
+      });
+
+      packs = keepPacks;
+    })();
+
     function matches(entry) {
       return !search || getSearchText(entry.row).includes(search);
     }
