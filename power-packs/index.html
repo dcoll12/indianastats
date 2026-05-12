@@ -1092,7 +1092,6 @@ var PP = (function() {
 
     // Extra HDs to include in a senate district's pack overlap (beyond what geography derives)
     var SD_EXTRA_HDS = {
-      43: [55],  // HD-55 (Victoria Martz) pulled into SD-43 anchor pack
       49: [63],  // HD-63 bridges into SD-49 via SD-48
     };
 
@@ -1124,10 +1123,14 @@ var PP = (function() {
       return { sds: sds, hds: hds };
     }
 
+    // HDs that should never anchor — their parent SD will claim them naturally
+    var MEMBER_ONLY_HDS = { 68: true }; // HD-68 (Hunter Collins) → SD-43 is the anchor
+
     var packs = [];
 
     sorted.forEach(function(anchorEntry) {
       if (assigned[anchorEntry._focusIdx]) return;
+      if (anchorEntry.dtype === 'house' && MEMBER_ONLY_HDS[anchorEntry.dnum]) return;
       assigned[anchorEntry._focusIdx] = 1;
 
       var overlap = getOverlapDistricts(anchorEntry.dtype, anchorEntry.dnum);
