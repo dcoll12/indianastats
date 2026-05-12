@@ -197,8 +197,8 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
   margin-bottom: 0; overflow: hidden;
 }
 .pp-pack-divider {
-  height: 12px; background: #f1f5f9;
-  border-left: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0;
+  height: 14px; background: #cbd5e1;
+  border-left: 1px solid #94a3b8; border-right: 1px solid #94a3b8;
 }
 /* First pack card in a section gets rounded top corners */
 .pp-cd-header + .pp-pack-card,
@@ -770,6 +770,21 @@ var PP = (function() {
   // ── Pack configuration ───────────────────────────────────────────────
   // CD 7 (Indianapolis urban core) is excluded — not IRS focus.
   // SD 46 (Marion Co.) is excluded from CD 6 per IRS guidance.
+  // Rotating background palette for individual pack cards (cycles by packNum)
+  var PACK_BG_PALETTE = [
+    '#dbeafe',  // sky blue
+    '#dcfce7',  // mint green
+    '#fce7f3',  // soft pink
+    '#fef9c3',  // soft yellow
+    '#ede9fe',  // lavender
+    '#ccfbf1',  // teal
+    '#ffedd5',  // peach
+    '#fae8ff',  // fuchsia
+  ];
+  function packBg(packNum, fallback) {
+    return packNum ? PACK_BG_PALETTE[(packNum - 1) % PACK_BG_PALETTE.length] : (fallback || 'white');
+  }
+
   var PACK_CDS = [1, 2, 3, 4, 5, 6, 8, 9];
   var PACK_CD_NAMES = {
     1: 'Northwest Indiana', 2: 'Northern Indiana', 3: 'Northeast Indiana',
@@ -1632,7 +1647,7 @@ var PP = (function() {
     var parts = [];
 
     var borderColor = pack.isUncontested ? '#f59e0b' : tc.border;
-    var bgColor     = pack.isUncontested ? '#fffbeb' : tc.bg;
+    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg);
 
     var hdNums = pack.houseMembers.map(function(m) { return m.dnum; }).join(',');
     parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums+'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
@@ -1877,7 +1892,7 @@ var PP = (function() {
     var totalCands = 1 + pack.members.length;
 
     var parts = [];
-    parts.push('<div class="pp-pack-card" data-dtype="' + anchor.dtype + '" data-dnum="' + anchor.dnum + '" style="border-left:4px solid ' + tc.border + ';background:' + tc.bg + '">');
+    parts.push('<div class="pp-pack-card" data-dtype="' + anchor.dtype + '" data-dnum="' + anchor.dnum + '" style="border-left:4px solid ' + tc.border + ';background:' + packBg(packNum, tc.bg) + '">');
 
     // Pack header
     parts.push('<div class="pp-pack-head">');
@@ -2031,7 +2046,7 @@ var PP = (function() {
     var sdNums = pack.senateSupporters.map(function(m) { return m.dnum; }).join(',');
     var parts = [];
 
-    parts.push('<div class="pp-pack-card" data-hdnum="' + pack.hdNum + '" data-sdnums="' + sdNums + '" style="border-left:4px solid ' + tc.border + ';background:' + tc.bg + '">');
+    parts.push('<div class="pp-pack-card" data-hdnum="' + pack.hdNum + '" data-sdnums="' + sdNums + '" style="border-left:4px solid ' + tc.border + ';background:' + packBg(packNum, tc.bg) + '">');
 
     // Pack header (no per-card mission — tier header already explains it)
     parts.push('<div class="pp-pack-head">');
@@ -2750,7 +2765,7 @@ var PP = (function() {
     return { regions: regions };
   }
 
-  function renderGeoPackCard(pack) {
+  function renderGeoPackCard(pack, packNum) {
     var sdLean = pack.sdLean;
     var indexLabel = sdLean ? (sdLean.in_index_label || '—') : '—';
     var party = sdLean ? (sdLean.party || '') : '';
@@ -2773,7 +2788,7 @@ var PP = (function() {
     var parts = [];
 
     var borderColor = pack.isUncontested ? '#f59e0b' : tc.border;
-    var bgColor     = pack.isUncontested ? '#fffbeb' : tc.bg;
+    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg);
 
     parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums
       +'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
@@ -2859,6 +2874,7 @@ var PP = (function() {
     parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
     parts.push('</span></div>');
 
+    var geoPackNum = 0;
     regions.forEach(function(region) {
       parts.push('<div class="pp-cd-section">');
       parts.push('<div class="pp-geo-region-header">');
@@ -2872,7 +2888,8 @@ var PP = (function() {
 
       region.packs.forEach(function(pack, i) {
         if (i > 0) parts.push('<div class="pp-pack-divider"></div>');
-        parts.push(renderGeoPackCard(pack));
+        geoPackNum++;
+        parts.push(renderGeoPackCard(pack, geoPackNum));
       });
       parts.push('</div>');
     });
