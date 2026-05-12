@@ -1092,6 +1092,7 @@ var PP = (function() {
 
     // Extra HDs to include in a senate district's pack overlap (beyond what geography derives)
     var SD_EXTRA_HDS = {
+      43: [55, 73], // HD-55 and HD-73 pulled into SD-43 pack
       49: [63],  // HD-63 bridges into SD-49 via SD-48
     };
 
@@ -1124,7 +1125,7 @@ var PP = (function() {
     }
 
     // HDs that should never anchor — their parent SD will claim them naturally
-    var MEMBER_ONLY_HDS = { 68: true }; // HD-68 (Hunter Collins) → SD-43 is the anchor
+    var MEMBER_ONLY_HDS = { 55: true, 68: true, 73: true }; // HD-55, HD-73 → SD-43 pack; HD-68 (Hunter Collins) → SD-43 is the anchor
 
     var packs = [];
 
