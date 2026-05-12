@@ -772,14 +772,14 @@ var PP = (function() {
   // SD 46 (Marion Co.) is excluded from CD 6 per IRS guidance.
   // Rotating background palette for individual pack cards (cycles by packNum)
   var PACK_BG_PALETTE = [
-    '#dbeafe',  // sky blue
-    '#dcfce7',  // mint green
-    '#fce7f3',  // soft pink
-    '#fef9c3',  // soft yellow
-    '#ede9fe',  // lavender
-    '#ccfbf1',  // teal
-    '#ffedd5',  // peach
-    '#fae8ff',  // fuchsia
+    '#93c5fd',  // sky blue
+    '#86efac',  // mint green
+    '#f9a8d4',  // pink
+    '#fde68a',  // amber
+    '#c4b5fd',  // violet
+    '#5eead4',  // teal
+    '#fdba74',  // orange
+    '#f0abfc',  // fuchsia
   ];
   function packBg(packNum, fallback) {
     return packNum ? PACK_BG_PALETTE[(packNum - 1) % PACK_BG_PALETTE.length] : (fallback || 'white');
