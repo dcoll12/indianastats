@@ -223,6 +223,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
 .pp-pack-head {
   display: flex; justify-content: space-between; align-items: flex-start;
   padding: 10px 16px; border-bottom: 1px solid #f1f5f9; background: inherit;
+  cursor: pointer;
 }
 .pp-pack-head-left { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .pp-pack-title {
@@ -3372,6 +3373,31 @@ var MAP = (function() {
       });
       card.addEventListener('mouseleave', function(e) {
         if (!card.contains(e.relatedTarget)) revertToPinned();
+      });
+    });
+
+    // Pack header row: hovering the header re-applies the full region highlight
+    document.querySelectorAll('.pp-pack-card[data-sdnum] .pp-pack-head').forEach(function(head) {
+      var card = head.closest('.pp-pack-card');
+      var sdNum = parseInt(card.getAttribute('data-sdnum'), 10);
+      var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
+      head.addEventListener('mouseenter', function() {
+        var secondary = hdNums.map(function(hd) { return { dtype: 'house', dnum: hd }; });
+        var label = 'SD-' + sdNum + (hdNums.length ? ' + ' + hdNums.length + ' HD' + (hdNums.length !== 1 ? 's' : '') : '');
+        var counties = window.PP_getCounties ? window.PP_getCounties('senate', sdNum) : [];
+        highlight('senate', sdNum, secondary, label, counties);
+      });
+    });
+
+    document.querySelectorAll('.pp-pack-card[data-hdnum] .pp-pack-head').forEach(function(head) {
+      var card = head.closest('.pp-pack-card');
+      var hdNum = parseInt(card.getAttribute('data-hdnum'), 10);
+      var sdNums = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
+      head.addEventListener('mouseenter', function() {
+        var secondary = sdNums.map(function(sd) { return { dtype: 'senate', dnum: sd }; });
+        var label = 'HD-' + hdNum + (sdNums.length ? ' + ' + sdNums.length + ' SD' + (sdNums.length !== 1 ? 's' : '') : '');
+        var counties = window.PP_getCounties ? window.PP_getCounties('house', hdNum) : [];
+        highlight('house', hdNum, secondary, label, counties);
       });
     });
 
