@@ -3376,14 +3376,27 @@ var MAP = (function() {
       });
     });
 
-    // Focus mode pack cards: highlight anchor district
+    // Focus mode pack cards: highlight anchor + all member districts
     document.querySelectorAll('.pp-pack-card[data-dtype][data-dnum]').forEach(function(card) {
       var dtype = card.getAttribute('data-dtype');
       var dnum = parseInt(card.getAttribute('data-dnum'), 10);
       var prefix = { house: 'HD', senate: 'SD', congressional: 'CD' }[dtype] || dtype.toUpperCase();
+      function getFocusSecondary() {
+        var seen = {}, secondary = [];
+        card.querySelectorAll('.pp-row[data-dtype][data-dnum]').forEach(function(row) {
+          var rDtype = row.getAttribute('data-dtype');
+          var rDnum = parseInt(row.getAttribute('data-dnum'), 10);
+          var key = rDtype + ':' + rDnum;
+          if (!seen[key] && (rDtype !== dtype || rDnum !== dnum)) {
+            seen[key] = true;
+            secondary.push({ dtype: rDtype, dnum: rDnum });
+          }
+        });
+        return secondary;
+      }
       function highlightFocusPack() {
         var counties = window.PP_getCounties ? window.PP_getCounties(dtype, dnum) : [];
-        highlight(dtype, dnum, [], prefix + '-' + dnum, counties);
+        highlight(dtype, dnum, getFocusSecondary(), prefix + '-' + dnum, counties);
       }
       card.addEventListener('mouseenter', highlightFocusPack);
       card.addEventListener('mouseleave', function(e) {
@@ -3447,8 +3460,18 @@ var MAP = (function() {
           var fDtype = focusCard.getAttribute('data-dtype');
           var fDnum = parseInt(focusCard.getAttribute('data-dnum'), 10);
           var fPrefix = { house: 'HD', senate: 'SD', congressional: 'CD' }[fDtype] || fDtype.toUpperCase();
+          var fSeen = {}, fSecondary = [];
+          focusCard.querySelectorAll('.pp-row[data-dtype][data-dnum]').forEach(function(r) {
+            var rDtype = r.getAttribute('data-dtype');
+            var rDnum = parseInt(r.getAttribute('data-dnum'), 10);
+            var key = rDtype + ':' + rDnum;
+            if (!fSeen[key] && (rDtype !== fDtype || rDnum !== fDnum)) {
+              fSeen[key] = true;
+              fSecondary.push({ dtype: rDtype, dnum: rDnum });
+            }
+          });
           var fCounties = window.PP_getCounties ? window.PP_getCounties(fDtype, fDnum) : [];
-          highlight(fDtype, fDnum, [], fPrefix + '-' + fDnum, fCounties);
+          highlight(fDtype, fDnum, fSecondary, fPrefix + '-' + fDnum, fCounties);
         } else {
           revertToPinned();
         }
