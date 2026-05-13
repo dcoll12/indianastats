@@ -1852,25 +1852,23 @@ var PP = (function() {
     // Congressional candidates (IRS focuses on state races, so these appear last)
     // Rendered after CD sections — see bottom of this function.
 
-    // ── Single CD section ────────────────────────────────────────────────
-    var cdNum = state.selectedCD;
-    var packs = cdSections[cdNum] || [];
+    // ── All CD sections ──────────────────────────────────────────────────
+    PACK_CDS.forEach(function(cdNum) {
+      var packs = cdSections[cdNum] || [];
 
-    var cdLean = (state.leanLookup.congressional || {})[cdNum] || null;
-    var cdIndexLabel = cdLean ? (cdLean.in_index_label || '—') : '—';
-    var cdRep    = cdLean ? (cdLean.representative || '') : '';
-    var cdParty  = cdLean ? (cdLean.party || '') : '';
-    var cdName   = PACK_CD_NAMES[cdNum] || '';
-    var cdCands  = packs.reduce(function(n,p){ return n+p.senateCandidates.length+p.houseMembers.length; }, 0);
-    var repBadge = cdParty === 'Republican'
-      ? '<span class="pp-holder-badge pp-holder-r" style="font-size:0.7rem">R</span>'
-      : cdParty === 'Democratic'
-        ? '<span class="pp-holder-badge pp-holder-d" style="font-size:0.7rem">D</span>'
-        : '';
+      var cdLean = (state.leanLookup.congressional || {})[cdNum] || null;
+      var cdIndexLabel = cdLean ? (cdLean.in_index_label || '—') : '—';
+      var cdRep    = cdLean ? (cdLean.representative || '') : '';
+      var cdParty  = cdLean ? (cdLean.party || '') : '';
+      var cdName   = PACK_CD_NAMES[cdNum] || '';
+      var cdCands  = packs.reduce(function(n,p){ return n+p.senateCandidates.length+p.houseMembers.length; }, 0);
+      var repBadge = cdParty === 'Republican'
+        ? '<span class="pp-holder-badge pp-holder-r" style="font-size:0.7rem">R</span>'
+        : cdParty === 'Democratic'
+          ? '<span class="pp-holder-badge pp-holder-d" style="font-size:0.7rem">D</span>'
+          : '';
 
-    if (!packs.length) {
-      parts.push('<div class="pp-status"><p>No packs in CD-'+cdNum+' match your search — try another district or clear the search.</p></div>');
-    } else {
+      if (!packs.length) return;
       parts.push('<div class="pp-cd-section">');
       parts.push('<div class="pp-cd-header">');
       parts.push('<div class="pp-cd-header-left">');
@@ -1886,7 +1884,7 @@ var PP = (function() {
         parts.push(renderPackCard(pack));
       });
       parts.push('</div>'); // close pp-cd-section
-    }
+    });
 
     // Congressional candidates (federal races — IRS note: not our primary focus)
     if (congressional.length) {
@@ -2489,21 +2487,18 @@ var PP = (function() {
         + ' — geographical view (uncontested races included)';
       out.innerHTML = renderGeoPacks(result);
     } else {
-      if (cdWrap)     cdWrap.style.display     = '';
+      if (cdWrap)     cdWrap.style.display     = 'none';
       if (countyWrap) countyWrap.style.display = 'none';
       var result = buildPacks();
-      updateCDDropdown(result.cdSections);
-      var cdPacks = result.cdSections[state.selectedCD] || [];
-      var seenSDs = new Set(), seenHDs = new Set();
-      cdPacks.forEach(function(p) {
-        if (p.senateCandidates && p.senateCandidates.length) seenSDs.add(p.sdNum);
-        p.houseMembers.forEach(function(m) { seenHDs.add(m.dnum); });
+      var totalPacks = 0, totalCands = 0;
+      PACK_CDS.forEach(function(cd) {
+        var packs = result.cdSections[cd] || [];
+        totalPacks += packs.length;
+        packs.forEach(function(p) { totalCands += p.senateCandidates.length + p.houseMembers.length; });
       });
-      var cdCands = seenSDs.size + seenHDs.size;
-      var cdName = PACK_CD_NAMES[state.selectedCD] || '';
-      if (statsEl) statsEl.textContent = 'CD-'+state.selectedCD+' · '+cdName
-        + ' — ' + cdCands + ' candidate' + (cdCands !== 1 ? 's' : '')
-        + ' in ' + cdPacks.length + ' pack' + (cdPacks.length !== 1 ? 's' : '');
+      if (statsEl) statsEl.textContent = PACK_CDS.length + ' congressional district' + (PACK_CDS.length !== 1 ? 's' : '')
+        + ' · ' + totalCands + ' candidate' + (totalCands !== 1 ? 's' : '')
+        + ' — grouped by congressional district';
       out.innerHTML = renderPacksTable(result);
     }
     if (window.MAP_wireDynamic) window.MAP_wireDynamic();
