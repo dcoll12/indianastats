@@ -1138,12 +1138,40 @@ var DMT = (function() {
     return idx;
   }
 
+  function collectPackCandidatesFromCSV(packHDs, packSDs) {
+    var hdSet = new Set((packHDs || []).map(Number));
+    var sdSet = new Set((packSDs || []).map(Number));
+    var entries = [];
+    var seenKey = new Set();
+    candidateRows.forEach(function(r) {
+      var role = (r['Role'] || '').trim().toLowerCase();
+      if (!role.includes('candidate') || role.includes('former')) return;
+      var hd = (r['House District'] || '').replace(/\D/g, '');
+      var sd = (r['Senate District'] || '').replace(/\D/g, '');
+      var title = (r['Title'] || '').toLowerCase();
+      var dtype, dnum;
+      if (title.includes('senate') && sd) { dtype = 'senate'; dnum = parseInt(sd, 10); }
+      else if (hd) { dtype = 'house'; dnum = parseInt(hd, 10); }
+      else if (sd) { dtype = 'senate'; dnum = parseInt(sd, 10); }
+      if (!dtype || !dnum || isNaN(dnum)) return;
+      if (dtype === 'house'  && !hdSet.has(dnum)) return;
+      if (dtype === 'senate' && !sdSet.has(dnum)) return;
+      var key = dtype + ':' + dnum;
+      if (seenKey.has(key)) return;
+      seenKey.add(key);
+      var lean = (leanLookup[dtype] || {})[dnum] || null;
+      var name = ((r['First Name'] || '') + ' ' + (r['Last Name'] || '')).trim();
+      entries.push({ dtype: dtype, dnum: dnum, csvRow: r, lean: lean, name: name });
+    });
+    return entries;
+  }
+
   function showFocusPackTable(fp, dtype, dnum) {
     var section = document.getElementById('dmt-focus-pack-section');
     var tableEl = document.getElementById('dmt-focus-pack-table');
     if (!section || !tableEl) return;
 
-    var entries = collectIrsCandidates(fp.packHDs, fp.packSDs, []);
+    var entries = collectPackCandidatesFromCSV(fp.packHDs, fp.packSDs);
     if (!entries.length) { section.style.display = 'none'; return; }
 
     tableEl.innerHTML = renderDMTFocusPackCard(fp, entries, dtype, dnum);
