@@ -1075,12 +1075,19 @@ var DMT = (function() {
       });
     });
 
-    // Safety: ensure FORCED_MEMBERS districts always resolve to their correct anchor pack,
+    // Safety: ensure all forced/member-only districts always resolve to their correct anchor pack,
     // even if the greedy assignment missed them or placed them in the wrong pack.
     [
-      { dtype: 'house', dnum: 69, anchorDtype: 'house',  anchorDnum: 62 },
-      { dtype: 'house', dnum: 38, anchorDtype: 'senate', anchorDnum: 22 },
-      { dtype: 'house', dnum: 23, anchorDtype: 'senate', anchorDnum: 22 },
+      // FORCED_MEMBERS
+      { dtype: 'house', dnum: 69, anchorDtype: 'house',  anchorDnum: 62 },  // Chris Bowen → Amy Oliver
+      { dtype: 'house', dnum: 38, anchorDtype: 'senate', anchorDnum: 22 },  // Nate Stout → SD-22
+      { dtype: 'house', dnum: 23, anchorDtype: 'senate', anchorDnum: 22 },  // HD-23 → SD-22
+      // FORCED_MERGES anchor (entire HD-4 pack folds into SD-22)
+      { dtype: 'house', dnum: 4,  anchorDtype: 'senate', anchorDnum: 22 },
+      // MEMBER_ONLY_HDS natural placements — SD-27/SD-42 can steal HD-55/HD-73 before SD-43 forms
+      { dtype: 'house', dnum: 55, anchorDtype: 'senate', anchorDnum: 43 },
+      { dtype: 'house', dnum: 73, anchorDtype: 'senate', anchorDnum: 43 },
+      { dtype: 'house', dnum: 68, anchorDtype: 'senate', anchorDnum: 43 },
     ].forEach(function(fm) {
       var memberKey = fm.dtype + ':' + fm.dnum;
       var anchorKey = fm.anchorDtype + ':' + fm.anchorDnum;
