@@ -1,0 +1,15 @@
+To use narrative generation:
+
+Option A — Python proxy (no install needed, Python 3 built-in):
+1.	Open proxy.py, set API_KEY = "sk-ant-YOUR-KEY-HERE"
+2.	Run: python proxy.py
+3.	Open the HTML in your browser — narratives route through http://localhost:3000
+
+Option B — Node.js proxy (no npm packages needed, Node built-ins only):
+1.	Open proxy.js, set API_KEY = "sk-ant-YOUR-KEY-HERE"
+2.	Run: node proxy.js
+3.	Open the HTML — same result
+
+Why this works: Your API key lives only in the proxy script on your machine, never in the HTML file. The browser calls localhost:3000, the proxy adds your key and forwards to Anthropic's API, and the response comes back. No CORS, no key exposure.
+
+The Endpoint field in the top bar defaults to http://localhost:3000. If you want to try a direct call (may still be blocked by CORS in some browsers), change it to https://api.anthropic.com/v1/messages and enter your API key in the key field.

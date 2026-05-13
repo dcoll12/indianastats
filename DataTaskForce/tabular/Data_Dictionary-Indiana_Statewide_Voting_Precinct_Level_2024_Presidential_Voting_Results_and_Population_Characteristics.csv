@@ -1,0 +1,875 @@
+Year,Variable,Variable Label
+2024,vdid24,"Precinct FIPS Code: ""G"" + FIPS Code | Joins to vdid24 field in IN_Voting_Precinct_Boundaries_2024.shp shapefile"
+2024,vdname24,Precinct Name
+2024,latitude,Precinct: Population Weighted Spatial Center Latitude
+2024,longitude,Precinct: Population Weighted Spatial Center Longitude
+2024,county_fips,"County FIPS Code: ""G"" + County FIPS Code"
+2024,county_name_short,County Name: Short Name
+2024,county_name_long,County Name: Long Name
+2024,st,State Abbreviation
+2024,CD,United States Congressional District Number
+2024,SD,Indiana Senate District Number
+2024,HD,Indiana House District Number
+2024,VoterCnt24,Count of Voters in Election | Available for all Indiana CD 09 Voting Precincts and Voting Precincts in the MIT Election Data Science Lab 
+2022,eEligibleVoterCnt22,Estimated Voting Precinct-level Count of Voting Age Citizens based on 2022 American Community Survey Data | Copy of field vt_denn
+2024,eVoterPct24,Estimated Voting Precinct-level Percent of Voting Age Citizens that Voted in the November 2024 Election | round(VoterCnt24 / eEligibleVoters22 * 100)
+2024,PreRepCnt24,President Rep (Trump) | Available for all Indiana CD 09 Voting Precincts and Voting Precincts in the MIT Election Data Science Lab 
+2024,PreDemCnt24,President Dem (Harris) | Available for all Indiana CD 09 Voting Precincts and Voting Precincts in the MIT Election Data Science Lab 
+2024,PreDemPct24,President Dem % (Harris) | Available for all Indiana CD 09 Voting Precincts and Voting Precincts in the MIT Election Data Science Lab 
+2024,ePreDemPct24,Estimated Voting Precinct-level President Dem % (Harris) | Estimated for All Voting Precincts in Indiana
+2025,eDemChgPct2425,Estimated Voting Precinct-level Change in % Dem Vote based on Model from Virginia Voting Precinct-level Dem % Change from 2024 Presidential to 2025 Gubernatorial
+2025,eDemPct25,Estimated Voting Precinct-level Dem % = PreDemPct24 + eDemChgPct2425 where PreDemPct24 is directly observed and = ePreDemPct24 where PreDemPct24 is not observed
+2020,ar_meters,Voting Precinct Area: Square Meters
+2020,ar_acres,Voting Precinct Area: Acres
+2020,ar_sqmi,Voting Precinct Area: Square Miles
+2020,pd_meters,Voting Precinct Population Density: Voting Precinct Population / Voting Precinct Area in Square Meters
+2020,pd_acres,Voting Precinct Population Density: Voting Precinct Population / Voting Precinct Area in Acres
+2020,pd_sqmi,Voting Precinct Population Density: Voting Precinct Population / Voting Precinct Area in Square Miles
+2020,hd_meters,Voting Precinct Housing Density: Voting Precinct Housing Units / Voting Precinct Area in Square Meters
+2020,hd_acres,Voting Precinct Housing Density: Voting Precinct Housing Units / Voting Precinct Area in Acres
+2020,hd_sqmi,Voting Precinct Housing Density: Voting Precinct Housing Units / Voting Precinct Area in Square Miles
+2022,ag_dage,Age: Median Age: All
+2022,ag_fdage,Age: Median Age: Females
+2022,ag_mdage,Age: Median Age: Males
+2022,ag_0002p,Age: Population: Own Children Under 3 Years Old Percent
+2022,ag_0004p,Age: Population: Under 5 Years Old Percent
+2022,ag_0509p,Age: Population: 05-09 Years Old Percent
+2022,ag_1014p,Age: Population: 10-14 Years Old Percent
+2022,ag_1517p,Age: Population: 15-17 Years Old Percent
+2022,ag_0009p,Age: Population: Under 10 Years Old Percent
+2022,ag_1017p,Age: Population: 10-17 Years Old Percent
+2022,ag_0017p,Age: Population: Under 18 Years Old Percent
+2022,ag_1820p,Age: Population: 18-39 Years Old Percent
+2022,ag_1824p,Age: Population: 18-24 Years Old Percent
+2022,ag_1829p,Age: Population: 18-29 Years Old Percent
+2022,ag_1834p,Age: Population: 18-34 Years Old Percent
+2022,ag_1839p,Age: Population: 18-39 Years Old Percent
+2022,ag_1844p,Age: Population: 18-44 Years Old Percent
+2022,ag_1864p,Age: Population: 18-64 Years Old Percent
+2022,ag_18pp,Age: Population: 18+ Years Old Percent
+2022,ag_2124p,Age: Population: 21-24 Years Old Percent
+2022,ag_2129p,Age: Population: 21-29 Years Old Percent
+2022,ag_2134p,Age: Population: 21-34 Years Old Percent
+2022,ag_2139p,Age: Population: 21-39 Years Old Percent
+2022,ag_2144p,Age: Population: 21-44 Years Old Percent
+2022,ag_2529p,Age: Population: 25-29 Years Old Percent
+2022,ag_2534p,Age: Population: 25-34 Years Old Percent
+2022,ag_2539p,Age: Population: 25-39 Years Old Percent
+2022,ag_2544p,Age: Population: 25-44 Years Old Percent
+2022,ag_3034p,Age: Population: 30-34 Years Old Percent
+2022,ag_3039p,Age: Population: 30-39 Years Old Percent
+2022,ag_3044p,Age: Population: 30-44 Years Old Percent
+2022,ag_3539p,Age: Population: 35-39 Years Old Percent
+2022,ag_3544p,Age: Population: 35-44 Years Old Percent
+2022,ag_4054p,Age: Population: 40-54 Years Old Percent
+2022,ag_4064p,Age: Population: 40-64 Years Old Percent
+2022,ag_4554p,Age: Population: 45-54 Years Old Percent
+2022,ag_4564p,Age: Population: 45-64 Years Old Percent
+2022,ag_5564p,Age: Population: 55-64 Years Old Percent
+2022,ag_65pp,Age: Population: 65+ Years Old Percent
+2022,ag_f1549p,Age: Population: Females: 15-49 Years Old Percent
+2020,re_allt,Race-Ethnicity: Denominator
+2020,re_onet,Race-Ethnicity: One Race: Count
+2020,re_onep,Race-Ethnicity: One Race: Percent
+2020,re_whtn,Race-Ethnicity: White: Non-Hispanic Count
+2020,re_whtp,Race-Ethnicity: White: Non-Hispanic Percent
+2020,re_blkn,Race-Ethnicity: Black: Non-Hispanic Count
+2020,re_blkp,Race-Ethnicity: Black: Non-Hispanic Percent
+2020,re_ntvn,Race-Ethnicity: American Indian and Alaska Native: Non-Hispanic Count
+2020,re_ntvp,Race-Ethnicity: American Indian and Alaska Native: Non-Hispanic Percent
+2020,re_asnn,Race-Ethnicity: Asian: Non-Hispanic Count
+2020,re_asnp,Race-Ethnicity: Asian: Non-Hispanic Percent
+2020,re_pacn,Race-Ethnicity: Native Hawaiian and Other Pacific Islander: Non-Hispanic Count
+2020,re_pacp,Race-Ethnicity: Native Hawaiian and Other Pacific Islander: Non-Hispanic Percent
+2020,re_othn,Race-Ethnicity: Other Race Count
+2020,re_othp,Race-Ethnicity: Other Race Percent
+2020,re_mran,Race-Ethnicity: All: Multi-Racial Count
+2020,re_mrap,Race-Ethnicity: All: Multi-Racial Percent
+2020,re_ethn,Race-Ethnicity: Ethnicity: Denominator
+2020,re_hsan,Race-Ethnicity: Hispanic: All Count
+2020,re_hsap,Race-Ethnicity: Hispanic: All Percent
+2022,re_hswp,Race-Ethnicity: Hispanic: White Percent
+2022,re_hsbp,Race-Ethnicity: Hispanic: Black Percent
+2022,re_mrhp,Race-Ethnicity: Hispanic: Multi-Racial Percent
+2022,re_mrnp,Race-Ethnicity: Non-Hispanic: Multi-Racial Percent
+2022,in_pci,Income: Per Capita Income
+2022,in_dhi,Income: Median Household Income
+2022,in_das,Median Overall Monthly Housing Costs: % Household Income: Owners and Ren...
+2022,in_drs,Income: Median Gross Rent: % Percent of Household Income
+2022,in_dos,Median Monthly Owner Housing Costs: % Household Income: All
+2022,in_dom,Median Monthly Owner Housing Costs: % Household Income: With a Mortgage
+2022,in_dow,Median Monthly Owner Housing Costs: % Household Income: Without a Mortgage
+2022,mx_samp,Migration: Population 1 Year and Over in the Same House 1 Year Ago Percent
+2022,mx_difp,Migration: Population 1 Year and Over Not in the Same House 1 Year Ago P...
+2022,tx_ptap,Commuters: Public Transit: Any Percent
+2022,tx_carp,Commuters: Car: Any Percent
+2022,tx_busp,Commuters: Public Transit: Bus Percent
+2022,tx_subp,"Commuters: Public Transit: Subway, Elevated Rail, or Light Rail Percent"
+2022,tx_crlp,Commuters: Public Transit: Commuter Rail Percent
+2022,tx_wlkp,Commuters: Walk Percent
+2022,tx_cabp,"Commuters: Taxicab, Motorcycle, Bicycle, or Other Means Percent"
+2022,tx_cdst,Commuters: Average Distance Traveled - Range of Activity
+2022,tx_wclp,Commuters: Time of Departure: White Collar 7am-8:59am Percent
+2022,tx_bclp,Commuters: Time of Departure: Blue Collar not 7am-8:59am Percent
+2022,tx_sh1p,Commuters: Time of Departure: First Shift 12am-6:59am Percent
+2022,tx_sh2p,Commuters: Time of Departure: Second Shift 9am-3:59pm Percent
+2022,tx_sh3p,Commuters: Time of Departure: Third Shift 4pm-11:59pm Percent
+2022,hh_mohp,Household Structure: Male Only HH with Dependent Percent
+2022,hh_fohp,Household Structure: Female Only HH with Dependent Percent
+2022,hh_65mp,Household Structure: 65+ Year Olds: Males Living Alone Percent
+2022,hh_65fp,Household Structure: 65+ Year Olds: Females Living Alone Percent
+2022,hh_65ap,Household Structure: 65+ Year Olds: Living Alone Percent
+2022,fm_fodp,Family Structure: Families with Own Children Percent
+2022,fm_frdp,Family Structure: Families with Related Children Percent
+2022,fm_fu6ap,Family Structure: Families with Own Children: Any Child Under 6 Percent
+2022,fm_fu6op,Family Structure: Families with Own Children: Only Under 6 years Percent
+2022,fm_f0617p,Family Structure: Families with Own Children: Only 6 to 17 years Percent
+2022,fm_fbyop,Family Structure: Families with Own Children: Both Under 6 and 6 to 17 y...
+2022,fm_fc12p,Family Structure: Families: With 1 or 2 Own Children Percent
+2022,fm_fc34p,Family Structure: Families: With 3 or 4 Own Children Percent
+2022,fm_fc5pp,Family Structure: Families: With 5 or More Own Children Percent
+2022,fm_cobp,Family Structure: Own Children: Biological Percent
+2022,fm_coap,Family Structure: Own Children: Adopted Percent
+2022,fm_cosp,Family Structure: Own Children: Stepchild Percent
+2022,fm_cogp,Family Structure: Own Children: Grandchild Percent
+2022,fm_coop,Family Structure: Own Children: Other Relatives Percent
+2022,fm_cofp,Family Structure: Own Children: Foster Child Percent
+2022,fm_cnfp,Family Structure: Nonrelatives: Foster Child Percent
+2022,fm_c0002tp,Family Structure: Own Children: Under 3 years Percent
+2022,fm_c0002fp,Family Structure: F Only HH: OC Under 3 years Percent
+2022,fm_c0002mp,Family Structure: M Only HH: OC Under 3 years Percent
+2022,fm_c0002sp,Family Structure: M or F Only HH: OC Under 3 years Percent
+2022,fm_c0304p,Family Structure: Own Children: 3-4 years Percent
+2022,fm_c0505p,Family Structure: Own Children: 5 years Percent
+2022,fm_c0611p,Family Structure: Own Children: 6-11 years Percent
+2022,fm_c1217p,Family Structure: Own Children: 12-17 years Percent
+2022,fy_allp,Fertility: Women 15 to 50 Years Old: Birth in past 12 months Percent
+2022,fy_1519p,Fertility: Age: Women 15 to 19 Years Old: Birth in past 12 months Percent
+2022,fy_2024p,Fertility: Age: Women 20 to 24 Years Old: Birth in past 12 months Percent
+2022,fy_2529p,Fertility: Age: Women 25 to 29 Years Old: Birth in past 12 months Percent
+2022,fy_3034p,Fertility: Age: Women 30 to 34 Years Old: Birth in past 12 months Percent
+2022,fy_3539p,Fertility: Age: Women 35 to 39 Years Old: Birth in past 12 months Percent
+2022,fy_4044p,Fertility: Age: Women 40 to 44 Years Old: Birth in past 12 months Percent
+2022,fy_4450p,Fertility: Age: Women 45 to 50 Years Old: Birth in past 12 months Percent
+2022,fy_rwbp,Fertility: RE: White Women: Birth in past 12 months Percent
+2022,fy_rnbp,Fertility: RE: White non-Hispanic Women: Birth in past 12 months Percent
+2022,fy_rbbp,Fertility: RE: Black Women: Birth in past 12 months Percent
+2022,fy_rhbp,Fertility: RE: Hispanic Women: Birth in past 12 months Percent
+2022,fy_ribp,Fertility: RE: AIAN Women: Birth in past 12 months Percent
+2022,fy_rabp,Fertility: RE: Asian Women: Birth in past 12 months Percent
+2022,fy_rpbp,Fertility: RE: Hawaiian or Pacific Isle Women: Birth in past 12 months P...
+2022,fy_robp,Fertility: RE: Other Race Women: Birth in past 12 months Percent
+2022,fy_rmbp,Fertility: RE: Multi-Racial Women: Birth in past 12 months Percent
+2022,fy_enhp,Fertility: Edu: Less than High School: Birth in past 12 months Percent
+2022,fy_ehsp,Fertility: Edu: High School Graduate: Birth in past 12 months Percent
+2022,fy_easp,Fertility: Edu: Some College or Associates Degree: Birth in past 12 mont...
+2022,fy_eclp,Fertility: Edu: Bachelors Degree: Birth in past 12 months Percent
+2022,fy_egrp,Fertility: Edu: Graduate Degree: Birth in past 12 months Percent
+2022,fy_pb1p,Poverty: Poverty: Below 100pct Poverty Level Percent
+2022,fy_p12p,Poverty: Poverty: 100-200pct Poverty Level Percent
+2022,fy_po2p,Poverty: Poverty: Over 200pct Poverty Level Percent
+2022,fy_pypp,Fertility: Public Assistance: Received PA Income Percent
+2022,fy_pnpp,Fertility: Public Assistance: Did Not Receive PA Income Percent
+2022,fy_lilp,Fertility: Labor Force: In Labor Force Percent
+2022,fy_lnlp,Fertility: Labor Force: Not in Labor Force Percent
+2022,fy_mymp,Fertility: Marital Status: Married Percent
+2022,fy_mnmp,Fertility: Marital Status: Unmarried Percent
+2022,fy_nynp,Fertility: Nativity: Native Percent
+2022,fy_nnnp,Fertility: Nativity: Foreign Born Percent
+2022,sh_allp,School Attendance: All: Children and Adult Percent
+2022,sh_chlp,School Attendance: Children Pre-k thru HS Percent
+2022,sh_adlp,School Attendance: Adult College and Graduate Percent
+2022,sh_prkp,School Attendance: Pre-K Percent
+2022,sh_elep,School Attendance: Elementary Percent
+2022,sh_midp,School Attendance: Middle School Percent
+2022,sh_higp,School Attendance: High School Percent
+2022,sh_colp,School Attendance: College Percent
+2022,sh_grdp,School Attendance: Gradute or Professional Percent
+2022,ed_nhsp,Education: Did Not Complete High School or Equivalent Percent
+2022,ed_hsdp,Education: High School Diploma or Equivalent Percent
+2022,ed_asdp,Education: Completed Associates Degree Percent
+2022,ed_colp,Education: Completed College Percent
+2022,ed_pgdp,Education: Completed Any Post-Graduate Degree: Percent
+2022,ed_mstp,Education: Completed Masters or Professional Degree Percent
+2022,ed_phdp,Education: Completed Doctorate Degree Percent
+2022,lg_egop,Language: BG: English: Only Percent
+2022,lg_spap,Language: BG: Spanish: Any English Proficiency Percent
+2022,lg_splp,Language: BG: Spanish: Limited English Percent
+2022,lg_ieap,Language: BG: Indo-European: Any English Proficiency Percent
+2022,lg_ielp,Language: BG: Indo-European: Limited English Percent
+2022,lg_apap,Language: BG: Asian and Pacific Island: Any English Proficiency Percent
+2022,lg_aplp,Language: BG: Asian and Pacific Island: Any Limited English Percent
+2022,lg_lenp,Language: BG: Any: Limited English Percent
+2022,lg_fhap,"Language: TR: French, Haitian, or Cajun: Any English Proficiency Percent"
+2022,lg_fhlp,"Language: TR: French, Haitian, or Cajun: Speak English less than very we..."
+2022,lg_grap,Language: TR: German or other West Germanic Languages: Any English Profi...
+2022,lg_grlp,Language: TR: German or other West Germanic Languages: Speak English les...
+2022,lg_rpap,"Language: TR: Russian, Polish, or other Slavic Languages: Any English Pr..."
+2022,lg_rplp,"Language: TR: Russian, Polish, or other Slavic Languages: Speak English ..."
+2022,lg_krap,Language: TR: Korean: Any English Proficiency Percent
+2022,lg_krlp,Language: TR: Korean: Speak English less than very well Percent
+2022,lg_chap,"Language: TR: Chinese (incl. Mandarin, Cantonese): Any English Proficien..."
+2022,lg_chlp,"Language: TR: Chinese (incl. Mandarin, Cantonese): Speak English less th..."
+2022,lg_vtap,Language: TR: Vietnamese: Any English Proficiency Percent
+2022,lg_vtlp,Language: TR: Vietnamese: Speak English less than very well Percent
+2022,lg_tgap,Language: TR: Tagalog: Any English Proficiency Percent
+2022,lg_tglp,Language: TR: Tagalog: Speak English less than very well Percent
+2022,lg_arap,Language: TR: Arabic: Any English Proficiency Percent
+2022,lg_arlp,Language: TR: Arabic: Speak English less than very well Percent
+2022,pt_0005p,Poverty: Ratio of Income to Poverty Level: 0.00 to 0.50 Percent
+2022,pt_0599p,Poverty: Ratio of Income to Poverty Level: 0.50 to 0.99 Percent
+2022,pt_0099p,Poverty: Ratio of Income to Poverty Level: 0.00 to 0.99 Percent
+2022,lf_1ilfp,Labor Force: 16 Plus YO: In LF Percent
+2022,lf_1icap,Labor Force: 16 Plus YO: In LF: Civilian Percent
+2022,lf_1icep,Labor Force: 16 Plus YO: In LF: Civilian: Employed Percent
+2022,lf_1icup,Labor Force: 16 Plus YO: In LF: Civilian: Unemployed Percent
+2022,lf_1iafp,Labor Force: 16 Plus YO: In LF: Armed Forces Percent
+2022,lf_1nlfp,Labor Force: 16 Plus YO: Not In LF Percent
+2022,lf_2denp,Labor Force: 20-64 Year Old: Denominator Percent
+2022,lf_2uwdp,Labor Force: Unemployed with a Disability Percent
+2022,lf_2undp,Labor Force: Unemployed with No Disability Percent
+2022,lf_2uwpp,Labor Force: Unemployed in Poverty Percent
+2022,lf_2unpp,Labor Force: Unemployed Not in Poverty Percent
+2022,lf_2uepp,Labor Force: Unemployed Percent
+2022,lf_2nwdp,Labor Force: Not in Labor Force with a Disability Percent
+2022,lf_2nndp,Labor Force: Not in Labor Force with No Disability Percent
+2022,lf_2nwpp,Labor Force: Not in Labor Force in Poverty Percent
+2022,lf_2nnpp,Labor Force: Not in Labor Force Not in Poverty Percent
+2022,lf_2nlfp,Labor Force: Not in Labor Force Percent
+2022,lf_3yfyp,Labor Force: 16-64 YO: Full Time Year Round Percent
+2022,lf_3yfsp,Labor Force: 16-64 YO: Full Time Seasonally Percent
+2022,lf_3ypyp,Labor Force: 16-64 YO: Part Time Year Round Percent
+2022,lf_3ypsp,Labor Force: 16-64 YO: Part Time Seasonally Percent
+2022,lf_3ylyp,Labor Force: 16-64 YO: Limited Time Year Round Percent
+2022,lf_3ylsp,Labor Force: 16-64 YO: Limited Time Seasonally Percent
+2022,lf_3nwmp,Labor Force: 16-64 YO: Did Not Work: Males Percent
+2022,lf_3nwfp,Labor Force: 16-64 YO: Did Not Work: Females Percent
+2022,lf_3nwap,Labor Force: 16-64 YO: Did Not Work: All Percent
+2022,lf_4yfyp,Labor Force: 65+ YO: Full Time Year Round Percent
+2022,lf_4yfsp,Labor Force: 65+ YO: Full Time Seasonally Percent
+2022,lf_4ypyp,Labor Force: 65+ YO: Part Time Year Round Percent
+2022,lf_4ypsp,Labor Force: 65+ YO: Part Time Seasonally Percent
+2022,lf_4ylyp,Labor Force: 65+ YO: Limited Time Year Round Percent
+2022,lf_4ylsp,Labor Force: 65+ YO: Limited Time Seasonally Percent
+2022,lf_4nwmp,Labor Force: 65+ YO: Did Not Work: Males Percent
+2022,lf_4nwfp,Labor Force: 65+ YO: Did Not Work: Females Percent
+2022,lf_4nwap,Labor Force: 65+ YO: Did Not Work: All Percent
+2022,lf_5yfyp,Labor Force: 16+ YO: Full Time Year Round Percent
+2022,lf_5yfsp,Labor Force: 16+ YO: Full Time Seasonally Percent
+2022,lf_5ypyp,Labor Force: 16+ YO: Part Time Year Round Percent
+2022,lf_5ypsp,Labor Force: 16+ YO: Part Time Seasonally Percent
+2022,lf_5ylyp,Labor Force: 16+ YO: Limited Time Year Round Percent
+2022,lf_5ylsp,Labor Force: 16+ YO: Limited Time Seasonally Percent
+2022,lf_5nwmp,Labor Force: 16+ YO: Did Not Work: Males Percent
+2022,lf_5nwfp,Labor Force: 16+ YO: Did Not Work: Females Percent
+2022,lf_5nwap,Labor Force: 16+ YO: Did Not Work: All Percent
+2022,lf_6ftp,Labor Force: 16+ YO: Worked Full Time Year Round Percent
+2022,lf_6ptp,Labor Force:16+ YO: Worked Less Than Full Time Year Round Percent
+2022,lf_6nwp,Labor Force: 16+ YO: Did Not Work in Past 12 Mos Percent
+2022,lf_7ftp,Labor Force: 20-44 YO: Worked Full Time Year Round Percent
+2022,lf_7ptp,Labor Force: 20-44 YO: Worked Less Than Full Time Year Round Percent
+2022,lf_7nwp,Labor Force: 20-44 YO: Did Not Work in Past 12 Mos Percent
+2022,lf_8ftp,Labor Force: 45-64 YO: Worked Full Time Year Round Percent
+2022,lf_8ptp,Labor Force: 45-64 YO: Worked Less Than Full Time Year Round Percent
+2022,lf_8nwp,Labor Force: 45-64 YO: Did Not Work in Past 12 Mos Percent
+2022,lf_9ftp,Labor Force: 65+ YO: Worked Full Time Year Round Percent
+2022,lf_9ptp,Labor Force: 65+ YO: Worked Less Than Full Time Year Round Percent
+2022,lf_9nwp,Labor Force: 65+ YO: Did Not Work in Past 12 Mos Percent
+2022,db_oa3p,Disability: BG: 18+yo Percent
+2022,db_oa6p,Disability: BG: 18-64yo Percent
+2022,db_oa7p,Disability: BG: 65+yo Percent
+2022,db_ha0p,Disability: TR: Hearing: All Percent
+2022,db_ha1p,Disability: TR: Hearing: Under 5yo Percent
+2022,db_ha2p,Disability: TR: Hearing: 5-17yo Percent
+2022,db_ha3p,Disability: TR: Hearing: Under 18yo Percent
+2022,db_ha4p,Disability: TR: Hearing: 18-34yo Percent
+2022,db_ha5p,Disability: TR: Hearing: 35-64yo Percent
+2022,db_ha6p,Disability: TR: Hearing: 18-64yo Percent
+2022,db_ha7p,Disability: TR: Hearing: 65+yo Percent
+2022,db_ha8p,Disability: TR: Hearing: 65-74yo Percent
+2022,db_ha9p,Disability: TR: Hearing: 75+yo Percent
+2022,db_va0p,Disability: TR: Vision: All Percent
+2022,db_va1p,Disability: TR: Vision: Under 5yo Percent
+2022,db_va2p,Disability: TR: Vision: 5-17yo Percent
+2022,db_va3p,Disability: TR: Vision: Under 18yo Percent
+2022,db_va4p,Disability: TR: Vision: 18-34yo Percent
+2022,db_va5p,Disability: TR: Vision: 35-64yo Percent
+2022,db_va6p,Disability: TR: Vision: 18-64yo Percent
+2022,db_va7p,Disability: TR: Vision: 65+yo Percent
+2022,db_va8p,Disability: TR: Vision: 65-74yo Percent
+2022,db_va9p,Disability: TR: Vision: 75+yo Percent
+2022,db_ca0p,Disability: TR: Cognitive: All Percent
+2022,db_ca2p,Disability: TR: Cognitive: 5-17yo Percent
+2022,db_ca4p,Disability: TR: Cognitive: 18-34yo Percent
+2022,db_ca5p,Disability: TR: Cognitive: 35-64yo Percent
+2022,db_ca6p,Disability: TR: Cognitive: 18-64yo Percent
+2022,db_ca7p,Disability: TR: Cognitive: 65+yo Percent
+2022,db_ca8p,Disability: TR: Cognitive: 65-74yo Percent
+2022,db_ca9p,Disability: TR: Cognitive: 75+yo Percent
+2022,db_aa0p,Disability: TR: Ambulatory: All Percent
+2022,db_aa2p,Disability: TR: Ambulatory: 5-17yo Percent
+2022,db_aa4p,Disability: TR: Ambulatory: 18-34yo Percent
+2022,db_aa5p,Disability: TR: Ambulatory: 35-64yo Percent
+2022,db_aa6p,Disability: TR: Ambulatory: 18-64yo Percent
+2022,db_aa7p,Disability: TR: Ambulatory: 65+yo Percent
+2022,db_aa8p,Disability: TR: Ambulatory: 65-74yo Percent
+2022,db_aa9p,Disability: TR: Ambulatory: 75+yo Percent
+2022,db_sa0p,Disability: TR: Self-Care: All Percent
+2022,db_sa2p,Disability: TR: Self-Care: 5-17yo Percent
+2022,db_sa4p,Disability: TR: Self-Care: 18-34yo Percent
+2022,db_sa5p,Disability: TR: Self-Care: 35-64yo Percent
+2022,db_sa6p,Disability: TR: Self-Care: 18-64yo Percent
+2022,db_sa7p,Disability: TR: Self-Care: 65+yo Percent
+2022,db_sa8p,Disability: TR: Self-Care: 65-74yo Percent
+2022,db_sa9p,Disability: TR: Self-Care: 75+yo Percent
+2022,db_ia0p,Disability: TR: Independent Living: All Percent
+2022,db_ia4p,Disability: TR: Independent Living: 18-34yo Percent
+2022,db_ia5p,Disability: TR: Independent Living: 35-64yo Percent
+2022,db_ia6p,Disability: TR: Independent Living: 18-64yo Percent
+2022,db_ia7p,Disability: TR: Independent Living: 65+yo Percent
+2022,db_ia8p,Disability: TR: Independent Living: 65-74yo Percent
+2022,db_ia9p,Disability: TR: Independent Living: 75+yo Percent
+2023,hl_lex,Health: Life Expectancy: Years at Birth 
+2023,hl_bdrp,Health: Behavior: Binge Drinking %
+2023,hl_ngmp,Health: Self-Reported Status: Adults:  Not Good Mental Health %
+2023,dx_dprp,Health: Diagnosis: Depression %
+2023,hl_cmdp,Health: Behavior: Completed Routine Checkup with Doctor in Past Year %
+2023,dx_canp,Health: Diagnosis: Cancer %
+2023,dx_strp,Health: Diagnosis: Stroke %
+2023,dx_diap,Health: Diagnosis: Diabetes %
+2023,dx_htnp,Health: Diagnosis: Hypertension %
+2023,dx_obsp,Health: Diagnosis: Obesity %
+2022,fs_fsrp,Food Stamps: Households that Received Food Stamps - SNAP in the Past 12 ...
+2022,oc_amap,"Occupation: All: MBSA (Management, Business, Science, and Arts): Any Per..."
+2022,oc_amfp,"Occupation: All: MBF (Management, Business, and Financial): Any Percent"
+2022,oc_ammp,Occupation: All: MBF: Management Percent
+2022,oc_ambp,Occupation: All: MBF: Business and Financial Operations Percent
+2022,oc_acap,"Occupation: All: CES (Computer, Engineering, and Science): Any Percent"
+2022,oc_accp,Occupation: All: CES: Computer and Mathematical Percent
+2022,oc_acep,Occupation: All: CES: Architecture and Engineering Percent
+2022,oc_acsp,"Occupation: All: CES: Life, Physical, and Social Science Percent"
+2022,oc_alap,"Occupation: All: ELCSAM (Education, Legal, Community Service, Arts and M..."
+2022,oc_alsp,Occupation: All: ELCSAM: Community and Social Services Percent
+2022,oc_allp,Occupation: All: ELCSAM: Legal Percent
+2022,oc_alep,Occupation: All: ELCSAM: Educational and Library Percent
+2022,oc_almp,"Occupation: All: ELCSAM: Arts, Design, Entertainment, Sports and Media P..."
+2022,oc_ahap,Occupation: All: HCPT (Healthcare Practitioners and Technical): Any Percent
+2022,oc_ahpp,Occupation: All: HCPT: Health Diagnosing and Treating Percent
+2022,oc_ahtp,Occupation: All: HCPT: Health Technologists and Technicians Percent
+2022,oc_asap,Occupation: All: Service: Any Percent
+2022,oc_ashp,Occupation: All: Service: Any Percent
+2022,oc_apap,Occupation: All: PS (Protective Services): Any Percent
+2022,oc_apfp,Occupation: All: PS: Firefighting and Prevention Percent
+2022,oc_aplp,Occupation: All: PS: Law Enforcement Percent
+2022,oc_apsp,Occupation: All: PS: Food Preparation and Service Related Percent
+2022,oc_apbp,Occupation: All: PS: Building and Grounds Cleaning and Maintenance Percent
+2022,oc_appp,Occupation: All: PS: Personal Care and Service Percent
+2022,oc_aoap,Occupation: All: SO (Sales and Office): Any Percent
+2022,oc_aosp,Occupation: All: SO: Sales Percent
+2022,oc_aoop,Occupation: All: SO: Office and Administrative Support Percent
+2022,oc_anap,"Occupation: All: NRCM (Natural Resources, Construction, and Maintenance)..."
+2022,oc_anfp,"Occupation: All: NRCM: Farming, Fishing, and Forestry Percent"
+2022,oc_ancp,Occupation: All: NRCM: Construction and Extraction Percent
+2022,oc_anmp,"Occupation: All: NRCM: Installation, Maintenance, and Repair Percent"
+2022,oc_atap,"Occupation: All: PTM (Production, Transportation, and Materiel Moving): ..."
+2022,oc_atpp,Occupation: All: PTM: Production Percent
+2022,oc_attp,Occupation: All: PTM: Transportation Percent
+2022,oc_atmp,Occupation: All: PTM: Material Moving Percent
+2022,oc_fdep,Occupation: Denominator: FT: Individuals Percent
+2022,oc_pdep,Occupation: Denominator: PT: Individuals Percent
+2022,id_amap,"Industry: All: AFFHM (Agriculture, Forestry, Fishing and Hunting, and Mi..."
+2022,id_amfp,"Industry: All: AFFHM: Agriculture, Forestry, Fishing, and Hunting Percent"
+2022,id_amep,"Industry: All: AFFHM: Mining, Quarrying, and Oil and Gas Extraction Percent"
+2022,id_amcp,Industry: All: AFFHM: Construction Percent
+2022,id_ammp,Industry: All: AFFHM: Manufacturing Percent
+2022,id_amwp,Industry: All: AFFHM: Wholesale Trade Percent
+2022,id_amrp,Industry: All: AFFHM: Retail Trade Percent
+2022,id_atap,"Industry: All: TWU (Transportation and Warehousing, and Utilities): Any ..."
+2022,id_attp,Industry: All: TWU: Transportation and Warehousing Percent
+2022,id_atup,Industry: All: TWU: Utilities Percent
+2022,id_atip,Industry: All: TWU: Information Percent
+2022,id_afap,"Industry: All: FIRE (Finance, Insurance, Real Estate, Rental and Leasing..."
+2022,id_affp,Industry: All: FIRE: Finance and Insurance Percent
+2022,id_afrp,"Industry: All: FIRE: Real Estate, Rental and Leasing Percent"
+2022,id_apap,"Industry: All: PSMAW (Professional, Scientific, Management, Administrati..."
+2022,id_appp,"Industry: All: PSMAW: Professional, Scientific, and Technical Percent"
+2022,id_apmp,Industry: All: PSMAW: Management of Companies and Enterprises Percent
+2022,id_apsp,"Industry: All: PSMAW: Administrative, Support, and Waste Management Percent"
+2022,id_asap,"Industry: All: EHCS (Educational Services, Health Care and Social Assist..."
+2022,id_asep,Industry: All: EHCS: Educational Services Percent
+2022,id_ashp,Industry: All: EHCS: Health Care and Social Assistance Percent
+2022,id_aaap,"Industry: All: AERAF (Arts, Entertainment, Recreation, Accomodation, and..."
+2022,id_aaep,"Industry: All: AERAF: Arts, Entertainment, and Recreation Percent"
+2022,id_aahp,Industry: All: AERAF: Accomodation and Food Services Percent
+2022,id_aaop,"Industry: All: AERAF: Other Services, Except Public Administration Percent"
+2022,id_aapp,Industry: All: AERAF: Public Administration Percent
+2022,cl_apap,Class: PFPWS (Private For-Profit Wage and Salary Workers): Any Percent
+2022,cl_appp,Class: PFPWS: Employee of Private Company Percent
+2022,cl_apip,Class: PFPWS: Self-Employed in Own Incorporated Business Percent
+2022,cl_apnp,Class: PFPWS: Private Not-for-Profit Percent
+2022,cl_aplp,Class: PFPWS: Local Government Percent
+2022,cl_apsp,Class: PFPWS: State Government Percent
+2022,cl_apfp,Class: PFPWS: Local Government Percent
+2022,cl_apep,Class: PFPWS: Self-Employed in Own Not Incorporated Business Percent
+2022,cl_apup,Class: PFPWS: Unpaid Family Worker Percent
+2020,hs_allt,Housing: All Units: Count
+2020,hs_occn,Housing: Occupied Units: Count
+2020,hs_occp,Housing: Occupied Units: Percent
+2020,hs_vacn,Housing: Vacant Units: Count
+2020,hs_vacp,Housing: Vacant Units: Percent
+2022,hs_ownp,Housing: Owner Occupied Housing Units Percent
+2022,hs_renp,Housing: Renter Occupied Housing Units Percent
+2022,hs_vctp,Housing: Vacant Housing Units Percent
+2022,hs_maop,Housing: Mobile Home: Owner or Renter Occupied Percent
+2022,hs_moop,Housing: Mobile Home: Owner Occupied Percent
+2022,hs_mrop,Housing: Mobile Home: Renter Occupied Percent
+2022,hs_ppop,Housing: Owner Occupied: Population in Occupied Housing Units Percent
+2022,hs_pprp,Housing: Renter Occupied: Population in Occupied Housing Units Percent
+2022,hs_szaa,Housing: All: Average Household Size
+2022,hs_szoa,Housing: Owner Occupied: Average Household Size
+2022,hs_szra,Housing: Renter Occupied: Average Household Size
+2022,hs_dran,Housing: All: Median Number of Rooms
+2022,hs_dron,Housing: Owner Occupied: Median Number of Rooms
+2022,hs_drrn,Housing: Renter Occupied: Median Number of Rooms
+2022,hs_acra,Housing: All: Average Number of People Per Room
+2022,hs_acro,Housing: Owner Occupied: Average Number of People Per Room
+2022,hs_acrr,Housing: Renter Occupied: Average Number of People Per Room
+2022,hs_dysn,Housing: Median Year Structure Built: All
+2022,hs_dycn,Housing: Median Year Structure Built: All Occupied
+2022,hs_dyon,Housing: Median Year Structure Built: Owner Occupied
+2022,hs_dyrn,Housing: Median Year Structure Built: Renter Occupied
+2022,tx_nvop,Vehicle Access: Owner Occupied: Households with No Access to Vehicle Per...
+2022,tx_nvrp,Vehicle Access: Renter Occupied: Households with No Access to Vehicle Pe...
+2022,tx_nvap,Vehicle Access: All Occupied: Households with No Access to Vehicle Percent
+2022,hi_onep,Health Insurance: One Type: Population Percent
+2022,hi_empp,Health Insurance: One Type: Employer-Based Percent
+2022,hi_dirp,Health Insurance: One Type: Direct-Purchase Percent
+2022,hi_arep,Health Insurance: One Type: Medicare Percent
+2022,hi_aidp,Health Insurance: One Type: Medicaid Percent
+2022,hi_trip,Health Insurance: One Type: TRICARE Percent
+2022,hi_vap,Health Insurance: One Type: VA Percent
+2022,hi_twop,Health Insurance: Two or More Types: Population Percent
+2022,hi_eadp,Health Insurance: Two or More Types: Employer-Based and Direct-Purchase ...
+2022,hi_earp,Health Insurance: Two or More Types: Employer-Based and Medicare Percent
+2022,hi_darp,Health Insurance: Two or More Types: Direct-Purchase and Medicare Percent
+2022,hi_dulp,Health Insurance: Two or More Types: Medicare and Medicaid Percent
+2022,hi_prip,Health Insurance: Two or More Types: Private Only Combinations Percent
+2022,hi_pubp,Health Insurance: Two or More Types: Public Only Combinations Percent
+2022,hi_othp,Health Insurance: Two or More Types: Other Combinations Percent
+2022,hi_unip,Health Insurance: Two or More Types: Uninsured Percent
+2022,hi_comp,Health Insurance: Commercial Percent
+2022,hi_milp,Health Insurance: Any Military (VA or TRICARE) Percent
+2022,ac_inap,Internet Access: Households: With an Internet Subscription Percent
+2022,ac_dupp,Internet Access: Households: Dial-up Only Percent
+2022,ac_brbp,Internet Access: Households: With Broadband Internet Access Percent
+2022,ac_nbrp,Internet Access: Households: No Broadband Internet Access Percent
+2022,ac_clap,Internet Access: Households: Cellular Data Plan Percent
+2022,ac_clop,Internet Access: Households: Only Cellular Data Plan Percent
+2022,ac_stap,Internet Access: Households: Satellite Internet Percent
+2022,ac_stop,Internet Access: Households: Only Satellite Internet Percent
+2022,ac_othp,Internet Access: Households: Other Internet Acess Percent
+2022,ac_nsbp,Internet Access: Households: Internet Access Without a Subscription Percent
+2022,ac_niap,Internet Access: Households: No Internet Access Percent
+2022,ac_cdnp,Computer Access: Households: Denom Percent
+2022,ac_cwdp,Computer Access: Households: Computer with Dial-up Only Percent
+2022,ac_cwbp,Computer Access: Households: Computer with Broadband Percent
+2022,ac_cnip,Computer Access: Households: Computer without Internet Access Percent
+2022,ac_nocp,Computer Access: Households: No Computer Percent
+2022,vt_denn,Voting: Voting-Age Citizens: All
+2022,vt_1829p,Voting: Voting-Age Citizens: 18-29 Years Old Percent
+2022,vt_3044p,Voting: Voting-Age Citizens: 30-44 Years Old Percent
+2022,vt_4564p,Voting: Voting-Age Citizens: 45-64 Years Old Percent
+2022,vt_65pp,Voting: Voting-Age Citizens: 65 Plus Years Old Percent
+2022,vt_lthp,Voting: Voting-Age Citizens: Edu Less Than 9th Grade Percent
+2022,vt_nhsp,Voting: Voting-Age Citizens: Edu 9-12 Grade Percent
+2022,vt_hsdp,Voting: Voting-Age Citizens: Edu HS Graduate Percent
+2022,vt_scop,Voting: Voting-Age Citizens: Edu Some College Percent
+2022,vt_asdp,Voting: Voting-Age Citizens: Edu Associates Degree Percent
+2022,vt_colp,Voting: Voting-Age Citizens: Edu Bachelors Degree Percent
+2022,vt_mstp,Voting: Voting-Age Citizens: Edu Graduate Degree Percent
+2022,vt_pbpp,Voting: Voting-Age Citizens: Poverty: Below Poverty Level Percent
+2022,vt_papp,Voting: Voting-Age Citizens: Poverty: At or Above Poverty Level Percent
+2022,vt_ycap,Voting: Voting-Age Citizens: All Percent
+2022,vt_ncap,Voting: Voting-Age Non-Citizens: All Percent
+2022,vt_nc1829p,Voting: Voting-Age Non-Citizens: 18-29 Years Old Percent
+2022,vt_nc3044p,Voting: Voting-Age Non-Citizens: 30-44 Years Old Percent
+2022,vt_nc4564p,Voting: Voting-Age Non-Citizens: 45-64 Years Old Percent
+2022,vt_nc65pp,Voting: Voting-Age Non-Citizens: 65 Plus Years Old Percent
+2022,vt_dhi,Voting: Voting-Age Citizens: Median Household Income
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
