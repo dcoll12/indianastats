@@ -244,6 +244,21 @@ header p {
 .dmt-irs-section { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); overflow: hidden; margin-top: 20px; }
 .dmt-irs-header { background: #1e3a5f; color: white; padding: 12px 18px; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.3px; display: flex; align-items: center; gap: 8px; }
 .dmt-irs-empty { padding: 14px 18px; font-size: 0.85rem; color: #64748b; font-style: italic; }
+.pp-role-tag {
+  display: inline-block; font-size: 0.57rem; font-weight: 700;
+  padding: 1px 5px; border-radius: 3px; margin-top: 3px; color: white; white-space: nowrap;
+}
+.pp-role-polar-anchor { background: #f59e0b; color: #1c1917; }
+.pp-role-senate       { background: #7c3aed; }
+.pp-role-competitive  { background: #059669; }
+.pp-role-challenge    { background: #d97706; }
+.pp-role-turnout      { background: #94a3b8; }
+.pp-senate-row { background: #faf5ff !important; }
+.pp-senate-row:hover { background: #f3e8ff !important; }
+.pp-house-row { background: #f0fdf9 !important; }
+.pp-house-row:hover { background: #dcfce7 !important; }
+.pp-fp-anchor-row { background: #fef9c3 !important; }
+.pp-fp-anchor-row:hover { background: #fde68a !important; }
 .pp-wrapper { width: 100%; overflow-x: auto; }
 .pp-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; min-width: 800px; background: white; }
 .pp-table thead th { background: #1e3a5f; color: white; font-weight: 700; font-size: 0.78rem; padding: 10px 8px; text-align: center; border: 1px solid #163050; white-space: nowrap; }
@@ -345,8 +360,13 @@ footer .sources { margin-top: 16px; padding-top: 12px; border-top: 1px solid #e2
     </div>
   </div>
 
+  <div class="dmt-irs-section" id="dmt-focus-pack-section" style="display:none">
+    <div class="dmt-irs-header" style="background:linear-gradient(135deg,#166534 0%,#14532d 100%)">⚡ Your Focus Pack — Exact Co-Campaign Group</div>
+    <div id="dmt-focus-pack-table"></div>
+  </div>
+
   <div class="dmt-irs-section" id="dmt-irs-section" style="display:none">
-    <div class="dmt-irs-header">★ IRS Candidates in Your Pack</div>
+    <div class="dmt-irs-header">★ IRS Candidates — Overlapping Districts Pack</div>
     <div id="dmt-irs-table"></div>
   </div>
 
@@ -1087,6 +1107,113 @@ var DMT = (function() {
     return html;
   }
 
+  function renderFocusPackTable(entries) {
+    if (!entries.length) return '<div class="dmt-irs-empty">No IRS candidates found in this focus pack.</div>';
+
+    var thead = '<thead><tr>'
+      + '<th>IRS Candidate</th><th>2020 Pres</th><th>2022 Senate</th><th>2024 Pres</th>'
+      + '<th>IN-Index</th><th>District</th><th>Location</th><th>Holds Seat</th>'
+      + '</tr></thead>';
+
+    var rows = entries.map(function(e) {
+      var lean  = e.lean;
+      var m2020 = lean ? lean.margin_2020 : null;
+      var m2022 = lean ? lean.margin_2022 : null;
+      var m2024 = lean ? lean.margin_2024 : null;
+      var midx  = lean ? lean.in_index    : null;
+      var l2020 = lean ? (lean.label_2020     || '—') : 'N/A';
+      var l2022 = lean ? (lean.label_2022     || '—') : '—';
+      var l2024 = lean ? (lean.label_2024     || '—') : '—';
+      var lidx  = lean ? (lean.in_index_label || '—') : '—';
+
+      var prefix    = { house: 'HD', senate: 'SD', congressional: 'CD' }[e.dtype] || '';
+      var distBadge = e.dtype && e.dnum ? prefix + '-' + e.dnum : '—';
+      var badgeCls  = (midx !== null && midx !== undefined)
+        ? (midx > 0.03 ? 'r-lean' : midx < -0.03 ? 'd-lean' : 'even') : 'even';
+
+      var csvRow   = e.csvRow;
+      var first    = csvRow ? (csvRow['First Name'] || '').trim() : '';
+      var last     = csvRow ? (csvRow['Last Name']  || '').trim() : '';
+      var initials = ((first[0] || '') + (last[0] || '')).toUpperCase() || (e.name[0] || '?').toUpperCase();
+      var rawPhoto = csvRow ? (csvRow['Photo URL'] || csvRow['Photo'] || '') : '';
+      var photo    = rawPhoto ? irsDriveThumbnail(rawPhoto) : '';
+      var photoHtml = photo
+        ? '<img class="pp-photo" src="' + xesc(photo) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><div class="pp-initials" style="display:none">' + xesc(initials) + '</div>'
+        : '<div class="pp-initials">' + xesc(initials) + '</div>';
+
+      var seatParty = lean ? (lean.party || '') : '';
+      var rep       = lean ? (lean.representative || '') : '';
+      var holdsCell = seatParty === 'Republican'
+        ? '<td class="pp-party pp-party-r">Republican<div class="pp-party-rep">' + xesc(rep) + '</div></td>'
+        : seatParty === 'Democratic'
+          ? '<td class="pp-party pp-party-d">Democratic<div class="pp-party-rep">' + xesc(rep) + '</div></td>'
+          : '<td class="pp-party">—</td>';
+
+      var city    = csvRow ? ((csvRow['Home City'] || '').trim() || '—') : '—';
+      var sub2020 = (l2020 && l2020.includes('Unop')) ? lidx : '';
+      var sub2022 = (l2022 && l2022.includes('Unop')) ? lidx : '';
+      var sub2024 = (l2024 && l2024.includes('Unop')) ? lidx : '';
+
+      var roleCls  = 'pp-role-tag pp-role-' + (e.role || 'turnout');
+      var roleBadge = e.roleLabel ? '<span class="' + roleCls + '">' + xesc(e.roleLabel) + '</span>' : '';
+      var rowCls = 'pp-row'
+        + (e.role === 'polar-anchor' ? ' pp-fp-anchor-row' : '')
+        + (e.dtype === 'senate' && e.role !== 'polar-anchor' ? ' pp-senate-row' : '')
+        + (e.dtype === 'house'  && e.role !== 'polar-anchor' ? ' pp-house-row'  : '');
+
+      return '<tr class="' + rowCls + '">'
+        + '<td class="pp-candidate"><div class="pp-cand-inner">' + photoHtml
+        + '<div class="pp-cand-name">' + xesc(e.name) + '<br><span class="dmt-cohort-badge">★ IRS</span> ' + roleBadge + '</div></div></td>'
+        + irsLeanCell(m2020, l2020, sub2020)
+        + irsLeanCell(m2022, l2022, sub2022)
+        + irsLeanCell(m2024, l2024, sub2024)
+        + irsLeanCell(midx,  lidx)
+        + '<td class="pp-dist"><div class="pp-badge ' + badgeCls + '">' + xesc(distBadge) + '</div></td>'
+        + '<td class="pp-loc">' + xesc(city) + '</td>'
+        + holdsCell
+        + '</tr>';
+    }).join('');
+
+    return '<div class="pp-wrapper"><table class="pp-table">' + thead + '<tbody>' + rows + '</tbody></table></div>';
+  }
+
+  function showFocusPackTable(fp, dtype, dnum) {
+    var section = document.getElementById('dmt-focus-pack-section');
+    var tableEl = document.getElementById('dmt-focus-pack-table');
+    if (!section || !tableEl) return;
+
+    var entries = collectIrsCandidates(fp.packHDs, fp.packSDs, []);
+    if (!entries.length) { section.style.display = 'none'; return; }
+
+    var anchorKey = fp.anchorDtype + ':' + fp.anchorDnum;
+    entries.forEach(function(e) {
+      var key  = e.dtype + ':' + e.dnum;
+      var midx = e.lean ? e.lean.in_index : null;
+      if (key === anchorKey) {
+        e.role = 'polar-anchor'; e.roleLabel = '⭐ Polar Anchor';
+      } else if (e.dtype === 'senate') {
+        e.role = 'senate'; e.roleLabel = '⚡ Senate';
+      } else {
+        if (midx !== null && midx <= 0.08)      { e.role = 'competitive'; e.roleLabel = '🔑 Competitive'; }
+        else if (midx !== null && midx <= 0.25) { e.role = 'challenge';   e.roleLabel = '📊 Challenge'; }
+        else                                    { e.role = 'turnout';     e.roleLabel = '🗳️ Turnout'; }
+      }
+    });
+
+    entries.sort(function(a, b) {
+      if (a.role === 'polar-anchor' && b.role !== 'polar-anchor') return -1;
+      if (b.role === 'polar-anchor' && a.role !== 'polar-anchor') return  1;
+      if (a.dtype === 'senate' && b.dtype !== 'senate') return -1;
+      if (b.dtype === 'senate' && a.dtype !== 'senate') return  1;
+      var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
+      var mb = (b.lean && b.lean.in_index !== null) ? b.lean.in_index : 0.5;
+      return ma - mb;
+    });
+
+    tableEl.innerHTML = renderFocusPackTable(entries);
+    section.style.display = 'block';
+  }
+
   function onCandidateChange() {
     var idx = document.getElementById('dmt-cand-select').value;
     if (idx === '') return;
@@ -1120,9 +1247,15 @@ var DMT = (function() {
         if (fp) {
           // Override map highlight to show just the focus pack districts
           highlightPack(fp.packHDs, fp.packSDs, [], cDtype, cDnum);
-          // Prepend focus pack banner to results panel
+          // Prepend focus pack banner (district chips) to results panel
           var resultsEl = document.getElementById('dmt-results');
           if (resultsEl) resultsEl.insertAdjacentHTML('afterbegin', renderFocusPackBanner(fp, cDtype, cDnum));
+          // Show focus pack candidates table
+          showFocusPackTable(fp, cDtype, cDnum);
+        } else {
+          // No focus pack found — hide the section
+          var fpSection = document.getElementById('dmt-focus-pack-section');
+          if (fpSection) fpSection.style.display = 'none';
         }
       }
     }
@@ -1449,6 +1582,8 @@ var DMT = (function() {
     document.getElementById('dmt-cd').value = '';
     var results = document.getElementById('dmt-results');
     if (results) { results.innerHTML = ''; results.style.display = 'none'; }
+    var fpSection = document.getElementById('dmt-focus-pack-section');
+    if (fpSection) fpSection.style.display = 'none';
     var irsSection = document.getElementById('dmt-irs-section');
     if (irsSection) irsSection.style.display = 'none';
     var irsNeighbor = document.getElementById('dmt-irs-neighbor-section');
