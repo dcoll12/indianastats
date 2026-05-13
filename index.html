@@ -1075,6 +1075,31 @@ var DMT = (function() {
       });
     });
 
+    // Safety: ensure FORCED_MEMBERS districts always resolve to their correct anchor pack,
+    // even if the greedy assignment missed them or placed them in the wrong pack.
+    [
+      { dtype: 'house', dnum: 69, anchorDtype: 'house',  anchorDnum: 62 },
+      { dtype: 'house', dnum: 38, anchorDtype: 'senate', anchorDnum: 22 },
+      { dtype: 'house', dnum: 23, anchorDtype: 'senate', anchorDnum: 22 },
+    ].forEach(function(fm) {
+      var memberKey = fm.dtype + ':' + fm.dnum;
+      var anchorKey = fm.anchorDtype + ':' + fm.anchorDnum;
+      var anchorEntry = idx[anchorKey];
+      if (!anchorEntry) return;
+      if (!idx[memberKey]) {
+        if (fm.dtype === 'house'  && anchorEntry.packHDs.indexOf(fm.dnum) < 0) anchorEntry.packHDs.push(fm.dnum);
+        if (fm.dtype === 'senate' && anchorEntry.packSDs.indexOf(fm.dnum) < 0) anchorEntry.packSDs.push(fm.dnum);
+        idx[memberKey] = anchorEntry;
+      } else if (idx[memberKey].anchorDnum !== anchorEntry.anchorDnum || idx[memberKey].anchorDtype !== anchorEntry.anchorDtype) {
+        var wrongEntry = idx[memberKey];
+        if (fm.dtype === 'house')  wrongEntry.packHDs = wrongEntry.packHDs.filter(function(h) { return h !== fm.dnum; });
+        if (fm.dtype === 'senate') wrongEntry.packSDs = wrongEntry.packSDs.filter(function(s) { return s !== fm.dnum; });
+        if (fm.dtype === 'house'  && anchorEntry.packHDs.indexOf(fm.dnum) < 0) anchorEntry.packHDs.push(fm.dnum);
+        if (fm.dtype === 'senate' && anchorEntry.packSDs.indexOf(fm.dnum) < 0) anchorEntry.packSDs.push(fm.dnum);
+        idx[memberKey] = anchorEntry;
+      }
+    });
+
     focusPackIndex = idx;
     return idx;
   }
