@@ -154,6 +154,22 @@ header p {
 }
 .dmt-badge:hover { transform: scale(1.08); box-shadow: 0 2px 6px rgba(102,126,234,0.45); }
 .dmt-badge-active { background: #667eea; color: white; }
+.dmt-badge.dmt-fp-member { background: #dcfce7; color: #166534; border-color: #86efac; }
+.dmt-focus-pack-banner {
+  background: #f0fdf4; border: 2px solid #86efac; border-radius: 8px;
+  padding: 11px 13px; margin-bottom: 12px;
+}
+.dmt-focus-pack-title {
+  font-size: 0.84rem; font-weight: 800; color: #166534;
+  margin-bottom: 7px; display: flex; align-items: center; gap: 7px;
+}
+.dmt-focus-anchor-badge {
+  font-size: 0.7rem; background: #fef3c7; color: #92400e;
+  border: 1px solid #fde68a; border-radius: 4px; padding: 1px 6px; font-weight: 700;
+}
+.dmt-focus-pack-anchor { font-size: 0.78rem; color: #475569; margin-bottom: 6px; }
+.dmt-focus-pack-row { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin: 3px 0; }
+.dmt-focus-pack-type { font-size: 0.7rem; font-weight: 700; color: #475569; min-width: 52px; }
 .dmt-counties { display: flex; flex-wrap: wrap; gap: 4px; }
 .dmt-county-item {
   display: inline-block; padding: 2px 7px;
@@ -362,6 +378,7 @@ var DMT = (function() {
   var directoryNames = new Set();
   var leanLookup = { congressional: {}, senate: {}, house: {} };
   var rowByName = {};
+  var focusPackIndex = null;
 
   function init() {
     if (_initialized) {
@@ -910,6 +927,166 @@ var DMT = (function() {
     return m ? m[0] : '';
   }
 
+  function buildFocusPackIndexDMT() {
+    if (focusPackIndex) return focusPackIndex;
+    if (!districtData || !candidateRows.length) return null;
+
+    var SD_EXTRA_HDS   = { 43: [55, 73], 49: [63] };
+    var SD_EXCLUDED_HDS = { 43: [69] };
+    var HD_EXTRA_SDS   = { 62: [41] };
+    var MEMBER_ONLY_HDS = { 38: true, 55: true, 68: true, 69: true, 73: true };
+
+    function fpPolar(lean) {
+      if (!lean || lean.in_index === null || lean.in_index === undefined) return 0;
+      return Math.max(0, 1 - Math.abs(lean.in_index) / 0.45);
+    }
+
+    function fpOverlap(dtype, dnum) {
+      var sds = {}, hds = {};
+      if (dtype === 'senate') {
+        var excl = new Set((SD_EXCLUDED_HDS[dnum] || []).map(Number));
+        ((districtData.sd_to_hds || {})[String(dnum)] || []).concat(SD_EXTRA_HDS[dnum] || [])
+          .map(Number).filter(function(hd) { return !excl.has(hd); })
+          .forEach(function(hd) {
+            hds[hd] = true;
+            ((districtData.hd_to_sds || {})[String(hd)] || []).map(Number)
+              .forEach(function(sd) { if (sd !== dnum) sds[sd] = true; });
+          });
+      } else {
+        ((districtData.hd_to_sds || {})[String(dnum)] || []).concat(HD_EXTRA_SDS[dnum] || [])
+          .map(Number).forEach(function(sd) {
+            sds[sd] = true;
+            ((districtData.sd_to_hds || {})[String(sd)] || []).map(Number)
+              .forEach(function(hd) { if (hd !== dnum) hds[hd] = true; });
+          });
+      }
+      return { sds: Object.keys(sds).map(Number), hds: Object.keys(hds).map(Number) };
+    }
+
+    var allCands = [], senateBySD = {}, houseByHD = {};
+    candidateRows.forEach(function(r) {
+      var role = (r['Role'] || '').trim().toLowerCase();
+      if (!role.includes('candidate') || role.includes('former')) return;
+      var hd = (r['House District'] || '').replace(/\D/g, '');
+      var sd = (r['Senate District'] || '').replace(/\D/g, '');
+      var title = (r['Title'] || '').toLowerCase();
+      var dtype, dnum;
+      if (title.includes('senate') && sd) { dtype = 'senate'; dnum = parseInt(sd, 10); }
+      else if (hd) { dtype = 'house'; dnum = parseInt(hd, 10); }
+      else if (sd) { dtype = 'senate'; dnum = parseInt(sd, 10); }
+      if (!dtype || !dnum || isNaN(dnum)) return;
+      var lean = (leanLookup[dtype] || {})[dnum] || null;
+      var entry = { dtype: dtype, dnum: dnum, lean: lean, assigned: false };
+      allCands.push(entry);
+      if (dtype === 'senate') { if (!senateBySD[dnum]) senateBySD[dnum] = []; senateBySD[dnum].push(entry); }
+      else                    { if (!houseByHD[dnum])  houseByHD[dnum]  = []; houseByHD[dnum].push(entry); }
+    });
+
+    allCands.sort(function(a, b) { return fpPolar(b.lean) - fpPolar(a.lean); });
+
+    var packs = [];
+    allCands.forEach(function(anchor) {
+      if (anchor.assigned) return;
+      if (anchor.dtype === 'house' && MEMBER_ONLY_HDS[anchor.dnum]) return;
+      anchor.assigned = true;
+      var ov = fpOverlap(anchor.dtype, anchor.dnum);
+      var members = [];
+      ov.sds.forEach(function(sd) {
+        (senateBySD[sd] || []).forEach(function(e) { if (!e.assigned) { e.assigned = true; members.push(e); } });
+      });
+      ov.hds.forEach(function(hd) {
+        (houseByHD[hd] || []).forEach(function(e) { if (!e.assigned) { e.assigned = true; members.push(e); } });
+      });
+      packs.push({ anchor: anchor, members: members });
+    });
+
+    // Forced member reassignments
+    [
+      { dtype: 'house', dnum: 69, anchorDtype: 'house',  anchorDnum: 62 },
+      { dtype: 'house', dnum: 38, anchorDtype: 'senate', anchorDnum: 22 },
+      { dtype: 'house', dnum: 23, anchorDtype: 'senate', anchorDnum: 22 },
+    ].forEach(function(fm) {
+      var target = null;
+      for (var i = 0; i < packs.length; i++) {
+        if (packs[i].anchor.dtype === fm.anchorDtype && packs[i].anchor.dnum === fm.anchorDnum) { target = packs[i]; break; }
+      }
+      if (!target) return;
+      var movers = [], kept = [];
+      packs.forEach(function(p) {
+        if (p === target) { kept.push(p); return; }
+        if (p.anchor.dtype === fm.dtype && p.anchor.dnum === fm.dnum) {
+          movers.push(p.anchor); p.members.forEach(function(m) { movers.push(m); });
+        } else {
+          p.members = p.members.filter(function(m) {
+            if (m.dtype === fm.dtype && m.dnum === fm.dnum) { movers.push(m); return false; } return true;
+          });
+          kept.push(p);
+        }
+      });
+      packs = kept;
+      movers.forEach(function(e) { target.members.push(e); });
+    });
+
+    // Forced pack merges
+    [{ srcDtype: 'house', srcDnum: 4, intoDtype: 'senate', intoDnum: 22 }].forEach(function(fm) {
+      var target = null, srcIdx = -1;
+      for (var i = 0; i < packs.length; i++) {
+        if (packs[i].anchor.dtype === fm.intoDtype && packs[i].anchor.dnum === fm.intoDnum) target = packs[i];
+        if (packs[i].anchor.dtype === fm.srcDtype  && packs[i].anchor.dnum === fm.srcDnum)  srcIdx = i;
+      }
+      if (!target || srcIdx === -1) return;
+      var src = packs.splice(srcIdx, 1)[0];
+      target.members.push(src.anchor);
+      src.members.forEach(function(m) { target.members.push(m); });
+    });
+
+    var idx = {};
+    packs.forEach(function(pack) {
+      var anchor = pack.anchor;
+      var all = [anchor].concat(pack.members);
+      var packSDs = [], packHDs = [];
+      all.forEach(function(e) {
+        if (e.dtype === 'senate' && packSDs.indexOf(e.dnum) < 0) packSDs.push(e.dnum);
+        if (e.dtype === 'house'  && packHDs.indexOf(e.dnum) < 0) packHDs.push(e.dnum);
+      });
+      all.forEach(function(e) {
+        var key = e.dtype + ':' + e.dnum;
+        if (!idx[key]) idx[key] = { anchorDtype: anchor.dtype, anchorDnum: anchor.dnum, packSDs: packSDs, packHDs: packHDs };
+      });
+    });
+
+    focusPackIndex = idx;
+    return idx;
+  }
+
+  function renderFocusPackBanner(fp, dtype, dnum) {
+    var anchorPrefix = fp.anchorDtype === 'senate' ? 'SD' : 'HD';
+    var isAnchor = fp.anchorDtype === dtype && fp.anchorDnum === dnum;
+    var html = '<div class="dmt-focus-pack-banner">';
+    html += '<div class="dmt-focus-pack-title">⚡ Focus Pack';
+    if (isAnchor) html += ' <span class="dmt-focus-anchor-badge">★ Polar Anchor</span>';
+    html += '</div>';
+    if (!isAnchor) html += '<div class="dmt-focus-pack-anchor">Anchored by ' + anchorPrefix + '-' + fp.anchorDnum + '</div>';
+    if (fp.packSDs.length) {
+      html += '<div class="dmt-focus-pack-row"><span class="dmt-focus-pack-type">Senate:</span>';
+      fp.packSDs.slice().sort(function(a,b){return a-b;}).forEach(function(sd) {
+        var isMine = dtype === 'senate' && dnum === sd;
+        html += '<span class="dmt-badge' + (isMine ? ' dmt-badge-active' : ' dmt-fp-member') + '" data-dtype="senate" data-dnum="' + sd + '">SD-' + sd + '</span>';
+      });
+      html += '</div>';
+    }
+    if (fp.packHDs.length) {
+      html += '<div class="dmt-focus-pack-row"><span class="dmt-focus-pack-type">House:</span>';
+      fp.packHDs.slice().sort(function(a,b){return a-b;}).forEach(function(hd) {
+        var isMine = dtype === 'house' && dnum === hd;
+        html += '<span class="dmt-badge' + (isMine ? ' dmt-badge-active' : ' dmt-fp-member') + '" data-dtype="house" data-dnum="' + hd + '">HD-' + hd + '</span>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+    return html;
+  }
+
   function onCandidateChange() {
     var idx = document.getElementById('dmt-cand-select').value;
     if (idx === '') return;
@@ -927,6 +1104,27 @@ var DMT = (function() {
     } else {
       var county = ((r['Home County'] || r['Counties'] || '').split(',')[0] || '').trim();
       if (county) { document.getElementById('dmt-county').value = county; lookupByCounty(); }
+    }
+
+    // Determine this candidate's primary district for focus pack lookup
+    var title = (r['Title'] || '').toLowerCase();
+    var cDtype, cDnum;
+    if (title.includes('senate') && sd) { cDtype = 'senate'; cDnum = parseInt(sd, 10); }
+    else if (hd) { cDtype = 'house'; cDnum = parseInt(hd, 10); }
+    else if (sd) { cDtype = 'senate'; cDnum = parseInt(sd, 10); }
+
+    if (cDtype && cDnum && !isNaN(cDnum)) {
+      var fpIdx = buildFocusPackIndexDMT();
+      if (fpIdx) {
+        var fp = fpIdx[cDtype + ':' + cDnum];
+        if (fp) {
+          // Override map highlight to show just the focus pack districts
+          highlightPack(fp.packHDs, fp.packSDs, [], cDtype, cDnum);
+          // Prepend focus pack banner to results panel
+          var resultsEl = document.getElementById('dmt-results');
+          if (resultsEl) resultsEl.insertAdjacentHTML('afterbegin', renderFocusPackBanner(fp, cDtype, cDnum));
+        }
+      }
     }
   }
 
