@@ -281,6 +281,34 @@ header p {
 .pp-party-d { color: #1d4ed8; }
 .pp-party-rep { font-weight: 400; font-size: 0.72rem; color: #475569; margin-top: 3px; white-space: normal; }
 
+/* ── Focus Pack Card — mirrors power-packs renderFocusPackCard ─────── */
+.pp-pack-card-standalone { background: white; border-radius: 10px; border: 1px solid #e2e8f0; margin-bottom: 0; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.pp-pack-head { display: flex; justify-content: space-between; align-items: flex-start; padding: 10px 16px; border-bottom: 1px solid #f1f5f9; background: inherit; }
+.pp-pack-head-left { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.pp-pack-title { font-size: 0.93rem; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.pp-pack-lean { font-size: 0.73rem; color: #64748b; }
+.pp-pack-counties { font-size: 0.7rem; color: #64748b; margin-top: 1px; }
+.pp-pack-mission { font-size: 0.72rem; color: #475569; margin-top: 4px; font-style: italic; max-width: 560px; line-height: 1.45; }
+.pp-pack-count { font-size: 0.73rem; color: #64748b; white-space: nowrap; padding-top: 2px; flex-shrink: 0; margin-left: 12px; }
+.pp-holder-badge { font-size: 0.64rem; font-weight: 700; padding: 2px 5px; border-radius: 3px; }
+.pp-holder-r { background: #fee2e2; color: #991b1b; }
+.pp-holder-d { background: #dbeafe; color: #1e40af; }
+.pp-tier-badge { display: inline-block; font-size: 0.66rem; font-weight: 800; padding: 2px 7px; border-radius: 4px; color: white; letter-spacing: 0.5px; white-space: nowrap; }
+.pp-tier-0 { background: #0891b2; }
+.pp-tier-1 { background: #dc2626; }
+.pp-tier-2 { background: #7c3aed; }
+.pp-tier-3 { background: #16a34a; }
+.pp-section-label { font-size: 0.76rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; padding: 9px 14px; border-top: 1px solid #f1f5f9; }
+.pp-section-senate { background: #ede9fe; color: #5b21b6; border-left: 5px solid #7c3aed; }
+.pp-section-house  { background: #dcfce7; color: #14532d; border-left: 5px solid #16a34a; }
+.pp-section-polar-anchor { background: #fef3c7; color: #92400e; border-left: 5px solid #f59e0b; }
+.pp-btns { padding: 10px 8px; text-align: center; white-space: nowrap; }
+.pp-btn { display: inline-block; padding: 6px 12px; border-radius: 4px; font-weight: 700; font-size: 0.76rem; text-decoration: none; background: #3b82f6; color: white; margin: 2px; }
+.pp-btn:hover { background: #1d4ed8; color: white; }
+.pp-social { padding: 10px 8px; text-align: center; white-space: nowrap; }
+.pp-social a { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; margin: 2px; background: #eff6ff; text-decoration: none; }
+.pp-social a:hover { background: #dbeafe; }
+
 footer {
   margin-top: 32px;
   padding: 24px;
@@ -360,8 +388,7 @@ footer .sources { margin-top: 16px; padding-top: 12px; border-top: 1px solid #e2
     </div>
   </div>
 
-  <div class="dmt-irs-section" id="dmt-focus-pack-section" style="display:none">
-    <div class="dmt-irs-header" style="background:linear-gradient(135deg,#166534 0%,#14532d 100%)">⚡ Your Focus Pack — Exact Co-Campaign Group</div>
+  <div id="dmt-focus-pack-section" style="display:none;margin-top:20px">
     <div id="dmt-focus-pack-table"></div>
   </div>
 
@@ -1111,104 +1138,6 @@ var DMT = (function() {
     return idx;
   }
 
-  function renderFocusPackBanner(fp, dtype, dnum) {
-    var anchorPrefix = fp.anchorDtype === 'senate' ? 'SD' : 'HD';
-    var isAnchor = fp.anchorDtype === dtype && fp.anchorDnum === dnum;
-    var html = '<div class="dmt-focus-pack-banner">';
-    html += '<div class="dmt-focus-pack-title">⚡ Focus Pack';
-    if (isAnchor) html += ' <span class="dmt-focus-anchor-badge">★ Polar Anchor</span>';
-    html += '</div>';
-    if (!isAnchor) html += '<div class="dmt-focus-pack-anchor">Anchored by ' + anchorPrefix + '-' + fp.anchorDnum + '</div>';
-    if (fp.packSDs.length) {
-      html += '<div class="dmt-focus-pack-row"><span class="dmt-focus-pack-type">Senate:</span>';
-      fp.packSDs.slice().sort(function(a,b){return a-b;}).forEach(function(sd) {
-        var isMine = dtype === 'senate' && dnum === sd;
-        html += '<span class="dmt-badge' + (isMine ? ' dmt-badge-active' : ' dmt-fp-member') + '" data-dtype="senate" data-dnum="' + sd + '">SD-' + sd + '</span>';
-      });
-      html += '</div>';
-    }
-    if (fp.packHDs.length) {
-      html += '<div class="dmt-focus-pack-row"><span class="dmt-focus-pack-type">House:</span>';
-      fp.packHDs.slice().sort(function(a,b){return a-b;}).forEach(function(hd) {
-        var isMine = dtype === 'house' && dnum === hd;
-        html += '<span class="dmt-badge' + (isMine ? ' dmt-badge-active' : ' dmt-fp-member') + '" data-dtype="house" data-dnum="' + hd + '">HD-' + hd + '</span>';
-      });
-      html += '</div>';
-    }
-    html += '</div>';
-    return html;
-  }
-
-  function renderFocusPackTable(entries) {
-    if (!entries.length) return '<div class="dmt-irs-empty">No IRS candidates found in this focus pack.</div>';
-
-    var thead = '<thead><tr>'
-      + '<th>IRS Candidate</th><th>2020 Pres</th><th>2022 Senate</th><th>2024 Pres</th>'
-      + '<th>IN-Index</th><th>District</th><th>Location</th><th>Holds Seat</th>'
-      + '</tr></thead>';
-
-    var rows = entries.map(function(e) {
-      var lean  = e.lean;
-      var m2020 = lean ? lean.margin_2020 : null;
-      var m2022 = lean ? lean.margin_2022 : null;
-      var m2024 = lean ? lean.margin_2024 : null;
-      var midx  = lean ? lean.in_index    : null;
-      var l2020 = lean ? (lean.label_2020     || '—') : 'N/A';
-      var l2022 = lean ? (lean.label_2022     || '—') : '—';
-      var l2024 = lean ? (lean.label_2024     || '—') : '—';
-      var lidx  = lean ? (lean.in_index_label || '—') : '—';
-
-      var prefix    = { house: 'HD', senate: 'SD', congressional: 'CD' }[e.dtype] || '';
-      var distBadge = e.dtype && e.dnum ? prefix + '-' + e.dnum : '—';
-      var badgeCls  = (midx !== null && midx !== undefined)
-        ? (midx > 0.03 ? 'r-lean' : midx < -0.03 ? 'd-lean' : 'even') : 'even';
-
-      var csvRow   = e.csvRow;
-      var first    = csvRow ? (csvRow['First Name'] || '').trim() : '';
-      var last     = csvRow ? (csvRow['Last Name']  || '').trim() : '';
-      var initials = ((first[0] || '') + (last[0] || '')).toUpperCase() || (e.name[0] || '?').toUpperCase();
-      var rawPhoto = csvRow ? (csvRow['Photo URL'] || csvRow['Photo'] || '') : '';
-      var photo    = rawPhoto ? irsDriveThumbnail(rawPhoto) : '';
-      var photoHtml = photo
-        ? '<img class="pp-photo" src="' + xesc(photo) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><div class="pp-initials" style="display:none">' + xesc(initials) + '</div>'
-        : '<div class="pp-initials">' + xesc(initials) + '</div>';
-
-      var seatParty = lean ? (lean.party || '') : '';
-      var rep       = lean ? (lean.representative || '') : '';
-      var holdsCell = seatParty === 'Republican'
-        ? '<td class="pp-party pp-party-r">Republican<div class="pp-party-rep">' + xesc(rep) + '</div></td>'
-        : seatParty === 'Democratic'
-          ? '<td class="pp-party pp-party-d">Democratic<div class="pp-party-rep">' + xesc(rep) + '</div></td>'
-          : '<td class="pp-party">—</td>';
-
-      var city    = csvRow ? ((csvRow['Home City'] || '').trim() || '—') : '—';
-      var sub2020 = (l2020 && l2020.includes('Unop')) ? lidx : '';
-      var sub2022 = (l2022 && l2022.includes('Unop')) ? lidx : '';
-      var sub2024 = (l2024 && l2024.includes('Unop')) ? lidx : '';
-
-      var roleCls  = 'pp-role-tag pp-role-' + (e.role || 'turnout');
-      var roleBadge = e.roleLabel ? '<span class="' + roleCls + '">' + xesc(e.roleLabel) + '</span>' : '';
-      var rowCls = 'pp-row'
-        + (e.role === 'polar-anchor' ? ' pp-fp-anchor-row' : '')
-        + (e.dtype === 'senate' && e.role !== 'polar-anchor' ? ' pp-senate-row' : '')
-        + (e.dtype === 'house'  && e.role !== 'polar-anchor' ? ' pp-house-row'  : '');
-
-      return '<tr class="' + rowCls + '">'
-        + '<td class="pp-candidate"><div class="pp-cand-inner">' + photoHtml
-        + '<div class="pp-cand-name">' + xesc(e.name) + '<br><span class="dmt-cohort-badge">★ IRS</span> ' + roleBadge + '</div></div></td>'
-        + irsLeanCell(m2020, l2020, sub2020)
-        + irsLeanCell(m2022, l2022, sub2022)
-        + irsLeanCell(m2024, l2024, sub2024)
-        + irsLeanCell(midx,  lidx)
-        + '<td class="pp-dist"><div class="pp-badge ' + badgeCls + '">' + xesc(distBadge) + '</div></td>'
-        + '<td class="pp-loc">' + xesc(city) + '</td>'
-        + holdsCell
-        + '</tr>';
-    }).join('');
-
-    return '<div class="pp-wrapper"><table class="pp-table">' + thead + '<tbody>' + rows + '</tbody></table></div>';
-  }
-
   function showFocusPackTable(fp, dtype, dnum) {
     var section = document.getElementById('dmt-focus-pack-section');
     var tableEl = document.getElementById('dmt-focus-pack-table');
@@ -1217,32 +1146,7 @@ var DMT = (function() {
     var entries = collectIrsCandidates(fp.packHDs, fp.packSDs, []);
     if (!entries.length) { section.style.display = 'none'; return; }
 
-    var anchorKey = fp.anchorDtype + ':' + fp.anchorDnum;
-    entries.forEach(function(e) {
-      var key  = e.dtype + ':' + e.dnum;
-      var midx = e.lean ? e.lean.in_index : null;
-      if (key === anchorKey) {
-        e.role = 'polar-anchor'; e.roleLabel = '⭐ Polar Anchor';
-      } else if (e.dtype === 'senate') {
-        e.role = 'senate'; e.roleLabel = '⚡ Senate';
-      } else {
-        if (midx !== null && midx <= 0.08)      { e.role = 'competitive'; e.roleLabel = '🔑 Competitive'; }
-        else if (midx !== null && midx <= 0.25) { e.role = 'challenge';   e.roleLabel = '📊 Challenge'; }
-        else                                    { e.role = 'turnout';     e.roleLabel = '🗳️ Turnout'; }
-      }
-    });
-
-    entries.sort(function(a, b) {
-      if (a.role === 'polar-anchor' && b.role !== 'polar-anchor') return -1;
-      if (b.role === 'polar-anchor' && a.role !== 'polar-anchor') return  1;
-      if (a.dtype === 'senate' && b.dtype !== 'senate') return -1;
-      if (b.dtype === 'senate' && a.dtype !== 'senate') return  1;
-      var ma = (a.lean && a.lean.in_index !== null) ? a.lean.in_index : 0.5;
-      var mb = (b.lean && b.lean.in_index !== null) ? b.lean.in_index : 0.5;
-      return ma - mb;
-    });
-
-    tableEl.innerHTML = renderFocusPackTable(entries);
+    tableEl.innerHTML = renderDMTFocusPackCard(fp, entries, dtype, dnum);
     section.style.display = 'block';
   }
 
@@ -1277,12 +1181,7 @@ var DMT = (function() {
       if (fpIdx) {
         var fp = fpIdx[cDtype + ':' + cDnum];
         if (fp) {
-          // Override map highlight to show just the focus pack districts
           highlightPack(fp.packHDs, fp.packSDs, [], cDtype, cDnum);
-          // Prepend focus pack banner (district chips) to results panel
-          var resultsEl = document.getElementById('dmt-results');
-          if (resultsEl) resultsEl.insertAdjacentHTML('afterbegin', renderFocusPackBanner(fp, cDtype, cDnum));
-          // Show focus pack candidates table
           showFocusPackTable(fp, cDtype, cDnum);
         } else {
           // No focus pack found — hide the section
@@ -1366,6 +1265,221 @@ var DMT = (function() {
     if (margin > -0.15) return { bg: '#3B82F6', fg: 'white' };
     if (margin > -0.25) return { bg: '#1D4ED8', fg: 'white' };
     return { bg: '#1E3A8A', fg: 'white' };
+  }
+
+  var DMT_PP_FB  = '<svg width="17" height="17" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>';
+  var DMT_PP_IG  = '<svg width="17" height="17" viewBox="0 0 24 24" fill="#E4405F"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>';
+  var DMT_PP_TW  = '<svg width="17" height="17" viewBox="0 0 24 24" fill="#1DA1F2"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>';
+  var DMT_PP_BSK = '<svg width="17" height="17" viewBox="0 0 568 501" fill="#0085FF"><path d="M123.121 33.664C188.241 82.553 258.281 181.68 284 234.873c25.719-53.192 95.759-152.32 160.879-201.21C491.866-1.611 568-28.906 568 57.947c0 17.346-9.945 145.713-15.778 166.555-20.275 72.453-94.155 90.933-159.875 79.748C507.222 323.8 536.444 388.56 473.333 453.32c-119.86 122.992-172.272-30.859-185.702-70.281-2.462-7.227-3.614-10.608-3.631-7.733-.017-2.875-1.169.506-3.631 7.733-13.43 39.422-65.842 193.273-185.702 70.281-63.111-64.76-33.89-129.52 30.986-149.071C60.005 315.434-13.876 296.954-34.151 224.502-39.984 203.66-49.929 75.293-49.929 57.947c0-86.853 76.134-59.558 123.121-24.283z"/></svg>';
+
+  var DMT_PP_THEAD = '<thead><tr>'
+    + '<th style="width:200px">Dem Candidate</th>'
+    + '<th style="width:90px">2020 Pres</th>'
+    + '<th style="width:90px">2022 Senate</th>'
+    + '<th style="width:90px">2024 Pres</th>'
+    + '<th style="width:90px">IN-Index</th>'
+    + '<th style="width:130px">District</th>'
+    + '<th style="width:100px">Location</th>'
+    + '<th style="width:140px">Holds Seat</th>'
+    + '<th style="width:80px">Website</th>'
+    + '<th style="width:80px">Social</th>'
+    + '</tr></thead>';
+
+  function candidateTierFP(lean) {
+    var m = (lean && lean.in_index !== null && lean.in_index !== undefined) ? lean.in_index : 0.5;
+    if (lean && lean.party === 'Democratic' && m < -0.15) return 0;
+    if (m <= 0.15) return 1;
+    if (m <= 0.30) return 2;
+    return 3;
+  }
+
+  function isHouseCaucusDMT(csvRow) {
+    if (!csvRow) return false;
+    var v = (csvRow['House Caucus'] || csvRow['Caucus'] || csvRow['Priority'] || '').trim();
+    if (!v) return false;
+    var lv = v.toLowerCase();
+    return lv === 'yes' || lv === 'y' || lv === 'x' || lv === 'caucus' || lv.includes('caucus');
+  }
+
+  function renderDMTEntry(e, opts) {
+    opts = opts || {};
+    var lean = e.lean, csvRow = e.csvRow;
+    var m2020 = lean ? lean.margin_2020 : null;
+    var m2022 = lean ? lean.margin_2022 : null;
+    var m2024 = lean ? lean.margin_2024 : null;
+    var midx  = lean ? lean.in_index    : null;
+    var l2020 = lean ? (lean.label_2020     || '—') : 'N/A';
+    var l2022 = lean ? (lean.label_2022     || '—') : '—';
+    var l2024 = lean ? (lean.label_2024     || '—') : '—';
+    var lidx  = lean ? (lean.in_index_label || '—') : '—';
+
+    var prefix    = { house: 'HD', senate: 'SD', congressional: 'CD' }[e.dtype] || '';
+    var distBadge = e.dtype && e.dnum ? prefix + '-' + e.dnum : '—';
+    var badgeCls  = (midx !== null && midx !== undefined)
+      ? (midx > 0.03 ? 'r-lean' : midx < -0.03 ? 'd-lean' : 'even') : 'even';
+
+    var first    = csvRow ? (csvRow['First Name'] || '').trim() : '';
+    var last     = csvRow ? (csvRow['Last Name']  || '').trim() : '';
+    var name     = (first + ' ' + last).trim() || e.name || '—';
+    var initials = ((first[0] || '') + (last[0] || '')).toUpperCase() || (e.name ? (e.name[0] || '?').toUpperCase() : '?');
+    var rawPhoto = csvRow ? (csvRow['Photo URL'] || csvRow['Photo'] || '') : '';
+    var photo    = rawPhoto ? irsDriveThumbnail(rawPhoto) : '';
+    var photoHtml = photo
+      ? '<img class="pp-photo" src="' + xesc(photo) + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'"><div class="pp-initials" style="display:none">' + xesc(initials) + '</div>'
+      : '<div class="pp-initials">' + xesc(initials) + '</div>';
+
+    var seatParty = lean ? (lean.party || '') : '';
+    var rep       = lean ? (lean.representative || '') : '';
+    var holdsCell = seatParty === 'Republican'
+      ? '<td class="pp-party pp-party-r">Republican<div class="pp-party-rep">' + xesc(rep) + '</div></td>'
+      : seatParty === 'Democratic'
+        ? '<td class="pp-party pp-party-d">Democratic<div class="pp-party-rep">' + xesc(rep) + '</div></td>'
+        : '<td class="pp-party">—</td>';
+
+    var website = csvRow ? (csvRow['Website'] || '').trim() : '';
+    var websiteCell = (website && website.startsWith('http'))
+      ? '<td class="pp-btns"><a href="' + xesc(website) + '" target="_blank" class="pp-btn">Website</a></td>'
+      : '<td class="pp-btns">—</td>';
+
+    var fb = csvRow ? (csvRow['Facebook'] || '').trim() : '';
+    var ig = csvRow ? (csvRow['Instagram'] || '').trim() : '';
+    var social = '';
+    if (fb && fb.startsWith('http') && fb !== 'No Campaign page?') social += '<a href="' + xesc(fb) + '" target="_blank" title="Facebook">' + DMT_PP_FB + '</a>';
+    if (ig && ig !== '?') {
+      var igUrl = ig.startsWith('http') ? ig : 'https://instagram.com/' + ig.replace(/^@/, '');
+      social += '<a href="' + xesc(igUrl) + '" target="_blank" title="Instagram">' + DMT_PP_IG + '</a>';
+    }
+    ['Other Social 1', 'Other Social 2'].forEach(function(k) {
+      var lk = csvRow ? (csvRow[k] || '').trim() : '';
+      if (!lk || !lk.startsWith('http')) return;
+      var host = ''; try { host = new URL(lk).hostname; } catch(e2) {}
+      if (host.includes('twitter') || host.includes('x.com')) social += '<a href="' + xesc(lk) + '" target="_blank" title="Twitter/X">' + DMT_PP_TW + '</a>';
+      else if (host.includes('bsky') || host.includes('bluesky')) social += '<a href="' + xesc(lk) + '" target="_blank" title="Bluesky">' + DMT_PP_BSK + '</a>';
+    });
+
+    var city = csvRow ? ((csvRow['Home City'] || '').trim() || '—') : '—';
+    var sub2020 = (l2020 && l2020.includes('Unop')) ? lidx : '';
+    var sub2022 = (l2022 && l2022.includes('Unop')) ? lidx : '';
+    var sub2024 = (l2024 && l2024.includes('Unop')) ? lidx : '';
+
+    var roleHtml = opts.roleLabel
+      ? '<div class="pp-role-tag pp-role-' + xesc(opts.roleCls || 'turnout') + '">' + xesc(opts.roleLabel) + '</div>'
+      : '';
+    if (isHouseCaucusDMT(csvRow)) {
+      roleHtml = '<div class="pp-role-tag pp-role-caucus">🏛 House Caucus</div>' + roleHtml;
+    }
+
+    var rowCls = 'pp-row' + (opts.isSenate ? ' pp-senate-row' : '') + (opts.isHouse ? ' pp-house-row' : '');
+
+    return '<tr class="' + rowCls + '">'
+      + '<td class="pp-candidate"><div class="pp-cand-inner">' + photoHtml + '<div class="pp-cand-name">' + xesc(name) + '</div></div></td>'
+      + irsLeanCell(m2020, l2020, sub2020)
+      + irsLeanCell(m2022, l2022, sub2022)
+      + irsLeanCell(m2024, l2024, sub2024)
+      + irsLeanCell(midx,  lidx)
+      + '<td class="pp-dist"><div class="pp-badge ' + badgeCls + '">' + xesc(distBadge) + '</div>' + roleHtml + '</td>'
+      + '<td class="pp-loc">' + xesc(city) + '</td>'
+      + holdsCell
+      + websiteCell
+      + '<td class="pp-social">' + (social || '—') + '</td>'
+      + '</tr>';
+  }
+
+  function renderDMTFocusPackCard(fp, entries, selectedDtype, selectedDnum) {
+    var anchorKey = fp.anchorDtype + ':' + fp.anchorDnum;
+    var anchor = null, members = [];
+    entries.forEach(function(e) {
+      var key = e.dtype + ':' + e.dnum;
+      if (key === anchorKey) anchor = e;
+      else members.push(e);
+    });
+    if (!anchor && entries.length) { anchor = entries[0]; members = entries.slice(1); }
+    if (!anchor) return '<div class="dmt-irs-empty">No candidates found in this focus pack.</div>';
+
+    var anchorLean = anchor.lean;
+    var isSenateAnchor = anchor.dtype === 'senate';
+    var distLabel  = isSenateAnchor ? 'SD-' + anchor.dnum : 'HD-' + anchor.dnum;
+    var indexLabel = anchorLean ? (anchorLean.in_index_label || '—') : '—';
+    var party      = anchorLean ? (anchorLean.party || '') : '';
+    var tier       = candidateTierFP(anchorLean);
+
+    var tc = {
+      0: { border: '#0891b2', bg: '#f0f9ff', badgeClass: 'pp-tier-0', label: '🏠 HOLD',
+           mission: 'Your incumbency is the anchor. Your organizational strength lifts every candidate in this pack.' },
+      1: { border: '#dc2626', bg: '#fff5f5', badgeClass: 'pp-tier-1', label: '🎯 TARGET',
+           mission: 'This race is winnable. You are the gravitational center of this regional wave — winning here lifts every race in the pack.' },
+      2: { border: '#7c3aed', bg: '#faf5ff', badgeClass: 'pp-tier-2', label: '📈 OPPORTUNITY',
+           mission: 'Contest hard. Narrow the margin, force Republicans to spend here, and lift the candidates in your pack. Close races become wins in a wave.' },
+      3: { border: '#16a34a', bg: '#f0fdf4', badgeClass: 'pp-tier-3', label: '🌱 TURNOUT',
+           mission: 'Every competitive district was once a long-shot. Your race builds the voter file, trains volunteers, and moves the margin — every candidate in this pack is counting on that infrastructure.' }
+    }[tier] || { border: '#94a3b8', bg: 'white', badgeClass: '', label: 'PACK', mission: '' };
+
+    var holderHtml = party === 'Republican'
+      ? '<span class="pp-holder-badge pp-holder-r">Held by Republican</span>'
+      : party === 'Democratic'
+        ? '<span class="pp-holder-badge pp-holder-d">Held by Democrat</span>'
+        : '';
+
+    var counties = isSenateAnchor
+      ? ((districtData.sd_to_counties || {})[String(anchor.dnum)] || [])
+      : ((districtData.hd_to_counties || {})[String(anchor.dnum)] || []);
+    var cdNum = isSenateAnchor
+      ? Number((districtData.sd_to_cd || {})[String(anchor.dnum)] || 0)
+      : Number((districtData.hd_to_cd || {})[String(anchor.dnum)] || 0);
+    var cdHint = cdNum ? '<span class="pp-pack-lean" style="margin-left:6px;opacity:0.6">CD-' + cdNum + '</span>' : '';
+    var totalCands = 1 + members.length;
+
+    var senateMembers = members.filter(function(m) { return m.dtype === 'senate'; });
+    var houseMembers  = members.filter(function(m) { return m.dtype === 'house'; });
+
+    var parts = [];
+    parts.push('<div class="pp-pack-card-standalone" style="border-left:4px solid ' + tc.border + ';background:' + tc.bg + '">');
+
+    parts.push('<div class="pp-pack-head">');
+    parts.push('<div class="pp-pack-head-left">');
+    parts.push('<div class="pp-pack-title">');
+    parts.push('<span class="pp-tier-badge ' + tc.badgeClass + '">' + tc.label + '</span>');
+    parts.push(' <strong>' + distLabel + '</strong>');
+    parts.push('<span class="pp-pack-lean">&nbsp;' + xesc(indexLabel) + '</span>');
+    parts.push(holderHtml);
+    parts.push(cdHint);
+    parts.push('</div>');
+    if (counties.length) parts.push('<div class="pp-pack-counties">counties covered: ' + xesc(counties.join(' · ')) + '</div>');
+    if (tc.mission) parts.push('<div class="pp-pack-mission">' + tc.mission + '</div>');
+    parts.push('</div>');
+    parts.push('<div class="pp-pack-count">' + totalCands + ' candidate' + (totalCands !== 1 ? 's' : '') + '</div>');
+    parts.push('</div>');
+
+    parts.push('<div class="pp-section-label pp-section-polar-anchor">⭐ Polar Anchor · ' + distLabel + ' · ' + xesc(indexLabel) + '</div>');
+    parts.push('<div class="pp-wrapper"><table class="pp-table">' + DMT_PP_THEAD + '<tbody>');
+    parts.push(renderDMTEntry(anchor, { isSenate: isSenateAnchor, isHouse: !isSenateAnchor, roleLabel: '⭐ Polar Anchor', roleCls: 'polar-anchor' }));
+    parts.push('</tbody></table></div>');
+
+    if (senateMembers.length) {
+      parts.push('<div class="pp-section-label pp-section-senate">⚡ Senate (' + senateMembers.length + ')</div>');
+      parts.push('<div class="pp-wrapper"><table class="pp-table">' + DMT_PP_THEAD + '<tbody>');
+      senateMembers.forEach(function(m) {
+        parts.push(renderDMTEntry(m, { isSenate: true }));
+      });
+      parts.push('</tbody></table></div>');
+    }
+
+    if (houseMembers.length) {
+      parts.push('<div class="pp-section-label pp-section-house">House Districts (' + houseMembers.length + ')</div>');
+      parts.push('<div class="pp-wrapper"><table class="pp-table">' + DMT_PP_THEAD + '<tbody>');
+      houseMembers.forEach(function(member) {
+        var hdm = (member.lean && member.lean.in_index !== null) ? member.lean.in_index : 0.5;
+        var roleLabel, roleCls;
+        if (hdm <= 0.08)      { roleLabel = '🔑 Competitive'; roleCls = 'competitive'; }
+        else if (hdm <= 0.25) { roleLabel = '📊 Challenge';   roleCls = 'challenge'; }
+        else                   { roleLabel = '🗳️ Turnout';     roleCls = 'turnout'; }
+        parts.push(renderDMTEntry(member, { isHouse: true, roleLabel: roleLabel, roleCls: roleCls }));
+      });
+      parts.push('</tbody></table></div>');
+    }
+
+    parts.push('</div>');
+    return parts.join('');
   }
 
   function irsLeanCell(margin, label, subLabel) {
