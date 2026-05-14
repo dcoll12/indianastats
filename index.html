@@ -1102,18 +1102,19 @@ var DMT = (function() {
       });
     });
 
-    // Safety: ensure all forced/member-only districts always resolve to their correct anchor pack,
-    // even if the greedy assignment missed them or placed them in the wrong pack.
+    // Safety: ensure forced assignments always resolve to their correct anchor pack.
+    // Only list districts with EXPLICIT forced rules from the power-packs algorithm.
+    // Do NOT list districts that the greedy algorithm places correctly on its own
+    // (e.g. HD-73 lands in HD-62 via SD-41 overlap — adding it here would break that).
     [
-      // FORCED_MEMBERS
+      // FORCED_MEMBERS (explicit in power-packs algorithm)
       { dtype: 'house', dnum: 69, anchorDtype: 'house',  anchorDnum: 62 },  // Chris Bowen → Amy Oliver
       { dtype: 'house', dnum: 38, anchorDtype: 'senate', anchorDnum: 22 },  // Nate Stout → SD-22
       { dtype: 'house', dnum: 23, anchorDtype: 'senate', anchorDnum: 22 },  // HD-23 → SD-22
       // FORCED_MERGES anchor (entire HD-4 pack folds into SD-22)
       { dtype: 'house', dnum: 4,  anchorDtype: 'senate', anchorDnum: 22 },
-      // MEMBER_ONLY_HDS natural placements — SD-27/SD-42 can steal HD-55/HD-73 before SD-43 forms
+      // HD-55 and HD-68 → SD-43 via SD_EXTRA_HDS; HD-55 not in HD-62 overlap so safe to force
       { dtype: 'house', dnum: 55, anchorDtype: 'senate', anchorDnum: 43 },
-      { dtype: 'house', dnum: 73, anchorDtype: 'senate', anchorDnum: 43 },
       { dtype: 'house', dnum: 68, anchorDtype: 'senate', anchorDnum: 43 },
     ].forEach(function(fm) {
       var memberKey = fm.dtype + ':' + fm.dnum;
