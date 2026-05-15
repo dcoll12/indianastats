@@ -981,6 +981,7 @@ var DMT = (function() {
     var SD_EXTRA_HDS   = { 43: [55, 73], 49: [63] };
     var SD_EXCLUDED_HDS = { 43: [69] };
     var HD_EXTRA_SDS   = { 62: [41], 39: [31] };
+    var HD_EXCLUDED_HDS_FROM_HD = { 39: [25] }; // HD-25 anchors its own pack, not absorbed into HD-39
     var MEMBER_ONLY_HDS = { 38: true, 55: true, 68: true, 69: true, 73: true };
 
     function fpPolar(lean) {
@@ -1000,11 +1001,12 @@ var DMT = (function() {
               .forEach(function(sd) { if (sd !== dnum) sds[sd] = true; });
           });
       } else {
+        var hdExcl = new Set((HD_EXCLUDED_HDS_FROM_HD[dnum] || []).map(Number));
         ((districtData.hd_to_sds || {})[String(dnum)] || []).concat(HD_EXTRA_SDS[dnum] || [])
           .map(Number).forEach(function(sd) {
             sds[sd] = true;
             ((districtData.sd_to_hds || {})[String(sd)] || []).map(Number)
-              .forEach(function(hd) { if (hd !== dnum) hds[hd] = true; });
+              .forEach(function(hd) { if (hd !== dnum && !hdExcl.has(hd)) hds[hd] = true; });
           });
       }
       return { sds: Object.keys(sds).map(Number), hds: Object.keys(hds).map(Number) };
@@ -1052,11 +1054,8 @@ var DMT = (function() {
       { dtype: 'house', dnum: 69, anchorDtype: 'house',  anchorDnum: 62 },
       { dtype: 'house', dnum: 38, anchorDtype: 'senate', anchorDnum: 22 },
       { dtype: 'house', dnum: 23, anchorDtype: 'senate', anchorDnum: 22 },
-      // Power Pack #2 — HD-39 Lindsay Gramlich coalition
-      { dtype: 'house', dnum: 28, anchorDtype: 'house',  anchorDnum: 39 },
-      { dtype: 'house', dnum: 40, anchorDtype: 'house',  anchorDnum: 39 },
-      { dtype: 'house', dnum: 41, anchorDtype: 'house',  anchorDnum: 39 },
-      { dtype: 'house', dnum: 57, anchorDtype: 'house',  anchorDnum: 39 },
+      // Power Pack #2b — HD-25 Tiffany Stoner: HD-57 forced in (no shared SD with HD-25)
+      { dtype: 'house', dnum: 57, anchorDtype: 'house',  anchorDnum: 25 },
     ].forEach(function(fm) {
       var target = null;
       for (var i = 0; i < packs.length; i++) {
@@ -1121,11 +1120,8 @@ var DMT = (function() {
       // HD-55 and HD-68 → SD-43 via SD_EXTRA_HDS; HD-55 not in HD-62 overlap so safe to force
       { dtype: 'house', dnum: 55, anchorDtype: 'senate', anchorDnum: 43 },
       { dtype: 'house', dnum: 68, anchorDtype: 'senate', anchorDnum: 43 },
-      // Power Pack #2 — HD-39 Lindsay Gramlich coalition
-      { dtype: 'house', dnum: 28, anchorDtype: 'house',  anchorDnum: 39 },
-      { dtype: 'house', dnum: 40, anchorDtype: 'house',  anchorDnum: 39 },
-      { dtype: 'house', dnum: 41, anchorDtype: 'house',  anchorDnum: 39 },
-      { dtype: 'house', dnum: 57, anchorDtype: 'house',  anchorDnum: 39 },
+      // Power Pack #2b — HD-25 Tiffany Stoner (separate pack from HD-39)
+      { dtype: 'house', dnum: 57, anchorDtype: 'house',  anchorDnum: 25 },
     ].forEach(function(fm) {
       var memberKey = fm.dtype + ':' + fm.dnum;
       var anchorKey = fm.anchorDtype + ':' + fm.anchorDnum;

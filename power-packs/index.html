@@ -1122,6 +1122,11 @@ var PP = (function() {
       39: [31],  // Kerry Forestal (SD-31) explicitly linked to Lindsay Gramlich (HD-39) Power Pack #2
     };
 
+    // HDs to exclude from a *house* anchor's geographic pull (used to keep packs separate)
+    var HD_EXCLUDED_HDS_FROM_HD = {
+      39: [25],  // HD-25 (Tiffany Stoner) anchors its own separate pack — not absorbed into HD-39 Lindsay Gramlich
+    };
+
     // Geographic overlap for a given district: returns sets of neighboring SD/HD numbers
     function getOverlapDistricts(dtype, dnum) {
       var sds = {}, hds = {};
@@ -1135,11 +1140,12 @@ var PP = (function() {
           });
         });
       } else if (dtype === 'house') {
+        var hdExcluded = new Set((HD_EXCLUDED_HDS_FROM_HD[dnum] || []).map(Number));
         var directSDs = ((dd.hd_to_sds || {})[String(dnum)] || []).concat(HD_EXTRA_SDS[dnum] || []);
         directSDs.map(Number).forEach(function(sd) {
           sds[sd] = true;
           ((dd.sd_to_hds || {})[String(sd)] || []).map(Number).forEach(function(hd) {
-            if (hd !== dnum) hds[hd] = true;
+            if (hd !== dnum && !hdExcluded.has(hd)) hds[hd] = true;
           });
         });
       }
@@ -1295,11 +1301,9 @@ var PP = (function() {
       { dtype: 'house', dnum: 69, anchorDtype: 'house',  anchorDnum: 62 }, // Chris Bowen (HD-69) → Amy Oliver (HD-62)
       { dtype: 'house', dnum: 38, anchorDtype: 'senate', anchorDnum: 22 }, // Nate Stout (HD-38) → Natasha Baker (SD-22)
       { dtype: 'house', dnum: 23, anchorDtype: 'senate', anchorDnum: 22 }, // HD-23 → Natasha Baker (SD-22)
-      // Power Pack #2 — Lindsay Gramlich (HD-39) coalition: Tiffany Stoner (HD-25) surrounding HDs
-      { dtype: 'house', dnum: 28, anchorDtype: 'house',  anchorDnum: 39 }, // Karen Whitney (HD-28) → Lindsay Gramlich
-      { dtype: 'house', dnum: 40, anchorDtype: 'house',  anchorDnum: 39 }, // William Colteryahn (HD-40) → Lindsay Gramlich
-      { dtype: 'house', dnum: 41, anchorDtype: 'house',  anchorDnum: 39 }, // Jackson Hayes (HD-41) → Lindsay Gramlich
-      { dtype: 'house', dnum: 57, anchorDtype: 'house',  anchorDnum: 39 }, // Suzanne Fortenberry (HD-57) → Lindsay Gramlich
+      // Power Pack #2b — Tiffany Stoner (HD-25) separate pack: HD-28/40/41 flow in via SD-7/SD-24 geography;
+      // HD-57 (Suzanne Fortenberry) has no shared SD so it is forced in explicitly
+      { dtype: 'house', dnum: 57, anchorDtype: 'house',  anchorDnum: 25 }, // Suzanne Fortenberry (HD-57) → Tiffany Stoner
     ];
     (function() {
       FORCED_MEMBERS.forEach(function(fm) {
