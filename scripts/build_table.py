@@ -1259,7 +1259,7 @@ tbody tr.map-locked {{
             <th onclick="sortTable('table-congressional', 0, 'num')" title="2020 Presidential margin">'20 Pres <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 1, 'num')" title="2022 US House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 3, 'num')" title="2024 US House race result">Race <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 3, 'num')" title="2024 US House race result">'24 Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 5, 'num')" title="IN-Index: average partisan lean">IN-Idx <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 6, 'num')" title="Congressional District">Dist <span class="sort-arrow">&#9650;</span></th>
