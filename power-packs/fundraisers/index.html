@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tandem Fundraisers — Indiana Rural Summit</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: #f1f5f9;
+  color: #1e293b;
+  line-height: 1.5;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
+  color: white; padding: 30px 20px; text-align: center;
+  margin-bottom: 24px; border-radius: 12px;
+}
+header h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+header p { font-size: 14px; opacity: 0.85; max-width: 700px; margin: 0 auto; }
+
+.site-nav {
+  margin-top: 16px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+}
+.site-nav a {
+  display: inline-block; padding: 8px 18px; border-radius: 8px; font-size: 14px;
+  font-weight: 600; text-decoration: none;
+  background: rgba(255,255,255,0.18); color: white;
+  border: 1.5px solid rgba(255,255,255,0.5);
+  transition: background 0.2s, border-color 0.2s;
+}
+.site-nav a:hover { background: rgba(255,255,255,0.3); border-color: white; }
+.site-nav a.active { background: white; color: #1e3a5f; border-color: white; }
+
+.intro {
+  background: white; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
+  border-left: 4px solid #2d5a8e; font-size: 0.88rem; color: #475569;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.intro strong { color: #1e293b; }
+.intro a { color: #2d5a8e; font-weight: 600; }
+
+.section-heading {
+  font-size: 1rem; font-weight: 800; color: #1e3a5f;
+  text-transform: uppercase; letter-spacing: 0.8px;
+  border-bottom: 2px solid #1e3a5f; padding-bottom: 6px; margin: 28px 0 16px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+/* card shell */
+.fund-card {
+  background: white; border-radius: 10px; overflow: hidden;
+  border: 1px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  display: flex; flex-direction: column;
+}
+.fund-card.on-hold { opacity: 0.72; }
+
+/* card header bar */
+.fund-card-head {
+  background: #0f172a; color: white;
+  padding: 11px 14px; display: flex; align-items: flex-start;
+  justify-content: space-between; gap: 10px;
+}
+.fund-card-head.hd-anchor { background: #1e40af; }
+.fund-card-head.on-hold   { background: #475569; }
+
+.fund-card-head-left { display: flex; flex-direction: column; gap: 2px; }
+.fund-card-title { font-size: 1rem; font-weight: 800; letter-spacing: 0.3px; line-height: 1.2; }
+.fund-card-subtitle { font-size: 0.7rem; opacity: 0.72; font-style: italic; margin-top: 2px; }
+
+.fund-donate-btn {
+  display: inline-block; padding: 6px 14px; border-radius: 6px;
+  font-weight: 800; font-size: 0.78rem; text-decoration: none;
+  background: #f59e0b; color: #1c1917; border: 2px solid #d97706;
+  white-space: nowrap; flex-shrink: 0; letter-spacing: 0.3px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.fund-donate-btn:hover { background: #d97706; border-color: #b45309; color: #1c1917; }
+
+.fund-on-hold-badge {
+  display: inline-block; padding: 5px 10px; border-radius: 6px;
+  font-size: 0.72rem; font-weight: 700; background: #334155; color: #94a3b8;
+  white-space: nowrap; flex-shrink: 0;
+}
+
+/* senate section (blue tint) */
+.fund-senate-section {
+  background: #eff6ff; border-top: 1px solid #dbeafe; padding: 8px 14px 10px;
+}
+.fund-senate-section .fund-section-label { color: #2563eb; }
+
+/* house section */
+.fund-house-section { padding: 8px 14px 10px; border-top: 1px solid #f1f5f9; }
+.fund-house-section .fund-section-label { color: #64748b; }
+
+.fund-section-label {
+  font-size: 0.65rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.9px; margin-bottom: 5px;
+}
+
+/* candidate rows */
+.fund-cand-list { list-style: none; }
+.fund-cand-list li {
+  display: flex; align-items: baseline; gap: 7px;
+  font-size: 0.83rem; padding: 3px 0;
+  border-bottom: 1px solid #f8fafc;
+}
+.fund-cand-list li:last-child { border-bottom: none; }
+
+.fund-dist-tag {
+  font-size: 0.67rem; font-weight: 700; color: white;
+  background: #64748b; border-radius: 3px; padding: 1px 5px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.fund-dist-tag.senate { background: #1d4ed8; }
+.fund-dist-tag.house  { background: #475569; }
+
+.fund-cand-name { color: #1e293b; flex: 1; }
+.fund-cand-note { font-size: 0.69rem; font-style: italic; color: #94a3b8; }
+
+/* sub-group label inside a section (e.g. "from SD 08") */
+.fund-from-label {
+  font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.5px; color: #7c3aed; margin: 7px 0 3px;
+}
+
+/* card-level note */
+.fund-card-note {
+  font-size: 0.72rem; color: #94a3b8; font-style: italic;
+  padding: 6px 14px 10px; border-top: 1px solid #f1f5f9; margin-top: auto;
+}
+
+footer {
+  margin-top: 32px; padding: 20px; background: white; border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08); font-size: 13px; color: #64748b;
+}
+footer h3 { font-size: 15px; color: #1e293b; margin-bottom: 8px; }
+footer p { margin-bottom: 8px; line-height: 1.7; }
+
+@media (max-width: 600px) {
+  .cards-grid { grid-template-columns: 1fr; }
+  header h1 { font-size: 22px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Tandem Fundraisers</h1>
+    <p>ActBlue fundraiser pages for Indiana Rural Summit Power Pack coalitions — Senate-anchored and House-anchored donor pools supporting candidates running together as a wave</p>
+    <nav class="site-nav">
+      <a href="../">Power Packs</a>
+      <a href="../../">My Pack</a>
+      <a href="../../lean-index.html">IN Partisan Lean Index</a>
+      <a class="active" href="./">Fundraisers</a>
+    </nav>
+  </header>
+
+  <div class="intro">
+    <strong>How these pages work:</strong> Each ActBlue page pools donations for a curated group of candidates running together in overlapping districts. When you donate through one of these links, you can split your gift across every candidate in that coalition. Candidates marked <em>no ActBlue</em> are not yet on a fundraiser page.
+  </div>
+
+  <!-- ── POLAR ANCHOR PACKS ────────────────────────────────────────── -->
+  <div class="section-heading">Polar Anchor Packs (PP01–PP09)</div>
+  <div class="intro" style="margin-bottom: 0">
+    These nine curated packs appear with <strong>💛 DONATE</strong> buttons directly on the
+    <a href="../">Power Packs page</a> (⚡ Focus mode). Each pack is anchored by the most
+    competitive candidate in a geographic cluster and includes all overlapping Senate and House races.
+  </div>
+
+  <!-- ── SENATE-BASED COALITIONS ───────────────────────────────────── -->
+  <div class="section-heading">Senate-Based Coalitions</div>
+  <div class="cards-grid">
+
+    <!-- SD 1, 2, 3 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 1, SD 2 &amp; SD 3</div>
+          <div class="fund-card-subtitle">Northwest Indiana coalition</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd01-sd02-sd03" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 1</span><span class="fund-cand-name">Scott Houldieson</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House — from SD 1</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 12</span><span class="fund-cand-name">Mike Andrade</span></li>
+          <li><span class="fund-dist-tag house">HD 14</span><span class="fund-cand-name">Vernon Smith</span></li>
+          <li><span class="fund-dist-tag house">HD 15</span><span class="fund-cand-name">Anthony Oberman</span></li>
+          <li><span class="fund-dist-tag house">HD 19</span><span class="fund-cand-name">Nick Neal</span></li>
+        </ul>
+        <div class="fund-from-label">from SD 2 &amp; SD 3</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 1</span><span class="fund-cand-name">Carolyn Jackson</span></li>
+          <li><span class="fund-dist-tag house">HD 2</span><span class="fund-cand-name">Earl Harris Jr.</span></li>
+          <li><span class="fund-dist-tag house">HD 3</span><span class="fund-cand-name">Ragen Hatcher</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 4 & SD 8 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 4 &amp; SD 8</div>
+          <div class="fund-card-subtitle">South Bend / Michiana area</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd04-sd08" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 4</span><span class="fund-cand-name">Rodney Pol</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House — from SD 4</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 9</span><span class="fund-cand-name">Randy Novak</span></li>
+          <li><span class="fund-dist-tag house">HD 10</span><span class="fund-cand-name">Charles (Chuck) Moseley</span></li>
+          <li><span class="fund-dist-tag house">HD 20</span><span class="fund-cand-name">Laura Liskey</span></li>
+        </ul>
+        <div class="fund-from-label">from SD 8</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 7</span><span class="fund-cand-name">Oliver Davis</span></li>
+          <li><span class="fund-dist-tag house">HD 16</span><span class="fund-cand-name">Ashley Hammac</span></li>
+          <li><span class="fund-dist-tag house">HD 17</span><span class="fund-cand-name">Mary Gibson</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 5 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 5</div>
+          <div class="fund-card-subtitle">House districts within SD 5</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd05" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-house-section" style="border-top:none">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 4</span><span class="fund-cand-name">Ryan Kominakis</span></li>
+          <li><span class="fund-dist-tag house">HD 11</span><span class="fund-cand-name">Tyler Thomas Bridges</span></li>
+          <li><span class="fund-dist-tag house">HD 13</span><span class="fund-cand-name">Breanna Geswein</span></li>
+          <li><span class="fund-dist-tag house">HD 16</span><span class="fund-cand-name">Ashley Hammac</span></li>
+          <li><span class="fund-dist-tag house">HD 17</span><span class="fund-cand-name">Mary Gibson</span></li>
+          <li><span class="fund-dist-tag house">HD 19</span><span class="fund-cand-name">Nick Neal</span></li>
+        </ul>
+      </div>
+      <div class="fund-card-note">No Senate candidate on this page — House districts within SD 5 overlap only.</div>
+    </div>
+
+    <!-- SD 6 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 6</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd06" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 6</span><span class="fund-cand-name">Kate-Lynn Holley</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 11</span><span class="fund-cand-name">Tyler Thomas Bridges</span></li>
+          <li><span class="fund-dist-tag house">HD 13</span><span class="fund-cand-name">Brenna Geswein</span></li>
+          <li><span class="fund-dist-tag house">HD 14</span><span class="fund-cand-name">Vernon Smith</span></li>
+          <li><span class="fund-dist-tag house">HD 15</span><span class="fund-cand-name">Anthony Oberman</span></li>
+          <li><span class="fund-dist-tag house">HD 16</span><span class="fund-cand-name">Ashley Hammac</span></li>
+          <li><span class="fund-dist-tag house">HD 19</span><span class="fund-cand-name">Nick Neal</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 11 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 11</div>
+          <div class="fund-card-subtitle">South Bend / Elkhart area</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd11" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 11</span><span class="fund-cand-name">Gabrianna Gratzol</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 5</span><span class="fund-cand-name">Alex Wait</span></li>
+          <li><span class="fund-dist-tag house">HD 8</span><span class="fund-cand-name">Ryan Dvorak</span></li>
+          <li><span class="fund-dist-tag house">HD 48</span><span class="fund-cand-name">Emily Yaw</span><span class="fund-cand-note">no ActBlue</span></li>
+          <li><span class="fund-dist-tag house">HD 49</span><span class="fund-cand-name">Michelle Milne</span></li>
+        </ul>
+      </div>
+      <div class="fund-card-note">Charles Burkely (SD 12) may be added — no ActBlue account yet.</div>
+    </div>
+
+    <!-- SD 14 & SD 15 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 14 &amp; SD 15</div>
+          <div class="fund-card-subtitle">Southwest Indiana coalition</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd14-sd15" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 14</span><span class="fund-cand-name">Blaine Sefton</span></li>
+          <li><span class="fund-dist-tag senate">SD 15</span><span class="fund-cand-name">Julie McGill</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House — from SD 14</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 82</span><span class="fund-cand-name">Kyle Miller</span></li>
+          <li><span class="fund-dist-tag house">HD 85</span><span class="fund-cand-name">Mark (Bird) Wehrle</span></li>
+        </ul>
+        <div class="fund-from-label">from SD 15</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 81</span><span class="fund-cand-name">Sharon Wight</span></li>
+          <li><span class="fund-dist-tag house">HD 84</span><span class="fund-cand-name">Misti Meehan</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 17 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 17</div>
+          <div class="fund-card-subtitle">plus overlapping HD races from SD 18</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd17" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 17</span><span class="fund-cand-name">Cynthia Wehr</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House — from SD 17</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 30</span><span class="fund-cand-name">Jack Chance</span></li>
+          <li><span class="fund-dist-tag house">HD 31</span><span class="fund-cand-name">Katie Robins</span></li>
+          <li><span class="fund-dist-tag house">HD 50</span><span class="fund-cand-name">Pepper Snyder</span></li>
+        </ul>
+        <div class="fund-from-label">from SD 18</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 17</span><span class="fund-cand-name">Mary Gibson</span></li>
+          <li><span class="fund-dist-tag house">HD 23</span><span class="fund-cand-name">Austin Meives</span></li>
+          <li><span class="fund-dist-tag house">HD 38</span><span class="fund-cand-name">Nate Stout</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 19 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 19</div>
+          <div class="fund-card-subtitle">Fort Wayne / northeast Indiana</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd19" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 19</span><span class="fund-cand-name">Timothy Murphy</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 33</span><span class="fund-cand-name">John E. Bartlett</span></li>
+          <li><span class="fund-dist-tag house">HD 50</span><span class="fund-cand-name">Pepper Snyder</span></li>
+          <li><span class="fund-dist-tag house">HD 79</span><span class="fund-cand-name">Ian Richardson</span></li>
+          <li><span class="fund-dist-tag house">HD 80</span><span class="fund-cand-name">Phil GiaQuinta</span></li>
+          <li><span class="fund-dist-tag house">HD 82</span><span class="fund-cand-name">Kyle Miller</span></li>
+          <li><span class="fund-dist-tag house">HD 85</span><span class="fund-cand-name">Mark (Bird) Wehrle</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 21 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 21</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd21" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 21</span><span class="fund-cand-name">Kirsten Root</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 24</span><span class="fund-cand-name">Racheal Bleicher</span></li>
+          <li><span class="fund-dist-tag house">HD 29</span><span class="fund-cand-name">Devon Wellington</span></li>
+          <li><span class="fund-dist-tag house">HD 30</span><span class="fund-cand-name">Jack Chance</span></li>
+          <li><span class="fund-dist-tag house">HD 37</span><span class="fund-cand-name">Lauren Cole</span></li>
+          <li><span class="fund-dist-tag house">HD 38</span><span class="fund-cand-name">Nate Stout</span></li>
+          <li><span class="fund-dist-tag house">HD 39</span><span class="fund-cand-name">Lindsay Gramlich</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 22 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 22</div>
+          <div class="fund-card-subtitle">also see PP06 Polar Anchor pack</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd22" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 22</span><span class="fund-cand-name">Natasha Baker</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 13</span><span class="fund-cand-name">Brenna Geswein</span></li>
+          <li><span class="fund-dist-tag house">HD 26</span><span class="fund-cand-name">Chris Campbell</span></li>
+          <li><span class="fund-dist-tag house">HD 38</span><span class="fund-cand-name">Nate Stout</span></li>
+          <li><span class="fund-dist-tag house">HD 41</span><span class="fund-cand-name">Jackson Hayes</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 23 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 23</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd23" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 23</span><span class="fund-cand-name">David Sanders</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 13</span><span class="fund-cand-name">Brenna Geswein</span></li>
+          <li><span class="fund-dist-tag house">HD 26</span><span class="fund-cand-name">Chris Campbell</span></li>
+          <li><span class="fund-dist-tag house">HD 38</span><span class="fund-cand-name">Nate Stout</span></li>
+          <li><span class="fund-dist-tag house">HD 41</span><span class="fund-cand-name">Jackson Hayes</span></li>
+          <li><span class="fund-dist-tag house">HD 44</span><span class="fund-cand-name">Kelsey Kaufman</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 25 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 25</div>
+          <div class="fund-card-subtitle">also see PP02 Polar Anchor pack</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd25" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 25</span><span class="fund-cand-name">Tamie Dixon-Tatum</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 31</span><span class="fund-cand-name">Katelyn (Katie) Robins</span></li>
+          <li><span class="fund-dist-tag house">HD 35</span><span class="fund-cand-name">Phil Gift</span></li>
+          <li><span class="fund-dist-tag house">HD 36</span><span class="fund-cand-name">Kimberly (Kim) Townsend</span></li>
+          <li><span class="fund-dist-tag house">HD 37</span><span class="fund-cand-name">Lauren Cole</span></li>
+          <li><span class="fund-dist-tag house">HD 53</span><span class="fund-cand-name">Reece Axel-Adams</span></li>
+          <li><span class="fund-dist-tag house">HD 88</span><span class="fund-cand-name">Stephanie Jo Yocum</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 26 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 26</div>
+          <div class="fund-card-subtitle">also see PP05 Polar Anchor pack</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd26" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 26</span><span class="fund-cand-name">Andrew Dale</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 33</span><span class="fund-cand-name">John E. Bartlett</span></li>
+          <li><span class="fund-dist-tag house">HD 34</span><span class="fund-cand-name">Sara Gullion</span></li>
+          <li><span class="fund-dist-tag house">HD 35</span><span class="fund-cand-name">Phil Gift</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 27 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 27</div>
+          <div class="fund-card-subtitle">Central Indiana rural</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd27" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 27</span><span class="fund-cand-name">Ronald Itnyre</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 33</span><span class="fund-cand-name">John E. Bartlett</span></li>
+          <li><span class="fund-dist-tag house">HD 35</span><span class="fund-cand-name">Phil Gift</span></li>
+          <li><span class="fund-dist-tag house">HD 55</span><span class="fund-cand-name">Victoria Martz</span></li>
+          <li><span class="fund-dist-tag house">HD 56</span><span class="fund-cand-name">Thomas "Tom" Rockwell</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 29 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 29</div>
+          <div class="fund-card-subtitle">also see PP04 Polar Anchor pack</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd29" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 29</span><span class="fund-cand-name">Kristina Moorhead</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 24</span><span class="fund-cand-name">Racheal Bleicher</span></li>
+          <li><span class="fund-dist-tag house">HD 25</span><span class="fund-cand-name">Tiffany Stoner</span></li>
+          <li><span class="fund-dist-tag house">HD 32</span><span class="fund-cand-name">Victoria Garcia Wilburn</span></li>
+          <li><span class="fund-dist-tag house">HD 39</span><span class="fund-cand-name">Lindsay Gramlich</span></li>
+          <li><span class="fund-dist-tag house">HD 86</span><span class="fund-cand-name">Ed DeLaney</span></li>
+          <li><span class="fund-dist-tag house">HD 91</span><span class="fund-cand-name">Jarren Hurt</span></li>
+          <li><span class="fund-dist-tag house">HD 92</span><span class="fund-cand-name">Renee Pack</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- HD 25 standalone (under SD 29 geography) -->
+    <div class="fund-card">
+      <div class="fund-card-head hd-anchor">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">HD 25 Coalition</div>
+          <div class="fund-card-subtitle">Tiffany Stoner anchor — Indianapolis west-side cluster</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-hd25" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-house-section" style="border-top:none">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 25</span><span class="fund-cand-name">Tiffany Stoner</span><span class="fund-cand-note">anchor</span></li>
+          <li><span class="fund-dist-tag house">HD 28</span><span class="fund-cand-name">Karen Whitney</span></li>
+          <li><span class="fund-dist-tag house">HD 40</span><span class="fund-cand-name">William Colteryahn</span></li>
+          <li><span class="fund-dist-tag house">HD 41</span><span class="fund-cand-name">Jackson Hayes</span></li>
+        </ul>
+      </div>
+      <div class="fund-card-note">Suzanne Fortenberry (HD 57) does not have a campaign committee with ActBlue.</div>
+    </div>
+
+    <!-- SD 31 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 31</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd31" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 31</span><span class="fund-cand-name">Kerry J. Forestal</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 29</span><span class="fund-cand-name">Devon Wellington</span></li>
+          <li><span class="fund-dist-tag house">HD 37</span><span class="fund-cand-name">Lauren Cole</span></li>
+          <li><span class="fund-dist-tag house">HD 39</span><span class="fund-cand-name">Lindsay Gramlich</span></li>
+          <li><span class="fund-dist-tag house">HD 88</span><span class="fund-cand-name">Stephanie Jo Yocum</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 38 & SD 39 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 38 &amp; SD 39</div>
+          <div class="fund-card-subtitle">also see PP07 Polar Anchor pack</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd38-sd39" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 38</span><span class="fund-cand-name">Kacey Blundall</span></li>
+          <li><span class="fund-dist-tag senate">SD 39</span><span class="fund-cand-name">Joseph Baughman</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 45</span><span class="fund-cand-name">Rebecca "Becky" Mayfield</span></li>
+          <li><span class="fund-dist-tag house">HD 46</span><span class="fund-cand-name">James "Jimmy" Pittsford</span></li>
+          <li><span class="fund-dist-tag house">HD 63</span><span class="fund-cand-name">Tiffany Arthur</span></li>
+          <li><span class="fund-dist-tag house">HD 64</span><span class="fund-cand-name">Candace "Candy" Greer</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- HD 62 / SD 40 -->
+    <div class="fund-card">
+      <div class="fund-card-head hd-anchor">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">HD 62 Coalition <span style="font-size:0.72rem;opacity:0.7;font-weight:400">[SD 40 area]</span></div>
+          <div class="fund-card-subtitle">Amy Huffman Oliver anchor — also see PP03 Polar Anchor pack</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-hd62" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-house-section" style="border-top:none">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 62</span><span class="fund-cand-name">Amy Huffman Oliver</span><span class="fund-cand-note">anchor</span></li>
+          <li><span class="fund-dist-tag house">HD 45</span><span class="fund-cand-name">Rebecca "Becky" Mayfield</span></li>
+          <li><span class="fund-dist-tag house">HD 46</span><span class="fund-cand-name">James "Jimmy" Pittsford</span></li>
+          <li><span class="fund-dist-tag house">HD 47</span><span class="fund-cand-name">Michael Potter</span></li>
+          <li><span class="fund-dist-tag house">HD 60</span><span class="fund-cand-name">Carrie Syczylo</span></li>
+        </ul>
+      </div>
+      <div class="fund-card-note">SD 40 (Shelli Yoder) is not up for re-election this cycle.</div>
+    </div>
+
+    <!-- SD 41 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 41</div>
+          <div class="fund-card-subtitle">also see PP03 Polar Anchor pack</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd41" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 41</span><span class="fund-cand-name">Ross Thomas</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 47</span><span class="fund-cand-name">Michael Potter</span></li>
+          <li><span class="fund-dist-tag house">HD 58</span><span class="fund-cand-name">Michelle Hennessee Sears</span></li>
+          <li><span class="fund-dist-tag house">HD 69</span><span class="fund-cand-name">Chris Bowen</span></li>
+          <li><span class="fund-dist-tag house">HD 73</span><span class="fund-cand-name">Allen "AJ" Miller</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 43 — ON HOLD -->
+    <div class="fund-card on-hold">
+      <div class="fund-card-head on-hold">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 43</div>
+          <div class="fund-card-subtitle">Fundraiser page on hold</div>
+        </div>
+        <span class="fund-on-hold-badge">ON HOLD</span>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 43</span><span class="fund-cand-name">Byron Holland</span><span class="fund-cand-note">no ActBlue account yet</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 66</span><span class="fund-cand-name">Ryan Price</span></li>
+          <li><span class="fund-dist-tag house">HD 67</span><span class="fund-cand-name">Justin Chadwick</span></li>
+          <li><span class="fund-dist-tag house">HD 68</span><span class="fund-cand-name">Hunter Collins</span></li>
+          <li><span class="fund-dist-tag house">HD 69</span><span class="fund-cand-name">Chris Bowen</span></li>
+        </ul>
+      </div>
+      <div class="fund-card-note">Byron Holland (SD 43) does not yet have an ActBlue account. Page will activate once he joins.</div>
+    </div>
+
+    <!-- SD 45 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 45</div>
+          <div class="fund-card-subtitle">also see PP01 Polar Anchor pack</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd45" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 45</span><span class="fund-cand-name">Nick Marshall</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 66</span><span class="fund-cand-name">Ryan Price</span></li>
+          <li><span class="fund-dist-tag house">HD 70</span><span class="fund-cand-name">Sarah Blessing</span></li>
+          <li><span class="fund-dist-tag house">HD 72</span><span class="fund-cand-name">Michele "Shelly" Henry</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 47 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 47</div>
+          <div class="fund-card-subtitle">also see PP01 Polar Anchor pack</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd47" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 47</span><span class="fund-cand-name">Ethan Sweetland-May</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 65</span><span class="fund-cand-name">Sean Steele</span><span class="fund-cand-note">Independent</span></li>
+          <li><span class="fund-dist-tag house">HD 69</span><span class="fund-cand-name">Chris Bowen</span></li>
+          <li><span class="fund-dist-tag house">HD 70</span><span class="fund-cand-name">Sarah Blessing</span></li>
+          <li><span class="fund-dist-tag house">HD 72</span><span class="fund-cand-name">Michele "Shelly" Henry</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 48 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 48</div>
+          <div class="fund-card-subtitle">also see PP07 Polar Anchor pack</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd48" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 48</span><span class="fund-cand-name">Brad Hochgesang</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 63</span><span class="fund-cand-name">Tiffany Arthur</span></li>
+          <li><span class="fund-dist-tag house">HD 64</span><span class="fund-cand-name">Candace "Candy" Greer</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SD 49 -->
+    <div class="fund-card">
+      <div class="fund-card-head">
+        <div class="fund-card-head-left">
+          <div class="fund-card-title">SD 49</div>
+          <div class="fund-card-subtitle">also see PP07 Polar Anchor pack</div>
+        </div>
+        <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd49" target="_blank" rel="noopener">💛 DONATE</a>
+      </div>
+      <div class="fund-senate-section">
+        <div class="fund-section-label">Senate</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag senate">SD 49</span><span class="fund-cand-name">Cindi Clayton</span></li>
+        </ul>
+      </div>
+      <div class="fund-house-section">
+        <div class="fund-section-label">House</div>
+        <ul class="fund-cand-list">
+          <li><span class="fund-dist-tag house">HD 64</span><span class="fund-cand-name">Candace "Candy" Greer</span></li>
+          <li><span class="fund-dist-tag house">HD 76</span><span class="fund-cand-name">Logan Patberg</span></li>
+          <li><span class="fund-dist-tag house">HD 78</span><span class="fund-cand-name">Sally Busby</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </div><!-- /.cards-grid -->
+
+  <footer>
+    <h3>About Tandem Fundraisers</h3>
+    <p>
+      The <strong>Indiana Rural Summit</strong> organizes across county and district lines — especially in areas shaped by "artificially rural" districts — to maximize shared resources and collective impact.
+      A <strong>Power Pack</strong> is a small group of current political candidates in a close geographic area who join to support each other, creating efficient campaigns and motivating voters to vote up and down the ballot.
+    </p>
+    <p style="margin-bottom:0">
+      Donate links go directly to ActBlue pages managed by the Indiana Rural Summit.
+      Questions? Contact the campaign organizers through the
+      <a href="../" style="color:#2d5a8e">Power Packs page</a>.
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>
