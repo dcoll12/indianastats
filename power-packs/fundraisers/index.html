@@ -981,7 +981,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
       try {
         var bounds = activeLayer.getBounds();
         secondaryLayers.forEach(function(l) { bounds.extend(l.getBounds()); });
-        map.setView(bounds.getCenter(), 9);
+        map.setView(bounds.getCenter(), 8);
       } catch(e) {}
     });
   }
