@@ -134,6 +134,14 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
   font-size: 1rem; font-weight: 700; color: white; flex-shrink: 0;
 }
 .pp-cand-name { font-weight: 700; color: #1e293b; font-size: 0.92rem; line-height: 1.3; }
+.pp-pack-donate-btn {
+  display: inline-block; padding: 6px 14px; border-radius: 6px;
+  font-weight: 800; font-size: 0.78rem; text-decoration: none;
+  background: #f59e0b; color: #1c1917; border: 2px solid #d97706;
+  white-space: nowrap; flex-shrink: 0; letter-spacing: 0.3px;
+  transition: background 0.15s, border-color 0.15s;
+}
+.pp-pack-donate-btn:hover { background: #d97706; border-color: #b45309; color: #1c1917; }
 .pp-btns { padding: 10px 8px; text-align: center; white-space: nowrap; }
 .pp-btn {
   display: inline-block; padding: 6px 12px; border-radius: 4px;
@@ -1930,6 +1938,19 @@ var PP = (function() {
     return parts.join('');
   }
 
+  // Curated ActBlue fundraiser URLs keyed by "dtype:dnum"
+  var ACTBLUE_PACK_URLS = {
+    'house:71':  'https://secure.actblue.com/donate/irs-pp01-hd71',
+    'house:39':  'https://secure.actblue.com/donate/irs-pp02-hd39',
+    'house:62':  'https://secure.actblue.com/donate/irs-pp03-hd62',
+    'house:25':  'https://secure.actblue.com/donate/irs-pp04-hd25',
+    'house:34':  'https://secure.actblue.com/donate/irs-pp05-hd34',
+    'senate:22': 'https://secure.actblue.com/donate/irs-pp06-sd22',
+    'senate:49': 'https://secure.actblue.com/donate/irs-pp07-sd49',
+    'house:81':  'https://secure.actblue.com/donate/irs-pp08-hd81',
+    'senate:43': 'https://secure.actblue.com/donate/irs-pp09-sd43'
+  };
+
   function renderFocusPackCard(pack, packNum) {
     var anchor = pack.anchor;
     var anchorLean = anchor.lean;
@@ -1976,7 +1997,14 @@ var PP = (function() {
     if (pack.counties && pack.counties.length) parts.push('<div class="pp-pack-counties">counties covered: ' + esc(pack.counties.join(' · ')) + '</div>');
     if (tc.mission) parts.push('<div class="pp-pack-mission">' + tc.mission + '</div>');
     parts.push('</div>');
+    var donateKey = anchor.dtype + ':' + anchor.dnum;
+    var donateUrl = ACTBLUE_PACK_URLS[donateKey] || null;
+    parts.push('<div style="display:flex;align-items:center;gap:10px;flex-shrink:0">');
     parts.push('<div class="pp-pack-count">' + totalCands + ' candidate' + (totalCands !== 1 ? 's' : '') + '</div>');
+    if (donateUrl) {
+      parts.push('<a class="pp-pack-donate-btn" href="' + donateUrl + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">💛 DONATE</a>');
+    }
+    parts.push('</div>');
     parts.push('</div>');
 
     // Gravitational center — the anchor candidate
