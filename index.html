@@ -446,6 +446,46 @@ var DMT = (function() {
     });
   }
 
+  function buildFocusPackBanner(fp) {
+    var anchorLean = (leanLookup[fp.anchorDtype] || {})[fp.anchorDnum] || null;
+    var tier = candidateTierFP(anchorLean);
+    var tc = {
+      0: { border: '#0891b2', bg: '#f0f9ff', label: '🏠 HOLD' },
+      1: { border: '#dc2626', bg: '#fff5f5', label: '🎯 TARGET' },
+      2: { border: '#7c3aed', bg: '#faf5ff', label: '📈 OPPORTUNITY' },
+      3: { border: '#16a34a', bg: '#f0fdf4', label: '🌱 TURNOUT' }
+    }[tier] || { border: '#94a3b8', bg: 'white', label: 'PACK' };
+    var prefix = fp.anchorDtype === 'senate' ? 'SD' : 'HD';
+    var distLabel = prefix + '-' + fp.anchorDnum;
+    var indexLabel = anchorLean ? (anchorLean.in_index_label || '—') : '—';
+    var anchorName = '';
+    for (var bi = 0; bi < candidateRows.length; bi++) {
+      var br = candidateRows[bi];
+      var brole = (br['Role'] || '').trim().toLowerCase();
+      if (!brole.includes('candidate') || brole.includes('former')) continue;
+      var bhd = (br['House District'] || '').replace(/\D/g, '');
+      var bsd = (br['Senate District'] || '').replace(/\D/g, '');
+      var btitle = (br['Title'] || '').toLowerCase();
+      var bdt, bdn;
+      if (btitle.includes('senate') && bsd) { bdt = 'senate'; bdn = parseInt(bsd, 10); }
+      else if (bhd) { bdt = 'house'; bdn = parseInt(bhd, 10); }
+      else if (bsd) { bdt = 'senate'; bdn = parseInt(bsd, 10); }
+      if (bdt === fp.anchorDtype && bdn === fp.anchorDnum) {
+        anchorName = ((br['First Name'] || '') + ' ' + (br['Last Name'] || '')).trim();
+        break;
+      }
+    }
+    var hCount = fp.packHDs.length, sCount = fp.packSDs.length;
+    var countStr = (sCount ? sCount + ' SD' + (sCount !== 1 ? 's' : '') : '')
+                 + (sCount && hCount ? ' · ' : '')
+                 + (hCount ? hCount + ' HD' + (hCount !== 1 ? 's' : '') : '');
+    return '<div style="border-left:4px solid ' + tc.border + ';background:' + tc.bg + ';padding:10px 12px;border-radius:6px;margin-bottom:14px">'
+      + '<div style="font-weight:700;font-size:.85rem;color:#1e293b">📦 Focus Pack · ' + xesc(distLabel) + ' · ' + tc.label + '</div>'
+      + '<div style="font-size:.8rem;color:#475569;margin-top:3px">' + xesc(indexLabel) + (anchorName ? ' · ' + xesc(anchorName) : '') + '</div>'
+      + '<div style="font-size:.75rem;color:#64748b;margin-top:3px">' + xesc(countStr) + ' · <em>Full pack below ↓</em></div>'
+      + '</div>';
+  }
+
   function lookupByCounty() {
     if (!districtData) { showResults('<div class="dmt-error">District data loading — please try again.</div>'); return; }
     var county = document.getElementById('dmt-county').value.trim();
@@ -471,9 +511,27 @@ var DMT = (function() {
     var sortedSds = sds.slice().sort(function(a,b){return a-b;});
     var sortedCds = cds.slice().sort(function(a,b){return a-b;});
 
-    highlightPack(sortedHds.map(Number), sortedSds.map(Number), sortedCds.map(Number), null, null);
+    // Find focus pack for this area before building html so banner goes first
+    var fpIdxC = buildFocusPackIndexDMT();
+    var fpC = null, fpDtypeC, fpDnumC;
+    if (fpIdxC) {
+      for (var fi = 0; fi < sortedHds.length && !fpC; fi++) {
+        var fkey = 'house:' + sortedHds[fi];
+        if (fpIdxC[fkey]) { fpC = fpIdxC[fkey]; fpDtypeC = 'house'; fpDnumC = sortedHds[fi]; }
+      }
+      for (var fi = 0; fi < sortedSds.length && !fpC; fi++) {
+        var fkey = 'senate:' + sortedSds[fi];
+        if (fpIdxC[fkey]) { fpC = fpIdxC[fkey]; fpDtypeC = 'senate'; fpDnumC = sortedSds[fi]; }
+      }
+    }
 
-    var html = '<div class="dmt-result-title">📍 ' + xesc(matched) + ' County</div>';
+    if (fpC) {
+      highlightPack(fpC.packHDs, fpC.packSDs, [], fpC.anchorDtype, fpC.anchorDnum);
+    } else {
+      highlightPack(sortedHds.map(Number), sortedSds.map(Number), sortedCds.map(Number), null, null);
+    }
+
+    var html = (fpC ? buildFocusPackBanner(fpC) : '') + '<div class="dmt-result-title">📍 ' + xesc(matched) + ' County</div>';
     if (hds.length) html += '<div class="dmt-result-group"><strong>House Districts:</strong>'
       + '<div class="dmt-badges">' + sortedHds
         .map(function(d){return '<span class="dmt-badge" data-dtype="house" data-dnum="' + d + '">HD ' + d + '</span>';}).join('') + '</div></div>';
@@ -511,24 +569,11 @@ var DMT = (function() {
     showIrsNeighborTable(sortedHds.map(Number), sortedSds.map(Number), shownNames);
     showResults(html);
 
-    // Show focus power pack for the area
-    var fpIdx = buildFocusPackIndexDMT();
-    var fpSection = document.getElementById('dmt-focus-pack-section');
-    if (fpIdx) {
-      var fp = null, fpDtype, fpDnum;
-      for (var fi = 0; fi < sortedHds.length && !fp; fi++) {
-        var fkey = 'house:' + sortedHds[fi];
-        if (fpIdx[fkey]) { fp = fpIdx[fkey]; fpDtype = 'house'; fpDnum = sortedHds[fi]; }
-      }
-      for (var fi = 0; fi < sortedSds.length && !fp; fi++) {
-        var fkey = 'senate:' + sortedSds[fi];
-        if (fpIdx[fkey]) { fp = fpIdx[fkey]; fpDtype = 'senate'; fpDnum = sortedSds[fi]; }
-      }
-      if (fp) {
-        highlightPack(fp.packHDs, fp.packSDs, [], fp.anchorDtype, fp.anchorDnum);
-        showFocusPackTable(fp, fpDtype, fpDnum);
-      } else if (fpSection) { fpSection.style.display = 'none'; }
-    } else if (fpSection) { fpSection.style.display = 'none'; }
+    // Show full focus pack table below (banner is already in results)
+    var fpSectionC = document.getElementById('dmt-focus-pack-section');
+    if (fpC) {
+      showFocusPackTable(fpC, fpDtypeC, fpDnumC);
+    } else if (fpSectionC) { fpSectionC.style.display = 'none'; }
   }
 
   function lookupByDistricts() {
@@ -586,12 +631,21 @@ var DMT = (function() {
     // Highlight overlapping districts on map
     var anchorDtype = hd ? 'house' : sd ? 'senate' : 'congressional';
     var anchorDnum  = hd ? parseInt(hd) : sd ? parseInt(sd) : parseInt(cd);
-    highlightPack(
-      Array.from(pHds).map(Number),
-      Array.from(pSds).map(Number),
-      Array.from(pCds).map(Number),
-      anchorDtype, anchorDnum
-    );
+
+    // Find focus pack before building html so banner goes first
+    var fpIdxD = buildFocusPackIndexDMT();
+    var fpD = fpIdxD ? fpIdxD[anchorDtype + ':' + anchorDnum] : null;
+
+    if (fpD) {
+      highlightPack(fpD.packHDs, fpD.packSDs, [], fpD.anchorDtype, fpD.anchorDnum);
+    } else {
+      highlightPack(
+        Array.from(pHds).map(Number),
+        Array.from(pSds).map(Number),
+        Array.from(pCds).map(Number),
+        anchorDtype, anchorDnum
+      );
+    }
 
     // Counties belonging to the anchor district
     var anchorCounties = hd ? (districtData.hd_to_counties[hd] || [])
@@ -600,7 +654,7 @@ var DMT = (function() {
     var anchorCountySet = new Set(anchorCounties.map(function(c) { return c.toLowerCase(); }));
     highlightCountiesOnMap(anchorCounties);
 
-    var html = '<div class="dmt-result-title">Selected</div><div class="dmt-badges">';
+    var html = (fpD ? buildFocusPackBanner(fpD) : '') + '<div class="dmt-result-title">Selected</div><div class="dmt-badges">';
     if (hd) html += '<span class="dmt-badge dmt-badge-active" data-dtype="house" data-dnum="' + xesc(hd) + '">HD ' + xesc(hd) + '</span>';
     if (sd) html += '<span class="dmt-badge dmt-badge-active" data-dtype="senate" data-dnum="' + xesc(sd) + '">SD ' + xesc(sd) + '</span>';
     if (cd) html += '<span class="dmt-badge dmt-badge-active" data-dtype="congressional" data-dnum="' + xesc(cd) + '">CD ' + xesc(cd) + '</span>';
@@ -670,16 +724,11 @@ var DMT = (function() {
     showIrsNeighborTable(sortedPHds, sortedPSds, shownNames);
     showResults(html);
 
-    // Show focus power pack for the anchor district
-    var fpIdx2 = buildFocusPackIndexDMT();
-    var fpSection2 = document.getElementById('dmt-focus-pack-section');
-    if (fpIdx2) {
-      var fp2 = fpIdx2[anchorDtype + ':' + anchorDnum];
-      if (fp2) {
-        highlightPack(fp2.packHDs, fp2.packSDs, [], fp2.anchorDtype, fp2.anchorDnum);
-        showFocusPackTable(fp2, anchorDtype, anchorDnum);
-      } else if (fpSection2) { fpSection2.style.display = 'none'; }
-    } else if (fpSection2) { fpSection2.style.display = 'none'; }
+    // Show full focus pack table below (banner is already in results)
+    var fpSectionD = document.getElementById('dmt-focus-pack-section');
+    if (fpD) {
+      showFocusPackTable(fpD, anchorDtype, anchorDnum);
+    } else if (fpSectionD) { fpSectionD.style.display = 'none'; }
   }
 
   function extractDistrictNum(val) {
