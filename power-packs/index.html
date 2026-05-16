@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" type="image/png" href="../favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Power Packs — Indiana Rural Summit</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -542,7 +543,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
     <p>Senate-anchored candidate blocks modeled on the Virginia Grassroots Coalition — target races surrounded by competitive and long-shot House races, moving together as a wave</p>
     <nav class="site-nav">
       <a class="active" href="./">Power Packs</a>
-      <a href="../">My Pack</a>
+      <a href="../my-pack.html">My Pack</a>
       <a href="../lean-index.html">IN Partisan Lean Index</a>
       <a href="./fundraisers/">Fundraisers</a>
     </nav>
@@ -552,8 +553,8 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
     <div class="pp-mode-toggle" title="Focus: each candidate once, grouped by priority tier. By Senate: CD-organized packs anchored by Senate races. By County: filter by county. Geographical: all districts grouped by geographic adjacency including uncontested races.">
       <button class="pp-mode-btn active" id="pp-btn-focus"  onclick="PP.setMode('focus')">⚡ Focus</button>
       <button class="pp-mode-btn"        id="pp-btn-all"    onclick="PP.setMode('all')">By CD</button>
-      <button class="pp-mode-btn"        id="pp-btn-senate" onclick="PP.setMode('senate')">🏛 By Senate</button>
-      <button class="pp-mode-btn"        id="pp-btn-county" onclick="PP.setMode('county')">📍 By County</button>
+      <button class="pp-mode-btn"        id="pp-btn-senate" onclick="PP.setMode('senate')">By Senate</button>
+      <button class="pp-mode-btn"        id="pp-btn-county" onclick="PP.setMode('county')">By County</button>
       <button class="pp-mode-btn"        id="pp-btn-geo"    onclick="PP.setMode('geo')" style="display:none">🗺 Geographical</button>
     </div>
     <div id="pp-cd-select-wrap">
