@@ -833,9 +833,10 @@ var DMT = (function() {
 
   function lookupByDistricts() {
     if (!districtData) { showResults('<div class="dmt-error">District data loading — please try again.</div>'); return; }
-    var hd = document.getElementById('dmt-hd').value.trim();
-    var sd = document.getElementById('dmt-sd').value.trim();
-    var cd = document.getElementById('dmt-cd').value.trim();
+    function normDistrict(id) { var v = document.getElementById(id).value.trim(); var n = parseInt(v, 10); return isNaN(n) ? v : String(n); }
+    var hd = normDistrict('dmt-hd');
+    var sd = normDistrict('dmt-sd');
+    var cd = normDistrict('dmt-cd');
     if (!hd && !sd && !cd) { showResults('<div class="dmt-error">Enter at least one district number.</div>'); return; }
 
     var knownCounties = null;  // intersection — used for overlapping district discovery
