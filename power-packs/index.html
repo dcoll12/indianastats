@@ -1305,7 +1305,8 @@ var PP = (function() {
       { dtype: 'house', dnum: 91, anchorDtype: 'house',  anchorDnum: 39 }, // Jarren Hurt (HD-91) → Lindsay Gramlich
       // Power Pack #2b — Tiffany Stoner (HD-25) separate pack: HD-28/40/41 flow in via SD-7/SD-24 geography;
       // HD-57 (Suzanne Fortenberry) has no shared SD so it is forced in explicitly
-      { dtype: 'house', dnum: 57, anchorDtype: 'house',  anchorDnum: 25 }, // Suzanne Fortenberry (HD-57) → Tiffany Stoner
+      { dtype: 'house',  dnum: 57, anchorDtype: 'house', anchorDnum: 25 }, // Suzanne Fortenberry (HD-57) → Tiffany Stoner
+      { dtype: 'senate', dnum: 29, anchorDtype: 'house', anchorDnum: 25 }, // Kristina Moorhead (SD-29) → Tiffany Stoner (HD-25)
     ];
     (function() {
       FORCED_MEMBERS.forEach(function(fm) {
