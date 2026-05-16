@@ -510,6 +510,25 @@ var DMT = (function() {
     var shownNames = showIrsTable(sortedHds.map(Number), sortedSds.map(Number), sortedCds.map(Number));
     showIrsNeighborTable(sortedHds.map(Number), sortedSds.map(Number), shownNames);
     showResults(html);
+
+    // Show focus power pack for the area
+    var fpIdx = buildFocusPackIndexDMT();
+    var fpSection = document.getElementById('dmt-focus-pack-section');
+    if (fpIdx) {
+      var fp = null, fpDtype, fpDnum;
+      for (var fi = 0; fi < sortedHds.length && !fp; fi++) {
+        var fkey = 'house:' + sortedHds[fi];
+        if (fpIdx[fkey]) { fp = fpIdx[fkey]; fpDtype = 'house'; fpDnum = sortedHds[fi]; }
+      }
+      for (var fi = 0; fi < sortedSds.length && !fp; fi++) {
+        var fkey = 'senate:' + sortedSds[fi];
+        if (fpIdx[fkey]) { fp = fpIdx[fkey]; fpDtype = 'senate'; fpDnum = sortedSds[fi]; }
+      }
+      if (fp) {
+        highlightPack(fp.packHDs, fp.packSDs, [], fp.anchorDtype, fp.anchorDnum);
+        showFocusPackTable(fp, fpDtype, fpDnum);
+      } else if (fpSection) { fpSection.style.display = 'none'; }
+    } else if (fpSection) { fpSection.style.display = 'none'; }
   }
 
   function lookupByDistricts() {
@@ -650,6 +669,17 @@ var DMT = (function() {
     var shownNames = showIrsTable(sortedPHds, sortedPSds, sortedPCds);
     showIrsNeighborTable(sortedPHds, sortedPSds, shownNames);
     showResults(html);
+
+    // Show focus power pack for the anchor district
+    var fpIdx2 = buildFocusPackIndexDMT();
+    var fpSection2 = document.getElementById('dmt-focus-pack-section');
+    if (fpIdx2) {
+      var fp2 = fpIdx2[anchorDtype + ':' + anchorDnum];
+      if (fp2) {
+        highlightPack(fp2.packHDs, fp2.packSDs, [], fp2.anchorDtype, fp2.anchorDnum);
+        showFocusPackTable(fp2, anchorDtype, anchorDnum);
+      } else if (fpSection2) { fpSection2.style.display = 'none'; }
+    } else if (fpSection2) { fpSection2.style.display = 'none'; }
   }
 
   function extractDistrictNum(val) {
