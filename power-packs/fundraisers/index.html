@@ -977,11 +977,11 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
 
       setLabel(label || '');
 
-      // Zoom map to fit all highlighted districts
+      // Center map on highlighted districts at a consistent zoom level
       try {
         var bounds = activeLayer.getBounds();
         secondaryLayers.forEach(function(l) { bounds.extend(l.getBounds()); });
-        map.fitBounds(bounds, { padding: [20, 20], maxZoom: 11 });
+        map.setView(bounds.getCenter(), 9);
       } catch(e) {}
     });
   }
