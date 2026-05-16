@@ -5,6 +5,8 @@
 <link rel="icon" type="image/png" href="../../favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tandem Fundraisers — Indiana Rural Summit</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -13,7 +15,7 @@ body {
   color: #1e293b;
   line-height: 1.5;
 }
-.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.container { max-width: 1600px; margin: 0 auto; padding: 20px; }
 
 header {
   background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
@@ -36,6 +38,35 @@ header p { font-size: 14px; opacity: 0.85; max-width: 700px; margin: 0 auto; }
 .site-nav a:hover { background: rgba(255,255,255,0.3); border-color: white; }
 .site-nav a.active { background: white; color: #1e3a5f; border-color: white; }
 
+/* ── Two-column layout: cards + sticky map ─────────────────────────── */
+.fund-layout { display: flex; gap: 20px; align-items: flex-start; }
+.fund-main { flex: 1; min-width: 0; }
+
+.fund-map-panel {
+  width: 300px; flex-shrink: 0; position: sticky; top: 12px;
+  background: white; border-radius: 10px; border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden;
+}
+.fund-map-header {
+  background: #1e3a5f; color: white; padding: 8px 12px;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.fund-map-hint { font-size: 0.7rem; opacity: 0.8; font-weight: 400; font-style: italic; }
+#fund-map { height: 360px; width: 100%; }
+.fund-map-label {
+  padding: 7px 10px; font-size: 0.72rem; color: #475569;
+  background: #f8fafc; border-top: 1px solid #e2e8f0;
+  min-height: 30px; text-align: center;
+}
+#fund-map-label-district { font-weight: 600; color: #1e3a5f; display: block; }
+
+@media (max-width: 960px) {
+  .fund-layout { flex-direction: column-reverse; }
+  .fund-map-panel { width: 100%; position: static; }
+  #fund-map { height: 260px; }
+}
+
 .intro {
   background: white; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
   border-left: 4px solid #2d5a8e; font-size: 0.88rem; color: #475569;
@@ -52,7 +83,7 @@ header p { font-size: 14px; opacity: 0.85; max-width: 700px; margin: 0 auto; }
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
 }
 
@@ -61,8 +92,12 @@ header p { font-size: 14px; opacity: 0.85; max-width: 700px; margin: 0 auto; }
   background: white; border-radius: 10px; overflow: hidden;
   border: 1px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   display: flex; flex-direction: column;
+  cursor: default;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
+.fund-card:hover { border-color: #3b82f6; box-shadow: 0 2px 8px rgba(59,130,246,0.18); }
 .fund-card.on-hold { opacity: 0.72; }
+.fund-card.on-hold:hover { border-color: #94a3b8; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
 
 /* card header bar */
 .fund-card-head {
@@ -166,6 +201,9 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </nav>
   </header>
 
+  <div class="fund-layout">
+    <div class="fund-main">
+
   <div class="intro">
     <strong>How these pages work:</strong> Each ActBlue page pools donations for a curated group of candidates running together in overlapping districts. When you donate through one of these links, you can split your gift across every candidate in that coalition. Candidates marked <em>no ActBlue</em> are not yet on a fundraiser page.
   </div>
@@ -183,7 +221,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
   <div class="cards-grid">
 
     <!-- SD 1, 2, 3 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="1,2,3" data-hdnums="12,14,15,19,1,2,3">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 1, SD 2 &amp; SD 3</div>
@@ -215,7 +253,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 4 & SD 8 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="4,8" data-hdnums="9,10,20,7,16,17">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 4 &amp; SD 8</div>
@@ -246,7 +284,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 5 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="5" data-hdnums="4,11,13,16,17,19">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 5</div>
@@ -269,7 +307,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 6 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="6" data-hdnums="11,13,14,15,16,19">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 6</div>
@@ -296,7 +334,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 11 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="11" data-hdnums="5,8,48,49">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 11</div>
@@ -323,7 +361,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 14 & SD 15 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="14,15" data-hdnums="82,85,81,84">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 14 &amp; SD 15</div>
@@ -353,7 +391,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 17 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="17,18" data-hdnums="30,31,50,17,23,38">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 17</div>
@@ -384,7 +422,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 19 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="19" data-hdnums="33,50,79,80,82,85">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 19</div>
@@ -412,7 +450,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 21 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="21" data-hdnums="24,29,30,37,38,39">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 21</div>
@@ -439,7 +477,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 22 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="22" data-hdnums="13,26,38,41">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 22</div>
@@ -465,7 +503,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 23 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="23" data-hdnums="13,26,38,41,44">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 23</div>
@@ -491,7 +529,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 25 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="25" data-hdnums="31,35,36,37,53,88">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 25</div>
@@ -519,7 +557,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 26 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="26" data-hdnums="33,34,35">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 26</div>
@@ -544,7 +582,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 27 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="27" data-hdnums="33,35,55,56">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 27</div>
@@ -570,7 +608,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 29 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="29" data-hdnums="24,25,32,39,86,91,92">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 29</div>
@@ -599,7 +637,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- HD 25 standalone (under SD 29 geography) -->
-    <div class="fund-card">
+    <div class="fund-card" data-hdnums="25,28,40,41">
       <div class="fund-card-head hd-anchor">
         <div class="fund-card-head-left">
           <div class="fund-card-title">HD 25 Coalition</div>
@@ -620,7 +658,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 31 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="31" data-hdnums="29,37,39,88">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 31</div>
@@ -645,7 +683,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 38 & SD 39 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="38,39" data-hdnums="45,46,63,64">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 38 &amp; SD 39</div>
@@ -672,7 +710,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- HD 62 / SD 40 -->
-    <div class="fund-card">
+    <div class="fund-card" data-hdnums="62,45,46,47,60">
       <div class="fund-card-head hd-anchor">
         <div class="fund-card-head-left">
           <div class="fund-card-title">HD 62 Coalition <span style="font-size:0.72rem;opacity:0.7;font-weight:400">[SD 40 area]</span></div>
@@ -694,7 +732,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 41 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="41" data-hdnums="47,58,69,73">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 41</div>
@@ -720,7 +758,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 43 — ON HOLD -->
-    <div class="fund-card on-hold">
+    <div class="fund-card on-hold" data-sdnums="43" data-hdnums="66,67,68,69">
       <div class="fund-card-head on-hold">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 43</div>
@@ -747,7 +785,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 45 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="45" data-hdnums="66,70,72">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 45</div>
@@ -772,7 +810,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 47 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="47" data-hdnums="65,69,70,72">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 47</div>
@@ -798,7 +836,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 48 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="48" data-hdnums="63,64">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 48</div>
@@ -822,7 +860,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 49 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="49" data-hdnums="64,76,78">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 49</div>
@@ -861,6 +899,127 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </p>
   </footer>
 
-</div>
+    </div><!-- /.fund-main -->
+
+    <!-- ── Sticky map panel ──────────────────────────────────────────── -->
+    <div class="fund-map-panel">
+      <div class="fund-map-header">
+        Indiana Districts
+        <span class="fund-map-hint">hover a card to highlight</span>
+      </div>
+      <div id="fund-map"></div>
+      <div class="fund-map-label">
+        <span id="fund-map-label-district">Hover over a fundraiser card</span>
+      </div>
+    </div>
+
+  </div><!-- /.fund-layout -->
+
+</div><!-- /.container -->
+
+<script>
+(function() {
+  var map = null;
+  var geoPromise = null;
+  var geoData = null;
+  var activeLayer = null;
+  var secondaryLayers = [];
+  var INDIANA_BOUNDS = [[37.77, -88.10], [41.77, -84.78]];
+
+  function initMap() {
+    var el = document.getElementById('fund-map');
+    if (!el || map) return;
+    map = L.map('fund-map', { zoomControl: true, attributionControl: false, scrollWheelZoom: false });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 14 }).addTo(map);
+    map.fitBounds(INDIANA_BOUNDS);
+    loadGeo();
+  }
+
+  function loadGeo() {
+    if (geoPromise) return geoPromise;
+    geoPromise = fetch('../../data/districts_simplified.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) { geoData = data; return data; })
+      .catch(function() { geoData = {}; return {}; });
+    return geoPromise;
+  }
+
+  function setLabel(text) {
+    var el = document.getElementById('fund-map-label-district');
+    if (el) el.textContent = text || 'Hover over a fundraiser card';
+  }
+
+  function clearHighlight() {
+    if (!map) return;
+    if (activeLayer) { map.removeLayer(activeLayer); activeLayer = null; }
+    secondaryLayers.forEach(function(l) { map.removeLayer(l); });
+    secondaryLayers = [];
+  }
+
+  function highlight(primaryDtype, primaryDnum, secondary, label) {
+    if (!map) return;
+    loadGeo().then(function(data) {
+      clearHighlight();
+      var feature = (data[primaryDtype] || {})[String(primaryDnum)];
+      if (!feature) return;
+
+      activeLayer = L.geoJSON(feature, {
+        style: { color: '#1e3a5f', weight: 2.5, fillColor: '#3b82f6', fillOpacity: 0.45 }
+      }).addTo(map);
+
+      secondaryLayers = (secondary || []).map(function(d) {
+        var f = (data[d.dtype] || {})[String(d.dnum)];
+        if (!f) return null;
+        return L.geoJSON(f, {
+          style: { color: '#64748b', weight: 1, fillColor: '#94a3b8', fillOpacity: 0.2 }
+        }).addTo(map);
+      }).filter(Boolean);
+
+      setLabel(label || '');
+    });
+  }
+
+  function resetMap() {
+    clearHighlight();
+    setLabel('');
+    if (map) map.fitBounds(INDIANA_BOUNDS);
+  }
+
+  function wireCards() {
+    document.querySelectorAll('.fund-card').forEach(function(card) {
+      var sdNums = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
+      var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
+      if (!sdNums.length && !hdNums.length) return;
+
+      card.addEventListener('mouseenter', function() {
+        var label, primary, secondary;
+        if (sdNums.length > 0) {
+          primary = { dtype: 'senate', dnum: sdNums[0] };
+          secondary = sdNums.slice(1).map(function(n) { return { dtype: 'senate', dnum: n }; })
+            .concat(hdNums.map(function(n) { return { dtype: 'house', dnum: n }; }));
+          label = 'SD-' + sdNums[0];
+          if (sdNums.length > 1) label += ' + ' + (sdNums.length - 1) + ' SD' + (sdNums.length > 2 ? 's' : '');
+          if (hdNums.length) label += ' + ' + hdNums.length + ' HD' + (hdNums.length !== 1 ? 's' : '');
+        } else {
+          primary = { dtype: 'house', dnum: hdNums[0] };
+          secondary = hdNums.slice(1).map(function(n) { return { dtype: 'house', dnum: n }; });
+          label = 'HD-' + hdNums[0];
+          if (hdNums.length > 1) label += ' + ' + (hdNums.length - 1) + ' HD' + (hdNums.length > 2 ? 's' : '');
+        }
+        highlight(primary.dtype, primary.dnum, secondary, label);
+      });
+
+      card.addEventListener('mouseleave', function(e) {
+        if (!card.contains(e.relatedTarget)) resetMap();
+      });
+    });
+  }
+
+  window.addEventListener('load', function() {
+    initMap();
+    wireCards();
+  });
+})();
+</script>
 </body>
 </html>
