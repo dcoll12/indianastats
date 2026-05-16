@@ -971,11 +971,18 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
         var f = (data[d.dtype] || {})[String(d.dnum)];
         if (!f) return null;
         return L.geoJSON(f, {
-          style: { color: '#64748b', weight: 1, fillColor: '#94a3b8', fillOpacity: 0.2 }
+          style: { color: '#475569', weight: 1.5, fillColor: '#94a3b8', fillOpacity: 0.35 }
         }).addTo(map);
       }).filter(Boolean);
 
       setLabel(label || '');
+
+      // Zoom map to fit all highlighted districts
+      try {
+        var bounds = activeLayer.getBounds();
+        secondaryLayers.forEach(function(l) { bounds.extend(l.getBounds()); });
+        map.fitBounds(bounds, { padding: [20, 20], maxZoom: 11 });
+      } catch(e) {}
     });
   }
 
