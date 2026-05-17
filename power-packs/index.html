@@ -784,15 +784,15 @@ var PP = (function() {
   // 9 distinct colors spaced ~40° apart on the hue wheel so every group
   // looks clearly different from every other group on the map.
   var NINE_COLORS = {
-    red:    '#e53935',  //   0°  red
-    orange: '#ff6d00',  //  26°  orange
-    yellow: '#fdd835',  //  49°  yellow
-    lime:   '#76ff03',  //  92°  lime
-    teal:   '#00897b',  // 174°  teal
-    cyan:   '#00cfff',  // 193°  cyan
-    blue:   '#1e88e5',  // 212°  blue
-    purple: '#8e24aa',  // 282°  purple
-    pink:   '#ff1493',  // 330°  hot pink
+    red:    '#ff1744',  //   0°  vivid red
+    orange: '#ff6d00',  //  26°  vivid orange
+    yellow: '#ffd600',  //  53°  vivid yellow
+    lime:   '#76ff03',  //  92°  vivid lime
+    green:  '#00c853',  // 145°  vivid emerald green
+    cyan:   '#00e5ff',  // 186°  vivid cyan
+    blue:   '#2979ff',  // 221°  vivid blue
+    purple: '#aa00ff',  // 274°  vivid violet
+    pink:   '#f50057',  // 337°  vivid hot pink
   };
   var PACK_BG_PALETTE = Object.values(NINE_COLORS);
   var SD_COLOR_OVERRIDES = {};
@@ -800,11 +800,11 @@ var PP = (function() {
     1: NINE_COLORS.cyan,    // NW  — cyan
     2: NINE_COLORS.pink,    // N   — hot pink
     3: NINE_COLORS.lime,    // NE  — lime      (adj pink✓, blue✓, purple✓)
-    4: NINE_COLORS.yellow,  // W-C — yellow    (adj pink✓, blue✓, teal✓, NOT orange)
-    5: NINE_COLORS.blue,    // CTR — blue      (adj pink✓, lime✓, yellow✓, purple✓, teal✓)
+    4: NINE_COLORS.yellow,  // W-C — yellow    (adj pink✓, blue✓, green✓, NOT orange)
+    5: NINE_COLORS.blue,    // CTR — blue      (adj pink✓, lime✓, yellow✓, purple✓, green✓)
     6: NINE_COLORS.purple,  // E-C — purple    (adj lime✓, blue✓, orange✓)
-    8: NINE_COLORS.teal,    // W   — teal      (adj yellow✓, blue✓, orange✓)
-    9: NINE_COLORS.orange,  // S   — orange    (adj blue✓, purple✓, teal✓)
+    8: NINE_COLORS.green,   // W   — emerald   (adj yellow✓, blue✓, orange✓)
+    9: NINE_COLORS.orange,  // S   — orange    (adj blue✓, purple✓, green✓)
   };
   function packBg(packNum, fallback, sdNum, cdNum) {
     if (sdNum && SD_COLOR_OVERRIDES[sdNum]) return SD_COLOR_OVERRIDES[sdNum];
