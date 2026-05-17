@@ -800,7 +800,11 @@ var PP = (function() {
     '#7cb342',  // vivid light-green
     '#ffb300',  // vivid amber
   ];
-  function packBg(packNum, fallback) {
+  var SD_COLOR_OVERRIDES = {
+    43: '#f6c90e',  // yellow
+  };
+  function packBg(packNum, fallback, sdNum) {
+    if (sdNum && SD_COLOR_OVERRIDES[sdNum]) return SD_COLOR_OVERRIDES[sdNum];
     return packNum ? PACK_BG_PALETTE[(packNum - 1) % PACK_BG_PALETTE.length] : (fallback || 'white');
   }
 
@@ -1734,7 +1738,7 @@ var PP = (function() {
     var parts = [];
 
     var borderColor = pack.isUncontested ? '#f59e0b' : tc.border;
-    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg);
+    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg, pack.sdNum);
 
     var hdNums = pack.houseMembers.map(function(m) { return m.dnum; }).join(',');
     parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums+'" data-packcolor="'+bgColor+'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
@@ -1992,7 +1996,7 @@ var PP = (function() {
     var totalCands = 1 + pack.members.length;
 
     var parts = [];
-    var cardBg = packBg(packNum, tc.bg);
+    var cardBg = packBg(packNum, tc.bg, pack.sdNum);
     parts.push('<div class="pp-pack-card" data-dtype="' + anchor.dtype + '" data-dnum="' + anchor.dnum + '" data-packcolor="' + cardBg + '" style="border-left:4px solid ' + tc.border + ';background:' + cardBg + '">');
 
     // Pack header
@@ -2897,7 +2901,7 @@ var PP = (function() {
     var parts = [];
 
     var borderColor = pack.isUncontested ? '#f59e0b' : tc.border;
-    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg);
+    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg, pack.sdNum);
 
     parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums
       +'" data-packcolor="'+bgColor+'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
