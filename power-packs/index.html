@@ -1737,7 +1737,7 @@ var PP = (function() {
     var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg);
 
     var hdNums = pack.houseMembers.map(function(m) { return m.dnum; }).join(',');
-    parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums+'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
+    parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums+'" data-packcolor="'+bgColor+'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
 
     // Pack header
     parts.push('<div class="pp-pack-head">');
@@ -2154,7 +2154,7 @@ var PP = (function() {
     var sdNums = pack.senateSupporters.map(function(m) { return m.dnum; }).join(',');
     var parts = [];
 
-    parts.push('<div class="pp-pack-card" data-hdnum="' + pack.hdNum + '" data-sdnums="' + sdNums + '" style="border-left:4px solid ' + tc.border + ';background:' + packBg(packNum, tc.bg) + '">');
+    parts.push('<div class="pp-pack-card" data-hdnum="' + pack.hdNum + '" data-sdnums="' + sdNums + '" data-packcolor="' + packBg(packNum, tc.bg) + '" style="border-left:4px solid ' + tc.border + ';background:' + packBg(packNum, tc.bg) + '">');
 
     // Pack header (no per-card mission — tier header already explains it)
     parts.push('<div class="pp-pack-head">');
@@ -2900,7 +2900,7 @@ var PP = (function() {
     var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg);
 
     parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums
-      +'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
+      +'" data-packcolor="'+bgColor+'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
 
     parts.push('<div class="pp-pack-head">');
     parts.push('<div class="pp-pack-head-left">');
@@ -3406,22 +3406,24 @@ var MAP = (function() {
     });
   }
 
-  function highlight(dtype, dnum, secondary, label, counties) {
+  function highlight(dtype, dnum, secondary, label, counties, packColor) {
     if (!map) return;
+    var fillCol = packColor || '#3b82f6';
+    var borderCol = packColor || '#1e3a5f';
     loadGeo().then(function(data) {
       clearHighlight();
       var feature = (data[dtype] || {})[String(dnum)];
       if (!feature) return;
 
       activeLayer = L.geoJSON(feature, {
-        style: { color: '#1e3a5f', weight: 2.5, fillColor: '#3b82f6', fillOpacity: 0.45 }
+        style: { color: borderCol, weight: 3, fillColor: fillCol, fillOpacity: 0.8 }
       }).addTo(map);
 
       secondaryLayers = (secondary || []).map(function(d) {
         var f = (data[d.dtype] || {})[String(d.dnum)];
         if (!f) return null;
         return L.geoJSON(f, {
-          style: { color: '#64748b', weight: 1, fillColor: '#94a3b8', fillOpacity: 0.2 }
+          style: { color: borderCol, weight: 1.5, fillColor: fillCol, fillOpacity: 0.45 }
         }).addTo(map);
       }).filter(Boolean);
 
@@ -3432,7 +3434,7 @@ var MAP = (function() {
 
   function revertToPinned() {
     if (pinnedChip) {
-      highlight(pinnedChip.dtype, pinnedChip.dnum, [], pinnedChip.label, pinnedChip.counties);
+      highlight(pinnedChip.dtype, pinnedChip.dnum, [], pinnedChip.label, pinnedChip.counties, pinnedChip.color);
     } else {
       clearHighlight();
       setLabel('');
@@ -3448,10 +3450,10 @@ var MAP = (function() {
     showRestingPacks();
   }
 
-  function pin(dtype, dnum, label) {
+  function pin(dtype, dnum, label, color) {
     var counties = window.PP_getCounties ? window.PP_getCounties(dtype, dnum) : [];
-    pinnedChip = { dtype: dtype, dnum: dnum, label: label, counties: counties };
-    highlight(dtype, dnum, [], label, counties);
+    pinnedChip = { dtype: dtype, dnum: dnum, label: label, counties: counties, color: color };
+    highlight(dtype, dnum, [], label, counties, color);
   }
 
   function unpin() {
@@ -3472,7 +3474,8 @@ var MAP = (function() {
         var secondary = hdNums.map(function(hd) { return { dtype: 'house', dnum: hd }; });
         var label = 'SD-' + sdNum + (hdNums.length ? ' + ' + hdNums.length + ' HD' + (hdNums.length !== 1 ? 's' : '') : '');
         var counties = window.PP_getCounties ? window.PP_getCounties('senate', sdNum) : [];
-        highlight('senate', sdNum, secondary, label, counties);
+        var color = card.getAttribute('data-packcolor');
+        highlight('senate', sdNum, secondary, label, counties, color);
       });
       card.addEventListener('mouseleave', function(e) {
         if (!card.contains(e.relatedTarget)) revertToPinned();
@@ -3487,7 +3490,8 @@ var MAP = (function() {
         var secondary = sdNums.map(function(sd) { return { dtype: 'senate', dnum: sd }; });
         var label = 'HD-' + hdNum + (sdNums.length ? ' + ' + sdNums.length + ' SD' + (sdNums.length !== 1 ? 's' : '') : '');
         var counties = window.PP_getCounties ? window.PP_getCounties('house', hdNum) : [];
-        highlight('house', hdNum, secondary, label, counties);
+        var color = card.getAttribute('data-packcolor');
+        highlight('house', hdNum, secondary, label, counties, color);
       });
       card.addEventListener('mouseleave', function(e) {
         if (!card.contains(e.relatedTarget)) revertToPinned();
@@ -3514,7 +3518,8 @@ var MAP = (function() {
       }
       function highlightFocusPack() {
         var counties = window.PP_getCounties ? window.PP_getCounties(dtype, dnum) : [];
-        highlight(dtype, dnum, getFocusSecondary(), prefix + '-' + dnum, counties);
+        var color = card.getAttribute('data-packcolor');
+        highlight(dtype, dnum, getFocusSecondary(), prefix + '-' + dnum, counties, color);
       }
       card.addEventListener('mouseenter', highlightFocusPack);
       card.addEventListener('mouseleave', function(e) {
@@ -3532,7 +3537,8 @@ var MAP = (function() {
         var secondary = hdNums.map(function(hd) { return { dtype: 'house', dnum: hd }; });
         var label = 'SD-' + sdNum + (hdNums.length ? ' + ' + hdNums.length + ' HD' + (hdNums.length !== 1 ? 's' : '') : '');
         var counties = window.PP_getCounties ? window.PP_getCounties('senate', sdNum) : [];
-        highlight('senate', sdNum, secondary, label, counties);
+        var color = card.getAttribute('data-packcolor');
+        highlight('senate', sdNum, secondary, label, counties, color);
       });
     });
 
@@ -3544,7 +3550,8 @@ var MAP = (function() {
         var secondary = sdNums.map(function(sd) { return { dtype: 'senate', dnum: sd }; });
         var label = 'HD-' + hdNum + (sdNums.length ? ' + ' + sdNums.length + ' SD' + (sdNums.length !== 1 ? 's' : '') : '');
         var counties = window.PP_getCounties ? window.PP_getCounties('house', hdNum) : [];
-        highlight('house', hdNum, secondary, label, counties);
+        var color = card.getAttribute('data-packcolor');
+        highlight('house', hdNum, secondary, label, counties, color);
       });
     });
 
@@ -3555,7 +3562,9 @@ var MAP = (function() {
       var prefix = { house: 'HD', senate: 'SD', congressional: 'CD' }[dtype] || dtype.toUpperCase();
       row.addEventListener('mouseenter', function() {
         var counties = window.PP_getCounties ? window.PP_getCounties(dtype, dnum) : [];
-        highlight(dtype, dnum, [], prefix + '-' + dnum, counties);
+        var parentCard = row.closest('.pp-pack-card[data-packcolor]');
+        var color = parentCard ? parentCard.getAttribute('data-packcolor') : null;
+        highlight(dtype, dnum, [], prefix + '-' + dnum, counties, color);
       });
       row.addEventListener('mouseleave', function(e) {
         // When leaving a row but staying inside a pack card, revert to pack highlight
@@ -3567,13 +3576,15 @@ var MAP = (function() {
           var hdNums = (sdCard.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
           var secondary = hdNums.map(function(hd) { return { dtype: 'house', dnum: hd }; });
           var sdCounties = window.PP_getCounties ? window.PP_getCounties('senate', sdNum) : [];
-          highlight('senate', sdNum, secondary, 'SD-' + sdNum + (hdNums.length ? ' + ' + hdNums.length + ' HD' + (hdNums.length !== 1 ? 's' : '') : ''), sdCounties);
+          var sdColor = sdCard.getAttribute('data-packcolor');
+          highlight('senate', sdNum, secondary, 'SD-' + sdNum + (hdNums.length ? ' + ' + hdNums.length + ' HD' + (hdNums.length !== 1 ? 's' : '') : ''), sdCounties, sdColor);
         } else if (hdCard && hdCard.contains(e.relatedTarget)) {
           var hdNum = parseInt(hdCard.getAttribute('data-hdnum'), 10);
           var sdNums = (hdCard.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
           var secondary = sdNums.map(function(sd) { return { dtype: 'senate', dnum: sd }; });
           var hdCounties = window.PP_getCounties ? window.PP_getCounties('house', hdNum) : [];
-          highlight('house', hdNum, secondary, 'HD-' + hdNum + (sdNums.length ? ' + ' + sdNums.length + ' SD' + (sdNums.length !== 1 ? 's' : '') : ''), hdCounties);
+          var hdColor = hdCard.getAttribute('data-packcolor');
+          highlight('house', hdNum, secondary, 'HD-' + hdNum + (sdNums.length ? ' + ' + sdNums.length + ' SD' + (sdNums.length !== 1 ? 's' : '') : ''), hdCounties, hdColor);
         } else if (focusCard && focusCard.contains(e.relatedTarget)) {
           var fDtype = focusCard.getAttribute('data-dtype');
           var fDnum = parseInt(focusCard.getAttribute('data-dnum'), 10);
@@ -3589,7 +3600,8 @@ var MAP = (function() {
             }
           });
           var fCounties = window.PP_getCounties ? window.PP_getCounties(fDtype, fDnum) : [];
-          highlight(fDtype, fDnum, fSecondary, fPrefix + '-' + fDnum, fCounties);
+          var fColor = focusCard.getAttribute('data-packcolor');
+          highlight(fDtype, fDnum, fSecondary, fPrefix + '-' + fDnum, fCounties, fColor);
         } else {
           revertToPinned();
         }
