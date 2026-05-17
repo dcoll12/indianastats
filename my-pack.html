@@ -1481,7 +1481,7 @@ var DMT = (function() {
       ? '<div class="pp-role-tag pp-role-' + xesc(opts.roleCls || 'turnout') + '">' + xesc(opts.roleLabel) + '</div>'
       : '';
     if (isHouseCaucusDMT(csvRow)) {
-      roleHtml = '<div class="pp-role-tag pp-role-caucus">🏛 House Caucus</div>' + roleHtml;
+      roleHtml = '<div class="pp-role-tag pp-role-caucus">🏛️ House Caucus</div>' + roleHtml;
     }
 
     var rowCls = 'pp-row' + (opts.isSenate ? ' pp-senate-row' : '') + (opts.isHouse ? ' pp-house-row' : '');

@@ -1030,7 +1030,7 @@ var PP = (function() {
 
     var parts = [];
     parts.push('<div class="pp-legend" style="background:#f5f3ff;border-color:#ddd6fe;color:#4c1d95">');
-    parts.push('<strong>🏛 By Senate District</strong> — one pack per Senate District; '
+    parts.push('<strong>🏛️ By Senate District</strong> — one pack per Senate District; '
       + 'House candidates in all overlapping districts are shown within each pack. '
       + 'Sorted TARGET → OPPORTUNITY → TURNOUT → HOLD, tightest races first within each tier.<br>');
     parts.push('<span style="font-size:0.77rem;line-height:2.2">');
@@ -1041,7 +1041,7 @@ var PP = (function() {
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future &nbsp;&nbsp;');
-    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
+    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠️ UNCONTESTED</span> No Democratic candidate filed');
     parts.push('</span></div>');
 
     var tierInfo = {
@@ -1193,7 +1193,7 @@ var PP = (function() {
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future &nbsp;&nbsp;');
-    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
+    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠️ UNCONTESTED</span> No Democratic candidate filed');
     parts.push('</span></div>');
 
     parts.push('<div class="pp-tier-section">');
@@ -1883,7 +1883,7 @@ var PP = (function() {
       ? '<div class="pp-role-tag pp-role-'+esc(opts.roleCls||'turnout')+'">'+esc(opts.roleLabel)+'</div>'
       : '';
     if (dtype === 'house' && isHouseCaucus(row)) {
-      roleHtml = '<div class="pp-role-tag pp-role-caucus">🏛 House Caucus</div>' + roleHtml;
+      roleHtml = '<div class="pp-role-tag pp-role-caucus">🏛️ House Caucus</div>' + roleHtml;
     }
     if (opts.multiPackNote) {
       roleHtml += '<div class="pp-role-tag pp-role-multipak" title="This district overlaps multiple senate packs">↔ Multi-pack</div>';
@@ -2050,7 +2050,7 @@ var PP = (function() {
       parts.push('<span class="pp-pack-lean">&nbsp;'+esc(indexLabel)+'</span>');
       parts.push(holderHtml);
     } else {
-      parts.push('<span class="pp-uncontested-badge">⚠ UNCONTESTED</span>');
+      parts.push('<span class="pp-uncontested-badge">⚠️ UNCONTESTED</span>');
       parts.push(' <strong>'+packTitle+'</strong>');
       parts.push('<span class="pp-pack-lean">&nbsp;'+esc(indexLabel)+'</span>');
       parts.push(holderHtml);
@@ -2106,7 +2106,7 @@ var PP = (function() {
       parts.push('<span style="background:'+c.bg+';color:'+c.fg+';padding:2px 7px;border-radius:4px;font-size:0.75rem;font-weight:700">'+esc(indexLabel)+'</span>');
       parts.push('</div>');
     } else if (!pack.isHDOnly) {
-      parts.push('<div class="pp-no-senate">⚠ Recruiting for 2028 — Senate candidate needed for SD-'+pack.sdNum
+      parts.push('<div class="pp-no-senate">⚠️ Recruiting for 2028 — Senate candidate needed for SD-'+pack.sdNum
         +' — <em>contact Indiana Rural Summit to get involved</em></div>');
     }
 
@@ -2175,11 +2175,11 @@ var PP = (function() {
     parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district — contest the Senate seat to build infrastructure &amp; move the margin; House races are the near-term prize &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat; incumbent drives House turnout wave &nbsp;&nbsp;');
     parts.push('<span class="pp-role-tag pp-role-polar-anchor">⭐ Polar Anchor</span> most competitive candidate in pack — gravitational center &nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-caucus">🏛️ House Caucus</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future &nbsp;&nbsp;');
-    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
+    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠️ UNCONTESTED</span> No Democratic candidate filed');
     parts.push('</span></div>');
 
     // Congressional candidates (IRS focuses on state races, so these appear last)
@@ -2502,7 +2502,7 @@ var PP = (function() {
         parts.push('<span class="pp-sd-chip" style="background:' + chipColor + '">SD-' + cand.dnum + ' ' + esc(name) + ' · ' + esc(lbl) + '</span>');
       });
     } else {
-      parts.push('<span style="color:#92400e;font-size:0.72rem">⚠ Recruiting for 2028 — no Senate candidates in overlapping districts</span>');
+      parts.push('<span style="color:#92400e;font-size:0.72rem">⚠️ Recruiting for 2028 — no Senate candidates in overlapping districts</span>');
     }
     parts.push('</div>');
 
@@ -2529,7 +2529,7 @@ var PP = (function() {
     parts.push('<span class="pp-tier-badge pp-tier-2">📊 CHALLENGE</span> Hard-fought (R+8–25%) — contest hard, move the margin &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district (R+25%+) — build infrastructure, future flip &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat — incumbent drives wave turnout &nbsp;&nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-caucus">🏛️ House Caucus</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span>');
@@ -2676,11 +2676,11 @@ var PP = (function() {
     parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district — contest the Senate seat to build infrastructure &amp; move the margin; House races are the near-term prize &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat; incumbent drives House turnout wave &nbsp;&nbsp;');
-    parts.push('<span class="pp-role-tag pp-role-caucus">🏛 House Caucus</span> &nbsp;');
+    parts.push('<span class="pp-role-tag pp-role-caucus">🏛️ House Caucus</span> &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-competitive">🔑 Competitive HD</span> winnable flip &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-challenge">📊 Challenge HD</span> hard-fought, move the margin &nbsp;');
     parts.push('<span class="pp-role-tag pp-role-turnout">🗳️ Turnout HD</span> energize the base, build for the future &nbsp;&nbsp;');
-    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
+    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠️ UNCONTESTED</span> No Democratic candidate filed');
     parts.push('</span></div>');
 
     parts.push('<div class="pp-cd-section">');
@@ -3223,7 +3223,7 @@ var PP = (function() {
     if (!pack.isUncontested) {
       parts.push('<span class="pp-tier-badge '+tc.badgeClass+'">'+tc.label+'</span> ');
     } else {
-      parts.push('<span class="pp-uncontested-badge">⚠ UNCONTESTED</span> ');
+      parts.push('<span class="pp-uncontested-badge">⚠️ UNCONTESTED</span> ');
     }
     parts.push('<strong>SD-'+pack.sdNum+'</strong>');
     parts.push('<span class="pp-pack-lean">&nbsp;'+esc(indexLabel)+'</span>');
@@ -3255,7 +3255,7 @@ var PP = (function() {
       parts.push('<span style="background:'+c.bg+';color:'+c.fg+';padding:2px 7px;border-radius:4px;font-size:0.75rem;font-weight:700">'+esc(indexLabel)+'</span>');
       parts.push('</div>');
     } else {
-      parts.push('<div class="pp-no-senate">⚠ Recruiting — no Senate candidate filed for SD-'+pack.sdNum+'</div>');
+      parts.push('<div class="pp-no-senate">⚠️ Recruiting — no Senate candidate filed for SD-'+pack.sdNum+'</div>');
     }
 
     // House members
@@ -3287,7 +3287,7 @@ var PP = (function() {
 
     parts.push('<div class="pp-legend" style="background:#ecfeff;border-color:#a5f3fc;color:#164e63">');
     parts.push('<strong>🗺️ Geographical Packs</strong> — every Senate district organized by geographic region, '
-      + 'including <strong>uncontested races</strong> (shown with ⚠ UNCONTESTED badge). '
+      + 'including <strong>uncontested races</strong> (shown with ⚠️ UNCONTESTED badge). '
       + 'Districts that share House District boundaries are geographically adjacent. '
       + 'Use this view to see the complete electoral landscape of each region.<br>');
     parts.push('<span style="font-size:0.77rem;line-height:2.2">');
@@ -3295,7 +3295,7 @@ var PP = (function() {
     parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-3">🌱 TURNOUT</span> Pioneer district &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-0">🏠 HOLD</span> Safe D seat &nbsp;');
-    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
+    parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠️ UNCONTESTED</span> No Democratic candidate filed');
     parts.push('</span></div>');
 
     var geoPackNum = 0;
@@ -3487,7 +3487,7 @@ var PP = (function() {
         if (!cands || !cands.length) {
           // Show uncontested district
           parts.push('<div class="pp-mypack-dist-sub">SD-'+sd+(isAnchor?' ★':'')+( sdIndex ? '&nbsp;<span style="font-weight:400;opacity:0.7">'+esc(sdIndex)+'</span>' : '')+'</div>');
-          parts.push('<div class="pp-uncontested-row"><span class="pp-uncontested-badge">⚠ UNCONTESTED</span><span>No Democratic candidate filed for SD-'+sd+'</span>'+(sdLean && sdLean.representative ? '<span style="opacity:0.7;font-size:0.78rem">Current seat: '+esc(sdLean.representative)+' ('+esc(sdLean.party || '')+')</span>' : '')+'</div>');
+          parts.push('<div class="pp-uncontested-row"><span class="pp-uncontested-badge">⚠️ UNCONTESTED</span><span>No Democratic candidate filed for SD-'+sd+'</span>'+(sdLean && sdLean.representative ? '<span style="opacity:0.7;font-size:0.78rem">Current seat: '+esc(sdLean.representative)+' ('+esc(sdLean.party || '')+')</span>' : '')+'</div>');
           return;
         }
         parts.push('<div class="pp-mypack-dist-sub">SD-'+sd+(isAnchor?' ★':'')+( sdIndex ? '&nbsp;<span style="font-weight:400;opacity:0.7">'+esc(sdIndex)+'</span>' : '')+'</div>');
@@ -3516,7 +3516,7 @@ var PP = (function() {
         if (!members || !members.length) {
           // Show uncontested district
           parts.push('<div class="pp-mypack-dist-sub">HD-'+hd+(isAnchor?' ★':'')+( hdIndex ? '&nbsp;<span style="font-weight:400;opacity:0.7">'+esc(hdIndex)+'</span>' : '')+'</div>');
-          parts.push('<div class="pp-uncontested-row"><span class="pp-uncontested-badge">⚠ UNCONTESTED</span><span>No Democratic candidate filed for HD-'+hd+'</span>'+(hdLean && hdLean.representative ? '<span style="opacity:0.7;font-size:0.78rem">Current seat: '+esc(hdLean.representative)+' ('+esc(hdLean.party || '')+')</span>' : '')+'</div>');
+          parts.push('<div class="pp-uncontested-row"><span class="pp-uncontested-badge">⚠️ UNCONTESTED</span><span>No Democratic candidate filed for HD-'+hd+'</span>'+(hdLean && hdLean.representative ? '<span style="opacity:0.7;font-size:0.78rem">Current seat: '+esc(hdLean.representative)+' ('+esc(hdLean.party || '')+')</span>' : '')+'</div>');
           return;
         }
         parts.push('<div class="pp-mypack-dist-sub">HD-'+hd+(isAnchor?' ★':'')+( hdIndex ? '&nbsp;<span style="font-weight:400;opacity:0.7">'+esc(hdIndex)+'</span>' : '')+'</div>');
