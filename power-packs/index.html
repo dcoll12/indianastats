@@ -1983,7 +1983,8 @@ var PP = (function() {
     var totalCands = 1 + pack.members.length;
 
     var parts = [];
-    parts.push('<div class="pp-pack-card" data-dtype="' + anchor.dtype + '" data-dnum="' + anchor.dnum + '" style="border-left:4px solid ' + tc.border + ';background:' + packBg(packNum, tc.bg) + '">');
+    var cardBg = packBg(packNum, tc.bg);
+    parts.push('<div class="pp-pack-card" data-dtype="' + anchor.dtype + '" data-dnum="' + anchor.dnum + '" data-packcolor="' + cardBg + '" style="border-left:4px solid ' + tc.border + ';background:' + cardBg + '">');
 
     // Pack header
     parts.push('<div class="pp-pack-head">');
@@ -2550,6 +2551,7 @@ var PP = (function() {
       out.innerHTML = renderPacksTable(result);
     }
     if (window.MAP_wireDynamic) window.MAP_wireDynamic();
+    if (state.mode === 'focus' && window.MAP_showRestingPacks) window.MAP_showRestingPacks();
   }
 
   function reset() {
@@ -3320,6 +3322,7 @@ var MAP = (function() {
   var geoData = null;
   var activeLayer = null;
   var secondaryLayers = [];
+  var restingLayers = [];
   var pinnedChip = null; // { dtype, dnum, label } — persists across hover
   var INDIANA_BOUNDS = [[37.7, -88.1], [41.8, -84.8]];
 
@@ -3350,11 +3353,48 @@ var MAP = (function() {
     if (elCo) elCo.textContent = (counties && counties.length) ? counties.join(' · ') : '';
   }
 
+  function clearRestingLayers() {
+    restingLayers.forEach(function(l) { map.removeLayer(l); });
+    restingLayers = [];
+  }
+
   function clearHighlight() {
     if (!map) return;
     if (activeLayer) { map.removeLayer(activeLayer); activeLayer = null; }
     secondaryLayers.forEach(function(l) { map.removeLayer(l); });
     secondaryLayers = [];
+    clearRestingLayers();
+  }
+
+  function showRestingPacks() {
+    if (!map) return;
+    loadGeo().then(function(data) {
+      clearRestingLayers();
+      document.querySelectorAll('.pp-pack-card[data-dtype][data-dnum]').forEach(function(card) {
+        var color = card.getAttribute('data-packcolor') || '#93c5fd';
+        var dtype = card.getAttribute('data-dtype');
+        var dnum = parseInt(card.getAttribute('data-dnum'), 10);
+        var seen = {};
+        var districts = [];
+        var anchorKey = dtype + ':' + dnum;
+        seen[anchorKey] = true;
+        districts.push({ dtype: dtype, dnum: dnum, isAnchor: true });
+        card.querySelectorAll('.pp-row[data-dtype][data-dnum]').forEach(function(row) {
+          var rDtype = row.getAttribute('data-dtype');
+          var rDnum = parseInt(row.getAttribute('data-dnum'), 10);
+          var key = rDtype + ':' + rDnum;
+          if (!seen[key]) { seen[key] = true; districts.push({ dtype: rDtype, dnum: rDnum, isAnchor: false }); }
+        });
+        districts.forEach(function(d) {
+          var feature = (data[d.dtype] || {})[String(d.dnum)];
+          if (!feature) return;
+          var layer = L.geoJSON(feature, {
+            style: { color: color, weight: d.isAnchor ? 2 : 1, fillColor: color, fillOpacity: d.isAnchor ? 0.55 : 0.35 }
+          }).addTo(map);
+          restingLayers.push(layer);
+        });
+      });
+    });
   }
 
   function highlight(dtype, dnum, secondary, label, counties) {
@@ -3388,6 +3428,7 @@ var MAP = (function() {
       clearHighlight();
       setLabel('');
       if (map) map.fitBounds(INDIANA_BOUNDS);
+      showRestingPacks();
     }
   }
 
@@ -3395,6 +3436,7 @@ var MAP = (function() {
     clearHighlight();
     setLabel('');
     if (map) map.fitBounds(INDIANA_BOUNDS);
+    showRestingPacks();
   }
 
   function pin(dtype, dnum, label) {
@@ -3546,10 +3588,11 @@ var MAP = (function() {
     });
   }
 
-  return { init: init, wireDynamic: wireDynamic, pin: pin, unpin: unpin };
+  return { init: init, wireDynamic: wireDynamic, showRestingPacks: showRestingPacks, pin: pin, unpin: unpin };
 })();
 
 window.MAP_wireDynamic = function() { MAP.wireDynamic(); };
+window.MAP_showRestingPacks = function() { MAP.showRestingPacks(); };
 
 window.addEventListener('load', function() { PP.init(); MAP.init(); });
 </script>
