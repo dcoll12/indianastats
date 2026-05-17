@@ -1431,6 +1431,9 @@ var PP = (function() {
     sorted.forEach(function(anchorEntry) {
       if (assigned[anchorEntry._focusIdx]) return;
       if (anchorEntry.dtype === 'house' && MEMBER_ONLY_HDS[anchorEntry.dnum]) return;
+      // Only designated senate anchors (those with ActBlue URLs) may anchor packs;
+      // all other senate candidates flow in as members via geography or FORCED_MEMBERS.
+      if (anchorEntry.dtype === 'senate' && !ACTBLUE_PACK_URLS['senate:' + anchorEntry.dnum]) return;
       assigned[anchorEntry._focusIdx] = 1;
 
       var overlap = getOverlapDistricts(anchorEntry.dtype, anchorEntry.dnum);
