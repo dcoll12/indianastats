@@ -2688,8 +2688,8 @@ var PP = (function() {
         + ' in ' + cdPacks.length + ' pack' + (cdPacks.length !== 1 ? 's' : '');
       out.innerHTML = renderPacksTable(result);
     }
-    if (window.MAP_wireDynamic) window.MAP_wireDynamic();
-    if (state.mode === 'focus' && window.MAP_showRestingPacks) window.MAP_showRestingPacks();
+    if (window.MAP_wireDynamic)       window.MAP_wireDynamic();
+    if (window.MAP_showRestingColors) window.MAP_showRestingColors();
     if (window.MAP_refreshDemOverlay) window.MAP_refreshDemOverlay();
   }
 
@@ -3508,46 +3508,67 @@ var MAP = (function() {
     clearRestingLayers();
   }
 
-  function showRestingPacks() {
+  // Single entry point for resting-state colors — handles all card types
+  // in one async pass so clearRestingLayers() is only called once and the
+  // two separate passes can't race-clear each other.
+  function showRestingColors() {
     if (!map) return;
     loadGeo().then(function(data) {
       clearRestingLayers();
-      // Collect all districts across all packs before rendering.
-      // Anchors are processed first so they claim their district and
-      // prevent a secondary from a different pack overwriting it with
-      // a different color at lower opacity (which caused color bleeding).
       var pending = [];
+
+      // Focus-mode cards: anchor district + candidate row districts
       document.querySelectorAll('.pp-pack-card[data-dtype][data-dnum]').forEach(function(card) {
         var color = card.getAttribute('data-packcolor') || '#93c5fd';
         var dtype = card.getAttribute('data-dtype');
-        var dnum = parseInt(card.getAttribute('data-dnum'), 10);
+        var dnum  = parseInt(card.getAttribute('data-dnum'), 10);
         pending.push({ dtype: dtype, dnum: dnum, color: color, isAnchor: true });
         card.querySelectorAll('.pp-row[data-dtype][data-dnum]').forEach(function(row) {
           pending.push({
             dtype: row.getAttribute('data-dtype'),
             dnum:  parseInt(row.getAttribute('data-dnum'), 10),
-            color: color,
-            isAnchor: false
+            color: color, isAnchor: false
           });
         });
       });
-      // Anchors first, then secondaries — so anchor color always wins.
+
+      // Senate-mode cards: primary SD + extra SDs + all HDs
+      document.querySelectorAll('.pp-pack-card[data-sdnums]').forEach(function(card) {
+        var color   = card.getAttribute('data-packcolor') || '#93c5fd';
+        var sdNums  = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
+        var hdNums  = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
+        if (!sdNums.length) return;
+        pending.push({ dtype: 'senate', dnum: sdNums[0], color: color, isAnchor: true });
+        sdNums.slice(1).forEach(function(sd) {
+          pending.push({ dtype: 'senate', dnum: sd, color: color, isAnchor: false });
+        });
+        hdNums.forEach(function(hd) {
+          pending.push({ dtype: 'house', dnum: hd, color: color, isAnchor: false });
+        });
+      });
+
+      // Anchors first so their color wins deduplication
       pending.sort(function(a, b) { return (a.isAnchor ? 0 : 1) - (b.isAnchor ? 0 : 1); });
-      var globalSeen = {};
+      var seen = {};
       pending.forEach(function(d) {
         var key = d.dtype + ':' + d.dnum;
-        if (globalSeen[key]) return;
-        globalSeen[key] = true;
+        if (seen[key]) return;
+        seen[key] = true;
         var feature = (data[d.dtype] || {})[String(d.dnum)];
         if (!feature) return;
         var layer = L.geoJSON(feature, {
-          style: { color: d.color, weight: d.isAnchor ? 3 : 1.5, fillColor: d.color, fillOpacity: d.isAnchor ? 0.75 : 0.5 }
+          style: { color: d.color, weight: d.isAnchor ? 3 : 1.5,
+                   fillColor: d.color, fillOpacity: d.isAnchor ? 0.75 : 0.5 }
         }).addTo(map);
         restingLayers.push(layer);
       });
       if (demToggleActive) showDemNonCohortOverlay();
     });
   }
+
+  // Keep old names as aliases so existing call-sites outside this closure still work
+  function showRestingPacks()  { showRestingColors(); }
+  function showRestingSenate() { showRestingColors(); }
 
   function highlight(dtype, dnum, secondary, label, counties, packColor) {
     if (!map) return;
@@ -3619,8 +3640,7 @@ var MAP = (function() {
       clearHighlight();
       setLabel('');
       if (map) map.fitBounds(INDIANA_BOUNDS);
-      showRestingPacks();
-      showRestingSenate();
+      showRestingColors();
     }
   }
 
@@ -3628,8 +3648,7 @@ var MAP = (function() {
     clearHighlight();
     setLabel('');
     if (map) map.fitBounds(INDIANA_BOUNDS);
-    showRestingPacks();
-    showRestingSenate();
+    showRestingColors();
   }
 
   function pin(dtype, dnum, label, color) {
@@ -3866,12 +3885,14 @@ var MAP = (function() {
     }
   }
 
-  return { init: init, wireDynamic: wireDynamic, showRestingPacks: showRestingPacks, pin: pin, unpin: unpin, refreshDemOverlay: refreshDemOverlay, toggleDemHighlight: toggleDemHighlight };
+  return { init: init, wireDynamic: wireDynamic, showRestingColors: showRestingColors, showRestingPacks: showRestingPacks, showRestingSenate: showRestingSenate, pin: pin, unpin: unpin, refreshDemOverlay: refreshDemOverlay, toggleDemHighlight: toggleDemHighlight };
 })();
 
-window.MAP_wireDynamic = function() { MAP.wireDynamic(); };
-window.MAP_showRestingPacks = function() { MAP.showRestingPacks(); };
-window.MAP_refreshDemOverlay = function() { MAP.refreshDemOverlay(); };
+window.MAP_wireDynamic        = function() { MAP.wireDynamic(); };
+window.MAP_showRestingColors  = function() { MAP.showRestingColors(); };
+window.MAP_showRestingPacks   = function() { MAP.showRestingColors(); };
+window.MAP_showRestingSenate  = function() { MAP.showRestingColors(); };
+window.MAP_refreshDemOverlay  = function() { MAP.refreshDemOverlay(); };
 window.MAP_toggleDemHighlight = function() { MAP.toggleDemHighlight(); };
 
 window.addEventListener('load', function() { PP.init(); MAP.init(); });
