@@ -2690,7 +2690,7 @@ var PP = (function() {
     out.innerHTML = '<div class="pp-status"><div class="pp-spinner"></div><p>Loading power packs from Google Sheets…</p></div>';
 
     var fetches = [
-      fetch(CSV_URL).then(function(r) { return r.text(); }),
+      fetch(CSV_URL + '&t=' + Date.now(), {cache: 'no-store'}).then(function(r) { return r.text(); }),
       fetch('../data/data.json').then(function(r) { return r.json(); }).catch(function() { return {}; }),
       fetch('../data/district_data.json').then(function(r) { return r.json(); }).catch(function() { return {}; })
     ];
