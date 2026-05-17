@@ -1349,8 +1349,8 @@ var PP = (function() {
 
     // Extra HDs to include in a senate district's pack overlap (beyond what geography derives)
     var SD_EXTRA_HDS = {
-      43: [55],  // HD-55 pulled into SD-43 pack (HD-73 → HD-62 via SD-41)
-      49: [63],  // HD-63 bridges into SD-49 via SD-48
+      43: [55],              // HD-55 pulled into SD-43 pack (HD-73 → HD-62 via SD-41)
+      49: [63, 64, 76, 78], // HD-63/64/76/78 pulled into SD-49 (PP07)
     };
 
     // HDs to exclude from a senate district's geographic pull (redirected to another pack)
@@ -1362,9 +1362,10 @@ var PP = (function() {
 
     // Extra SDs to include in a house district's pack overlap (beyond what geography derives)
     var HD_EXTRA_SDS = {
-      62: [41],     // Ross Thomas (SD-41) pulled into HD-62 pack
-      39: [25],     // Tamie Dixon-Tatum (SD-25) explicitly linked to Lindsay Gramlich (HD-39) Power Pack #2
-      81: [14, 19], // Blaine Sefton (SD-14) + Timothy Murphy (SD-19) pulled into HD-81 Power Pack #8
+      71: [45, 47],  // SD-45 Nick Marshall + SD-47 Ethan Sweetland-May → HD-71 (PP01)
+      62: [41],      // Ross Thomas (SD-41) pulled into HD-62 pack
+      39: [21, 25],  // SD-21 Kirsten Root + SD-25 Tamie Dixon-Tatum → HD-39 (PP02)
+      81: [14, 19],  // Blaine Sefton (SD-14) + Timothy Murphy (SD-19) pulled into HD-81 Power Pack #8
     };
 
     // HDs to exclude from a *house* anchor's geographic pull (used to keep packs separate)
@@ -1400,14 +1401,29 @@ var PP = (function() {
 
     // HDs that should never anchor — their parent SD will claim them naturally
     var MEMBER_ONLY_HDS = {
+      13: true,  // HD-13 (Geswein) → SD-22 (PP06)
+      24: true,  // HD-24 (Bleicher) → HD-39 (PP02)
       27: true,  // HD-27 (Klinker) → SD-22 (PP06); prevents HD-27 from capturing SD-22
+      29: true,  // HD-29 (Wellington) → HD-39 (PP02)
+      33: true,  // HD-33 (Bartlett) → HD-34 (PP05)
+      35: true,  // HD-35 (Gift) → HD-34 (PP05)
       38: true,  // HD-38 (Stout) → SD-22 (PP06)
+      46: true,  // HD-46 (Pittsford) → HD-62 (PP03)
+      47: true,  // HD-47 (Potter) → HD-62 (PP03)
       55: true,  // HD-55 → SD-43 (PP09) via SD_EXTRA_HDS
+      60: true,  // HD-60 (Syczylo) → HD-62 (PP03)
+      61: true,  // HD-61 (Pierce) → HD-62 (PP03)
+      64: true,  // HD-64 (Greer) → SD-49 (PP07)
+      66: true,  // HD-66 (Price) → HD-71 (PP01)
       67: true,  // HD-67 → SD-43 (PP09); same polar=0 as SD-43, guard against order flip
       68: true,  // HD-68 → SD-43 (PP09)
       69: true,  // HD-69 → HD-62 (PP03)
+      70: true,  // HD-70 (Blessing) → HD-71 (PP01)
       73: true,  // HD-73 → HD-62 (PP03)
+      76: true,  // HD-76 (Patberg) → SD-49 (PP07)
       77: true,  // HD-77 (Burton) → SD-49 (PP07); prevents HD-77 from capturing SD-49
+      78: true,  // HD-78 (Busby) → SD-49 (PP07)
+      88: true,  // HD-88 (Yocum) → HD-39 (PP02)
     };
 
     var packs = [];
@@ -1557,17 +1573,38 @@ var PP = (function() {
 
     // Explicit forced pack assignments — overrides geographic routing entirely
     var FORCED_MEMBERS = [
+      // PP01 — HD-71 Wendy Dant Chesser
+      { dtype: 'house',  dnum: 66, anchorDtype: 'house', anchorDnum: 71 }, // Ryan Price (HD-66) → HD-71
+      { dtype: 'house',  dnum: 70, anchorDtype: 'house', anchorDnum: 71 }, // Sarah Blessing (HD-70) → HD-71
+      // PP02 — HD-39 Lindsay Gramlich
+      { dtype: 'house',  dnum: 24, anchorDtype: 'house', anchorDnum: 39 }, // Racheal Bleicher (HD-24) → HD-39
+      { dtype: 'house',  dnum: 88, anchorDtype: 'house', anchorDnum: 39 }, // Stephanie Jo Yocum (HD-88) → HD-39
+      { dtype: 'house',  dnum: 29, anchorDtype: 'house', anchorDnum: 39 }, // Devon Wellington (HD-29) → HD-39
       // PP03 — HD-62 Amy Huffman Oliver
-      { dtype: 'house', dnum: 69, anchorDtype: 'house',  anchorDnum: 62 }, // Chris Bowen (HD-69) → HD-62
+      { dtype: 'house',  dnum: 46, anchorDtype: 'house', anchorDnum: 62 }, // James Pittsford (HD-46) → HD-62
+      { dtype: 'house',  dnum: 47, anchorDtype: 'house', anchorDnum: 62 }, // Michael Potter (HD-47) → HD-62
+      { dtype: 'house',  dnum: 60, anchorDtype: 'house', anchorDnum: 62 }, // Carrie Syczylo (HD-60) → HD-62
+      { dtype: 'house',  dnum: 61, anchorDtype: 'house', anchorDnum: 62 }, // Matt Pierce (HD-61) → HD-62
+      { dtype: 'house',  dnum: 69, anchorDtype: 'house', anchorDnum: 62 }, // Chris Bowen (HD-69) → HD-62
       // PP04 — HD-25 Tiffany Stoner: HD-28/40 flow in via geography; HD-57 has no shared SD; HD-44 forced explicitly
       { dtype: 'house',  dnum: 57, anchorDtype: 'house', anchorDnum: 25 }, // Suzanne Fortenberry (HD-57) → HD-25
       { dtype: 'senate', dnum: 29, anchorDtype: 'house', anchorDnum: 25 }, // Kristina Moorhead (SD-29) → HD-25
       { dtype: 'house',  dnum: 44, anchorDtype: 'house', anchorDnum: 25 }, // Kelsey Kauffman (HD-44) → HD-25
-      // PP05 — HD-34 Sara Gullion: HD-79 has no shared SD with HD-34 so forced explicitly
+      // PP05 — HD-34 Sara Gullion
+      { dtype: 'senate', dnum: 26, anchorDtype: 'house', anchorDnum: 34 }, // Andrew Dale (SD-26) → HD-34
+      { dtype: 'house',  dnum: 35, anchorDtype: 'house', anchorDnum: 34 }, // Phil Gift (HD-35) → HD-34
+      { dtype: 'house',  dnum: 33, anchorDtype: 'house', anchorDnum: 34 }, // John E. Bartlett (HD-33) → HD-34
       { dtype: 'house',  dnum: 79, anchorDtype: 'house', anchorDnum: 34 }, // Ian G. Richardson (HD-79) → HD-34
-      // PP06 — SD-22 Natasha Baker: HD-23/HD-16 not geographically linked to SD-22, forced in
+      // PP06 — SD-22 Natasha Baker
+      { dtype: 'senate', dnum: 23, anchorDtype: 'senate', anchorDnum: 22 }, // David Sanders (SD-23) → SD-22
+      { dtype: 'senate', dnum:  6, anchorDtype: 'senate', anchorDnum: 22 }, // Kate-Lynn Holley (SD-6) → SD-22
+      { dtype: 'house',  dnum: 13, anchorDtype: 'senate', anchorDnum: 22 }, // Brenna Geswein (HD-13) → SD-22
       { dtype: 'house',  dnum: 23, anchorDtype: 'senate', anchorDnum: 22 }, // Austin Meives (HD-23) → SD-22
       { dtype: 'house',  dnum: 16, anchorDtype: 'senate', anchorDnum: 22 }, // Ashley Hammac (HD-16) → SD-22
+      // PP07 — SD-49 Cindi Clayton
+      { dtype: 'senate', dnum: 39, anchorDtype: 'senate', anchorDnum: 49 }, // Joseph Baughman (SD-39) → SD-49
+      { dtype: 'senate', dnum: 48, anchorDtype: 'senate', anchorDnum: 49 }, // Brad Hochgesang (SD-48) → SD-49
+      { dtype: 'house',  dnum: 64, anchorDtype: 'senate', anchorDnum: 49 }, // Candace Greer (HD-64) → SD-49
     ];
     (function() {
       FORCED_MEMBERS.forEach(function(fm) {
