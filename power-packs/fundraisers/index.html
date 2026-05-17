@@ -981,6 +981,13 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
       }).filter(Boolean);
 
       setLabel(label || '');
+
+      // Zoom to show all highlighted districts
+      try {
+        var bounds = activeLayer.getBounds();
+        secondaryLayers.forEach(function(l) { bounds.extend(l.getBounds()); });
+        map.fitBounds(bounds, { padding: [24, 24], maxZoom: 9 });
+      } catch(e) {}
     });
   }
 
