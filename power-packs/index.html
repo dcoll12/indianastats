@@ -781,24 +781,25 @@ var PP = (function() {
   // CD 7 (Indianapolis urban core) is excluded — not IRS focus.
   // SD 46 (Marion Co.) is excluded from CD 6 per IRS guidance.
   // Rotating background palette for individual pack cards (cycles by packNum)
-  // 16 perceptually-distinct hues — bold enough to read on the map, varied enough to avoid adjacent matches
+  // Palette ordered so each consecutive entry jumps far across the color wheel,
+  // minimising similar-color neighbours when packs are geographically adjacent.
   var PACK_BG_PALETTE = [
-    '#e53935',  // vivid red
-    '#1e88e5',  // vivid blue
-    '#43a047',  // vivid green
-    '#fb8c00',  // vivid orange
-    '#8e24aa',  // vivid purple
-    '#00acc1',  // vivid cyan
-    '#f4511e',  // vivid deep-orange
-    '#00897b',  // vivid teal
-    '#d81b60',  // vivid pink/magenta
-    '#3949ab',  // vivid indigo
-    '#c0ca33',  // vivid lime-yellow
-    '#6d4c41',  // vivid brown
-    '#5e35b1',  // vivid deep-purple
-    '#039be5',  // vivid sky-blue
-    '#7cb342',  // vivid light-green
-    '#ffb300',  // vivid amber
+    '#e53935',  // 1  red
+    '#00897b',  // 2  teal        (opposite warm/cool)
+    '#8e24aa',  // 3  purple
+    '#ffb300',  // 4  amber       (opposite cool)
+    '#1e88e5',  // 5  blue
+    '#f4511e',  // 6  deep-orange (opposite blue)
+    '#00acc1',  // 7  cyan
+    '#6d4c41',  // 8  brown       (warm neutral)
+    '#d81b60',  // 9  magenta
+    '#43a047',  // 10 green       (opposite magenta)
+    '#3949ab',  // 11 indigo
+    '#fb8c00',  // 12 orange
+    '#5e35b1',  // 13 deep-purple
+    '#c0ca33',  // 14 lime
+    '#039be5',  // 15 sky-blue
+    '#7cb342',  // 16 light-green
   ];
   var SD_COLOR_OVERRIDES = {
     43: '#1565c0',  // dark blue
