@@ -1355,7 +1355,8 @@ var PP = (function() {
 
     // HDs to exclude from a senate district's geographic pull (redirected to another pack)
     var SD_EXCLUDED_HDS = {
-      4:  [20],  // HD-20 (Laura Liskey, R+33.6) — too deep red for SD-4's competitive pack; gets own TURNOUT pack
+      4:  [20],  // HD-20 → too deep red for SD-4's competitive pack
+      15: [81],  // HD-81 anchors PP08; prevent SD-15 from absorbing it as a member
       43: [69],  // HD-69 → HD-62 pack (shared via SD-44)
     };
 
@@ -1369,6 +1370,7 @@ var PP = (function() {
     // HDs to exclude from a *house* anchor's geographic pull (used to keep packs separate)
     var HD_EXCLUDED_HDS_FROM_HD = {
       39: [25],  // HD-25 (Tiffany Stoner) anchors its own separate pack — not absorbed into HD-39 Lindsay Gramlich
+      82: [81],  // HD-81 (Sharon Wight) anchors PP08 — not absorbed into HD-82's temp pack
     };
 
     // Geographic overlap for a given district: returns sets of neighboring SD/HD numbers
@@ -1397,7 +1399,16 @@ var PP = (function() {
     }
 
     // HDs that should never anchor — their parent SD will claim them naturally
-    var MEMBER_ONLY_HDS = { 38: true, 55: true, 68: true, 69: true, 73: true }; // HD-38 → SD-22; HD-55,HD-68 → SD-43; HD-69,HD-73 → HD-62
+    var MEMBER_ONLY_HDS = {
+      27: true,  // HD-27 (Klinker) → SD-22 (PP06); prevents HD-27 from capturing SD-22
+      38: true,  // HD-38 (Stout) → SD-22 (PP06)
+      55: true,  // HD-55 → SD-43 (PP09) via SD_EXTRA_HDS
+      67: true,  // HD-67 → SD-43 (PP09); same polar=0 as SD-43, guard against order flip
+      68: true,  // HD-68 → SD-43 (PP09)
+      69: true,  // HD-69 → HD-62 (PP03)
+      73: true,  // HD-73 → HD-62 (PP03)
+      77: true,  // HD-77 (Burton) → SD-49 (PP07); prevents HD-77 from capturing SD-49
+    };
 
     var packs = [];
 
@@ -1457,6 +1468,8 @@ var PP = (function() {
     });
 
     // Merge packs in the same CD that share at least one county — greedy, first pack wins
+    // Exception: designated pack anchors (those with ActBlue URLs) are never absorbed —
+    // they are intended gravitational centers that FORCED_MERGES will populate correctly.
     (function() {
       var merged = new Array(packs.length).fill(false);
       for (var i = 0; i < packs.length; i++) {
@@ -1470,6 +1483,8 @@ var PP = (function() {
           if (pj.cdNum !== pi.cdNum) continue;
           var shared = pj.counties.some(function(c) { return piCounties.has(c.toLowerCase()); });
           if (!shared) continue;
+          // Protect designated anchors — their packs are consolidated via FORCED_MERGES instead
+          if (ACTBLUE_PACK_URLS[pj.anchor.dtype + ':' + pj.anchor.dnum]) continue;
           // Absorb pj into pi: pj's anchor becomes a member, pj's members join
           pi.members = pi.members.concat([pj.anchor]).concat(pj.members);
           pi.members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
@@ -1586,7 +1601,8 @@ var PP = (function() {
 
     // Explicit forced pack merges — entire source pack folds into target pack
     var FORCED_MERGES = [
-      { srcDtype: 'house', srcDnum: 4, intoDtype: 'senate', intoDnum: 22 }, // HD-4 pack → SD-22 (Natasha Baker)
+      { srcDtype: 'house', srcDnum: 4,  intoDtype: 'senate', intoDnum: 22 }, // HD-4 pack → SD-22 (Natasha Baker, PP06)
+      { srcDtype: 'house', srcDnum: 82, intoDtype: 'house',  intoDnum: 81 }, // HD-82 temp pack → HD-81 (Sharon Wight, PP08)
     ];
     (function() {
       FORCED_MERGES.forEach(function(fm) {
