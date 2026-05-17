@@ -3386,29 +3386,38 @@ var MAP = (function() {
     if (!map) return;
     loadGeo().then(function(data) {
       clearRestingLayers();
+      // Collect all districts across all packs before rendering.
+      // Anchors are processed first so they claim their district and
+      // prevent a secondary from a different pack overwriting it with
+      // a different color at lower opacity (which caused color bleeding).
+      var pending = [];
       document.querySelectorAll('.pp-pack-card[data-dtype][data-dnum]').forEach(function(card) {
         var color = card.getAttribute('data-packcolor') || '#93c5fd';
         var dtype = card.getAttribute('data-dtype');
         var dnum = parseInt(card.getAttribute('data-dnum'), 10);
-        var seen = {};
-        var districts = [];
-        var anchorKey = dtype + ':' + dnum;
-        seen[anchorKey] = true;
-        districts.push({ dtype: dtype, dnum: dnum, isAnchor: true });
+        pending.push({ dtype: dtype, dnum: dnum, color: color, isAnchor: true });
         card.querySelectorAll('.pp-row[data-dtype][data-dnum]').forEach(function(row) {
-          var rDtype = row.getAttribute('data-dtype');
-          var rDnum = parseInt(row.getAttribute('data-dnum'), 10);
-          var key = rDtype + ':' + rDnum;
-          if (!seen[key]) { seen[key] = true; districts.push({ dtype: rDtype, dnum: rDnum, isAnchor: false }); }
+          pending.push({
+            dtype: row.getAttribute('data-dtype'),
+            dnum:  parseInt(row.getAttribute('data-dnum'), 10),
+            color: color,
+            isAnchor: false
+          });
         });
-        districts.forEach(function(d) {
-          var feature = (data[d.dtype] || {})[String(d.dnum)];
-          if (!feature) return;
-          var layer = L.geoJSON(feature, {
-            style: { color: color, weight: d.isAnchor ? 3 : 1.5, fillColor: color, fillOpacity: d.isAnchor ? 0.75 : 0.5 }
-          }).addTo(map);
-          restingLayers.push(layer);
-        });
+      });
+      // Anchors first, then secondaries — so anchor color always wins.
+      pending.sort(function(a, b) { return (a.isAnchor ? 0 : 1) - (b.isAnchor ? 0 : 1); });
+      var globalSeen = {};
+      pending.forEach(function(d) {
+        var key = d.dtype + ':' + d.dnum;
+        if (globalSeen[key]) return;
+        globalSeen[key] = true;
+        var feature = (data[d.dtype] || {})[String(d.dnum)];
+        if (!feature) return;
+        var layer = L.geoJSON(feature, {
+          style: { color: d.color, weight: d.isAnchor ? 3 : 1.5, fillColor: d.color, fillOpacity: d.isAnchor ? 0.75 : 0.5 }
+        }).addTo(map);
+        restingLayers.push(layer);
       });
     });
   }
