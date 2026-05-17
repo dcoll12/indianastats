@@ -2220,7 +2220,7 @@ with stats_col:
 with view_col:
     view_mode = st.radio(
         "View",
-        ["🗺 Grassroots Table", "📊 Grid", "📋 List", "🗳 2024 Results", "🗺️ District Match"],
+        ["🗺️ Grassroots Table", "📊 Grid", "📋 List", "🗳️ 2024 Results", "🗺️ District Match"],
         horizontal=True, key="view_mode", label_visibility="collapsed",
     )
 
@@ -2229,14 +2229,14 @@ if view_mode == "🗺️ District Match":
     district_data = load_district_data()
     district_geojson = load_district_geojson()
     render_district_match_view(df, district_data, district_geojson)
-elif view_mode == "🗳 2024 Results":
+elif view_mode == "🗳️ 2024 Results":
     results_2024 = load_election_results_full()
     results_2022 = load_senate_2022_results()
     statewide = load_statewide_results()
     st.markdown(render_election_results_view(results_2024, results_2022, statewide), unsafe_allow_html=True)
 elif filtered.empty:
     st.markdown("### No contacts found\nTry adjusting your search or filters.")
-elif view_mode == "🗺 Grassroots Table":
+elif view_mode == "🗺️ Grassroots Table":
     partisan_data = load_partisan_data()
     race_results = load_race_results()
     senate_2022 = load_senate_2022_results()

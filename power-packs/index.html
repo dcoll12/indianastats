@@ -582,7 +582,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
       <button class="pp-mode-btn"        id="pp-btn-all"    onclick="PP.setMode('all')">By CD</button>
       <button class="pp-mode-btn"        id="pp-btn-senate" onclick="PP.setMode('senate')">By Senate</button>
       <button class="pp-mode-btn"        id="pp-btn-county" onclick="PP.setMode('county')">By County</button>
-      <button class="pp-mode-btn"        id="pp-btn-geo"    onclick="PP.setMode('geo')" style="display:none">🗺 Geographical</button>
+      <button class="pp-mode-btn"        id="pp-btn-geo"    onclick="PP.setMode('geo')" style="display:none">🗺️ Geographical</button>
     </div>
     <div id="pp-cd-select-wrap">
       <select id="pp-cd-select" class="pp-cd-select" onchange="PP.selectCD(this.value)" title="Select Congressional District"></select>
@@ -615,7 +615,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
     </div>
     <div class="pp-map-panel" id="pp-map-panel">
       <div class="pp-map-header">
-        🗺 District Map
+        🗺️ District Map
         <span class="pp-map-hint">hover a pack or row to highlight</span>
       </div>
       <div id="pp-map"></div>
@@ -3016,7 +3016,7 @@ var PP = (function() {
     var parts = [];
 
     parts.push('<div class="pp-legend" style="background:#ecfeff;border-color:#a5f3fc;color:#164e63">');
-    parts.push('<strong>🗺 Geographical Packs</strong> — every Senate district organized by geographic region, '
+    parts.push('<strong>🗺️ Geographical Packs</strong> — every Senate district organized by geographic region, '
       + 'including <strong>uncontested races</strong> (shown with ⚠ UNCONTESTED badge). '
       + 'Districts that share House District boundaries are geographically adjacent. '
       + 'Use this view to see the complete electoral landscape of each region.<br>');
@@ -3033,7 +3033,7 @@ var PP = (function() {
       parts.push('<div class="pp-cd-section">');
       parts.push('<div class="pp-geo-region-header">');
       parts.push('<div>');
-      parts.push('<div class="pp-geo-region-label">🗺 '+esc(region.cdName)+'</div>');
+      parts.push('<div class="pp-geo-region-label">🗺️ '+esc(region.cdName)+'</div>');
       parts.push('<div class="pp-geo-region-meta">CD-'+region.cdNum+' · '+region.packs.length+' Senate district'+(region.packs.length!==1?'s':'')+' · '+region.totalCands+' candidate'+(region.totalCands!==1?'s':''));
       if (region.uncontested) parts.push(' · <strong>'+region.uncontested+' uncontested</strong>');
       parts.push('</div>');
