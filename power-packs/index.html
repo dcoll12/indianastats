@@ -1664,6 +1664,35 @@ var PP = (function() {
       });
     })();
 
+    // Forced anchor swaps — override the auto-computed polar anchor for a specific pack.
+    // { packDtype/packDnum: current anchor to find, newDtype/newDnum: member to elevate }
+    var FORCED_ANCHOR_SWAPS = [
+      { packDtype: 'house', packDnum: 9, newDtype: 'house', newDnum: 4 }, // Ryan K (HD-4) → polar anchor of pack 4
+    ];
+    (function() {
+      FORCED_ANCHOR_SWAPS.forEach(function(swap) {
+        var pack = null;
+        for (var i = 0; i < packs.length; i++) {
+          if (packs[i].anchor.dtype === swap.packDtype && packs[i].anchor.dnum === swap.packDnum) {
+            pack = packs[i]; break;
+          }
+        }
+        if (!pack) return;
+        var newAnchorIdx = -1;
+        for (var j = 0; j < pack.members.length; j++) {
+          if (pack.members[j].dtype === swap.newDtype && pack.members[j].dnum === swap.newDnum) {
+            newAnchorIdx = j; break;
+          }
+        }
+        if (newAnchorIdx === -1) return;
+        var oldAnchor = pack.anchor;
+        pack.anchor = pack.members.splice(newAnchorIdx, 1)[0];
+        pack.members.push(oldAnchor);
+        pack.members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
+        pack.maxPolarPower = polarPower(pack.anchor.lean);
+      });
+    })();
+
     function matches(entry) {
       return !search || getSearchText(entry.row).includes(search);
     }
