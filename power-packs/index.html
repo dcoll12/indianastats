@@ -1035,16 +1035,6 @@ var PP = (function() {
       });
     });
 
-    var TIER_ORDER = { 1: 1, 2: 2, 3: 3, 0: 4 };
-    packs.sort(function(a, b) {
-      var ta = TIER_ORDER[a.tier] !== undefined ? TIER_ORDER[a.tier] : 99;
-      var tb = TIER_ORDER[b.tier] !== undefined ? TIER_ORDER[b.tier] : 99;
-      if (ta !== tb) return ta - tb;
-      var ma = (a.sdLean && a.sdLean.in_index !== null) ? a.sdLean.in_index : 0.5;
-      var mb = (b.sdLean && b.sdLean.in_index !== null) ? b.sdLean.in_index : 0.5;
-      return ma - mb;
-    });
-
     return { packs: packs };
   }
 
@@ -1061,7 +1051,7 @@ var PP = (function() {
     parts.push('<div class="pp-legend" style="background:#f5f3ff;border-color:#ddd6fe;color:#4c1d95">');
     parts.push('<strong>🏛 By Senate District</strong> — each Senate District is the organizing anchor. '
       + 'House candidates in overlapping districts are shown within each pack. '
-      + 'Sorted TARGET → OPPORTUNITY → TURNOUT → HOLD, tightest races first within each tier.<br>');
+      + 'Groups listed in coalition order (SD 1 → SD 49).<br>');
     parts.push('<span style="font-size:0.77rem;line-height:2.2">');
     parts.push('<span class="pp-tier-badge pp-tier-1">🎯 TARGET</span> Competitive flip or critical D defense &nbsp;');
     parts.push('<span class="pp-tier-badge pp-tier-2">📈 OPPORTUNITY</span> R-leaning, contest hard &nbsp;');
@@ -1073,35 +1063,12 @@ var PP = (function() {
     parts.push('<span class="pp-uncontested-badge" style="font-size:0.72rem">⚠ UNCONTESTED</span> No Democratic candidate filed');
     parts.push('</span></div>');
 
-    var tierInfo = {
-      1: { label: '🎯 TARGET DISTRICTS', desc: 'Competitive flips or critical D defenses (≤ R+15%) — maximum volunteer energy' },
-      2: { label: '📈 OPPORTUNITY DISTRICTS', desc: 'R-leaning Senate (R+15–30%) — contest hard, raise turnout across the pack' },
-      3: { label: '🌱 TURNOUT DISTRICTS', desc: 'Pioneer districts (R+30%+) — contest the Senate seat to build infrastructure, move the margin, and anchor the House races' },
-      0: { label: '🏠 HOLD DISTRICTS', desc: 'Safe Democratic seats — incumbent organizes and drives wave turnout for surrounding House races' }
-    };
-
-    var packNum = 0, currentTier = -1, packInTier = 0;
-    packs.forEach(function(pack) {
-      if (pack.tier !== currentTier) {
-        if (currentTier !== -1) parts.push('</div>');
-        currentTier = pack.tier;
-        packInTier = 0;
-        var ti = tierInfo[currentTier] || { label: 'DISTRICTS', desc: '' };
-        var tierPacks = packs.filter(function(p) { return p.tier === currentTier; });
-        var tierCands = tierPacks.reduce(function(n, p) { return n + p.senateCandidates.length + p.houseMembers.length; }, 0);
-        parts.push('<div class="pp-tier-section">');
-        parts.push('<div class="pp-tier-group-header" style="background:#6d28d9">');
-        parts.push('<span class="pp-tier-label">' + ti.label + '</span>');
-        parts.push('<span class="pp-tier-count">' + tierPacks.length + ' district' + (tierPacks.length !== 1 ? 's' : '') + ' · ' + tierCands + ' candidates</span>');
-        parts.push('<div class="pp-tier-desc">' + ti.desc + '</div>');
-        parts.push('</div>');
-      }
-      if (packInTier > 0) parts.push('<div class="pp-pack-divider"></div>');
-      packInTier++;
-      packNum++;
-      parts.push(renderPackCard(pack, packNum));
+    parts.push('<div class="pp-tier-section">');
+    packs.forEach(function(pack, i) {
+      if (i > 0) parts.push('<div class="pp-pack-divider"></div>');
+      parts.push(renderPackCard(pack, i + 1));
     });
-    if (currentTier !== -1) parts.push('</div>');
+    parts.push('</div>');
 
     return parts.join('');
   }
