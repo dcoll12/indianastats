@@ -39,11 +39,11 @@ header p { font-size: 14px; opacity: 0.85; max-width: 700px; margin: 0 auto; }
 .site-nav a.active { background: white; color: #1e3a5f; border-color: white; }
 
 /* ── Two-column layout: cards + sticky map ─────────────────────────── */
-.fund-layout { display: flex; gap: 20px; align-items: flex-start; }
+.fund-layout { display: flex; gap: 16px; align-items: flex-start; }
 .fund-main { flex: 1; min-width: 0; }
 
 .fund-map-panel {
-  width: 300px; flex-shrink: 0; position: sticky; top: 12px;
+  width: 320px; flex-shrink: 0; position: sticky; top: 12px;
   background: white; border-radius: 10px; border: 1px solid #e2e8f0;
   box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden;
 }
@@ -53,15 +53,17 @@ header p { font-size: 14px; opacity: 0.85; max-width: 700px; margin: 0 auto; }
   display: flex; align-items: center; gap: 8px;
 }
 .fund-map-hint { font-size: 0.7rem; opacity: 0.8; font-weight: 400; font-style: italic; }
-#fund-map { height: 360px; width: 100%; }
+#fund-map { height: 380px; width: 100%; }
 .fund-map-label {
   padding: 7px 10px; font-size: 0.72rem; color: #475569;
   background: #f8fafc; border-top: 1px solid #e2e8f0;
   min-height: 30px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
 }
-#fund-map-label-district { font-weight: 600; color: #1e3a5f; display: block; }
+#fund-map-label-district { font-weight: 600; color: #1e3a5f; }
+#fund-map-label-counties { font-size: 0.67rem; color: #64748b; line-height: 1.4; }
 
-@media (max-width: 960px) {
+@media (max-width: 900px) {
   .fund-layout { flex-direction: column-reverse; }
   .fund-map-panel { width: 100%; position: static; }
   #fund-map { height: 260px; }
@@ -904,12 +906,13 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     <!-- ── Sticky map panel ──────────────────────────────────────────── -->
     <div class="fund-map-panel">
       <div class="fund-map-header">
-        Indiana Districts
+        🗺 District Map
         <span class="fund-map-hint">hover a card to highlight</span>
       </div>
       <div id="fund-map"></div>
       <div class="fund-map-label">
         <span id="fund-map-label-district">Hover over a fundraiser card</span>
+        <span id="fund-map-label-counties"></span>
       </div>
     </div>
 
@@ -945,8 +948,10 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
   }
 
   function setLabel(text) {
-    var el = document.getElementById('fund-map-label-district');
-    if (el) el.textContent = text || 'Hover over a fundraiser card';
+    var elDist = document.getElementById('fund-map-label-district');
+    var elCo = document.getElementById('fund-map-label-counties');
+    if (elDist) elDist.textContent = text || 'Hover over a fundraiser card';
+    if (elCo) elCo.textContent = '';
   }
 
   function clearHighlight() {
@@ -971,16 +976,11 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
         var f = (data[d.dtype] || {})[String(d.dnum)];
         if (!f) return null;
         return L.geoJSON(f, {
-          style: { color: '#475569', weight: 1.5, fillColor: '#94a3b8', fillOpacity: 0.35 }
+          style: { color: '#64748b', weight: 1, fillColor: '#94a3b8', fillOpacity: 0.2 }
         }).addTo(map);
       }).filter(Boolean);
 
       setLabel(label || '');
-
-      // Center on the primary district at a consistent zoom level
-      try {
-        map.setView(activeLayer.getBounds().getCenter(), 8);
-      } catch(e) {}
     });
   }
 
