@@ -2996,7 +2996,14 @@ var MAP = (function() {
         var color   = card.getAttribute('data-packcolor') || '#93c5fd';
         var sdNums  = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
         var hdNums  = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
-        if (!sdNums.length) return;
+        if (!sdNums.length && !hdNums.length) return;
+        if (!sdNums.length) {
+          // HD-anchored coalition: paint HDs directly, first one is anchor
+          hdNums.forEach(function(hd, i) {
+            pending.push({ dtype: 'house', dnum: hd, color: color, isAnchor: i === 0 });
+          });
+          return;
+        }
         pending.push({ dtype: 'senate', dnum: sdNums[0], color: color, isAnchor: true });
         sdNums.slice(1).forEach(function(sd) {
           pending.push({ dtype: 'senate', dnum: sd, color: color, isAnchor: false });
@@ -3055,43 +3062,6 @@ var MAP = (function() {
     });
   }
 
-  function showRestingSenate() {
-    if (!map) return;
-    loadGeo().then(function(data) {
-      clearRestingLayers();
-      var pending = [];
-      document.querySelectorAll('.pp-pack-card[data-sdnums]').forEach(function(card) {
-        var color = card.getAttribute('data-packcolor') || '#93c5fd';
-        var sdNums = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
-        var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
-        if (sdNums.length) {
-          pending.push({ dtype: 'senate', dnum: sdNums[0], color: color, isAnchor: true });
-          sdNums.slice(1).forEach(function(sd) {
-            pending.push({ dtype: 'senate', dnum: sd, color: color, isAnchor: false });
-          });
-          hdNums.forEach(function(hd) {
-            pending.push({ dtype: 'house', dnum: hd, color: color, isAnchor: false });
-          });
-        }
-      });
-      // Anchors first so their color wins deduplication
-      pending.sort(function(a, b) { return (a.isAnchor ? 0 : 1) - (b.isAnchor ? 0 : 1); });
-      var seen = {};
-      pending.forEach(function(d) {
-        var key = d.dtype + ':' + d.dnum;
-        if (seen[key]) return;
-        seen[key] = true;
-        var feature = (data[d.dtype] || {})[String(d.dnum)];
-        if (!feature) return;
-        var layer = L.geoJSON(feature, {
-          style: { color: d.color, weight: d.isAnchor ? 2.5 : 1.5,
-                   fillColor: d.color, fillOpacity: d.isAnchor ? 0.72 : 0.45 }
-        }).addTo(map);
-        restingLayers.push(layer);
-      });
-    });
-  }
-
   function revertToPinned() {
     if (pinnedChip) {
       highlight(pinnedChip.dtype, pinnedChip.dnum, [], pinnedChip.label, pinnedChip.counties, pinnedChip.color);
@@ -3130,7 +3100,22 @@ var MAP = (function() {
     document.querySelectorAll('.pp-pack-card[data-sdnums]').forEach(function(card) {
       var sdNums = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
       var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
-      if (!sdNums.length) return;
+      if (!sdNums.length && !hdNums.length) return;
+      if (!sdNums.length) {
+        // HD-anchored coalition
+        card.addEventListener('mouseenter', function() {
+          var primaryHD = hdNums[0];
+          var secondary = hdNums.slice(1).map(function(hd) { return { dtype: 'house', dnum: hd }; });
+          var label = 'HD-' + hdNums.join('/') + ' Coalition';
+          var counties = window.PP_getCounties ? window.PP_getCounties('house', primaryHD) : [];
+          var color = card.getAttribute('data-packcolor');
+          highlight('house', primaryHD, secondary, label, counties, color);
+        });
+        card.addEventListener('mouseleave', function(e) {
+          if (!card.contains(e.relatedTarget)) revertToPinned();
+        });
+        return;
+      }
       card.addEventListener('mouseenter', function() {
         var primarySD = sdNums[0];
         var secondary = sdNums.slice(1).map(function(sd) { return { dtype: 'senate', dnum: sd }; })
@@ -3198,7 +3183,19 @@ var MAP = (function() {
       var card = head.closest('.pp-pack-card');
       var sdNums = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
       var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
-      if (!sdNums.length) return;
+      if (!sdNums.length && !hdNums.length) return;
+      if (!sdNums.length) {
+        // HD-anchored coalition header
+        head.addEventListener('mouseenter', function() {
+          var primaryHD = hdNums[0];
+          var secondary = hdNums.slice(1).map(function(hd) { return { dtype: 'house', dnum: hd }; });
+          var label = 'HD-' + hdNums.join('/') + ' Coalition';
+          var counties = window.PP_getCounties ? window.PP_getCounties('house', primaryHD) : [];
+          var color = card.getAttribute('data-packcolor');
+          highlight('house', primaryHD, secondary, label, counties, color);
+        });
+        return;
+      }
       head.addEventListener('mouseenter', function() {
         var primarySD = sdNums[0];
         var secondary = sdNums.slice(1).map(function(sd) { return { dtype: 'senate', dnum: sd }; })
