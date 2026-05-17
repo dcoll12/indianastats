@@ -422,7 +422,9 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
     grid-column: 2 / 3;
     grid-row: 1;
     width: auto;
-    position: static;
+    position: sticky;
+    top: 0;
+    z-index: 10;
     align-self: start;
   }
   .pp-main {
@@ -443,7 +445,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
 @media (max-width: 540px) {
   .pp-layout { grid-template-columns: 1fr; }
   .pp-desc  { grid-column: 1; grid-row: 1; }
-  .pp-map-panel { grid-column: 1; grid-row: 2; width: 100%; }
+  .pp-map-panel { grid-column: 1; grid-row: 2; width: 100%; position: sticky; top: 0; z-index: 10; }
   .pp-main  { grid-column: 1; grid-row: 3; }
   #pp-map { height: 220px; }
 }

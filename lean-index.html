@@ -354,7 +354,7 @@ tbody tr.map-locked {
 /* Responsive */
 @media (max-width: 900px) {
   .main-layout { flex-direction: column; }
-  .map-panel { width: 100%; position: static; }
+  .map-panel { width: 100%; position: sticky; top: 0; z-index: 10; }
   #indiana-map { height: 300px; }
   .content-side { height: auto; min-height: 0; display: block; }
   .tab-content.active { overflow-y: visible; }
