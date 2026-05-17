@@ -781,38 +781,30 @@ var PP = (function() {
   // CD 7 (Indianapolis urban core) is excluded — not IRS focus.
   // SD 46 (Marion Co.) is excluded from CD 6 per IRS guidance.
   // Rotating background palette for individual pack cards (cycles by packNum)
-  // Palette ordered so each consecutive entry jumps far across the color wheel,
-  // minimising similar-color neighbours when packs are geographically adjacent.
-  var PACK_BG_PALETTE = [
-    '#e53935',  // 1  red
-    '#00897b',  // 2  teal        (opposite warm/cool)
-    '#8e24aa',  // 3  purple
-    '#ffb300',  // 4  amber       (opposite cool)
-    '#1e88e5',  // 5  blue
-    '#f4511e',  // 6  deep-orange (opposite blue)
-    '#00acc1',  // 7  cyan
-    '#6d4c41',  // 8  brown       (warm neutral)
-    '#d81b60',  // 9  magenta
-    '#43a047',  // 10 green       (opposite magenta)
-    '#3949ab',  // 11 indigo
-    '#fb8c00',  // 12 orange
-    '#5e35b1',  // 13 deep-purple
-    '#c0ca33',  // 14 lime
-    '#039be5',  // 15 sky-blue
-    '#7cb342',  // 16 light-green
-  ];
+  // 9 distinct colors spaced ~40° apart on the hue wheel so every group
+  // looks clearly different from every other group on the map.
+  var NINE_COLORS = {
+    red:    '#e53935',  //   0°  red
+    orange: '#ff6d00',  //  26°  orange
+    yellow: '#fdd835',  //  49°  yellow
+    lime:   '#76ff03',  //  92°  lime
+    teal:   '#00897b',  // 174°  teal
+    cyan:   '#00cfff',  // 193°  cyan
+    blue:   '#1e88e5',  // 212°  blue
+    purple: '#8e24aa',  // 282°  purple
+    pink:   '#ff1493',  // 330°  hot pink
+  };
+  var PACK_BG_PALETTE = Object.values(NINE_COLORS);
   var SD_COLOR_OVERRIDES = {};
-  // Every CD gets its own fixed color — chosen so no two geographically adjacent
-  // CDs share a similar hue (adjacency: 1-2, 2-3, 2-4, 2-5, 3-5, 3-6, 4-5, 4-8, 5-6, 5-8, 5-9, 6-9, 8-9)
   var CD_COLOR_OVERRIDES = {
-    1: '#00cfff',  // neon sky blue   (NW)
-    2: '#ff1493',  // hot pink        (N)
-    3: '#76ff03',  // bright lime     (NE)  — adj pink, blue, purple → lime clearly differs
-    4: '#e53935',  // vivid red        (W-Central) — adj pink, blue, teal → red clearly differs from orange(9)
-    5: '#1e88e5',  // vivid blue      (Central)   — adj pink, lime, gold, purple, teal
-    6: '#aa00ff',  // vivid purple    (E-Central) — adj lime, blue, orange → purple clearly differs
-    8: '#00897b',  // vivid teal      (W)         — adj gold, blue, orange → teal clearly differs
-    9: '#ff6d00',  // vivid orange    (S)         — adj blue, purple, teal → orange clearly differs
+    1: NINE_COLORS.cyan,    // NW  — cyan
+    2: NINE_COLORS.pink,    // N   — hot pink
+    3: NINE_COLORS.lime,    // NE  — lime      (adj pink✓, blue✓, purple✓)
+    4: NINE_COLORS.yellow,  // W-C — yellow    (adj pink✓, blue✓, teal✓, NOT orange)
+    5: NINE_COLORS.blue,    // CTR — blue      (adj pink✓, lime✓, yellow✓, purple✓, teal✓)
+    6: NINE_COLORS.purple,  // E-C — purple    (adj lime✓, blue✓, orange✓)
+    8: NINE_COLORS.teal,    // W   — teal      (adj yellow✓, blue✓, orange✓)
+    9: NINE_COLORS.orange,  // S   — orange    (adj blue✓, purple✓, teal✓)
   };
   function packBg(packNum, fallback, sdNum, cdNum) {
     if (sdNum && SD_COLOR_OVERRIDES[sdNum]) return SD_COLOR_OVERRIDES[sdNum];
