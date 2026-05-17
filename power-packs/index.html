@@ -174,7 +174,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
   border: 2px solid #cbd5e1; border-radius: 8px; background: white;
 }
 .pp-search-box input:focus { outline: none; border-color: #3b82f6; }
-.pp-stats { font-size: 0.88rem; color: #475569; padding: 4px 0 10px; }
+.pp-stats { font-size: 0.88rem; color: #475569; padding: 4px 0 10px; flex: 1 0 100%; }
 .pp-status { text-align: center; padding: 40px 20px; color: #64748b; }
 .pp-spinner {
   width: 38px; height: 38px; border: 4px solid #e2e8f0; border-top-color: #3b82f6;
@@ -347,6 +347,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
 /* ── District map panel ─────────────────────────────────────────────── */
 .pp-layout {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   align-items: flex-start;
 }
@@ -403,8 +404,29 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
   line-height: 1.4;
 }
 @media (max-width: 1024px) {
-  .pp-layout { flex-direction: column-reverse; }
-  .pp-map-panel { width: 100%; position: static; }
+  /* Grid: stats+map share the top row; table spans full width below */
+  .pp-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    grid-template-rows: auto auto;
+    gap: 16px;
+  }
+  .pp-stats {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    padding-bottom: 0;
+  }
+  .pp-map-panel {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    width: auto;
+    position: static;
+    align-self: start;
+  }
+  .pp-main {
+    grid-column: 1 / 3;
+    grid-row: 2 / 3;
+  }
   #pp-map { height: 260px; }
   .pp-wrapper { margin-top: 16px; }
   .pp-table { min-width: 600px; font-size: 0.82rem; }
@@ -412,6 +434,16 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
   .pp-lean, .pp-dist, .pp-loc, .pp-btns, .pp-social, .pp-party { padding: 10px 5px; }
   .pp-badge { width: 46px; height: 46px; font-size: 0.7rem; }
   .pp-photo, .pp-initials { width: 42px; height: 42px; }
+}
+/* Very small phones: single column stack */
+@media (max-width: 540px) {
+  .pp-layout {
+    grid-template-columns: 1fr;
+  }
+  .pp-stats { grid-column: 1; grid-row: 1; }
+  .pp-map-panel { grid-column: 1; grid-row: 2; width: 100%; }
+  .pp-main { grid-column: 1; grid-row: 3; }
+  #pp-map { height: 220px; }
 }
 .pp-map-toggle-bar {
   padding: 6px 10px;
@@ -616,8 +648,8 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
     </div>
     <button class="gr-reset-btn" onclick="PP.reset()">Reset</button>
   </div>
-  <div class="pp-stats" id="pp-stats"></div>
   <div class="pp-layout">
+    <div class="pp-stats" id="pp-stats"></div>
     <div class="pp-main">
       <div id="pp-output"><div class="pp-status"><div class="pp-spinner"></div><p>Loading power packs…</p></div></div>
     </div>
