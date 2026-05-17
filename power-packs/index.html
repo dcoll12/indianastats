@@ -801,13 +801,18 @@ var PP = (function() {
     '#039be5',  // 15 sky-blue
     '#7cb342',  // 16 light-green
   ];
-  var SD_COLOR_OVERRIDES = {
-    43: '#ff6d00',  // vivid deep-orange (CD-9 standout)
-  };
+  var SD_COLOR_OVERRIDES = {};
+  // Every CD gets its own fixed color — chosen so no two geographically adjacent
+  // CDs share a similar hue (adjacency: 1-2, 2-3, 2-4, 2-5, 3-5, 3-6, 4-5, 4-8, 5-6, 5-8, 5-9, 6-9, 8-9)
   var CD_COLOR_OVERRIDES = {
-    1: '#00cfff',  // neon sky blue
-    2: '#ff1493',  // hot pink
-    9: '#ff6d00',  // vivid deep-orange — stands out against surrounding purples/teals
+    1: '#00cfff',  // neon sky blue   (NW)
+    2: '#ff1493',  // hot pink        (N)
+    3: '#76ff03',  // bright lime     (NE)  — adj pink, blue, purple → lime clearly differs
+    4: '#ffd600',  // bright gold     (W-Central) — adj pink, blue, teal → gold clearly differs
+    5: '#1e88e5',  // vivid blue      (Central)   — adj pink, lime, gold, purple, teal
+    6: '#aa00ff',  // vivid purple    (E-Central) — adj lime, blue, orange → purple clearly differs
+    8: '#00897b',  // vivid teal      (W)         — adj gold, blue, orange → teal clearly differs
+    9: '#ff6d00',  // vivid orange    (S)         — adj blue, purple, teal → orange clearly differs
   };
   function packBg(packNum, fallback, sdNum, cdNum) {
     if (sdNum && SD_COLOR_OVERRIDES[sdNum]) return SD_COLOR_OVERRIDES[sdNum];
