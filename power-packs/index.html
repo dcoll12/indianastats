@@ -406,6 +406,23 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
   .pp-map-panel { width: 100%; position: static; }
   #pp-map { height: 260px; }
 }
+.pp-map-toggle-bar {
+  padding: 6px 10px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+.pp-map-dem-btn {
+  display: flex; align-items: center; gap: 6px; width: 100%;
+  padding: 5px 8px; background: white; border: 1.5px solid #cbd5e1;
+  border-radius: 6px; font-size: 0.72rem; font-weight: 600;
+  color: #475569; cursor: pointer; transition: all 0.15s;
+}
+.pp-map-dem-btn:hover { border-color: #94a3b8; background: #f1f5f9; }
+.pp-map-dem-btn.active { background: #dde3ec; border-color: #64748b; color: #1e293b; }
+.pp-map-dem-swatch {
+  width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0;
+  background: #94a3b8; border: 1.5px solid #64748b;
+}
 
 /* ── Neighboring senate + multi-pack ──────────────────────────────── */
 .pp-section-neighbor { background: #fefce8; color: #854d0e; border-left: 5px solid #d97706; border-top: 3px solid #d97706; margin-top: 8px; }
@@ -550,7 +567,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
 <div class="container">
   <header>
     <h1>Power Packs</h1>
-    <p>Senate-anchored candidate blocks modeled on the Virginia Grassroots Coalition — target races surrounded by competitive and long-shot House races, moving together as a wave</p>
+    <p>Senate-anchored candidate-blocks target races, surrounded by competitive and long-shot House races, moving together as a wave. (based on Virginia Grassroots Coalition 2024).</p>
     <nav class="site-nav">
       <a class="active" href="./">Power Packs</a>
       <a href="../my-pack.html">My Pack</a>
@@ -565,7 +582,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
       <button class="pp-mode-btn"        id="pp-btn-all"    onclick="PP.setMode('all')">By CD</button>
       <button class="pp-mode-btn"        id="pp-btn-senate" onclick="PP.setMode('senate')">By Senate</button>
       <button class="pp-mode-btn"        id="pp-btn-county" onclick="PP.setMode('county')">By County</button>
-      <button class="pp-mode-btn"        id="pp-btn-geo"    onclick="PP.setMode('geo')" style="display:none">🗺 Geographical</button>
+      <button class="pp-mode-btn"        id="pp-btn-geo"    onclick="PP.setMode('geo')" style="display:none">🗺️ Geographical</button>
     </div>
     <div id="pp-cd-select-wrap">
       <select id="pp-cd-select" class="pp-cd-select" onchange="PP.selectCD(this.value)" title="Select Congressional District"></select>
@@ -598,13 +615,19 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
     </div>
     <div class="pp-map-panel" id="pp-map-panel">
       <div class="pp-map-header">
-        🗺 District Map
+        🗺️ District Map
         <span class="pp-map-hint">hover a pack or row to highlight</span>
       </div>
       <div id="pp-map"></div>
       <div class="pp-map-label" id="pp-map-label">
         <span id="pp-map-label-district">Hover over a pack or candidate row</span>
         <span id="pp-map-label-counties"></span>
+      </div>
+      <div class="pp-map-toggle-bar">
+        <button class="pp-map-dem-btn" id="pp-map-dem-btn" onclick="MAP_toggleDemHighlight()">
+          <span class="pp-map-dem-swatch"></span>
+          Show Dem candidates outside cohort
+        </button>
       </div>
     </div>
   </div>
@@ -614,6 +637,27 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
   </div>
 
   <footer>
+    <h3>Background</h3>
+    <p>
+      The Indiana Rural Summit is using the Virginia Grassroots Coalition as our model for the 2026 elections.
+      That model had a target race, surrounded by "long-shot" races that they moved as a collective.
+      Their goal? To flip the target seat and raise the turnout for the long-shot races.
+      In fact, they flipped more than just their target races. They successfully elected the three offices at the
+      top of the ticket: Governor, Lt. Governor, and Attorney General.
+    </p>
+    <p>
+      Indiana will focus on having every state Senate race contested. The IN Rural Summit is pivoting to include
+      Senate candidates and then building "blocks" that include, where possible:
+    </p>
+    <ul>
+      <li>the Senate race,</li>
+      <li>at least one competitive House race,</li>
+      <li>several long-shot races.</li>
+    </ul>
+    <p>
+      IN Rural Summit is exploring how to galvanize groups like Indivisible and 50501, plus other more traditional
+      grassroots organizations to bring in more volunteers.
+    </p>
     <h3>About the IN-Index</h3>
     <p>
       The <strong>IN-Index</strong> (Indiana Partisan Lean Index) shown on each district card measures
@@ -2570,6 +2614,7 @@ var PP = (function() {
         }
       }
       if (window.MAP_wireDynamic) window.MAP_wireDynamic();
+      if (window.MAP_refreshDemOverlay) window.MAP_refreshDemOverlay();
       return;
     }
 
@@ -2644,8 +2689,8 @@ var PP = (function() {
       out.innerHTML = renderPacksTable(result);
     }
     if (window.MAP_wireDynamic) window.MAP_wireDynamic();
-    if (state.mode === 'focus'  && window.MAP_showRestingPacks)  window.MAP_showRestingPacks();
-    if (state.mode === 'senate' && window.MAP_showRestingSenate) window.MAP_showRestingSenate();
+    if (state.mode === 'focus' && window.MAP_showRestingPacks) window.MAP_showRestingPacks();
+    if (window.MAP_refreshDemOverlay) window.MAP_refreshDemOverlay();
   }
 
   function reset() {
@@ -3056,7 +3101,7 @@ var PP = (function() {
     var parts = [];
 
     parts.push('<div class="pp-legend" style="background:#ecfeff;border-color:#a5f3fc;color:#164e63">');
-    parts.push('<strong>🗺 Geographical Packs</strong> — every Senate district organized by geographic region, '
+    parts.push('<strong>🗺️ Geographical Packs</strong> — every Senate district organized by geographic region, '
       + 'including <strong>uncontested races</strong> (shown with ⚠ UNCONTESTED badge). '
       + 'Districts that share House District boundaries are geographically adjacent. '
       + 'Use this view to see the complete electoral landscape of each region.<br>');
@@ -3073,7 +3118,7 @@ var PP = (function() {
       parts.push('<div class="pp-cd-section">');
       parts.push('<div class="pp-geo-region-header">');
       parts.push('<div>');
-      parts.push('<div class="pp-geo-region-label">🗺 '+esc(region.cdName)+'</div>');
+      parts.push('<div class="pp-geo-region-label">🗺️ '+esc(region.cdName)+'</div>');
       parts.push('<div class="pp-geo-region-meta">CD-'+region.cdNum+' · '+region.packs.length+' Senate district'+(region.packs.length!==1?'s':'')+' · '+region.totalCands+' candidate'+(region.totalCands!==1?'s':''));
       if (region.uncontested) parts.push(' · <strong>'+region.uncontested+' uncontested</strong>');
       parts.push('</div>');
@@ -3419,6 +3464,9 @@ var MAP = (function() {
   var restingLayers = [];
   var pinnedChip = null; // { dtype, dnum, label } — persists across hover
   var INDIANA_BOUNDS = [[37.7, -88.1], [41.8, -84.8]];
+  var candPromise = null;
+  var demNonCohortLayers = [];
+  var demToggleActive = false;
 
   function init() {
     var el = document.getElementById('pp-map');
@@ -3497,6 +3545,7 @@ var MAP = (function() {
         }).addTo(map);
         restingLayers.push(layer);
       });
+      if (demToggleActive) showDemNonCohortOverlay();
     });
   }
 
@@ -3754,12 +3803,76 @@ var MAP = (function() {
     });
   }
 
-  return { init: init, wireDynamic: wireDynamic, showRestingPacks: showRestingPacks, showRestingSenate: showRestingSenate, pin: pin, unpin: unpin };
+  function loadCandidates() {
+    if (candPromise) return candPromise;
+    candPromise = fetch('../data/candidates_2026.json')
+      .then(function(r) { return r.json(); })
+      .catch(function() { return {}; });
+    return candPromise;
+  }
+
+  function clearDemNonCohortOverlay() {
+    demNonCohortLayers.forEach(function(l) { if (map && map.hasLayer(l)) map.removeLayer(l); });
+    demNonCohortLayers = [];
+  }
+
+  function showDemNonCohortOverlay() {
+    if (!map) return;
+    clearDemNonCohortOverlay();
+    var packDistricts = new Set();
+    document.querySelectorAll('.pp-pack-card[data-dtype][data-dnum]').forEach(function(el) {
+      packDistricts.add(el.getAttribute('data-dtype') + ':' + el.getAttribute('data-dnum'));
+    });
+    document.querySelectorAll('.pp-row[data-dtype][data-dnum]').forEach(function(el) {
+      packDistricts.add(el.getAttribute('data-dtype') + ':' + el.getAttribute('data-dnum'));
+    });
+    Promise.all([loadGeo(), loadCandidates()]).then(function(results) {
+      var gData = results[0], cData = results[1];
+      var typeMap = { hd: 'house', sd: 'senate' };
+      ['hd', 'sd'].forEach(function(type) {
+        var dtype = typeMap[type];
+        var districts = cData[type] || {};
+        Object.keys(districts).forEach(function(dnum) {
+          var cands = districts[dnum];
+          var demCand = (cands || []).find(function(c) { return c.party === 'D'; });
+          if (!demCand) return;
+          if (packDistricts.has(dtype + ':' + dnum)) return;
+          var feature = (gData[dtype] || {})[String(dnum)];
+          if (!feature) return;
+          var prefix = type === 'hd' ? 'HD' : 'SD';
+          var layer = L.geoJSON(feature, {
+            style: { color: '#64748b', weight: 1.5, fillColor: '#94a3b8', fillOpacity: 0.3, dashArray: null }
+          }).addTo(map);
+          layer.bindTooltip(prefix + '-' + dnum + ': ' + demCand.name + ' (Dem, not in cohort)', { sticky: true });
+          layer.bringToBack();
+          demNonCohortLayers.push(layer);
+        });
+      });
+    });
+  }
+
+  function refreshDemOverlay() {
+    if (demToggleActive) showDemNonCohortOverlay();
+  }
+
+  function toggleDemHighlight() {
+    demToggleActive = !demToggleActive;
+    var btn = document.getElementById('pp-map-dem-btn');
+    if (btn) btn.classList.toggle('active', demToggleActive);
+    if (demToggleActive) {
+      showDemNonCohortOverlay();
+    } else {
+      clearDemNonCohortOverlay();
+    }
+  }
+
+  return { init: init, wireDynamic: wireDynamic, showRestingPacks: showRestingPacks, pin: pin, unpin: unpin, refreshDemOverlay: refreshDemOverlay, toggleDemHighlight: toggleDemHighlight };
 })();
 
 window.MAP_wireDynamic = function() { MAP.wireDynamic(); };
 window.MAP_showRestingPacks = function() { MAP.showRestingPacks(); };
-window.MAP_showRestingSenate = function() { MAP.showRestingSenate(); };
+window.MAP_refreshDemOverlay = function() { MAP.refreshDemOverlay(); };
+window.MAP_toggleDemHighlight = function() { MAP.toggleDemHighlight(); };
 
 window.addEventListener('load', function() { PP.init(); MAP.init(); });
 </script>
