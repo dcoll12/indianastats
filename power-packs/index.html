@@ -794,20 +794,9 @@ var PP = (function() {
     white:   '#ffffff',  // crystal white
   };
   var PACK_BG_PALETTE = Object.values(NINE_COLORS);
-  var SD_COLOR_OVERRIDES = {};
-  var CD_COLOR_OVERRIDES = {
-    1: NINE_COLORS.jade,    // NW  — jade green
-    2: NINE_COLORS.red,     // N   — strawberry red
-    3: NINE_COLORS.yellow,  // NE  — neon yellow    (adj red✓, royal✓, violet✓)
-    4: NINE_COLORS.orange,  // W-C — blaze orange   (adj red✓, royal✓, jade✓)
-    5: NINE_COLORS.royal,   // CTR — royal blue     (adj red✓, yellow✓, orange✓, violet✓, jade✓)
-    6: NINE_COLORS.violet,  // E-C — indigo bloom   (adj yellow✓, royal✓, magenta✓)
-    8: NINE_COLORS.magenta, // W   — raspberry plum (adj orange✓, royal✓, indigo✓)
-    9: NINE_COLORS.indigo,  // S   — bright indigo  (adj royal✓, violet✓, magenta✓)
-  };
-  function packBg(packNum, fallback, sdNum, cdNum) {
-    if (sdNum && SD_COLOR_OVERRIDES[sdNum]) return SD_COLOR_OVERRIDES[sdNum];
-    if (cdNum && CD_COLOR_OVERRIDES[cdNum]) return CD_COLOR_OVERRIDES[cdNum];
+  // Color is driven purely by pack number (1–9) so each pack always gets
+  // a unique color regardless of which congressional district it belongs to.
+  function packBg(packNum, fallback) {
     return packNum ? PACK_BG_PALETTE[(packNum - 1) % PACK_BG_PALETTE.length] : (fallback || 'white');
   }
 
@@ -1741,7 +1730,7 @@ var PP = (function() {
     var parts = [];
 
     var borderColor = pack.isUncontested ? '#f59e0b' : tc.border;
-    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg, pack.sdNum, pack.cdNum);
+    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg);
 
     var hdNums = pack.houseMembers.map(function(m) { return m.dnum; }).join(',');
     parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums+'" data-packcolor="'+bgColor+'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
@@ -1999,7 +1988,7 @@ var PP = (function() {
     var totalCands = 1 + pack.members.length;
 
     var parts = [];
-    var cardBg = packBg(packNum, tc.bg, pack.sdNum, pack.cdNum);
+    var cardBg = packBg(packNum, tc.bg);
     parts.push('<div class="pp-pack-card" data-dtype="' + anchor.dtype + '" data-dnum="' + anchor.dnum + '" data-packcolor="' + cardBg + '" style="border-left:4px solid ' + tc.border + ';background:' + cardBg + '">');
 
     // Pack header
@@ -2161,7 +2150,7 @@ var PP = (function() {
     var sdNums = pack.senateSupporters.map(function(m) { return m.dnum; }).join(',');
     var parts = [];
 
-    parts.push('<div class="pp-pack-card" data-hdnum="' + pack.hdNum + '" data-sdnums="' + sdNums + '" data-packcolor="' + packBg(packNum, tc.bg, null, pack.cdNum) + '" style="border-left:4px solid ' + tc.border + ';background:' + packBg(packNum, tc.bg, null, pack.cdNum) + '">');
+    parts.push('<div class="pp-pack-card" data-hdnum="' + pack.hdNum + '" data-sdnums="' + sdNums + '" data-packcolor="' + packBg(packNum, tc.bg) + '" style="border-left:4px solid ' + tc.border + ';background:' + packBg(packNum, tc.bg) + '">');
 
     // Pack header (no per-card mission — tier header already explains it)
     parts.push('<div class="pp-pack-head">');
@@ -2904,7 +2893,7 @@ var PP = (function() {
     var parts = [];
 
     var borderColor = pack.isUncontested ? '#f59e0b' : tc.border;
-    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg, pack.sdNum, pack.cdNum);
+    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg);
 
     parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums
       +'" data-packcolor="'+bgColor+'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
