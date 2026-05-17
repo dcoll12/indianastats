@@ -877,31 +877,31 @@ var PP = (function() {
   // sdNums: senate districts in the group (first is anchor/primary).
   // hdNums + hdAnchor: house-anchored coalition (no senate anchor).
   var SENATE_COALITIONS = [
-    { sdNums: [1,2,3]       },
-    { sdNums: [4,8]         },
-    { sdNums: [5]           },
-    { sdNums: [6]           },
-    { sdNums: [11]          },
-    { sdNums: [14,15]       },
-    { sdNums: [17,18]       },
-    { sdNums: [19]          },
-    { sdNums: [21]          },
-    { sdNums: [22]          },
-    { sdNums: [23]          },
-    { sdNums: [25]          },
-    { sdNums: [26]          },
-    { sdNums: [27]          },
-    { sdNums: [29]          },
-    { hdNums: [25,28,40,41],       hdAnchor: true },
-    { sdNums: [31]          },
-    { sdNums: [38,39]       },
-    { hdNums: [62,45,46,47,60],    hdAnchor: true },
-    { sdNums: [41]          },
-    { sdNums: [43]          },
-    { sdNums: [45]          },
-    { sdNums: [47]          },
-    { sdNums: [48]          },
-    { sdNums: [49]          },
+    { sdNums: [1,2,3],   hdNums: [12,14,15,19,1,2,3]    },
+    { sdNums: [4,8],     hdNums: [9,10,20,7,16,17]       },
+    { sdNums: [5],       hdNums: [4,11,13,16,17,19]      },
+    { sdNums: [6],       hdNums: [11,13,14,15,16,19]     },
+    { sdNums: [11],      hdNums: [5,8,48,49]             },
+    { sdNums: [14,15],   hdNums: [82,85,81,84]           },
+    { sdNums: [17,18],   hdNums: [30,31,50,17,23,38]     },
+    { sdNums: [19],      hdNums: [33,50,79,80,82,85]     },
+    { sdNums: [21],      hdNums: [24,29,30,37,38,39]     },
+    { sdNums: [22],      hdNums: [13,26,38,41]           },
+    { sdNums: [23],      hdNums: [13,26,38,41,44]        },
+    { sdNums: [25],      hdNums: [31,35,36,37,53,88]     },
+    { sdNums: [26],      hdNums: [33,34,35]              },
+    { sdNums: [27],      hdNums: [33,35,55,56]           },
+    { sdNums: [29],      hdNums: [24,25,32,39,86,91,92]  },
+    { hdNums: [25,28,40,41],      hdAnchor: true },
+    { sdNums: [31],      hdNums: [29,37,39,88]           },
+    { sdNums: [38,39],   hdNums: [45,46,63,64]           },
+    { hdNums: [62,45,46,47,60],   hdAnchor: true },
+    { sdNums: [41],      hdNums: [47,58,69,73]           },
+    { sdNums: [43],      hdNums: [66,67,68,69]           },
+    { sdNums: [45],      hdNums: [66,70,72]              },
+    { sdNums: [47],      hdNums: [65,69,70,72]           },
+    { sdNums: [48],      hdNums: [63,64]                 },
+    { sdNums: [49],      hdNums: [64,76,78]              },
   ];
   var SD_PACK_EXCLUSIONS = { 6: [46] }; // [cdNum]: [sdNums to skip]
 
@@ -985,12 +985,15 @@ var PP = (function() {
         (senateBySD[sd] || []).forEach(function(e) { senateCandidates.push(e); });
       });
 
-      // Collect house candidates: all HDs overlapping any coalition SD, plus explicit HD list
+      // Collect house candidates: use explicit hdNums when provided; otherwise auto-map from sd_to_hds
       var hdSet = {};
-      sdNums.forEach(function(sd) {
-        ((dd.sd_to_hds || {})[String(sd)] || []).forEach(function(hd) { hdSet[hd] = true; });
-      });
-      hdNums.forEach(function(hd) { hdSet[hd] = true; });
+      if (hdNums.length > 0) {
+        hdNums.forEach(function(hd) { hdSet[hd] = true; });
+      } else {
+        sdNums.forEach(function(sd) {
+          ((dd.sd_to_hds || {})[String(sd)] || []).forEach(function(hd) { hdSet[hd] = true; });
+        });
+      }
 
       var houseMembers = Object.keys(hdSet).map(Number)
         .filter(function(hd) { return !!houseByHD[hd]; })
