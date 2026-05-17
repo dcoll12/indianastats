@@ -927,14 +927,14 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
   var geoData = null;
   var activeLayer = null;
   var secondaryLayers = [];
-  var INDIANA_BOUNDS = [[37.7, -87.65], [41.85, -84.7]];
+  var INDIANA_BOUNDS = [[37.77, -87.55], [41.77, -84.78]];
 
   function initMap() {
     var el = document.getElementById('fund-map');
     if (!el || map) return;
     map = L.map('fund-map', { zoomControl: true, attributionControl: false, scrollWheelZoom: false });
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 14 }).addTo(map);
-    map.fitBounds(INDIANA_BOUNDS);
+    map.fitBounds(INDIANA_BOUNDS, { padding: [2, 2] });
     loadGeo();
   }
 
@@ -987,7 +987,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
   function resetMap() {
     clearHighlight();
     setLabel('');
-    if (map) map.fitBounds(INDIANA_BOUNDS);
+    if (map) map.fitBounds(INDIANA_BOUNDS, { padding: [2, 2] });
   }
 
   function wireCards() {
