@@ -2644,7 +2644,8 @@ var PP = (function() {
       out.innerHTML = renderPacksTable(result);
     }
     if (window.MAP_wireDynamic) window.MAP_wireDynamic();
-    if (state.mode === 'focus' && window.MAP_showRestingPacks) window.MAP_showRestingPacks();
+    if (state.mode === 'focus'  && window.MAP_showRestingPacks)  window.MAP_showRestingPacks();
+    if (state.mode === 'senate' && window.MAP_showRestingSenate) window.MAP_showRestingSenate();
   }
 
   function reset() {
@@ -3525,6 +3526,43 @@ var MAP = (function() {
     });
   }
 
+  function showRestingSenate() {
+    if (!map) return;
+    loadGeo().then(function(data) {
+      clearRestingLayers();
+      var pending = [];
+      document.querySelectorAll('.pp-pack-card[data-sdnums]').forEach(function(card) {
+        var color = card.getAttribute('data-packcolor') || '#93c5fd';
+        var sdNums = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
+        var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
+        if (sdNums.length) {
+          pending.push({ dtype: 'senate', dnum: sdNums[0], color: color, isAnchor: true });
+          sdNums.slice(1).forEach(function(sd) {
+            pending.push({ dtype: 'senate', dnum: sd, color: color, isAnchor: false });
+          });
+          hdNums.forEach(function(hd) {
+            pending.push({ dtype: 'house', dnum: hd, color: color, isAnchor: false });
+          });
+        }
+      });
+      // Anchors first so their color wins deduplication
+      pending.sort(function(a, b) { return (a.isAnchor ? 0 : 1) - (b.isAnchor ? 0 : 1); });
+      var seen = {};
+      pending.forEach(function(d) {
+        var key = d.dtype + ':' + d.dnum;
+        if (seen[key]) return;
+        seen[key] = true;
+        var feature = (data[d.dtype] || {})[String(d.dnum)];
+        if (!feature) return;
+        var layer = L.geoJSON(feature, {
+          style: { color: d.color, weight: d.isAnchor ? 2.5 : 1.5,
+                   fillColor: d.color, fillOpacity: d.isAnchor ? 0.72 : 0.45 }
+        }).addTo(map);
+        restingLayers.push(layer);
+      });
+    });
+  }
+
   function revertToPinned() {
     if (pinnedChip) {
       highlight(pinnedChip.dtype, pinnedChip.dnum, [], pinnedChip.label, pinnedChip.counties, pinnedChip.color);
@@ -3533,6 +3571,7 @@ var MAP = (function() {
       setLabel('');
       if (map) map.fitBounds(INDIANA_BOUNDS);
       showRestingPacks();
+      showRestingSenate();
     }
   }
 
@@ -3541,6 +3580,7 @@ var MAP = (function() {
     setLabel('');
     if (map) map.fitBounds(INDIANA_BOUNDS);
     showRestingPacks();
+    showRestingSenate();
   }
 
   function pin(dtype, dnum, label, color) {
@@ -3714,11 +3754,12 @@ var MAP = (function() {
     });
   }
 
-  return { init: init, wireDynamic: wireDynamic, showRestingPacks: showRestingPacks, pin: pin, unpin: unpin };
+  return { init: init, wireDynamic: wireDynamic, showRestingPacks: showRestingPacks, showRestingSenate: showRestingSenate, pin: pin, unpin: unpin };
 })();
 
 window.MAP_wireDynamic = function() { MAP.wireDynamic(); };
 window.MAP_showRestingPacks = function() { MAP.showRestingPacks(); };
+window.MAP_showRestingSenate = function() { MAP.showRestingSenate(); };
 
 window.addEventListener('load', function() { PP.init(); MAP.init(); });
 </script>
