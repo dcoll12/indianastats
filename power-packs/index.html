@@ -1349,7 +1349,7 @@ var PP = (function() {
 
     // Extra HDs to include in a senate district's pack overlap (beyond what geography derives)
     var SD_EXTRA_HDS = {
-      43: [55, 73], // HD-55 and HD-73 pulled into SD-43 pack
+      43: [55],  // HD-55 pulled into SD-43 pack (HD-73 → HD-62 via SD-41)
       49: [63],  // HD-63 bridges into SD-49 via SD-48
     };
 
@@ -1361,7 +1361,8 @@ var PP = (function() {
     // Extra SDs to include in a house district's pack overlap (beyond what geography derives)
     var HD_EXTRA_SDS = {
       62: [41],  // Ross Thomas (SD-41) pulled into HD-62 pack
-      39: [31],  // Kerry Forestal (SD-31) explicitly linked to Lindsay Gramlich (HD-39) Power Pack #2
+      39: [25],  // Tamie Dixon-Tatum (SD-25) explicitly linked to Lindsay Gramlich (HD-39) Power Pack #2
+      81: [19],  // Timothy Murphy (SD-19) pulled into HD-81 Power Pack #8
     };
 
     // HDs to exclude from a *house* anchor's geographic pull (used to keep packs separate)
@@ -1395,7 +1396,7 @@ var PP = (function() {
     }
 
     // HDs that should never anchor — their parent SD will claim them naturally
-    var MEMBER_ONLY_HDS = { 38: true, 55: true, 68: true, 69: true, 73: true }; // HD-38 → SD-22; HD-55, HD-73 → SD-43; HD-68, HD-69 → SD-43/HD-62
+    var MEMBER_ONLY_HDS = { 38: true, 55: true, 68: true, 69: true, 73: true }; // HD-38 → SD-22; HD-55,HD-68 → SD-43; HD-69,HD-73 → HD-62
 
     var packs = [];
 
@@ -1540,15 +1541,18 @@ var PP = (function() {
 
     // Explicit forced pack assignments — overrides geographic routing entirely
     var FORCED_MEMBERS = [
-      { dtype: 'house', dnum: 69, anchorDtype: 'house',  anchorDnum: 62 }, // Chris Bowen (HD-69) → Amy Oliver (HD-62)
-      { dtype: 'house', dnum: 38, anchorDtype: 'senate', anchorDnum: 22 }, // Nate Stout (HD-38) → Natasha Baker (SD-22)
-      { dtype: 'house', dnum: 23, anchorDtype: 'senate', anchorDnum: 22 }, // HD-23 → Natasha Baker (SD-22)
-      // Power Pack #2 — HD-39 Lindsay Gramlich: SD-31 flows in via HD_EXTRA_SDS; HD-91 forced explicitly
-      { dtype: 'house', dnum: 91, anchorDtype: 'house',  anchorDnum: 39 }, // Jarren Hurt (HD-91) → Lindsay Gramlich
-      // Power Pack #2b — Tiffany Stoner (HD-25) separate pack: HD-28/40/41 flow in via SD-7/SD-24 geography;
-      // HD-57 (Suzanne Fortenberry) has no shared SD so it is forced in explicitly
-      { dtype: 'house',  dnum: 57, anchorDtype: 'house', anchorDnum: 25 }, // Suzanne Fortenberry (HD-57) → Tiffany Stoner
-      { dtype: 'senate', dnum: 29, anchorDtype: 'house', anchorDnum: 25 }, // Kristina Moorhead (SD-29) → Tiffany Stoner (HD-25)
+      // PP03 — HD-62 Amy Huffman Oliver
+      { dtype: 'house', dnum: 69, anchorDtype: 'house',  anchorDnum: 62 }, // Chris Bowen (HD-69) → HD-62
+      // PP04 — HD-25 Tiffany Stoner: HD-28/40 flow in via geography; HD-57 has no shared SD; HD-44 forced explicitly
+      { dtype: 'house',  dnum: 57, anchorDtype: 'house', anchorDnum: 25 }, // Suzanne Fortenberry (HD-57) → HD-25
+      { dtype: 'senate', dnum: 29, anchorDtype: 'house', anchorDnum: 25 }, // Kristina Moorhead (SD-29) → HD-25
+      { dtype: 'house',  dnum: 44, anchorDtype: 'house', anchorDnum: 25 }, // Kelsey Kauffman (HD-44) → HD-25
+      // PP05 — HD-34 Sara Gullion: HD-79 has no shared SD with HD-34 so forced explicitly
+      { dtype: 'house',  dnum: 79, anchorDtype: 'house', anchorDnum: 34 }, // Ian G. Richardson (HD-79) → HD-34
+      // PP06 — SD-22 Natasha Baker
+      { dtype: 'house', dnum: 38, anchorDtype: 'senate', anchorDnum: 22 }, // Nate Stout (HD-38) → SD-22
+      { dtype: 'house', dnum: 23, anchorDtype: 'senate', anchorDnum: 22 }, // Austin Meives (HD-23) → SD-22
+      { dtype: 'house', dnum: 16, anchorDtype: 'senate', anchorDnum: 22 }, // Ashley Hammac (HD-16) → SD-22
     ];
     (function() {
       FORCED_MEMBERS.forEach(function(fm) {
