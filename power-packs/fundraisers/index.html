@@ -187,6 +187,10 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
   .cards-grid { grid-template-columns: 1fr; }
   header h1 { font-size: 22px; }
 }
+/* Light-background card headers: swap white text to dark */
+.fund-card-head.fund-light-bg .fund-card-title,
+.fund-card-head.fund-light-bg .fund-card-subtitle { color: #0f172a; }
+.fund-card-head.fund-light-bg .fund-card-subtitle { opacity: 0.65; }
 </style>
 </head>
 <body>
@@ -927,7 +931,29 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
   var geoData = null;
   var activeLayer = null;
   var secondaryLayers = [];
+  var restingLayers = [];
   var INDIANA_BOUNDS = [[37.7, -88.1], [41.8, -84.8]];
+
+  // Galactic Neon Spark — same 9-color palette as the Focus tab packs
+  var PALETTE = [
+    '#ffff47',  // 1 neon yellow
+    '#ff6600',  // 2 blaze orange
+    '#ff1e35',  // 3 strawberry red
+    '#f36aff',  // 4 neon orchid
+    '#6a00ba',  // 5 indigo bloom
+    '#2d2dd6',  // 6 bright indigo
+    '#0565ff',  // 7 royal blue
+    '#00b327',  // 8 jade green
+    '#37fffc',  // 9 electric aqua
+  ];
+
+  function isLightBg(hex) {
+    var r = parseInt(hex.slice(1,3),16)/255;
+    var g = parseInt(hex.slice(3,5),16)/255;
+    var b = parseInt(hex.slice(5,7),16)/255;
+    var lin = function(c){ return c<=0.04045 ? c/12.92 : Math.pow((c+0.055)/1.055,2.4); };
+    return 0.2126*lin(r) + 0.7152*lin(g) + 0.0722*lin(b) > 0.25;
+  }
 
   function initMap() {
     var el = document.getElementById('fund-map');
@@ -961,28 +987,70 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     secondaryLayers = [];
   }
 
-  function highlight(primaryDtype, primaryDnum, secondary, label) {
+  function clearRestingLayers() {
+    restingLayers.forEach(function(l) { map.removeLayer(l); });
+    restingLayers = [];
+  }
+
+  function showRestingGroups() {
     if (!map) return;
+    loadGeo().then(function(data) {
+      clearRestingLayers();
+      // Collect all districts globally; primaries first to win deduplication.
+      var pending = [];
+      document.querySelectorAll('.fund-card[data-cardcolor]').forEach(function(card) {
+        var color = card.getAttribute('data-cardcolor');
+        var sdNums = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
+        var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
+        if (sdNums.length) {
+          pending.push({ dtype: 'senate', dnum: sdNums[0], color: color, isPrimary: true });
+          sdNums.slice(1).forEach(function(n) { pending.push({ dtype: 'senate', dnum: n, color: color, isPrimary: false }); });
+          hdNums.forEach(function(n) { pending.push({ dtype: 'house', dnum: n, color: color, isPrimary: false }); });
+        } else if (hdNums.length) {
+          pending.push({ dtype: 'house', dnum: hdNums[0], color: color, isPrimary: true });
+          hdNums.slice(1).forEach(function(n) { pending.push({ dtype: 'house', dnum: n, color: color, isPrimary: false }); });
+        }
+      });
+      // Primaries first so their color wins when districts overlap between groups
+      pending.sort(function(a, b) { return (a.isPrimary ? 0 : 1) - (b.isPrimary ? 0 : 1); });
+      var seen = {};
+      pending.forEach(function(d) {
+        var key = d.dtype + ':' + d.dnum;
+        if (seen[key]) return;
+        seen[key] = true;
+        var feature = (data[d.dtype] || {})[String(d.dnum)];
+        if (!feature) return;
+        var layer = L.geoJSON(feature, {
+          style: { color: d.color, weight: d.isPrimary ? 2.5 : 1.5,
+                   fillColor: d.color, fillOpacity: d.isPrimary ? 0.72 : 0.45 }
+        }).addTo(map);
+        restingLayers.push(layer);
+      });
+    });
+  }
+
+  function highlight(primaryDtype, primaryDnum, secondary, label, color) {
+    if (!map) return;
+    clearRestingLayers();
     loadGeo().then(function(data) {
       clearHighlight();
       var feature = (data[primaryDtype] || {})[String(primaryDnum)];
       if (!feature) return;
 
       activeLayer = L.geoJSON(feature, {
-        style: { color: '#1e3a5f', weight: 2.5, fillColor: '#3b82f6', fillOpacity: 0.45 }
+        style: { color: color, weight: 2.5, fillColor: color, fillOpacity: 0.75 }
       }).addTo(map);
 
       secondaryLayers = (secondary || []).map(function(d) {
         var f = (data[d.dtype] || {})[String(d.dnum)];
         if (!f) return null;
         return L.geoJSON(f, {
-          style: { color: '#64748b', weight: 1, fillColor: '#94a3b8', fillOpacity: 0.2 }
+          style: { color: color, weight: 1.5, fillColor: color, fillOpacity: 0.4 }
         }).addTo(map);
       }).filter(Boolean);
 
       setLabel(label || '');
 
-      // Zoom to show all highlighted districts
       try {
         var bounds = activeLayer.getBounds();
         secondaryLayers.forEach(function(l) { bounds.extend(l.getBounds()); });
@@ -991,17 +1059,33 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     });
   }
 
-  function resetMap() {
+  function revertToResting() {
     clearHighlight();
     setLabel('');
     if (map) map.fitBounds(INDIANA_BOUNDS);
+    showRestingGroups();
   }
 
   function wireCards() {
+    var colorIndex = 0;
     document.querySelectorAll('.fund-card').forEach(function(card) {
       var sdNums = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
       var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
       if (!sdNums.length && !hdNums.length) return;
+
+      // Assign a palette color to this card
+      var color = PALETTE[colorIndex % PALETTE.length];
+      colorIndex++;
+      card.setAttribute('data-cardcolor', color);
+
+      // Apply color to the card header (skip on-hold cards which keep their gray)
+      var head = card.querySelector('.fund-card-head');
+      if (head && !head.classList.contains('on-hold')) {
+        head.style.background = color;
+        if (isLightBg(color)) head.classList.add('fund-light-bg');
+        // Make the hover border match the card color
+        card.style.setProperty('--card-color', color);
+      }
 
       card.addEventListener('mouseenter', function() {
         var label, primary, secondary;
@@ -1018,11 +1102,11 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
           label = 'HD-' + hdNums[0];
           if (hdNums.length > 1) label += ' + ' + (hdNums.length - 1) + ' HD' + (hdNums.length > 2 ? 's' : '');
         }
-        highlight(primary.dtype, primary.dnum, secondary, label);
+        highlight(primary.dtype, primary.dnum, secondary, label, color);
       });
 
       card.addEventListener('mouseleave', function(e) {
-        if (!card.contains(e.relatedTarget)) resetMap();
+        if (!card.contains(e.relatedTarget)) revertToResting();
       });
     });
   }
@@ -1030,6 +1114,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
   window.addEventListener('load', function() {
     initMap();
     wireCards();
+    showRestingGroups();
   });
 })();
 </script>
