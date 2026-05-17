@@ -312,7 +312,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
 .pp-mode-btn {
   padding: 8px 18px; font-size: 0.84rem; font-weight: 600; cursor: pointer;
   background: white; color: #64748b; border: none; outline: none; line-height: 1.2;
-  transition: background 0.15s, color 0.15s;
+  transition: background 0.15s, color 0.15s; text-decoration: none; display: inline-block;
 }
 .pp-mode-btn:hover:not(.active) { background: #f1f5f9; }
 #pp-btn-all.active         { background: #1e3a5f; color: white; }
@@ -582,7 +582,7 @@ footer p { margin-bottom: 10px; line-height: 1.7; }
       <button class="pp-mode-btn active" id="pp-btn-focus"  onclick="PP.setMode('focus')">⚡ Focus</button>
       <button class="pp-mode-btn"        id="pp-btn-all"        onclick="PP.setMode('all')"        style="display:none">By CD</button>
       <button class="pp-mode-btn"        id="pp-btn-senate"     onclick="PP.setMode('senate')">By Senate</button>
-      <button class="pp-mode-btn"        id="pp-btn-fundraiser" onclick="PP.setMode('fundraiser')">Fundraiser</button>
+      <a class="pp-mode-btn" id="pp-btn-fundraiser" href="fundraisers/">Fundraiser</a>
       <button class="pp-mode-btn"        id="pp-btn-county"     onclick="PP.setMode('county')"     style="display:none">By County</button>
       <button class="pp-mode-btn"        id="pp-btn-geo"    onclick="PP.setMode('geo')" style="display:none">🗺️ Geographical</button>
     </div>
@@ -2677,14 +2677,14 @@ var PP = (function() {
   }
 
   function setMode(mode) {
+    if (mode === 'fundraiser') { location.href = 'fundraisers/'; return; }
     state.mode = mode;
-    ['all', 'focus', 'senate', 'fundraiser', 'county', 'geo', 'mypack'].forEach(function(m) {
+    ['all', 'focus', 'senate', 'county', 'geo', 'mypack'].forEach(function(m) {
       var btn = $$('pp-btn-' + m);
       if (btn) btn.classList.toggle('active', m === mode);
     });
     var url = mode === 'all'         ? '?mode=senate'
       : mode === 'senate'      ? '?mode=bysenate'
-      : mode === 'fundraiser'  ? '?mode=fundraiser'
       : mode === 'county'      ? '?mode=county'
       : mode === 'geo'         ? '?mode=geo'
       : mode === 'mypack'      ? '?mode=mypack'
@@ -2822,7 +2822,8 @@ var PP = (function() {
     state.loaded = true;
     var urlParams = new URLSearchParams(location.search);
     var urlMode = urlParams.get('mode');
-    if (urlMode === 'senate' || urlMode === 'bysenate' || urlMode === 'fundraiser' || urlMode === 'county' || urlMode === 'geo' || urlMode === 'mypack') {
+    if (urlMode === 'fundraiser') { location.replace('fundraisers/'); return; }
+    if (urlMode === 'senate' || urlMode === 'bysenate' || urlMode === 'county' || urlMode === 'geo' || urlMode === 'mypack') {
       state.mode = urlMode === 'senate' ? 'all' : urlMode === 'bysenate' ? 'senate' : urlMode;
       ['all', 'focus', 'senate', 'fundraiser', 'county', 'geo', 'mypack'].forEach(function(m) {
         var btn = $$('pp-btn-' + m);
