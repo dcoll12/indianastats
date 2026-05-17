@@ -803,8 +803,12 @@ var PP = (function() {
   var SD_COLOR_OVERRIDES = {
     43: '#1565c0',  // dark blue
   };
-  function packBg(packNum, fallback, sdNum) {
+  var CD_COLOR_OVERRIDES = {
+    1: '#00cfff',  // neon sky blue
+  };
+  function packBg(packNum, fallback, sdNum, cdNum) {
     if (sdNum && SD_COLOR_OVERRIDES[sdNum]) return SD_COLOR_OVERRIDES[sdNum];
+    if (cdNum && CD_COLOR_OVERRIDES[cdNum]) return CD_COLOR_OVERRIDES[cdNum];
     return packNum ? PACK_BG_PALETTE[(packNum - 1) % PACK_BG_PALETTE.length] : (fallback || 'white');
   }
 
@@ -1738,7 +1742,7 @@ var PP = (function() {
     var parts = [];
 
     var borderColor = pack.isUncontested ? '#f59e0b' : tc.border;
-    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg, pack.sdNum);
+    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg, pack.sdNum, pack.cdNum);
 
     var hdNums = pack.houseMembers.map(function(m) { return m.dnum; }).join(',');
     parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums+'" data-packcolor="'+bgColor+'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
@@ -1996,7 +2000,7 @@ var PP = (function() {
     var totalCands = 1 + pack.members.length;
 
     var parts = [];
-    var cardBg = packBg(packNum, tc.bg, pack.sdNum);
+    var cardBg = packBg(packNum, tc.bg, pack.sdNum, pack.cdNum);
     parts.push('<div class="pp-pack-card" data-dtype="' + anchor.dtype + '" data-dnum="' + anchor.dnum + '" data-packcolor="' + cardBg + '" style="border-left:4px solid ' + tc.border + ';background:' + cardBg + '">');
 
     // Pack header
@@ -2158,7 +2162,7 @@ var PP = (function() {
     var sdNums = pack.senateSupporters.map(function(m) { return m.dnum; }).join(',');
     var parts = [];
 
-    parts.push('<div class="pp-pack-card" data-hdnum="' + pack.hdNum + '" data-sdnums="' + sdNums + '" data-packcolor="' + packBg(packNum, tc.bg) + '" style="border-left:4px solid ' + tc.border + ';background:' + packBg(packNum, tc.bg) + '">');
+    parts.push('<div class="pp-pack-card" data-hdnum="' + pack.hdNum + '" data-sdnums="' + sdNums + '" data-packcolor="' + packBg(packNum, tc.bg, null, pack.cdNum) + '" style="border-left:4px solid ' + tc.border + ';background:' + packBg(packNum, tc.bg, null, pack.cdNum) + '">');
 
     // Pack header (no per-card mission — tier header already explains it)
     parts.push('<div class="pp-pack-head">');
@@ -2901,7 +2905,7 @@ var PP = (function() {
     var parts = [];
 
     var borderColor = pack.isUncontested ? '#f59e0b' : tc.border;
-    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg, pack.sdNum);
+    var bgColor     = pack.isUncontested ? '#fffbeb' : packBg(packNum, tc.bg, pack.sdNum, pack.cdNum);
 
     parts.push('<div class="pp-pack-card" data-sdnum="'+pack.sdNum+'" data-hdnums="'+hdNums
       +'" data-packcolor="'+bgColor+'" style="border-left:4px solid '+borderColor+';background:'+bgColor+'">');
