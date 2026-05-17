@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/png" href="favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Indiana Partisan Lean Index (IN-Index)</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
@@ -80,11 +79,10 @@ header p {
 .tabs {
   display: flex;
   gap: 4px;
+  margin-bottom: 20px;
   background: #e2e8f0;
   border-radius: 10px;
   padding: 4px;
-  flex-shrink: 0;
-  z-index: 20;
 }
 
 .tab-btn {
@@ -121,14 +119,16 @@ header p {
 
 .tab-content {
   display: none;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  overflow-x: hidden;
+  overflow-y: auto;
+  max-height: calc(100vh - 220px);
 }
 
 .tab-content.active {
   display: block;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  padding-top: 16px;
 }
 
 .table-wrap {
@@ -153,7 +153,7 @@ thead th {
   white-space: nowrap;
   position: sticky;
   top: 0;
-  z-index: 15;
+  z-index: 10;
 }
 
 thead th:hover {
@@ -214,11 +214,11 @@ tbody td {
 .party-r { background: #fee2e2; color: #b91c1c; text-align: center; font-weight: 700; }
 .party-d { background: #dbeafe; color: #1e40af; text-align: center; font-weight: 700; }
 
-.table-note {
+.house-note {
   padding: 16px 20px;
   background: #fffbeb;
   border-left: 4px solid #f59e0b;
-  margin: 16px 0 0;
+  margin: 16px;
   border-radius: 0 8px 8px 0;
   font-size: 13px;
   color: #92400e;
@@ -290,12 +290,7 @@ footer .sources {
 .content-side {
   flex: 1;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 300px);
-  min-height: 400px;
 }
-
 
 tbody tr {
   border-bottom: 1px solid #f1f5f9;
@@ -354,11 +349,8 @@ tbody tr.map-locked {
 /* Responsive */
 @media (max-width: 900px) {
   .main-layout { flex-direction: column; }
-  .map-panel { width: 100%; position: sticky; top: 0; z-index: 10; }
+  .map-panel { width: 100%; position: static; }
   #indiana-map { height: 300px; }
-  .content-side { height: auto; min-height: 0; display: block; }
-  .tab-content.active { overflow-y: visible; }
-  .table-wrap { overflow-y: auto; max-height: 60vh; }
 }
 @media (max-width: 768px) {
   header h1 { font-size: 22px; }
@@ -376,13 +368,11 @@ tbody tr.map-locked {
 <div class="container">
   <header>
     <h1>Indiana Partisan Lean Index (IN-Index)</h1>
-    <p>How far each district leans Republican or Democratic, based on recent election results apportioned to districts using census block assignments. Methodology varies by chamber — see note at bottom.</p>
+    <p>How far each district leans Republican or Democratic, based on the average of 2020 and 2024 presidential results and the 2022 race result, apportioned to districts using census block assignments.</p>
     <nav class="site-nav">
+      <a class="active" href="./">Indiana Partisan Lean Index</a>
       <a href="power-packs/">Power Packs</a>
-      <a href="index.html">My Pack</a>
-      <a href="power-packs/fundraisers/">Fundraisers</a>
-      <a class="active" href="lean-index.html">Indiana Partisan Lean Index</a>
-      <a href="https://indianaruralsummit.org/" target="_blank" rel="noopener">Return to IRS Home</a>
+      <a href="district-match/">District Match</a>
     </nav>
   </header>
 
@@ -416,8 +406,8 @@ tbody tr.map-locked {
             <th onclick="sortTable('table-congressional', 1, 'num')" title="2022 US House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 3, 'num')" title="2024 US House race result">'24 Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 5, 'num')" title="IN-Index: average of 2020 presidential, 2022 US House race, and 2024 presidential margins">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes. * = incumbent ran unopposed; same-party turnout was artificially low.">'26 Prim <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 5, 'num')" title="IN-Index: average partisan lean">IN-Idx <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 6, 'num')" title="Congressional District">Dist <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 7, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
@@ -537,7 +527,7 @@ tbody tr.map-locked {
             <th onclick="sortTable('table-senate', 1, 'num')" title="2022 State Senate race (2022-cycle SDs only; N/A for 2024-cycle)">'22 Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-senate', 2, 'num')" title="2024 Presidential margin for this district">'24 Pres <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-senate', 3, 'num')" title="Most recent State Senate race result (2022 or 2024 depending on cycle)">Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes. * = incumbent ran unopposed; same-party turnout was artificially low.">'26 Prim <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-senate', 5, 'num')" title="IN-Index: average of actual race margins + 2024 presidential">IN-Idx <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-senate', 6, 'num')" title="Senate District">Dist <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-senate', 7, 'alpha')" title="Current Senator">Sen. <span class="sort-arrow">&#9650;</span></th>
@@ -605,7 +595,7 @@ tbody tr.map-locked {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.3637">+36.4R</td>
           <td class="lean-r-strong" data-sort-value="0.3637">+36.4R</td>
-          <td class="lean-r-strong" data-sort-value="0.3679">+36.8R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.3679">+36.8R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.3637">+36.4R</td>
           <td class="col-dist" data-sort-value="6">SD-6</td>
           <td class="col-rep" data-sort-value="Rick Niemeyer"><a href="https://www.indianasenaterepublicans.com/niemeyer" target="_blank" rel="noopener">Rick Niemeyer</a></td>
@@ -704,7 +694,7 @@ tbody tr.map-locked {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-moderate" data-sort-value="0.1713">+17.1R</td>
           <td class="lean-r-moderate" data-sort-value="0.1713">+17.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.3063">+30.6R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.3063">+30.6R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-moderate col-avg" data-sort-value="0.1713">+17.1R</td>
           <td class="col-dist" data-sort-value="15">SD-15</td>
           <td class="col-rep" data-sort-value="Liz Brown"><a href="https://www.indianasenaterepublicans.com/brown" target="_blank" rel="noopener">Liz Brown</a></td>
@@ -748,7 +738,7 @@ tbody tr.map-locked {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.3947">+39.5R</td>
           <td class="lean-r-strong" data-sort-value="0.3947">+39.5R</td>
-          <td class="lean-r-strong" data-sort-value="0.6365">+63.6R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.6365">+63.6R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.3947">+39.5R</td>
           <td class="col-dist" data-sort-value="19">SD-19</td>
           <td class="col-rep" data-sort-value="Travis Holdman"><a href="https://www.indianasenaterepublicans.com/holdman" target="_blank" rel="noopener">Travis Holdman</a></td>
@@ -781,7 +771,7 @@ tbody tr.map-locked {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-moderate" data-sort-value="0.1459">+14.6R</td>
           <td class="lean-r-moderate" data-sort-value="0.1459">+14.6R</td>
-          <td class="lean-r-strong" data-sort-value="0.2161">+21.6R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.2161">+21.6R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-moderate col-avg" data-sort-value="0.1459">+14.6R</td>
           <td class="col-dist" data-sort-value="22">SD-22</td>
           <td class="col-rep" data-sort-value="Ron Alting"><a href="https://www.indianasenaterepublicans.com/alting" target="_blank" rel="noopener">Ron Alting</a></td>
@@ -957,7 +947,7 @@ tbody tr.map-locked {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.286">+28.6R</td>
           <td class="lean-r-strong" data-sort-value="0.286">+28.6R</td>
-          <td class="lean-r-strong" data-sort-value="0.2568">+25.7R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.2568">+25.7R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.286">+28.6R</td>
           <td class="col-dist" data-sort-value="38">SD-38</td>
           <td class="col-rep" data-sort-value="Greg Goode"><a href="https://iga.in.gov/legislative/2023/legislators/legislator_greg_goode_1" target="_blank" rel="noopener">Greg Goode</a></td>
@@ -968,7 +958,7 @@ tbody tr.map-locked {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5617">+56.2R</td>
           <td class="lean-r-strong" data-sort-value="0.5617">+56.2R</td>
-          <td class="lean-r-strong" data-sort-value="0.6788">+67.9R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.6788">+67.9R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.5617">+56.2R</td>
           <td class="col-dist" data-sort-value="39">SD-39</td>
           <td class="col-rep" data-sort-value="Eric Bassler"><a href="https://www.indianasenaterepublicans.com/bassler" target="_blank" rel="noopener">Eric Bassler</a></td>
@@ -979,7 +969,7 @@ tbody tr.map-locked {
           <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-d-strong" data-sort-value="-0.2918">+29.2D</td>
           <td class="lean-d-strong" data-sort-value="-0.2918">+29.2D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-na" data-sort-value="999">N/A</td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.2918">+29.2D</td>
           <td class="col-dist" data-sort-value="40">SD-40</td>
           <td class="col-rep" data-sort-value="Shelli Yoder"><a href="https://indianasenatedemocrats.org/s40" target="_blank" rel="noopener">Shelli Yoder</a></td>
@@ -1012,7 +1002,7 @@ tbody tr.map-locked {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.5313">+53.1R</td>
           <td class="lean-r-strong" data-sort-value="0.5313">+53.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.5962">+59.6R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.5962">+59.6R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.5313">+53.1R</td>
           <td class="col-dist" data-sort-value="43">SD-43</td>
           <td class="col-rep" data-sort-value="Randy Maxwell"><a href="https://www.indianasenaterepublicans.com/maxwell" target="_blank" rel="noopener">Randy Maxwell</a></td>
@@ -1045,7 +1035,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.4587">+45.9D</td>
           <td class="lean-d-strong" data-sort-value="-0.4235">+42.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.4587">+45.9D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" data-sort-value="-1.0">D only</td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.4411">+44.1D</td>
           <td class="col-dist" data-sort-value="46">SD-46</td>
           <td class="col-rep" data-sort-value="Andrea Hunley"><a href="https://indianasenatedemocrats.org/s46" target="_blank" rel="noopener">Andrea Hunley</a></td>
@@ -1078,7 +1068,7 @@ tbody tr.map-locked {
           <td class="lean-na" data-sort-value="999">Unop.</td>
           <td class="lean-r-strong" data-sort-value="0.2215">+22.1R</td>
           <td class="lean-r-strong" data-sort-value="0.2215">+22.1R</td>
-          <td class="lean-d-moderate" data-sort-value="-0.1781">+17.8D</td>
+          <td class="lean-d-moderate" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-0.1781">+17.8D<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.2215">+22.1R</td>
           <td class="col-dist" data-sort-value="49">SD-49</td>
           <td class="col-rep" data-sort-value="Jim Tomes"><a href="https://www.indianasenaterepublicans.com/tomes" target="_blank" rel="noopener">Jim Tomes</a></td>
@@ -1097,14 +1087,15 @@ tbody tr.map-locked {
         </tr>
           </tbody>
         </table>
-    </div>
-    <div class="table-note">
-      <strong>Note:</strong> '20 and '22 Race columns show actual State Senate race results (not presidential); each district only has one of the two available depending on its election cycle. When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index averages available race margins with the 2024 presidential margin</strong>.
+      </div>
     </div>
 
   </div>
 
   <div class="tab-content" id="tab-house">
+    <div class="house-note">
+      <strong>Note:</strong> '20, '22, and Race columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
+    </div>
     <div class="table-wrap">
       <table id="table-house">
         <thead>
@@ -1113,7 +1104,7 @@ tbody tr.map-locked {
             <th onclick="sortTable('table-house', 1, 'num')" title="2022 State House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 3, 'num')" title="2024 State House race result">Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes. * = incumbent ran unopposed; same-party turnout was artificially low.">'26 Prim <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 5, 'num')" title="IN-Index: 2024 presidential lean (adjusted for unopposed races)">IN-Idx <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 6, 'num')" title="House District">Dist <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 7, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
@@ -1126,7 +1117,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.2616">+26.2D</td>
           <td class="lean-d-strong" data-sort-value="-0.2616">+26.2D</td>
           <td class="lean-d-strong" data-sort-value="-0.2616">+26.2D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.2616">+26.2D</td>
           <td class="col-dist" data-sort-value="1">HD-1</td>
           <td class="col-rep" data-sort-value="Carolyn Jackson"><a href="https://indianahousedemocrats.org/members/carolyn-b.-jackson" target="_blank" rel="noopener">Carolyn Jackson</a></td>
@@ -1137,7 +1128,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.5869">+58.7D</td>
           <td class="lean-d-strong" data-sort-value="-0.5869">+58.7D</td>
           <td class="lean-d-strong" data-sort-value="-0.6402">+64D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" data-sort-value="-1.0">D only</td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.5869">+58.7D</td>
           <td class="col-dist" data-sort-value="2">HD-2</td>
           <td class="col-rep" data-sort-value="Earl Harris">Earl Harris</td>
@@ -1148,7 +1139,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.2239">+22.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.2239">+22.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.2629">+26.3D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" data-sort-value="-1.0">D only</td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.2239">+22.4D</td>
           <td class="col-dist" data-sort-value="3">HD-3</td>
           <td class="col-rep" data-sort-value="Ragen Hatcher"><a href="https://indianahousedemocrats.org/members/ragen-hatcher" target="_blank" rel="noopener">Ragen Hatcher</a></td>
@@ -1181,7 +1172,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.3124">+31.2D</td>
           <td class="lean-d-strong" data-sort-value="-0.3124">+31.2D</td>
           <td class="lean-d-strong" data-sort-value="-0.3124">+31.2D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.3124">+31.2D</td>
           <td class="col-dist" data-sort-value="6">HD-6</td>
           <td class="col-rep" data-sort-value="Maureen Bauer"><a href="https://indianahousedemocrats.org/members/maureen-bauer" target="_blank" rel="noopener">Maureen Bauer</a></td>
@@ -1192,7 +1183,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.2169">+21.7R</td>
           <td class="lean-r-moderate" data-sort-value="0.172">+17.2R</td>
           <td class="lean-r-moderate" data-sort-value="0.1563">+15.6R</td>
-          <td class="lean-d-lean" data-sort-value="-0.0766">+7.7D</td>
+          <td class="lean-d-lean" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-0.0766">+7.7D<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-moderate col-avg" data-sort-value="0.1563">+15.6R</td>
           <td class="col-dist" data-sort-value="7">HD-7</td>
           <td class="col-rep" data-sort-value="Jake Teshka"><a href="https://www.indianahouserepublicans.com/members/general/jake-teshka/?back=members" target="_blank" rel="noopener">Jake Teshka</a></td>
@@ -1203,7 +1194,7 @@ tbody tr.map-locked {
           <td class="lean-d-moderate" data-sort-value="-0.1309">+13.1D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1249">+12.5D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1309">+13.1D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-moderate col-avg" data-sort-value="-0.1309">+13.1D</td>
           <td class="col-dist" data-sort-value="8">HD-8</td>
           <td class="col-rep" data-sort-value="Ryan Dvorak"><a href="https://indianahousedemocrats.org/members/ryan-dvorak" target="_blank" rel="noopener">Ryan Dvorak</a></td>
@@ -1236,7 +1227,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.4285">+42.9R</td>
           <td class="lean-r-strong" data-sort-value="0.4819">+48.2R</td>
           <td class="lean-r-strong" data-sort-value="0.4285">+42.9R</td>
-          <td class="lean-r-strong" data-sort-value="0.4028">+40.3R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.4028">+40.3R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.4285">+42.9R</td>
           <td class="col-dist" data-sort-value="11">HD-11</td>
           <td class="col-rep" data-sort-value="Michael Aylesworth"><a href="https://www.indianahouserepublicans.com/members/general/michael-aylesworth/?back=members" target="_blank" rel="noopener">Michael Aylesworth</a></td>
@@ -1247,7 +1238,7 @@ tbody tr.map-locked {
           <td class="lean-d-moderate" data-sort-value="-0.1118">+11.2D</td>
           <td class="lean-d-slight" data-sort-value="-0.0396">+4D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1009">+10.1D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" data-sort-value="-1.0">D only</td>
           <td class="lean-d-slight col-avg" data-sort-value="-0.0396">+4D</td>
           <td class="col-dist" data-sort-value="12">HD-12</td>
           <td class="col-rep" data-sort-value="Mike Andrade"><a href="https://indianahousedemocrats.org/members/mike-andrade" target="_blank" rel="noopener">Mike Andrade</a></td>
@@ -1269,7 +1260,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.4038">+40.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.4038">+40.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.4428">+44.3D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" data-sort-value="-1.0">D only</td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.4038">+40.4D</td>
           <td class="col-dist" data-sort-value="14">HD-14</td>
           <td class="col-rep" data-sort-value="Vernon Smith"><a href="https://indianahousedemocrats.org/members/vernon-smith" target="_blank" rel="noopener">Vernon Smith</a></td>
@@ -1302,7 +1293,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.4958">+49.6R</td>
           <td class="lean-r-strong" data-sort-value="0.4691">+46.9R</td>
           <td class="lean-r-strong" data-sort-value="0.4865">+48.6R</td>
-          <td class="lean-r-strong" data-sort-value="0.5438">+54.4R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.5438">+54.4R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.4865">+48.6R</td>
           <td class="col-dist" data-sort-value="17">HD-17</td>
           <td class="col-rep" data-sort-value="Jack Jordan"><a href="https://www.indianahouserepublicans.com/members/general/jack-jordan/?back=members" target="_blank" rel="noopener">Jack Jordan</a></td>
@@ -1313,7 +1304,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.555">+55.5R</td>
           <td class="lean-r-strong" data-sort-value="0.5483">+54.8R</td>
           <td class="lean-r-strong" data-sort-value="0.555">+55.5R</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="1.0">R only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.555">+55.5R</td>
           <td class="col-dist" data-sort-value="18">HD-18</td>
           <td class="col-rep" data-sort-value="David Abbott"><a href="https://www.indianahouserepublicans.com/members/leadership/david-abbott/?back=members" target="_blank" rel="noopener">David Abbott</a></td>
@@ -1324,7 +1315,7 @@ tbody tr.map-locked {
           <td class="lean-r-moderate" data-sort-value="0.1744">+17.4R</td>
           <td class="lean-r-strong" data-sort-value="0.2007">+20.1R</td>
           <td class="lean-r-moderate" data-sort-value="0.1371">+13.7R</td>
-          <td class="lean-d-lean" data-sort-value="-0.0647">+6.5D</td>
+          <td class="lean-d-lean" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-0.0647">+6.5D<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-moderate col-avg" data-sort-value="0.1371">+13.7R</td>
           <td class="col-dist" data-sort-value="19">HD-19</td>
           <td class="col-rep" data-sort-value="Julie Olthoff"><a href="https://www.indianahouserepublicans.com/members/leadership/julie-olthoff/?back=members" target="_blank" rel="noopener">Julie Olthoff</a></td>
@@ -1335,7 +1326,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.3365">+33.6R</td>
           <td class="lean-r-strong" data-sort-value="0.3082">+30.8R</td>
           <td class="lean-r-strong" data-sort-value="0.3365">+33.6R</td>
-          <td class="lean-r-strong" data-sort-value="0.3407">+34.1R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.3407">+34.1R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.3365">+33.6R</td>
           <td class="col-dist" data-sort-value="20">HD-20</td>
           <td class="col-rep" data-sort-value="Jim Pressel"><a href="https://www.indianahouserepublicans.com/members/general/jim-pressel/?back=members" target="_blank" rel="noopener">Jim Pressel</a></td>
@@ -1346,7 +1337,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.4753">+47.5R</td>
           <td class="lean-r-strong" data-sort-value="0.3528">+35.3R</td>
           <td class="lean-r-strong" data-sort-value="0.3727">+37.3R</td>
-          <td class="lean-r-strong" data-sort-value="0.414">+41.4R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.414">+41.4R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.3727">+37.3R</td>
           <td class="col-dist" data-sort-value="21">HD-21</td>
           <td class="col-rep" data-sort-value="Timothy Wesco"><a href="https://www.indianahouserepublicans.com/members/general/timothy-wesco/?back=members" target="_blank" rel="noopener">Timothy Wesco</a></td>
@@ -1357,7 +1348,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.6569">+65.7R</td>
           <td class="lean-r-strong" data-sort-value="0.5412">+54.1R</td>
           <td class="lean-r-strong" data-sort-value="0.5468">+54.7R</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="1.0">R only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.5468">+54.7R</td>
           <td class="col-dist" data-sort-value="22">HD-22</td>
           <td class="col-rep" data-sort-value="Craig Snow"><a href="https://www.indianahouserepublicans.com/members/general/craig-snow/?back=members" target="_blank" rel="noopener">Craig Snow</a></td>
@@ -1456,7 +1447,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.4256">+42.6R</td>
           <td class="lean-r-strong" data-sort-value="0.4256">+42.6R</td>
           <td class="lean-r-strong" data-sort-value="0.4256">+42.6R</td>
-          <td class="lean-r-strong" data-sort-value="0.5023">+50.2R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.5023">+50.2R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.4256">+42.6R</td>
           <td class="col-dist" data-sort-value="31">HD-31</td>
           <td class="col-rep" data-sort-value="Ann Vermilion">Ann Vermilion</td>
@@ -1467,7 +1458,7 @@ tbody tr.map-locked {
           <td class="lean-d-slight" data-sort-value="-0.01">+1D</td>
           <td class="lean-d-lean" data-sort-value="-0.0895">+9D</td>
           <td class="lean-d-slight" data-sort-value="-0.042">+4.2D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" data-sort-value="-1.0">D only</td>
           <td class="lean-d-lean col-avg" data-sort-value="-0.0895">+8.9D</td>
           <td class="col-dist" data-sort-value="32">HD-32</td>
           <td class="col-rep" data-sort-value="Victoria Garcia Wilburn"><a href="https://indianahousedemocrats.org/members/victoria-garcia-wilburn" target="_blank" rel="noopener">Victoria Garcia Wilburn</a></td>
@@ -1522,7 +1513,7 @@ tbody tr.map-locked {
           <td class="lean-r-moderate" data-sort-value="0.1216">+12.2R</td>
           <td class="lean-r-moderate" data-sort-value="0.1191">+11.9R</td>
           <td class="lean-r-moderate" data-sort-value="0.1216">+12.2R</td>
-          <td class="lean-r-lean" data-sort-value="0.0609">+6.1R</td>
+          <td class="lean-r-lean" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.0609">+6.1R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-moderate col-avg" data-sort-value="0.1216">+12.2R</td>
           <td class="col-dist" data-sort-value="37">HD-37</td>
           <td class="col-rep" data-sort-value="Todd Huston"><a href="https://www.indianahouserepublicans.com/members/leadership/todd-huston/?back=members" target="_blank" rel="noopener">Todd Huston</a></td>
@@ -1577,7 +1568,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.3678">+36.8R</td>
           <td class="lean-r-strong" data-sort-value="0.5068">+50.7R</td>
           <td class="lean-r-strong" data-sort-value="0.4034">+40.3R</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="1.0">R only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.4034">+40.3R</td>
           <td class="col-dist" data-sort-value="42">HD-42</td>
           <td class="col-rep" data-sort-value="Alan Morrison">Alan Morrison</td>
@@ -1588,7 +1579,7 @@ tbody tr.map-locked {
           <td class="lean-d-moderate" data-sort-value="-0.1679">+16.8D</td>
           <td class="lean-r-lean" data-sort-value="0.0746">+7.5R</td>
           <td class="lean-d-lean" data-sort-value="-0.0813">+8.1D</td>
-          <td class="lean-d-moderate" data-sort-value="-0.1856">+18.6D</td>
+          <td class="lean-d-moderate" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-0.1856">+18.6D<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-lean col-avg" data-sort-value="-0.0813">+8.1D</td>
           <td class="col-dist" data-sort-value="43">HD-43</td>
           <td class="col-rep" data-sort-value="Tonya Pfaff"><a href="https://indianahousedemocrats.org/members/tonya-pfaff" target="_blank" rel="noopener">Tonya Pfaff</a></td>
@@ -1599,7 +1590,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.501">+50.1R</td>
           <td class="lean-r-strong" data-sort-value="0.501">+50.1R</td>
           <td class="lean-r-strong" data-sort-value="0.501">+50.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.5375">+53.8R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.5375">+53.8R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.501">+50.1R</td>
           <td class="col-dist" data-sort-value="44">HD-44</td>
           <td class="col-rep" data-sort-value="Beau Baird"><a href="https://www.indianahouserepublicans.com/members/general/beau-baird/?back=members" target="_blank" rel="noopener">Beau Baird</a></td>
@@ -1610,7 +1601,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.5647">+56.5R</td>
           <td class="lean-r-strong" data-sort-value="0.5647">+56.5R</td>
           <td class="lean-r-strong" data-sort-value="0.5647">+56.5R</td>
-          <td class="lean-r-strong" data-sort-value="0.6497">+65R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.6497">+65R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.5647">+56.5R</td>
           <td class="col-dist" data-sort-value="45">HD-45</td>
           <td class="col-rep" data-sort-value="Bruce Borders"><a href="https://www.indianahouserepublicans.com/members/leadership/bruce-borders/?back=members" target="_blank" rel="noopener">Bruce Borders</a></td>
@@ -1643,7 +1634,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.2867">+28.7R</td>
           <td class="lean-r-strong" data-sort-value="0.2866">+28.7R</td>
           <td class="lean-r-strong" data-sort-value="0.2867">+28.7R</td>
-          <td class="lean-r-strong" data-sort-value="0.3861">+38.6R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.3861">+38.6R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.2867">+28.7R</td>
           <td class="col-dist" data-sort-value="48">HD-48</td>
           <td class="col-rep" data-sort-value="Doug Miller"><a href="https://www.indianahouserepublicans.com/members/general/doug-miller/?back=members" target="_blank" rel="noopener">Doug Miller</a></td>
@@ -1654,7 +1645,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.3433">+34.3R</td>
           <td class="lean-r-strong" data-sort-value="0.2972">+29.7R</td>
           <td class="lean-r-strong" data-sort-value="0.3233">+32.3R</td>
-          <td class="lean-r-strong" data-sort-value="0.2536">+25.4R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.2536">+25.4R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.3233">+32.3R</td>
           <td class="col-dist" data-sort-value="49">HD-49</td>
           <td class="col-rep" data-sort-value="Joanna King"><a href="https://www.indianahouserepublicans.com/members/leadership/joanna-king/?back=members" target="_blank" rel="noopener">Joanna King</a></td>
@@ -1687,7 +1678,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.4801">+48R</td>
           <td class="lean-r-strong" data-sort-value="0.4801">+48R</td>
           <td class="lean-r-strong" data-sort-value="0.5349">+53.5R</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-r-strong" data-sort-value="1.0">R only</td>
           <td class="lean-r-strong col-avg" data-sort-value="0.4801">+48R</td>
           <td class="col-dist" data-sort-value="52">HD-52</td>
           <td class="col-rep" data-sort-value="Ben Smaltz"><a href="https://www.indianahouserepublicans.com/members/general/ben-smaltz/?back=members" target="_blank" rel="noopener">Ben Smaltz</a></td>
@@ -1709,7 +1700,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.474">+47.4R</td>
           <td class="lean-r-strong" data-sort-value="0.5088">+50.9R</td>
           <td class="lean-r-strong" data-sort-value="0.4914">+49.1R</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="1.0">R only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.4914">+49.1R</td>
           <td class="col-dist" data-sort-value="54">HD-54</td>
           <td class="col-rep" data-sort-value="Cory Criswell"><a href="https://www.indianahouserepublicans.com/members/general/cory-criswell/?back=members" target="_blank" rel="noopener">Cory Criswell</a></td>
@@ -1731,7 +1722,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.3987">+39.9R</td>
           <td class="lean-r-strong" data-sort-value="0.3333">+33.3R</td>
           <td class="lean-r-strong" data-sort-value="0.366">+36.6R</td>
-          <td class="lean-r-strong" data-sort-value="0.5523">+55.2R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.5523">+55.2R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.366">+36.6R</td>
           <td class="col-dist" data-sort-value="56">HD-56</td>
           <td class="col-rep" data-sort-value="Brad Barrett"><a href="https://www.indianahouserepublicans.com/members/general/brad-barrett/?back=members" target="_blank" rel="noopener">Brad Barrett</a></td>
@@ -1742,7 +1733,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.3275">+32.8R</td>
           <td class="lean-r-strong" data-sort-value="0.3275">+32.8R</td>
           <td class="lean-r-strong" data-sort-value="0.3275">+32.8R</td>
-          <td class="lean-r-strong" data-sort-value="0.4663">+46.6R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.4663">+46.6R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.3275">+32.8R</td>
           <td class="col-dist" data-sort-value="57">HD-57</td>
           <td class="col-rep" data-sort-value="Craig Haggard"><a href="https://www.indianahouserepublicans.com/members/general/craig-haggard/?back=members" target="_blank" rel="noopener">Craig Haggard</a></td>
@@ -1764,7 +1755,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.2265">+22.7R</td>
           <td class="lean-r-strong" data-sort-value="0.2254">+22.5R</td>
           <td class="lean-r-strong" data-sort-value="0.277">+27.7R</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-r-strong" data-sort-value="1.0">R only</td>
           <td class="lean-r-strong col-avg" data-sort-value="0.2254">+22.5R</td>
           <td class="col-dist" data-sort-value="59">HD-59</td>
           <td class="col-rep" data-sort-value="Ryan Lauer"><a href="https://www.indianahouserepublicans.com/members/general/ryan-lauer/?back=members" target="_blank" rel="noopener">Ryan Lauer</a></td>
@@ -1786,7 +1777,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.6237">+62.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.6237">+62.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.6237">+62.4D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.6237">+62.4D</td>
           <td class="col-dist" data-sort-value="61">HD-61</td>
           <td class="col-rep" data-sort-value="Matt Pierce"><a href="https://indianahousedemocrats.org/members/matt-pierce" target="_blank" rel="noopener">Matt Pierce</a></td>
@@ -1819,7 +1810,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.4999">+50R</td>
           <td class="lean-r-strong" data-sort-value="0.4813">+48.1R</td>
           <td class="lean-r-strong" data-sort-value="0.4999">+50R</td>
-          <td class="lean-r-strong" data-sort-value="0.4528">+45.3R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.4528">+45.3R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.4999">+50R</td>
           <td class="col-dist" data-sort-value="64">HD-64</td>
           <td class="col-rep" data-sort-value="Matt Hostettler"><a href="https://www.indianahouserepublicans.com/members/general/matt-hostettler/?back=members" target="_blank" rel="noopener">Matt Hostettler</a></td>
@@ -1830,7 +1821,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.5545">+55.4R</td>
           <td class="lean-r-strong" data-sort-value="0.5318">+53.2R</td>
           <td class="lean-r-strong" data-sort-value="0.515">+51.5R</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="1.0">R only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.515">+51.5R</td>
           <td class="col-dist" data-sort-value="65">HD-65</td>
           <td class="col-rep" data-sort-value="Chris May"><a href="https://www.indianahouserepublicans.com/members/general/chris-may/?back=members" target="_blank" rel="noopener">Chris May</a></td>
@@ -1852,7 +1843,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.5412">+54.1R</td>
           <td class="lean-r-strong" data-sort-value="0.5412">+54.1R</td>
           <td class="lean-r-strong" data-sort-value="0.5412">+54.1R</td>
-          <td class="lean-r-strong" data-sort-value="0.6366">+63.7R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.6366">+63.7R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.5412">+54.1R</td>
           <td class="col-dist" data-sort-value="67">HD-67</td>
           <td class="col-rep" data-sort-value="Randy Frye">Randy Frye</td>
@@ -1929,7 +1920,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.4144">+41.4R</td>
           <td class="lean-r-strong" data-sort-value="0.4144">+41.4R</td>
           <td class="lean-r-strong" data-sort-value="0.3711">+37.1R</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-r-strong" data-sort-value="1.0">R only</td>
           <td class="lean-r-strong col-avg" data-sort-value="0.4144">+41.4R</td>
           <td class="col-dist" data-sort-value="74">HD-74</td>
           <td class="col-rep" data-sort-value="Stephen Bartels"><a href="https://www.indianahouserepublicans.com/members/leadership/stephen-bartels/?back=members" target="_blank" rel="noopener">Stephen Bartels</a></td>
@@ -1940,7 +1931,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.4106">+41.1R</td>
           <td class="lean-r-strong" data-sort-value="0.3678">+36.8R</td>
           <td class="lean-r-strong" data-sort-value="0.3338">+33.4R</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="1.0">R only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.3338">+33.4R</td>
           <td class="col-dist" data-sort-value="75">HD-75</td>
           <td class="col-rep" data-sort-value="Cindy Ledbetter"><a href="https://www.indianahouserepublicans.com/members/leadership/cindy-ledbetter/?back=members" target="_blank" rel="noopener">Cindy Ledbetter</a></td>
@@ -1951,7 +1942,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.3213">+32.1R</td>
           <td class="lean-r-strong" data-sort-value="0.33">+33R</td>
           <td class="lean-r-strong" data-sort-value="0.3107">+31.1R</td>
-          <td class="lean-d-lean" data-sort-value="-0.057">+5.7D</td>
+          <td class="lean-d-lean" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-0.057">+5.7D<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.3107">+31.1R</td>
           <td class="col-dist" data-sort-value="76">HD-76</td>
           <td class="col-rep" data-sort-value="Wendy McNamara"><a href="https://www.indianahouserepublicans.com/members/general/wendy-mcnamara/?back=members" target="_blank" rel="noopener">Wendy McNamara</a></td>
@@ -1962,7 +1953,7 @@ tbody tr.map-locked {
           <td class="lean-d-moderate" data-sort-value="-0.1945">+19.4D</td>
           <td class="lean-d-moderate" data-sort-value="-0.125">+12.5D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1945">+19.4D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-moderate col-avg" data-sort-value="-0.1945">+19.4D</td>
           <td class="col-dist" data-sort-value="77">HD-77</td>
           <td class="col-rep" data-sort-value="Ryan Hatfield">Ryan Hatfield</td>
@@ -1973,7 +1964,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.254">+25.4R</td>
           <td class="lean-r-moderate" data-sort-value="0.172">+17.2R</td>
           <td class="lean-r-strong" data-sort-value="0.2347">+23.5R</td>
-          <td class="lean-d-strong" data-sort-value="-0.2287">+22.9D</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-0.2287">+22.9D<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.2347">+23.5R</td>
           <td class="col-dist" data-sort-value="78">HD-78</td>
           <td class="col-rep" data-sort-value="Tim O'Brien"><a href="https://www.indianahouserepublicans.com/members/general/tim-o-brien/?back=members" target="_blank" rel="noopener">Tim O'Brien</a></td>
@@ -1984,7 +1975,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.5676">+56.8R</td>
           <td class="lean-r-strong" data-sort-value="0.5676">+56.8R</td>
           <td class="lean-r-strong" data-sort-value="0.5676">+56.8R</td>
-          <td class="lean-r-strong" data-sort-value="0.7528">+75.3R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.7528">+75.3R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-strong col-avg" data-sort-value="0.5676">+56.8R</td>
           <td class="col-dist" data-sort-value="79">HD-79</td>
           <td class="col-rep" data-sort-value="Matthew Lehman"><a href="https://www.indianahouserepublicans.com/members/leadership/matt-lehman/?back=members" target="_blank" rel="noopener">Matthew Lehman</a></td>
@@ -1995,7 +1986,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.3346">+33.5D</td>
           <td class="lean-d-strong" data-sort-value="-0.3346">+33.5D</td>
           <td class="lean-d-strong" data-sort-value="-0.3346">+33.5D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.3346">+33.5D</td>
           <td class="col-dist" data-sort-value="80">HD-80</td>
           <td class="col-rep" data-sort-value="Phil GiaQuinta"><a href="https://indianahousedemocrats.org/members/phil-giaquinta" target="_blank" rel="noopener">Phil GiaQuinta</a></td>
@@ -2017,7 +2008,7 @@ tbody tr.map-locked {
           <td class="lean-d-moderate" data-sort-value="-0.1276">+12.8D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1519">+15.2D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1397">+14D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-moderate col-avg" data-sort-value="-0.1397">+14D</td>
           <td class="col-dist" data-sort-value="82">HD-82</td>
           <td class="col-rep" data-sort-value="Kyle Miller"><a href="https://indianahousedemocrats.org/members/kyle-miller" target="_blank" rel="noopener">Kyle Miller</a></td>
@@ -2039,7 +2030,7 @@ tbody tr.map-locked {
           <td class="lean-r-moderate" data-sort-value="0.1973">+19.7R</td>
           <td class="lean-r-moderate" data-sort-value="0.1723">+17.2R</td>
           <td class="lean-r-moderate" data-sort-value="0.1973">+19.7R</td>
-          <td class="lean-r-strong" data-sort-value="0.2414">+24.1R</td>
+          <td class="lean-r-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="0.2414">+24.1R<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-r-moderate col-avg" data-sort-value="0.1973">+19.7R</td>
           <td class="col-dist" data-sort-value="84">HD-84</td>
           <td class="col-rep" data-sort-value="Bob Morris"><a href="https://www.indianahouserepublicans.com/members/general/bob-morris/?back=members" target="_blank" rel="noopener">Bob Morris</a></td>
@@ -2061,7 +2052,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.4268">+42.7D</td>
           <td class="lean-d-strong" data-sort-value="-0.4713">+47.1D</td>
           <td class="lean-d-strong" data-sort-value="-0.433">+43.3D</td>
-          <td class="lean-d-strong" data-sort-value="-0.7027">+70.3D</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-0.7027">+70.3D<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.433">+43.3D</td>
           <td class="col-dist" data-sort-value="86">HD-86</td>
           <td class="col-rep" data-sort-value="Edward DeLaney"><a href="https://indianahousedemocrats.org/members/ed-delaney" target="_blank" rel="noopener">Edward DeLaney</a></td>
@@ -2072,7 +2063,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.2582">+25.8D</td>
           <td class="lean-d-strong" data-sort-value="-0.3062">+30.6D</td>
           <td class="lean-d-strong" data-sort-value="-0.2725">+27.2D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.2725">+27.2D</td>
           <td class="col-dist" data-sort-value="87">HD-87</td>
           <td class="col-rep" data-sort-value="Carey Hamilton"><a href="https://indianahousedemocrats.org/members/carey-hamilton" target="_blank" rel="noopener">Carey Hamilton</a></td>
@@ -2094,7 +2085,7 @@ tbody tr.map-locked {
           <td class="lean-d-slight" data-sort-value="-0.0194">+1.9D</td>
           <td class="lean-d-lean" data-sort-value="-0.0644">+6.4D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1168">+11.7D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" data-sort-value="-1.0">D only</td>
           <td class="lean-d-lean col-avg" data-sort-value="-0.0644">+6.4D</td>
           <td class="col-dist" data-sort-value="89">HD-89</td>
           <td class="col-rep" data-sort-value="Mitch Gore"><a href="https://indianahousedemocrats.org/members/mitch-gore" target="_blank" rel="noopener">Mitch Gore</a></td>
@@ -2105,7 +2096,7 @@ tbody tr.map-locked {
           <td class="lean-r-strong" data-sort-value="0.2053">+20.5R</td>
           <td class="lean-r-strong" data-sort-value="0.2053">+20.5R</td>
           <td class="lean-r-strong" data-sort-value="0.2723">+27.2R</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-r-strong" data-sort-value="1.0">R only</td>
           <td class="lean-r-strong col-avg" data-sort-value="0.2053">+20.5R</td>
           <td class="col-dist" data-sort-value="90">HD-90</td>
           <td class="col-rep" data-sort-value="Andrew Ireland"><a href="https://www.indianahouserepublicans.com/members/general/andrew-ireland/?back=members" target="_blank" rel="noopener">Andrew Ireland</a></td>
@@ -2127,7 +2118,7 @@ tbody tr.map-locked {
           <td class="lean-d-moderate" data-sort-value="-0.121">+12.1D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1638">+16.4D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1805">+18.1D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" data-sort-value="-1.0">D only</td>
           <td class="lean-d-moderate col-avg" data-sort-value="-0.1638">+16.4D</td>
           <td class="col-dist" data-sort-value="92">HD-92</td>
           <td class="col-rep" data-sort-value="Renee Pack"><a href="https://indianahousedemocrats.org/members/renee-pack" target="_blank" rel="noopener">Renee Pack</a></td>
@@ -2149,7 +2140,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.691">+69.1D</td>
           <td class="lean-d-strong" data-sort-value="-0.6716">+67.2D</td>
           <td class="lean-d-strong" data-sort-value="-0.691">+69.1D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.691">+69.1D</td>
           <td class="col-dist" data-sort-value="94">HD-94</td>
           <td class="col-rep" data-sort-value="Cherrish Pryor"><a href="https://indianahousedemocrats.org/members/cherrish-pryor" target="_blank" rel="noopener">Cherrish Pryor</a></td>
@@ -2160,7 +2151,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.4903">+49D</td>
           <td class="lean-d-strong" data-sort-value="-0.4903">+49D</td>
           <td class="lean-d-strong" data-sort-value="-0.4903">+49D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.4903">+49D</td>
           <td class="col-dist" data-sort-value="95">HD-95</td>
           <td class="col-rep" data-sort-value="John L. Bartlett"><a href="https://indianahousedemocrats.org/members/john-l-bartlett" target="_blank" rel="noopener">John L. Bartlett</a></td>
@@ -2171,7 +2162,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.714">+71.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.714">+71.4D</td>
           <td class="lean-d-strong" data-sort-value="-0.714">+71.4D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.714">+71.4D</td>
           <td class="col-dist" data-sort-value="96">HD-96</td>
           <td class="col-rep" data-sort-value="Gregory Porter"><a href="https://indianahousedemocrats.org/members/gregory-w-porter" target="_blank" rel="noopener">Gregory Porter</a></td>
@@ -2182,7 +2173,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.2098">+21D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1353">+13.5D</td>
           <td class="lean-d-moderate" data-sort-value="-0.1984">+19.8D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" data-sort-value="-1.0">D only</td>
           <td class="lean-d-moderate col-avg" data-sort-value="-0.1353">+13.5D</td>
           <td class="col-dist" data-sort-value="97">HD-97</td>
           <td class="col-rep" data-sort-value="Justin Moed"><a href="https://indianahousedemocrats.org/members/justin-moed" target="_blank" rel="noopener">Justin Moed</a></td>
@@ -2193,7 +2184,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.6262">+62.6D</td>
           <td class="lean-d-strong" data-sort-value="-0.6262">+62.6D</td>
           <td class="lean-d-strong" data-sort-value="-0.6262">+62.6D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" title="Incumbent ran unopposed — low same-party primary turnout makes this figure unrepresentative of district lean" data-sort-value="-1.0">D only<sup style="font-size:0.65em;vertical-align:super;opacity:0.8">*</sup></td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.6262">+62.6D</td>
           <td class="col-dist" data-sort-value="98">HD-98</td>
           <td class="col-rep" data-sort-value="Robin Shackleford"><a href="https://indianahousedemocrats.org/members/robin-shackleford" target="_blank" rel="noopener">Robin Shackleford</a></td>
@@ -2204,7 +2195,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.6518">+65.2D</td>
           <td class="lean-d-strong" data-sort-value="-0.6146">+61.5D</td>
           <td class="lean-d-strong" data-sort-value="-0.6251">+62.5D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" data-sort-value="-1.0">D only</td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.6146">+61.5D</td>
           <td class="col-dist" data-sort-value="99">HD-99</td>
           <td class="col-rep" data-sort-value="Vanessa Summers"><a href="https://indianahousedemocrats.org/members/vanessa-summers" target="_blank" rel="noopener">Vanessa Summers</a></td>
@@ -2215,7 +2206,7 @@ tbody tr.map-locked {
           <td class="lean-d-strong" data-sort-value="-0.4384">+43.8D</td>
           <td class="lean-d-strong" data-sort-value="-0.4384">+43.8D</td>
           <td class="lean-d-strong" data-sort-value="-0.4336">+43.4D</td>
-          <td class="lean-na" data-sort-value="999">Unop.</td>
+          <td class="lean-d-strong" data-sort-value="-1.0">D only</td>
           <td class="lean-d-strong col-avg" data-sort-value="-0.4384">+43.8D</td>
           <td class="col-dist" data-sort-value="100">HD-100</td>
           <td class="col-rep" data-sort-value="Blake Johnson"><a href="https://indianahousedemocrats.org/members/blake-johnson" target="_blank" rel="noopener">Blake Johnson</a></td>
@@ -2223,9 +2214,6 @@ tbody tr.map-locked {
         </tr>
         </tbody>
       </table>
-    </div>
-    <div class="table-note">
-      <strong>Note:</strong> '20, '22, and Race columns show actual State House race results (not presidential). When a race was <strong>unopposed</strong>, the IN-Index lean is shown instead. The <strong>IN-Index equals the 2024 presidential margin</strong> for opposed 2024 seats; for unopposed 2024 seats it averages the 2024 presidential margin with available 2020/2022 race results.
     </div>
   </div>
 
@@ -2236,14 +2224,11 @@ tbody tr.map-locked {
     <h3>Methodology</h3>
     <p>
       The <strong>IN-Index</strong> measures partisan lean for each Indiana legislative and congressional
-      district using a consistent two-party margin formula: <code>(R votes &minus; D votes) / (R votes + D votes)</code>.
-      Positive values lean Republican, negative values lean Democratic.
-      <br><br>
-      <strong>Congressional districts:</strong> average of the 2020 presidential margin, the 2022 US House race result, and the 2024 presidential margin (three inputs).
-      <br>
-      <strong>State Senate districts:</strong> average of the available actual Senate race margin (2020 <em>or</em> 2022, depending on staggered cycle) plus the 2024 presidential margin (two inputs per district). Even-cycle SDs ran in 2020 &amp; 2024; odd-cycle SDs ran in 2022.
-      <br>
-      <strong>State House districts:</strong> 2024 presidential margin alone for opposed 2024 seats; for unopposed 2024 seats, averages the 2024 presidential margin with available 2020/2022 State House race results.
+      district. For Senate districts it is the average of all available actual race margins plus the
+      2024 presidential margin (Indiana Senate is staggered: even-cycle SDs ran in 2020 &amp; 2024;
+      odd-cycle SDs ran in 2022). For Congressional districts it averages actual 2020/2022/2024 race
+      margins plus the 2024 presidential. For House districts it equals the 2024 presidential margin;
+      for unopposed 2024 seats, available 2020/2022 race results are also averaged in.
     </p>
     <p>
       <strong>'24 Pres</strong> uses precinct-level results aggregated directly by district —
@@ -2483,6 +2468,6 @@ function sortTable(tableId, colIdx, type) {
 // Initial map load
 loadMap('congressional', boundaryView);
 </script>
-<footer style="text-align:center;padding:12px 16px;font-size:0.8rem;color:#666;border-top:1px solid #ddd;margin-top:20px;">Copyright &copy; 2026 Indiana Rural Summit</footer>
+
 </body>
 </html>
