@@ -977,11 +977,9 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
 
       setLabel(label || '');
 
-      // Center map on highlighted districts at a consistent zoom level
+      // Center on the primary district at a consistent zoom level
       try {
-        var bounds = activeLayer.getBounds();
-        secondaryLayers.forEach(function(l) { bounds.extend(l.getBounds()); });
-        map.setView(bounds.getCenter(), 8);
+        map.setView(activeLayer.getBounds().getCenter(), 8);
       } catch(e) {}
     });
   }
