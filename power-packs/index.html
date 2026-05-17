@@ -802,11 +802,12 @@ var PP = (function() {
     '#7cb342',  // 16 light-green
   ];
   var SD_COLOR_OVERRIDES = {
-    43: '#1565c0',  // dark blue
+    43: '#ff6d00',  // vivid deep-orange (CD-9 standout)
   };
   var CD_COLOR_OVERRIDES = {
     1: '#00cfff',  // neon sky blue
     2: '#ff1493',  // hot pink
+    9: '#ff6d00',  // vivid deep-orange — stands out against surrounding purples/teals
   };
   function packBg(packNum, fallback, sdNum, cdNum) {
     if (sdNum && SD_COLOR_OVERRIDES[sdNum]) return SD_COLOR_OVERRIDES[sdNum];
