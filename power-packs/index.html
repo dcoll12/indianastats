@@ -1790,7 +1790,7 @@ var PP = (function() {
 
       // House-anchored packs — safety net for senate candidates that were never placed
       // (FORCED_MEMBERS handles the case where they landed in a wrong pack first)
-      var directHouseRoutes = { 14: 81, 19: 81, 25: 39 }; // SD-14/19 → PP08 (HD-81); SD-25 → PP02 (HD-39)
+      var directHouseRoutes = { 14: 81, 19: 81, 15: 81, 25: 39, 31: 39 }; // SD-14/19/15 → PP08 (HD-81); SD-25/31 → PP02 (HD-39)
       Object.keys(directHouseRoutes).forEach(function(sdStr) {
         var sd = Number(sdStr);
         var targetHd = directHouseRoutes[sdStr];
