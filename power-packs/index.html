@@ -1763,17 +1763,40 @@ var PP = (function() {
     // Add senate candidates whose districts are not geographically adjacent to any
     // pack anchor — they are skipped by the main anchor loop (no ActBlue URL) and
     // never placed into any pack, so they must be injected directly here.
+    // Note: SD-14/19/25/27 are also handled by FORCED_MEMBERS above (covers the case
+    // where they were pre-captured by a non-designated pack's geographic overlap).
+    // This block is the safety net for when they were never placed in any pack at all.
     (function() {
       // Senate-anchored packs
-      // These routes handle senate candidates whose districts have no geographic adjacency to any pack anchor.
-      // SD-14/19/25/27 are handled via FORCED_MEMBERS (which removes them from any pack they landed in first).
-      var directRoutes = { 17: 22, 38: 49, 1: 22, 4: 22, 11: 22, 46: 43 }; // SD-17 → PP06 (SD-22); SD-38 → PP07 (SD-49); SD-1/4/11 → PP06 (SD-22); SD-46 → PP09 (SD-43)
+      var directRoutes = { 17: 22, 38: 49, 1: 22, 4: 22, 11: 22, 46: 43, 27: 43 }; // SD-17 → PP06 (SD-22); SD-38 → PP07 (SD-49); SD-1/4/11 → PP06 (SD-22); SD-46/27 → PP09 (SD-43)
       Object.keys(directRoutes).forEach(function(sdStr) {
         var sd = Number(sdStr);
         var targetDnum = directRoutes[sdStr];
         var targetPack = null;
         for (var i = 0; i < packs.length; i++) {
           if (packs[i].anchor.dtype === 'senate' && packs[i].anchor.dnum === targetDnum) {
+            targetPack = packs[i]; break;
+          }
+        }
+        if (!targetPack) return;
+        (senateBySD[sd] || []).forEach(function(e) {
+          if (!assigned[e._focusIdx]) {
+            assigned[e._focusIdx] = 1;
+            targetPack.members.push(e);
+          }
+        });
+        targetPack.members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
+      });
+
+      // House-anchored packs — safety net for senate candidates that were never placed
+      // (FORCED_MEMBERS handles the case where they landed in a wrong pack first)
+      var directHouseRoutes = { 14: 81, 19: 81, 25: 39 }; // SD-14/19 → PP08 (HD-81); SD-25 → PP02 (HD-39)
+      Object.keys(directHouseRoutes).forEach(function(sdStr) {
+        var sd = Number(sdStr);
+        var targetHd = directHouseRoutes[sdStr];
+        var targetPack = null;
+        for (var i = 0; i < packs.length; i++) {
+          if (packs[i].anchor.dtype === 'house' && packs[i].anchor.dnum === targetHd) {
             targetPack = packs[i]; break;
           }
         }
