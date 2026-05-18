@@ -5,6 +5,8 @@
 <link rel="icon" type="image/png" href="../../favicon.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tandem Fundraisers — Indiana Rural Summit</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -13,7 +15,7 @@ body {
   color: #1e293b;
   line-height: 1.5;
 }
-.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+.container { max-width: 1600px; margin: 0 auto; padding: 20px; }
 
 header {
   background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
@@ -36,6 +38,37 @@ header p { font-size: 14px; opacity: 0.85; max-width: 700px; margin: 0 auto; }
 .site-nav a:hover { background: rgba(255,255,255,0.3); border-color: white; }
 .site-nav a.active { background: white; color: #1e3a5f; border-color: white; }
 
+/* ── Two-column layout: cards + sticky map ─────────────────────────── */
+.fund-layout { display: flex; gap: 16px; align-items: flex-start; }
+.fund-main { flex: 1; min-width: 0; }
+
+.fund-map-panel {
+  width: 320px; flex-shrink: 0; position: sticky; top: 12px;
+  background: white; border-radius: 10px; border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden;
+}
+.fund-map-header {
+  background: #1e3a5f; color: white; padding: 8px 12px;
+  font-size: 0.78rem; font-weight: 700; letter-spacing: 0.4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.fund-map-hint { font-size: 0.7rem; opacity: 0.8; font-weight: 400; font-style: italic; }
+#fund-map { height: 380px; width: 100%; }
+.fund-map-label {
+  padding: 7px 10px; font-size: 0.72rem; color: #475569;
+  background: #f8fafc; border-top: 1px solid #e2e8f0;
+  min-height: 30px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+#fund-map-label-district { font-weight: 600; color: #1e3a5f; }
+#fund-map-label-counties { font-size: 0.67rem; color: #64748b; line-height: 1.4; }
+
+@media (max-width: 900px) {
+  .fund-layout { flex-direction: column-reverse; }
+  .fund-map-panel { width: 100%; position: static; }
+  #fund-map { height: 260px; }
+}
+
 .intro {
   background: white; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
   border-left: 4px solid #2d5a8e; font-size: 0.88rem; color: #475569;
@@ -52,7 +85,7 @@ header p { font-size: 14px; opacity: 0.85; max-width: 700px; margin: 0 auto; }
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 16px;
 }
 
@@ -61,8 +94,12 @@ header p { font-size: 14px; opacity: 0.85; max-width: 700px; margin: 0 auto; }
   background: white; border-radius: 10px; overflow: hidden;
   border: 1px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   display: flex; flex-direction: column;
+  cursor: default;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
+.fund-card:hover { border-color: #3b82f6; box-shadow: 0 2px 8px rgba(59,130,246,0.18); }
 .fund-card.on-hold { opacity: 0.72; }
+.fund-card.on-hold:hover { border-color: #94a3b8; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
 
 /* card header bar */
 .fund-card-head {
@@ -150,6 +187,10 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
   .cards-grid { grid-template-columns: 1fr; }
   header h1 { font-size: 22px; }
 }
+/* Light-background card headers: swap white text to dark */
+.fund-card-head.fund-light-bg .fund-card-title,
+.fund-card-head.fund-light-bg .fund-card-subtitle { color: #0f172a; }
+.fund-card-head.fund-light-bg .fund-card-subtitle { opacity: 0.65; }
 </style>
 </head>
 <body>
@@ -161,19 +202,23 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     <nav class="site-nav">
       <a href="../">Power Packs</a>
       <a href="../../">My Pack</a>
-      <a href="../../lean-index.html">IN Partisan Lean Index</a>
       <a class="active" href="./">Fundraisers</a>
+      <a href="../../lean-index.html">IN Partisan Lean Index</a>
+      <a href="https://indianaruralsummit.org/" target="_blank" rel="noopener">Return to IRS Home</a>
     </nav>
   </header>
+
+  <div class="fund-layout">
+    <div class="fund-main">
 
   <div class="intro">
     <strong>How these pages work:</strong> Each ActBlue page pools donations for a curated group of candidates running together in overlapping districts. When you donate through one of these links, you can split your gift across every candidate in that coalition. Candidates marked <em>no ActBlue</em> are not yet on a fundraiser page.
   </div>
 
   <!-- ── POLAR ANCHOR PACKS ────────────────────────────────────────── -->
-  <div class="section-heading">Polar Anchor Packs (PP01–PP09)</div>
+  <div class="section-heading">Polar Anchor Packs (PP01–PP10)</div>
   <div class="intro" style="margin-bottom: 0">
-    These nine curated packs appear with <strong>💛 DONATE</strong> buttons directly on the
+    These ten curated packs appear with <strong>💛 DONATE</strong> buttons directly on the
     <a href="../">Power Packs page</a> (⚡ Focus mode). Each pack is anchored by the most
     competitive candidate in a geographic cluster and includes all overlapping Senate and House races.
   </div>
@@ -183,7 +228,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
   <div class="cards-grid">
 
     <!-- SD 1, 2, 3 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="1,2,3" data-hdnums="12,14,15,19,1,2,3">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 1, SD 2 &amp; SD 3</div>
@@ -215,7 +260,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 4 & SD 8 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="4,8" data-hdnums="9,10,7">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 4 &amp; SD 8</div>
@@ -234,19 +279,16 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
         <ul class="fund-cand-list">
           <li><span class="fund-dist-tag house">HD 9</span><span class="fund-cand-name">Randy Novak</span></li>
           <li><span class="fund-dist-tag house">HD 10</span><span class="fund-cand-name">Charles (Chuck) Moseley</span></li>
-          <li><span class="fund-dist-tag house">HD 20</span><span class="fund-cand-name">Laura Liskey</span></li>
         </ul>
         <div class="fund-from-label">from SD 8</div>
         <ul class="fund-cand-list">
           <li><span class="fund-dist-tag house">HD 7</span><span class="fund-cand-name">Oliver Davis</span></li>
-          <li><span class="fund-dist-tag house">HD 16</span><span class="fund-cand-name">Ashley Hammac</span></li>
-          <li><span class="fund-dist-tag house">HD 17</span><span class="fund-cand-name">Mary Gibson</span></li>
         </ul>
       </div>
     </div>
 
     <!-- SD 5 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="5" data-hdnums="4,11,13,16,17,19">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 5</div>
@@ -269,7 +311,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 6 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="6" data-hdnums="11,13,14,15,16,19">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 6</div>
@@ -296,7 +338,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 11 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="11" data-hdnums="5,8,48,49">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 11</div>
@@ -323,7 +365,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 14 & SD 15 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="14,15" data-hdnums="82,85,81,84">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 14 &amp; SD 15</div>
@@ -353,7 +395,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 17 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="17,18" data-hdnums="30,31,50,17,23,38">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 17</div>
@@ -384,7 +426,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 19 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="19" data-hdnums="33,50,79,80,82,85">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 19</div>
@@ -412,7 +454,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 21 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="21" data-hdnums="24,29,30,37,38,39">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 21</div>
@@ -439,11 +481,11 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 22 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="22" data-hdnums="4,13,16,23,26,27,38">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 22</div>
-          <div class="fund-card-subtitle">also see PP06 Polar Anchor pack</div>
+          <div class="fund-card-subtitle">Carroll &amp; Tippecanoe — also see PP06 Polar Anchor pack</div>
         </div>
         <a class="fund-donate-btn" href="https://secure.actblue.com/donate/irs-sd22" target="_blank" rel="noopener">💛 DONATE</a>
       </div>
@@ -456,16 +498,19 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
       <div class="fund-house-section">
         <div class="fund-section-label">House</div>
         <ul class="fund-cand-list">
-          <li><span class="fund-dist-tag house">HD 13</span><span class="fund-cand-name">Brenna Geswein</span></li>
+          <li><span class="fund-dist-tag house">HD 27</span><span class="fund-cand-name">Sheila J. Klinker</span></li>
           <li><span class="fund-dist-tag house">HD 26</span><span class="fund-cand-name">Chris Campbell</span></li>
+          <li><span class="fund-dist-tag house">HD 4</span><span class="fund-cand-name">Ryan Kominakis</span></li>
+          <li><span class="fund-dist-tag house">HD 13</span><span class="fund-cand-name">Brenna Geswein</span></li>
           <li><span class="fund-dist-tag house">HD 38</span><span class="fund-cand-name">Nate Stout</span></li>
-          <li><span class="fund-dist-tag house">HD 41</span><span class="fund-cand-name">Jackson Hayes</span></li>
+          <li><span class="fund-dist-tag house">HD 23</span><span class="fund-cand-name">Austin Meives</span></li>
+          <li><span class="fund-dist-tag house">HD 16</span><span class="fund-cand-name">Ashley Hammac</span></li>
         </ul>
       </div>
     </div>
 
     <!-- SD 23 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="23" data-hdnums="13,26,38,41,44">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 23</div>
@@ -491,7 +536,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 25 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="25" data-hdnums="31,35,36,37,53,88">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 25</div>
@@ -519,7 +564,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 26 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="26" data-hdnums="33,34,35">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 26</div>
@@ -544,7 +589,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 27 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="27" data-hdnums="33,35,55,56">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 27</div>
@@ -570,7 +615,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 29 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="29" data-hdnums="24,25,32,39,86,91,92">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 29</div>
@@ -599,7 +644,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- HD 25 standalone (under SD 29 geography) -->
-    <div class="fund-card">
+    <div class="fund-card" data-hdnums="25,28,40,41">
       <div class="fund-card-head hd-anchor">
         <div class="fund-card-head-left">
           <div class="fund-card-title">HD 25 Coalition</div>
@@ -620,7 +665,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 31 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="31" data-hdnums="29,37,39,88">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 31</div>
@@ -645,7 +690,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 38 & SD 39 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="38,39" data-hdnums="45,46,63,64">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 38 &amp; SD 39</div>
@@ -672,7 +717,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- HD 62 / SD 40 -->
-    <div class="fund-card">
+    <div class="fund-card" data-hdnums="62,45,46,47,60">
       <div class="fund-card-head hd-anchor">
         <div class="fund-card-head-left">
           <div class="fund-card-title">HD 62 Coalition <span style="font-size:0.72rem;opacity:0.7;font-weight:400">[SD 40 area]</span></div>
@@ -694,7 +739,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 41 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="41" data-hdnums="47,58,69,73">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 41</div>
@@ -720,7 +765,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 43 — ON HOLD -->
-    <div class="fund-card on-hold">
+    <div class="fund-card on-hold" data-sdnums="43" data-hdnums="66,67,68,69">
       <div class="fund-card-head on-hold">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 43</div>
@@ -747,7 +792,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 45 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="45" data-hdnums="66,70,72">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 45</div>
@@ -772,7 +817,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 47 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="47" data-hdnums="65,69,70,72">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 47</div>
@@ -798,7 +843,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 48 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="48" data-hdnums="63,64">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 48</div>
@@ -822,7 +867,7 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </div>
 
     <!-- SD 49 -->
-    <div class="fund-card">
+    <div class="fund-card" data-sdnums="49" data-hdnums="64,76,78">
       <div class="fund-card-head">
         <div class="fund-card-head-left">
           <div class="fund-card-title">SD 49</div>
@@ -861,6 +906,218 @@ footer p { margin-bottom: 8px; line-height: 1.7; }
     </p>
   </footer>
 
-</div>
+    </div><!-- /.fund-main -->
+
+    <!-- ── Sticky map panel ──────────────────────────────────────────── -->
+    <div class="fund-map-panel">
+      <div class="fund-map-header">
+        🗺️ District Map
+        <span class="fund-map-hint">hover a card to highlight</span>
+      </div>
+      <div id="fund-map"></div>
+      <div class="fund-map-label">
+        <span id="fund-map-label-district">Hover over a fundraiser card</span>
+        <span id="fund-map-label-counties"></span>
+      </div>
+    </div>
+
+  </div><!-- /.fund-layout -->
+
+</div><!-- /.container -->
+
+<script>
+(function() {
+  var map = null;
+  var geoPromise = null;
+  var geoData = null;
+  var activeLayer = null;
+  var secondaryLayers = [];
+  var restingLayers = [];
+  var INDIANA_BOUNDS = [[37.7, -88.1], [41.8, -84.8]];
+
+  // Galactic Neon Spark — same 9-color palette as the Focus tab packs
+  var PALETTE = [
+    '#ffff47',  // 1 neon yellow
+    '#ff6600',  // 2 blaze orange
+    '#ff1e35',  // 3 strawberry red
+    '#f36aff',  // 4 neon orchid
+    '#6a00ba',  // 5 indigo bloom
+    '#2d2dd6',  // 6 bright indigo
+    '#0565ff',  // 7 royal blue
+    '#00b327',  // 8 jade green
+    '#37fffc',  // 9 electric aqua
+  ];
+
+  function isLightBg(hex) {
+    var r = parseInt(hex.slice(1,3),16)/255;
+    var g = parseInt(hex.slice(3,5),16)/255;
+    var b = parseInt(hex.slice(5,7),16)/255;
+    var lin = function(c){ return c<=0.04045 ? c/12.92 : Math.pow((c+0.055)/1.055,2.4); };
+    return 0.2126*lin(r) + 0.7152*lin(g) + 0.0722*lin(b) > 0.25;
+  }
+
+  function initMap() {
+    var el = document.getElementById('fund-map');
+    if (!el || map) return;
+    map = L.map('fund-map', { zoomControl: true, attributionControl: false, scrollWheelZoom: false });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 14 }).addTo(map);
+    map.fitBounds(INDIANA_BOUNDS);
+    loadGeo();
+  }
+
+  function loadGeo() {
+    if (geoPromise) return geoPromise;
+    geoPromise = fetch('../../data/districts_simplified.json')
+      .then(function(r) { return r.json(); })
+      .then(function(data) { geoData = data; return data; })
+      .catch(function() { geoData = {}; return {}; });
+    return geoPromise;
+  }
+
+  function setLabel(text) {
+    var elDist = document.getElementById('fund-map-label-district');
+    var elCo = document.getElementById('fund-map-label-counties');
+    if (elDist) elDist.textContent = text || 'Hover over a fundraiser card';
+    if (elCo) elCo.textContent = '';
+  }
+
+  function clearHighlight() {
+    if (!map) return;
+    if (activeLayer) { map.removeLayer(activeLayer); activeLayer = null; }
+    secondaryLayers.forEach(function(l) { map.removeLayer(l); });
+    secondaryLayers = [];
+  }
+
+  function clearRestingLayers() {
+    restingLayers.forEach(function(l) { map.removeLayer(l); });
+    restingLayers = [];
+  }
+
+  function showRestingGroups() {
+    if (!map) return;
+    loadGeo().then(function(data) {
+      clearRestingLayers();
+      // Collect all districts globally; primaries first to win deduplication.
+      var pending = [];
+      document.querySelectorAll('.fund-card[data-cardcolor]').forEach(function(card) {
+        var color = card.getAttribute('data-cardcolor');
+        var sdNums = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
+        var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
+        if (sdNums.length) {
+          pending.push({ dtype: 'senate', dnum: sdNums[0], color: color, isPrimary: true });
+          sdNums.slice(1).forEach(function(n) { pending.push({ dtype: 'senate', dnum: n, color: color, isPrimary: false }); });
+          hdNums.forEach(function(n) { pending.push({ dtype: 'house', dnum: n, color: color, isPrimary: false }); });
+        } else if (hdNums.length) {
+          pending.push({ dtype: 'house', dnum: hdNums[0], color: color, isPrimary: true });
+          hdNums.slice(1).forEach(function(n) { pending.push({ dtype: 'house', dnum: n, color: color, isPrimary: false }); });
+        }
+      });
+      // Primaries first so their color wins when districts overlap between groups
+      pending.sort(function(a, b) { return (a.isPrimary ? 0 : 1) - (b.isPrimary ? 0 : 1); });
+      var seen = {};
+      pending.forEach(function(d) {
+        var key = d.dtype + ':' + d.dnum;
+        if (seen[key]) return;
+        seen[key] = true;
+        var feature = (data[d.dtype] || {})[String(d.dnum)];
+        if (!feature) return;
+        var layer = L.geoJSON(feature, {
+          style: { color: d.color, weight: d.isPrimary ? 2.5 : 1.5,
+                   fillColor: d.color, fillOpacity: d.isPrimary ? 0.72 : 0.45 }
+        }).addTo(map);
+        restingLayers.push(layer);
+      });
+    });
+  }
+
+  function highlight(primaryDtype, primaryDnum, secondary, label, color) {
+    if (!map) return;
+    clearRestingLayers();
+    loadGeo().then(function(data) {
+      clearHighlight();
+      var feature = (data[primaryDtype] || {})[String(primaryDnum)];
+      if (!feature) return;
+
+      activeLayer = L.geoJSON(feature, {
+        style: { color: color, weight: 2.5, fillColor: color, fillOpacity: 0.75 }
+      }).addTo(map);
+
+      secondaryLayers = (secondary || []).map(function(d) {
+        var f = (data[d.dtype] || {})[String(d.dnum)];
+        if (!f) return null;
+        return L.geoJSON(f, {
+          style: { color: color, weight: 1.5, fillColor: color, fillOpacity: 0.4 }
+        }).addTo(map);
+      }).filter(Boolean);
+
+      setLabel(label || '');
+
+      try {
+        var bounds = activeLayer.getBounds();
+        secondaryLayers.forEach(function(l) { bounds.extend(l.getBounds()); });
+        map.fitBounds(bounds, { padding: [24, 24], maxZoom: 9 });
+      } catch(e) {}
+    });
+  }
+
+  function revertToResting() {
+    clearHighlight();
+    setLabel('');
+    if (map) map.fitBounds(INDIANA_BOUNDS);
+    showRestingGroups();
+  }
+
+  function wireCards() {
+    var colorIndex = 0;
+    document.querySelectorAll('.fund-card').forEach(function(card) {
+      var sdNums = (card.getAttribute('data-sdnums') || '').split(',').map(Number).filter(Boolean);
+      var hdNums = (card.getAttribute('data-hdnums') || '').split(',').map(Number).filter(Boolean);
+      if (!sdNums.length && !hdNums.length) return;
+
+      // Assign a palette color to this card
+      var color = PALETTE[colorIndex % PALETTE.length];
+      colorIndex++;
+      card.setAttribute('data-cardcolor', color);
+
+      // Apply color to the card header (skip on-hold cards which keep their gray)
+      var head = card.querySelector('.fund-card-head');
+      if (head && !head.classList.contains('on-hold')) {
+        head.style.background = color;
+        if (isLightBg(color)) head.classList.add('fund-light-bg');
+        // Make the hover border match the card color
+        card.style.setProperty('--card-color', color);
+      }
+
+      card.addEventListener('mouseenter', function() {
+        var label, primary, secondary;
+        if (sdNums.length > 0) {
+          primary = { dtype: 'senate', dnum: sdNums[0] };
+          secondary = sdNums.slice(1).map(function(n) { return { dtype: 'senate', dnum: n }; })
+            .concat(hdNums.map(function(n) { return { dtype: 'house', dnum: n }; }));
+          label = 'SD-' + sdNums[0];
+          if (sdNums.length > 1) label += ' + ' + (sdNums.length - 1) + ' SD' + (sdNums.length > 2 ? 's' : '');
+          if (hdNums.length) label += ' + ' + hdNums.length + ' HD' + (hdNums.length !== 1 ? 's' : '');
+        } else {
+          primary = { dtype: 'house', dnum: hdNums[0] };
+          secondary = hdNums.slice(1).map(function(n) { return { dtype: 'house', dnum: n }; });
+          label = 'HD-' + hdNums[0];
+          if (hdNums.length > 1) label += ' + ' + (hdNums.length - 1) + ' HD' + (hdNums.length > 2 ? 's' : '');
+        }
+        highlight(primary.dtype, primary.dnum, secondary, label, color);
+      });
+
+      card.addEventListener('mouseleave', function(e) {
+        if (!card.contains(e.relatedTarget)) revertToResting();
+      });
+    });
+  }
+
+  window.addEventListener('load', function() {
+    initMap();
+    wireCards();
+    showRestingGroups();
+  });
+})();
+</script>
 </body>
 </html>
