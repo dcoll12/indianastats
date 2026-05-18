@@ -2959,7 +2959,7 @@ var PP = (function() {
       var totalCands = result.packs.reduce(function(n, p) { return n + p.senateCandidates.length + p.houseMembers.length; }, 0);
       if (statsEl) statsEl.textContent = result.packs.length + ' senate district' + (result.packs.length !== 1 ? 's' : '')
         + ' · ' + totalCands + ' candidate' + (totalCands !== 1 ? 's' : '')
-        + ' — one pack per senate district';
+        + ' — one pack per senate district · HD candidates in 2 groups if overlapping';
       out.innerHTML = renderSenatePacks(result);
     } else if (state.mode === 'fundraiser') {
       if (cdWrap)     cdWrap.style.display     = 'none';
