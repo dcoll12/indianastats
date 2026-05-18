@@ -1757,13 +1757,27 @@ var PP = (function() {
     // pack anchor — they are skipped by the main anchor loop (no ActBlue URL) and
     // never placed into any pack, so they must be injected directly here.
     (function() {
-      var directRoutes = { 17: 22, 38: 49, 1: 22, 4: 22, 11: 22, 46: 43 }; // SD-17 → PP06 (SD-22); SD-38 → PP07 (SD-49); SD-1/4/11 → PP06 (SD-22); SD-46 → PP09 (SD-43)
+      // Each entry maps SD number → { dtype, dnum } of the target pack anchor.
+      // Senate anchors: SD-22 (PP06), SD-49 (PP07), SD-43 (PP09)
+      // House anchors:  HD-39 (PP02), HD-34 (PP05), HD-81 (PP08)
+      var directRoutes = {
+        1:  { dtype: 'senate', dnum: 22 },  // NW IN → PP06 (SD-22, Tippecanoe)
+        4:  { dtype: 'senate', dnum: 22 },  // NW IN → PP06
+        11: { dtype: 'senate', dnum: 22 },  // NW IN → PP06
+        17: { dtype: 'senate', dnum: 22 },  // NW IN → PP06
+        14: { dtype: 'house',  dnum: 81 },  // NE IN (Allen/DeKalb) → PP08 (HD-81, Allen)
+        19: { dtype: 'house',  dnum: 81 },  // NE IN (Allen area) → PP08 (HD-81, Allen)
+        25: { dtype: 'house',  dnum: 39 },  // Hamilton/Madison → PP02 (HD-39, Hamilton)
+        27: { dtype: 'senate', dnum: 43 },  // SE IN (Franklin/Union) → PP09 (SD-43)
+        38: { dtype: 'senate', dnum: 49 },  // SW IN → PP07 (SD-49, Vanderburgh)
+        46: { dtype: 'senate', dnum: 43 }   // SE IN → PP09 (SD-43)
+      };
       Object.keys(directRoutes).forEach(function(sdStr) {
         var sd = Number(sdStr);
-        var targetDnum = directRoutes[sdStr];
+        var route = directRoutes[sdStr];
         var targetPack = null;
         for (var i = 0; i < packs.length; i++) {
-          if (packs[i].anchor.dtype === 'senate' && packs[i].anchor.dnum === targetDnum) {
+          if (packs[i].anchor.dtype === route.dtype && packs[i].anchor.dnum === route.dnum) {
             targetPack = packs[i]; break;
           }
         }
