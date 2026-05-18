@@ -1397,12 +1397,6 @@ var PP = (function() {
       49: [63, 64, 76, 78], // HD-63/64/76/78 pulled into SD-49 (PP07)
     };
 
-    // Extra SDs to include in a senate anchor's overlap (non-adjacent SDs explicitly assigned)
-    var SD_EXTRA_SDS = {
-      22: [1, 4, 11, 17], // SD-1/4/11 (NW Indiana) + SD-17 (same coalition as SD-18) → SD-22 (PP06)
-      49: [38],            // SD-38 → SD-49 (PP07); same coalition as SD-39
-    };
-
     // HDs to exclude from a senate district's geographic pull (redirected to another pack)
     var SD_EXCLUDED_HDS = {
       4:  [20],  // HD-20 → too deep red for SD-4's competitive pack
@@ -1436,7 +1430,6 @@ var PP = (function() {
             if (sd !== dnum) sds[sd] = true;
           });
         });
-        (SD_EXTRA_SDS[dnum] || []).forEach(function(sd) { sds[sd] = true; });
       } else if (dtype === 'house') {
         var hdExcluded = new Set((HD_EXCLUDED_HDS_FROM_HD[dnum] || []).map(Number));
         var directSDs = ((dd.hd_to_sds || {})[String(dnum)] || []).concat(HD_EXTRA_SDS[dnum] || []);
@@ -1757,6 +1750,31 @@ var PP = (function() {
             break;
           }
         }
+      });
+    })();
+
+    // Add senate candidates whose districts are not geographically adjacent to any
+    // pack anchor — they are skipped by the main anchor loop (no ActBlue URL) and
+    // never placed into any pack, so they must be injected directly here.
+    (function() {
+      var directRoutes = { 17: 22, 38: 49 }; // SD-17 → PP06 (SD-22); SD-38 → PP07 (SD-49)
+      Object.keys(directRoutes).forEach(function(sdStr) {
+        var sd = Number(sdStr);
+        var targetDnum = directRoutes[sdStr];
+        var targetPack = null;
+        for (var i = 0; i < packs.length; i++) {
+          if (packs[i].anchor.dtype === 'senate' && packs[i].anchor.dnum === targetDnum) {
+            targetPack = packs[i]; break;
+          }
+        }
+        if (!targetPack) return;
+        (senateBySD[sd] || []).forEach(function(e) {
+          if (!assigned[e._focusIdx]) {
+            assigned[e._focusIdx] = 1;
+            targetPack.members.push(e);
+          }
+        });
+        targetPack.members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
       });
     })();
 
