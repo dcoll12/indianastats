@@ -2400,7 +2400,7 @@ var PP = (function() {
     if (tc.mission) parts.push('<div class="pp-pack-mission">' + tc.mission + '</div>');
     parts.push('</div>');
     var donateKey = anchor.dtype + ':' + anchor.dnum;
-    var donateUrl = ACTBLUE_PACK_URLS[donateKey] || null;
+    var donateUrl = ACTBLUE_PACK_URLS[donateKey] || (donateKey === 'house:4' ? 'https://secure.actblue.com/donate/irs-pp10-hd-4' : null);
     parts.push('<div style="display:flex;align-items:center;gap:10px;flex-shrink:0">');
     parts.push('<div class="pp-pack-count">' + totalCands + ' candidate' + (totalCands !== 1 ? 's' : '') + '</div>');
     if (donateUrl) {
