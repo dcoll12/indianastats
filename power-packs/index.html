@@ -1658,6 +1658,13 @@ var PP = (function() {
       { dtype: 'senate', dnum: 39, anchorDtype: 'senate', anchorDnum: 49 }, // Joseph Baughman (SD-39) → SD-49
       { dtype: 'senate', dnum: 48, anchorDtype: 'senate', anchorDnum: 49 }, // Brad Hochgesang (SD-48) → SD-49
       { dtype: 'house',  dnum: 64, anchorDtype: 'senate', anchorDnum: 49 }, // Candace Greer (HD-64) → SD-49
+      // PP08 — HD-81 Sharon Wight (Allen Co.) — senate candidates captured by other packs before direct injection runs
+      { dtype: 'senate', dnum: 14, anchorDtype: 'house', anchorDnum: 81 }, // Blaine Sefton (SD-14) → HD-81 (PP08)
+      { dtype: 'senate', dnum: 19, anchorDtype: 'house', anchorDnum: 81 }, // Timothy Murphy (SD-19) → HD-81 (PP08)
+      // PP02 — HD-39 Lindsay Gramlich (Hamilton Co.)
+      { dtype: 'senate', dnum: 25, anchorDtype: 'house', anchorDnum: 39 }, // Tamie Dixon-Tatum (SD-25) → HD-39 (PP02)
+      // PP09 — SD-43
+      { dtype: 'senate', dnum: 27, anchorDtype: 'senate', anchorDnum: 43 }, // Ronald Itnyre (SD-27) → SD-43 (PP09)
     ];
     (function() {
       FORCED_MEMBERS.forEach(function(fm) {
@@ -1758,34 +1765,15 @@ var PP = (function() {
     // never placed into any pack, so they must be injected directly here.
     (function() {
       // Senate-anchored packs
-      var directRoutes = { 17: 22, 38: 49, 1: 22, 4: 22, 11: 22, 46: 43, 27: 43 }; // SD-17 → PP06 (SD-22); SD-38 → PP07 (SD-49); SD-1/4/11 → PP06 (SD-22); SD-46/27 → PP09 (SD-43)
+      // These routes handle senate candidates whose districts have no geographic adjacency to any pack anchor.
+      // SD-14/19/25/27 are handled via FORCED_MEMBERS (which removes them from any pack they landed in first).
+      var directRoutes = { 17: 22, 38: 49, 1: 22, 4: 22, 11: 22, 46: 43 }; // SD-17 → PP06 (SD-22); SD-38 → PP07 (SD-49); SD-1/4/11 → PP06 (SD-22); SD-46 → PP09 (SD-43)
       Object.keys(directRoutes).forEach(function(sdStr) {
         var sd = Number(sdStr);
         var targetDnum = directRoutes[sdStr];
         var targetPack = null;
         for (var i = 0; i < packs.length; i++) {
           if (packs[i].anchor.dtype === 'senate' && packs[i].anchor.dnum === targetDnum) {
-            targetPack = packs[i]; break;
-          }
-        }
-        if (!targetPack) return;
-        (senateBySD[sd] || []).forEach(function(e) {
-          if (!assigned[e._focusIdx]) {
-            assigned[e._focusIdx] = 1;
-            targetPack.members.push(e);
-          }
-        });
-        targetPack.members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
-      });
-
-      // House-anchored packs — senate candidates that must land in a house-anchored pack
-      var directHouseRoutes = { 14: 81, 19: 81, 25: 39 }; // SD-14/19 → PP08 (HD-81, Allen Co.); SD-25 → PP02 (HD-39, Hamilton Co.)
-      Object.keys(directHouseRoutes).forEach(function(sdStr) {
-        var sd = Number(sdStr);
-        var targetHd = directHouseRoutes[sdStr];
-        var targetPack = null;
-        for (var i = 0; i < packs.length; i++) {
-          if (packs[i].anchor.dtype === 'house' && packs[i].anchor.dnum === targetHd) {
             targetPack = packs[i]; break;
           }
         }
