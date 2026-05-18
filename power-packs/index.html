@@ -1397,6 +1397,12 @@ var PP = (function() {
       49: [63, 64, 76, 78], // HD-63/64/76/78 pulled into SD-49 (PP07)
     };
 
+    // Extra SDs to include in a senate anchor's overlap (non-adjacent SDs explicitly assigned)
+    var SD_EXTRA_SDS = {
+      22: [1, 4, 11, 17], // SD-1/4/11 (NW Indiana) + SD-17 (same coalition as SD-18) → SD-22 (PP06)
+      49: [38],            // SD-38 → SD-49 (PP07); same coalition as SD-39
+    };
+
     // HDs to exclude from a senate district's geographic pull (redirected to another pack)
     var SD_EXCLUDED_HDS = {
       4:  [20],  // HD-20 → too deep red for SD-4's competitive pack
@@ -1430,6 +1436,7 @@ var PP = (function() {
             if (sd !== dnum) sds[sd] = true;
           });
         });
+        (SD_EXTRA_SDS[dnum] || []).forEach(function(sd) { sds[sd] = true; });
       } else if (dtype === 'house') {
         var hdExcluded = new Set((HD_EXCLUDED_HDS_FROM_HD[dnum] || []).map(Number));
         var directSDs = ((dd.hd_to_sds || {})[String(dnum)] || []).concat(HD_EXTRA_SDS[dnum] || []);
@@ -1650,10 +1657,6 @@ var PP = (function() {
       // PP06 — SD-22 Natasha Baker
       { dtype: 'senate', dnum: 23, anchorDtype: 'senate', anchorDnum: 22 }, // David Sanders (SD-23) → SD-22
       { dtype: 'senate', dnum:  6, anchorDtype: 'senate', anchorDnum: 22 }, // Kate-Lynn Holley (SD-6) → SD-22
-      { dtype: 'senate', dnum:  1, anchorDtype: 'senate', anchorDnum: 22 }, // Scott Houldieson (SD-1) → SD-22 (adjacent to SD-6)
-      { dtype: 'senate', dnum:  4, anchorDtype: 'senate', anchorDnum: 22 }, // Rodney Pol (SD-4) → SD-22 (NW Indiana via SD-8/5/6 chain)
-      { dtype: 'senate', dnum: 11, anchorDtype: 'senate', anchorDnum: 22 }, // Gabrianna Gratzol (SD-11) → SD-22 (NW Indiana via SD-5 chain)
-      { dtype: 'senate', dnum: 17, anchorDtype: 'senate', anchorDnum: 22 }, // Cynthia M. Wehr (SD-17) → SD-22 (same coalition as SD-18)
       { dtype: 'house',  dnum: 13, anchorDtype: 'senate', anchorDnum: 22 }, // Brenna Geswein (HD-13) → SD-22
       { dtype: 'house',  dnum: 23, anchorDtype: 'senate', anchorDnum: 22 }, // Austin Meives (HD-23) → SD-22
       { dtype: 'house',  dnum: 16, anchorDtype: 'senate', anchorDnum: 22 }, // Ashley Hammac (HD-16) → SD-22
@@ -1661,7 +1664,6 @@ var PP = (function() {
       // PP07 — SD-49 Cindi Clayton
       { dtype: 'senate', dnum: 39, anchorDtype: 'senate', anchorDnum: 49 }, // Joseph Baughman (SD-39) → SD-49
       { dtype: 'senate', dnum: 48, anchorDtype: 'senate', anchorDnum: 49 }, // Brad Hochgesang (SD-48) → SD-49
-      { dtype: 'senate', dnum: 38, anchorDtype: 'senate', anchorDnum: 49 }, // Kacey Blundell (SD-38) → SD-49 (same coalition as SD-39)
       { dtype: 'house',  dnum: 64, anchorDtype: 'senate', anchorDnum: 49 }, // Candace Greer (HD-64) → SD-49
     ];
     (function() {
