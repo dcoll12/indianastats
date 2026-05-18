@@ -1757,7 +1757,7 @@ var PP = (function() {
     // pack anchor — they are skipped by the main anchor loop (no ActBlue URL) and
     // never placed into any pack, so they must be injected directly here.
     (function() {
-      var directRoutes = { 17: 22, 38: 49 }; // SD-17 → PP06 (SD-22); SD-38 → PP07 (SD-49)
+      var directRoutes = { 17: 22, 38: 49, 1: 22, 4: 22, 11: 22, 46: 43 }; // SD-17 → PP06 (SD-22); SD-38 → PP07 (SD-49); SD-1/4/11 → PP06 (SD-22); SD-46 → PP09 (SD-43)
       Object.keys(directRoutes).forEach(function(sdStr) {
         var sd = Number(sdStr);
         var targetDnum = directRoutes[sdStr];
