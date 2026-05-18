@@ -1691,7 +1691,6 @@ var PP = (function() {
 
     // Explicit forced pack merges — entire source pack folds into target pack
     var FORCED_MERGES = [
-      { srcDtype: 'house', srcDnum: 4,  intoDtype: 'senate', intoDnum: 22 }, // HD-4 pack → SD-22 (Natasha Baker, PP06)
       { srcDtype: 'house', srcDnum: 82, intoDtype: 'house',  intoDnum: 81 }, // HD-82 temp pack → HD-81 (Sharon Wight, PP08)
     ];
     (function() {
@@ -1709,32 +1708,18 @@ var PP = (function() {
       });
     })();
 
-    // Forced anchor swaps — override the auto-computed polar anchor for a specific pack.
-    // { packDtype/packDnum: current anchor to find, newDtype/newDnum: member to elevate }
-    var FORCED_ANCHOR_SWAPS = [
-      { packDtype: 'house', packDnum: 9, newDtype: 'house', newDnum: 4 }, // Ryan K (HD-4) → polar anchor of pack 4
+    // Force specific packs to appear last in the list (PP10+), regardless of polar power sort.
+    var TAIL_PACKS = [
+      { dtype: 'house', dnum: 4 }  // Ryan K (HD-4) — PP10, NW Indiana anchor
     ];
     (function() {
-      FORCED_ANCHOR_SWAPS.forEach(function(swap) {
-        var pack = null;
+      TAIL_PACKS.forEach(function(spec) {
         for (var i = 0; i < packs.length; i++) {
-          if (packs[i].anchor.dtype === swap.packDtype && packs[i].anchor.dnum === swap.packDnum) {
-            pack = packs[i]; break;
+          if (packs[i].anchor.dtype === spec.dtype && packs[i].anchor.dnum === spec.dnum) {
+            packs.push(packs.splice(i, 1)[0]);
+            break;
           }
         }
-        if (!pack) return;
-        var newAnchorIdx = -1;
-        for (var j = 0; j < pack.members.length; j++) {
-          if (pack.members[j].dtype === swap.newDtype && pack.members[j].dnum === swap.newDnum) {
-            newAnchorIdx = j; break;
-          }
-        }
-        if (newAnchorIdx === -1) return;
-        var oldAnchor = pack.anchor;
-        pack.anchor = pack.members.splice(newAnchorIdx, 1)[0];
-        pack.members.push(oldAnchor);
-        pack.members.sort(function(a, b) { return polarPower(b.lean) - polarPower(a.lean); });
-        pack.maxPolarPower = polarPower(pack.anchor.lean);
       });
     })();
 
