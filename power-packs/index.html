@@ -2956,7 +2956,12 @@ var PP = (function() {
       if (cdWrap)     cdWrap.style.display     = 'none';
       if (countyWrap) countyWrap.style.display = 'none';
       var result = buildSenatePacks();
-      var totalCands = result.packs.reduce(function(n, p) { return n + p.senateCandidates.length + p.houseMembers.length; }, 0);
+      var _seenRows = new Set();
+      result.packs.forEach(function(p) {
+        p.senateCandidates.forEach(function(e) { _seenRows.add(e.row); });
+        p.houseMembers.forEach(function(e) { _seenRows.add(e.row); });
+      });
+      var totalCands = _seenRows.size;
       if (statsEl) statsEl.textContent = result.packs.length + ' senate district' + (result.packs.length !== 1 ? 's' : '')
         + ' · ' + totalCands + ' candidate' + (totalCands !== 1 ? 's' : '')
         + ' — one pack per senate district';
