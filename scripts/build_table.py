@@ -697,11 +697,6 @@ def generate_table_rows(districts, prefix):
             cls_race = get_color_class(d['race_margin'])
             sort_race = d['race_margin'] if d['race_margin'] is not None else 999
 
-        prim_m = d.get('margin_2026_primary')
-        prim_label = d.get('label_2026_primary', 'N/A')
-        cls_prim = get_color_class(prim_m)
-        sort_prim = prim_m if prim_m is not None else 999
-
         name_html = d['representative']
         if d.get('url'):
             name_html = f'<a href="{d["url"]}" target="_blank" rel="noopener">{d["representative"]}</a>'
@@ -711,7 +706,6 @@ def generate_table_rows(districts, prefix):
           <td class="{cls_2022}" data-sort-value="{sort_2022}">{l2022}</td>
           <td class="{cls_2024}" data-sort-value="{sort_2024}">{d['label_2024']}</td>
           <td class="{cls_race}" data-sort-value="{sort_race}">{race_display}</td>
-          <td class="{cls_prim}" data-sort-value="{sort_prim}">{prim_label}</td>
           <td class="{cls_avg} col-avg" data-sort-value="{sort_avg}">{d['in_index_label']}</td>
           <td class="col-dist" data-sort-value="{d['district']}">{prefix}-{d['district']}</td>
           <td class="col-rep" data-sort-value="{d['representative']}">{name_html}</td>
@@ -1260,11 +1254,10 @@ tbody tr.map-locked {{
             <th onclick="sortTable('table-congressional', 1, 'num')" title="2022 US House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-congressional', 3, 'num')" title="2024 US House race result">'24 Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 5, 'num')" title="IN-Index: average partisan lean">IN-Idx <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 6, 'num')" title="Congressional District">Dist <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 7, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-congressional', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 4, 'num')" title="IN-Index: average partisan lean">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 5, 'num')" title="Congressional District">Dist <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 6, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-congressional', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
           </tr>
         </thead>
         <tbody>
@@ -1283,11 +1276,10 @@ tbody tr.map-locked {{
             <th onclick="sortTable('table-senate', 1, 'num')" title="2022 State Senate race (2022-cycle SDs only; N/A for 2024-cycle)">'22 Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-senate', 2, 'num')" title="2024 Presidential margin for this district">'24 Pres <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-senate', 3, 'num')" title="Most recent State Senate race result (2022 or 2024 depending on cycle)">Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 5, 'num')" title="IN-Index: average of actual race margins + 2024 presidential">IN-Idx <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 6, 'num')" title="Senate District">Dist <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 7, 'alpha')" title="Current Senator">Sen. <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-senate', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 4, 'num')" title="IN-Index: average of actual race margins + 2024 presidential">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 5, 'num')" title="Senate District">Dist <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 6, 'alpha')" title="Current Senator">Sen. <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-senate', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
           </tr>
         </thead>
         <tbody>
@@ -1311,11 +1303,10 @@ tbody tr.map-locked {{
             <th onclick="sortTable('table-house', 1, 'num')" title="2022 State House race result">'22 Race <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 2, 'num')" title="2024 Presidential margin">'24 Pres <span class="sort-arrow">&#9650;</span></th>
             <th onclick="sortTable('table-house', 3, 'num')" title="2024 State House race result">Race <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 4, 'num')" title="2026 primary turnout lean: (R primary votes − D primary votes) / total primary votes">'26 Prim <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 5, 'num')" title="IN-Index: 2024 presidential lean (adjusted for unopposed races)">IN-Idx <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 6, 'num')" title="House District">Dist <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 7, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
-            <th onclick="sortTable('table-house', 8, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 4, 'num')" title="IN-Index: 2024 presidential lean (adjusted for unopposed races)">IN-Idx <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 5, 'num')" title="House District">Dist <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 6, 'alpha')" title="Current Representative">Rep. <span class="sort-arrow">&#9650;</span></th>
+            <th onclick="sortTable('table-house', 7, 'alpha')" title="Party">Pty <span class="sort-arrow">&#9650;</span></th>
           </tr>
         </thead>
         <tbody>
